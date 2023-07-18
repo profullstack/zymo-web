@@ -1,9 +1,11 @@
 import {redirect} from "primate";
 
+const open = ["/", "/login"];
+
 export default request => {
   const {url: {pathname}, session} = request;
 
-  if (pathname === "/login" || session.get().loggedIn) {
+  if (open.includes(pathname) || session.get().loggedIn) {
     return true;
   }
 
