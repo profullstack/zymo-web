@@ -2,6 +2,9 @@
   "name": "hynt.us",
   "private": true,
   "dependencies": {
+    "@primate/store": "^0.9.2",
+    "@primate/surrealdb": "^0.2.1",
+    "@primate/svelte": "^0.14.0",
     "primate": "^0.20.5"
   },
   "type": "module"
