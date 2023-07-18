@@ -1,0 +1,8 @@
+{
+  "name": "hynt.us",
+  "private": true,
+  "dependencies": {
+    "primate": "^0.20.5"
+  },
+  "type": "module"
+}
