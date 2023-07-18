@@ -1,0 +1,17 @@
+[Unit]
+Description=hynt-web
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=ubuntu
+WorkingDirectory=/home/ubuntu/www/hynt.us/hynt-web/
+ExecStart=/home/ubuntu/www/hynt.us/hynt-web/bin/start.sh
+StandardOutput=append:/var/log/hynt-web.log
+StandardError=append:/var/log/hynt-web.error.log
+
+[Install]
+WantedBy=multi-user.target
