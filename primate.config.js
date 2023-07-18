@@ -5,7 +5,10 @@ import session from "@primate/session";
 import {Logger} from "primate";
 import env from "runtime-compat/env";
 
-const { PORT: port, DB_USER: user, DB_PASS: pass, DB_HOST: host, DB_NS: ns, DB_PORT: db_port } = env;
+const {
+  PORT: port,
+  DB_USER: user, DB_PASS: pass, DB_HOST: host, DB_NS: ns, DB_PORT: db_port,
+} = env;
 
 export default {
   http: {
@@ -22,7 +25,7 @@ export default {
   },
   modules: [
     session(),
-    store(surrealdb({ host, port: db_port, ns, user, pass })),
+    store(surrealdb({host, port: db_port, ns, user, pass})),
     svelte(),
-  ]
-}
+  ],
+};

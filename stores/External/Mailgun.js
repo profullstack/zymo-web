@@ -4,13 +4,13 @@ export const ambiguous = true;
 
 const {MAILGUN_DOMAIN, MAILGUN_KEY} = env;
 const resource = `https://api.mailgun.net/v3/${MAILGUN_DOMAIN}/messages`;
-const key = Buffer.from(`api:${MAILGUN_KEY}`).toString("base64")
+const key = Buffer.from(`api:${MAILGUN_KEY}`).toString("base64");
 const options = {
   method: "POST",
   headers: {
     "Content-Type": "application/x-www-form-urlencoded",
     Authorization: `Basic ${key}`,
-  }
+  },
 };
 const from = "donotreply@hynt.us";
 const body = ({subject, to, text}) =>
@@ -25,6 +25,6 @@ export const actions = () => {
       } catch (error) {
         console.warn(error);
       }
-    }
-  }
-}
+    },
+  };
+};
