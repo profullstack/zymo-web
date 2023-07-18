@@ -18,5 +18,8 @@
     "@primate/types": "^0.4.2",
     "primate": "^0.20.5"
   },
+  "devDependencies": {
+    "maximin": "^0.1.5"
+  },
   "type": "module"
 }
