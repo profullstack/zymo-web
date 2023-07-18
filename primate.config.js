@@ -18,7 +18,7 @@ export default {
     port,
   },
   logger: {
-    level: Logger.Info,
+    level: env.DEBUG ? Logger.Info : Logger.Warn,
   },
   modules: [
     session(),
