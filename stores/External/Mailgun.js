@@ -1,4 +1,7 @@
 import env from "runtime-compat/env";
+import {Base64} from "runtime-compat/string";
+// use `import {MediaType} from "primate";` in primate 0.21
+import {MediaType} from "runtime-compat/http";
 
 export const ambiguous = true;
 
@@ -7,8 +10,8 @@ const resource = `https://api.mailgun.net/v3/${domain}/messages`;
 const options = {
   method: "POST",
   headers: {
-    "Content-Type": "application/x-www-form-urlencoded",
-    Authorization: `Basic ${Buffer.from(`api:${key}`).toString("base64")}`,
+    "Content-Type": MediaType.APPLICATION_FORM_URLENCODED,
+    Authorization: `Basic ${Base64.encode(`api:${key}`)}`,
   },
 };
 const body = ({subject, to, text}) =>

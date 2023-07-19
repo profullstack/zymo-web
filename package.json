@@ -16,7 +16,8 @@
     "@primate/surrealdb": "^0.2.1",
     "@primate/svelte": "^0.14.0",
     "@primate/types": "^0.4.2",
-    "primate": "^0.20.5"
+    "primate": "^0.20.5",
+    "runtime-compat": "^0.24.0"
   },
   "devDependencies": {
     "maximin": "^0.1.5"
