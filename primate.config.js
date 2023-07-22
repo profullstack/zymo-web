@@ -22,6 +22,7 @@ export default {
   },
   logger: {
     level: env.DEBUG ? Logger.Info : Logger.Warn,
+    trace: true,
   },
   modules: [
     session(),
