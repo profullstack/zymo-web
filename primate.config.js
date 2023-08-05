@@ -1,5 +1,4 @@
-import store from "@primate/store";
-import surrealdb from "@primate/surrealdb";
+import {default as store, surrealdb} from "@primate/store";
 import svelte from "@primate/svelte";
 import session from "@primate/session";
 import {Logger} from "primate";

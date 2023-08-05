@@ -16,10 +16,10 @@ export default {
   async post(request) {
     const {session, query, store} = request;
 
-    const {Login: {Form}} = store;
+    const {login: {Form}} = store;
     try {
       await Form.validate(request.body.get());
-      const {External: {Mailgun}} = store;
+      const {external: {Mailgun}} = store;
       await Mailgun.send({
         to: request.body.get("email"),
         subject: "Your one-time login is 123456",

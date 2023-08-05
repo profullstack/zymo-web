@@ -2,6 +2,6 @@ import {view} from "primate";
 
 export default {
   get() {
-    return view("Index.svelte");
+    return view("Index.svelte", {});
   },
 };
