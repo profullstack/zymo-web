@@ -16,7 +16,7 @@ export default {
   async post(request) {
     const {session, query, store} = request;
 
-    const {Login: {Form}} = store;
+    const {Register: {Form}} = store;
     try {
       await Form.validate(request.body.get());
       const {External: {Mailgun}} = store;
