@@ -6,7 +6,7 @@ export const actions = (db, store) => {
     async me() {
       const me = await db.info();
       delete me.password;
-      console.log('me: ', me.email);
+      console.log("me: ", me.email);
       return me;
     },
     async generateEmailVerifyCode(id) {
@@ -17,7 +17,7 @@ export const actions = (db, store) => {
         await db.query("UPDATE $id SET verify.email.code = $code, verify.email.status = 'pending', verify.email.expiration = $expiration", {
           id,
           code,
-          expiration
+          expiration,
         })
       ).pop()
         .result
@@ -34,13 +34,13 @@ export const actions = (db, store) => {
         await db.query("UPDATE $id SET verify.phone.code = $code, verify.phone.status = 'pending', verify.phone.expiration = $expiration", {
           id,
           code,
-          expiration
+          expiration,
         })
       ).pop()
         .result
         .pop();
 
-      console.log('user: ', result);
+      console.log("user: ", result);
       return result;
     },
     async create(user) {
@@ -67,6 +67,37 @@ export const actions = (db, store) => {
 
       console.log("token: ", token);
       return token;
+    },
+    async signin(user) {
+      const {email, password} = user;
+      const {DB_USER, DB_PASS, DB_NS, DB_DB} = env;
+
+  		console.log(user);
+
+      try {
+        const token = await db.signin({
+          NS: DB_NS,
+          DB: DB_DB,
+          SC: "allusers",
+          email,
+          password,
+        });
+
+        console.log("token: ", token);
+
+        const me = await this.me();
+        const {id} = me;
+        const now = new Date();
+
+        await db.query("UPDATE $id SET loggedInAt = $now", {
+          id,
+          now,
+        });
+
+        return token;
+      } catch (err) {
+        throw new Error(err);
+      }
     },
   };
 };

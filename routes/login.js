@@ -1,33 +1,36 @@
-import {view} from "primate";
+import {view, redirect} from "primate";
 
 const form = (params = {}) => view("login/Form.svelte", {...params});
+const home = "/dashboard";
 
 export default {
   get(request) {
-    const {session, query} = request;
+    const {session} = request;
 
     if (session.exists) {
-      // session exists
-    } else {
-      // show form
-      return form();
+      // already logged in, redirect to dashboard
+      return redirect(home);
     }
+
+    // show form
+    return form();
   },
   async post(request) {
-    const {session, query, store} = request;
+    const {session, store} = request;
 
-    const {login: {Form}} = store;
+    const {login: {Form}, User} = store;
     try {
-      await Form.validate(request.body.get());
-      const {external: {Mailgun}} = store;
-      await Mailgun.send({
-        to: request.body.get("email"),
-        subject: "Your one-time login is 123456",
-        text: "Use your one-time login 123456 to log in",
-      });
-//    await session.create({loggedIn: true});
-      //return redirect(query.get("next") ?? "/");
-      return "success";
+      const user = request.body.get();
+
+      await Form.validate(user);
+
+      const token = await User.login(user);
+
+      await session.create({token, user: await User.me()});
+
+      // todo: add a way to flash something to the user, can use a hash for now
+      // for example: /dashboard#flash=Some message
+      return redirect(home);
     } catch({errors}) {
       return form({errors});
     }
