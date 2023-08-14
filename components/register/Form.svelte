@@ -6,6 +6,7 @@
 
 <form method="post">
   <div><input name="email" placeholder="Enter email address" /></div>
+  <div><input name="phone" type="tel" placeholder="Enter phone number" /></div>
   <div><input name="password" type="password" placeholder="Enter password" /></div>
   <div><input name="password2" type="password" placeholder="Re-enter password" /></div>
   <div><button type="submit">Register</button></div>
