@@ -59,13 +59,17 @@ export default {
     const {register: {Form}, User} = store;
     try {
       const user = request.body.get();
+      console.log(user);
 
       // validate
       await Form.validate(user);
 
       const token = await User.create(user);
+      const me = await User.me();
 
-      await session.create({token, user: await User.me()});
+      console.log(token, me);
+
+      await session.create({token, user: me });
 
       await User.generateEmailVerifyCode(user.id);
 
@@ -75,9 +79,10 @@ export default {
 
       // todo: add a way to flash something to the user, can use a hash for now
       // for example: #me&flash=Some message
-      return redirect("/account#me");
+      return redirect("/dashboard");
 
     } catch({errors}) {
+      console.error(errors);
       return form({errors});
     }
   },

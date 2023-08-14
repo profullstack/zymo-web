@@ -1,4 +1,4 @@
-import env from "@runtime-compat/env";
+import env from "runtime-compat/env";
 import {primary} from "@primate/types";
 
 export const actions = (db, store) => {
