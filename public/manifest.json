@@ -1,0 +1,14 @@
+{
+  "name": "profullstack.com",
+  "version": "1.0",
+  "description": "link shortener",
+  "short_name": "pf",
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "start_url": "https://profullstack.com/",
+  "background_color": "#f7f7f7",
+  "theme_color": "#333"
+}
