@@ -15,17 +15,26 @@ const {
   DB_HOST: host,
   DB_NS: ns,
   DB_PORT: db_port,
+  APP_DOMAIN,
+  GOOGLE_ANALYTICS_ID,
+  APP_NAME,
+  APP_SHORT_NAME,
+  APP_DESCRIPTION,
 } = env;
 
 export default {
   http: {
-    /*
-      ssl: {
-        key: "./ssl/default.key",
-        cert: "./ssl/default.crt",
-      },
-    */
     port,
+  },
+  transform: {
+    files: ["pages/app.html", "static/manifest.json"],
+    mapper: (contents) =>
+      contents
+        .replace("APP_DOMAIN", APP_DOMAIN)
+        .replace("GOOGLE_ANALYTICS_ID", GOOGLE_ANALYTICS_ID)
+        .replace("APP_NAME", APP_NAME)
+        .replace("APP_SHORT_NAME", APP_SHORT_NAME)
+        .replace("APP_DESCRIPTION", APP_DESCRIPTION),
   },
   modules: [
     svelte(),
