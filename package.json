@@ -15,7 +15,13 @@
   "scripts": {
     "start": "npx primate",
     "dev": "npx primate dev",
-    "serve": "npx primate serve"
+    "serve": "npx primate serve",
+    "db:start": ". ./.env && . ./.env.local && surreal start --user root --pass root --bind 0.0.0.0:$DB_PORT file:data/db",
+    "db:console": ". ./.env && . ./.env.local && surreal sql --conn http://localhost:$DB_PORT --user root --pass root --ns $DB_NS --db $DB_DB --pretty",
+    "db:export": ". ./.env && . ./.env.local && surreal export --conn http://localhost:$DB_PORT --user root --pass root --ns $DB_NS --db $DB_DB dump.sql",
+    "db:import": ". ./.env && . ./.env.local && surreal import --conn http://localhost:$DB_PORT --user root --pass root --ns $DB_NS --db $DB_DB dump.sql",
+    "deploy": "./bin/deploy.sh"
+
   },
   "type": "module"
 }
