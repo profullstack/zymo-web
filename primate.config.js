@@ -5,6 +5,7 @@ import types from "@primate/types";
 import session from "@primate/session";
 import ws from "@primate/ws";
 import esbuild from "@primate/esbuild";
+import liveview from "@primate/liveview";
 
 export default {
   modules: [
