@@ -44,8 +44,17 @@ export const actions = (db, store) => {
       return result;
     },
     async create(user) {
+      console.log('create:', user);
+      try {
+        const foo = await db.info();
+        console.log('foo:', foo);  
+      } catch(err) {
+        console.error(err);
+      }
       let {email, username, password, password2} = user;
       const {DB_USER, DB_PASS, DB_NS, DB_DB} = env;
+
+      console.log(DB_NS, DB_DB)
 
       if (password !== password2) {
         throw new Error("Passwords do not match");
