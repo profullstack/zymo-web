@@ -2,7 +2,7 @@
   "name": "primate-app",
   "private": true,
   "dependencies": {
-    "primate": "^0.21.4",
+    "primate": "^0.x",
     "@primate/svelte": "^0.15.0",
     "@primate/liveview": "^0.2.3",
     "@primate/store": "^0.10.2",

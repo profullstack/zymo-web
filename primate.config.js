@@ -30,11 +30,11 @@ export default {
     files: ["pages/app.html", "static/manifest.json"],
     mapper: (contents) =>
       contents
-        .replace("APP_DOMAIN", APP_DOMAIN)
-        .replace("GOOGLE_ANALYTICS_ID", GOOGLE_ANALYTICS_ID)
-        .replace("APP_NAME", APP_NAME)
-        .replace("APP_SHORT_NAME", APP_SHORT_NAME)
-        .replace("APP_DESCRIPTION", APP_DESCRIPTION),
+        .replaceAll("APP_DOMAIN", APP_DOMAIN)
+        .replaceAll("GOOGLE_ANALYTICS_ID", GOOGLE_ANALYTICS_ID)
+        .replaceAll("APP_NAME", APP_NAME)
+        .replaceAll("APP_SHORT_NAME", APP_SHORT_NAME)
+        .replaceAll("APP_DESCRIPTION", APP_DESCRIPTION),
   },
   modules: [
     svelte(),
