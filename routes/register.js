@@ -21,7 +21,7 @@ export default {
     const {register: {Form}, User} = store;
     try {
       const user = request.body.get();
-      console.log(user);
+      console.log('post user:', user);
 
       // validate
       await Form.validate(user);
@@ -29,7 +29,7 @@ export default {
       const token = await User.create(user);
       const me = await User.me();
 
-      console.log(token, me);
+      console.log('token/me:', token, me);
 
       await session.create({token, user: me });
 
