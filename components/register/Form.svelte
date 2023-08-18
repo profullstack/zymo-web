@@ -5,6 +5,7 @@
 <h1>Register</h1>
 
 <form method="post">
+  {data?.status ?? ""}
   <div><input name="email" type="email" placeholder="Enter email address"
     required /></div>
   <div>{data?.errors?.email ?? ""}</div>

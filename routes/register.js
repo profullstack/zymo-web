@@ -25,9 +25,14 @@ export default {
 
       // validate
       await Form.validate(user);
+      let token, me;
 
-      const token = await User.create(user);
-      const me = await User.me();
+      try {
+        token = await User.create(user);
+        me = await User.me();  
+      } catch(err) {
+        return form({ status: err.message});
+      }
 
       console.log('token/me:', token, me);
 

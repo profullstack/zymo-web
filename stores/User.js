@@ -73,6 +73,7 @@ export const actions = (db, store) => {
         return token;  
       } catch(err) {
         console.error(err);
+        throw(err);        
       }
     },
     async signin(user) {
