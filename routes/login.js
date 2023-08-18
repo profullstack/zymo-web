@@ -23,13 +23,19 @@ export default {
       const user = request.body.get();
 
       await Form.validate(user);
+      let token;
+      let me;
 
-      const token = await User.login(user);
+      try {
+        token = await User.signin(user);
+        me = await User.me();
+      } catch(err) {
+        return form({ status: err.message });
+      }
 
-      await session.create({token, user: await User.me()});
 
-      // todo: add a way to flash something to the user, can use a hash for now
-      // for example: /dashboard#flash=Some message
+      await session.create({token, user: me});
+
       return redirect(home);
     } catch({errors}) {
       return form({errors});

@@ -73,7 +73,7 @@ export const actions = (db, store) => {
         return token;  
       } catch(err) {
         console.error(err);
-        throw(err);        
+        throw err;        
       }
     },
     async signin(user) {
@@ -104,7 +104,8 @@ export const actions = (db, store) => {
 
         return token;
       } catch (err) {
-        throw new Error(err);
+        console.error(err);
+        throw err;
       }
     },
   };
