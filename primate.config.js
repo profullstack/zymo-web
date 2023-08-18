@@ -9,6 +9,8 @@ const {
   DB_USER: user, DB_PASS: pass, DB_HOST: host, DB_NS: ns, DB_PORT: db_port,
 } = env;
 
+console.log(port, user, pass, host, ns, db_port);
+
 export default {
   http: {
     /*
