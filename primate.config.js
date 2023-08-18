@@ -27,7 +27,9 @@ export default {
   },
   modules: [
     session(),
-    store(surrealdb({host, port: db_port, ns, user, pass})),
+    store({
+      driver: surrealdb({host, port: db_port, ns, user, pass}),
+    }),
     svelte(),
   ],
 };
