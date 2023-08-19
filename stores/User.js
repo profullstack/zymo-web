@@ -108,6 +108,9 @@ export const actions = (db, store) => {
         throw err;
       }
     },
+    async logout(session) {
+    
+    }
   };
 };
 

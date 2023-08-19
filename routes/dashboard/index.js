@@ -1,5 +1,7 @@
+import {view} from "primate";
+
 export default {
   get() {
-    return "dashboard";
+    return view("Dashboard.svelte", {});
   },
 };

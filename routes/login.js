@@ -34,7 +34,7 @@ export default {
       }
 
 
-      await session.create({token, user: me});
+      await session.create({token, user: me, loggedIn: Boolean(token)});
 
       return redirect(home);
     } catch({errors}) {

@@ -3,9 +3,9 @@ import {redirect} from "primate";
 export default request => {
   const {url: {pathname}, session} = request;
 
-  console.log('loggedIn:', session.get().token);
+  console.log('loggedIn:', session.get().loggedIn);
 
-  if (session.get().token) {
+  if (session.get().loggedIn) {
     return true;
   }
 
