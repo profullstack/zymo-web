@@ -45,41 +45,40 @@ export const actions = (db, store) => {
     },
     async create(user) {
       console.log('create:', user);
-      try {
-        const foo = await db.info();
-        console.log('foo:', foo);  
-      } catch(err) {
-        console.error(err);
-      }
       let {email, username, password, password2} = user;
-      const {DB_USER, DB_PASS, DB_NS, DB_DB} = env;
+      const {DB_NS, DB_DB} = env;
 
-      console.log(DB_NS, DB_DB)
+      console.log('db:', DB_NS, DB_DB)
 
       if (password !== password2) {
         throw new Error("Passwords do not match");
       }
 
-      username = username.replace(/[^a-zA-Z0-9]+/gu, "");
-      console.log(user);
+      username = username.replace(/[^a-zA-Z0-9]+/g, "");
+      console.log('user:', user);
 
-      const token = await db.signup({
-        NS: DB_NS,
-        DB: DB_DB,
-        SC: "allusers",
-        email,
-        username,
-        password,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      });
-
-      console.log("token: ", token);
-      return token;
+      try {
+        const token = await db.signup({
+          NS: DB_NS,
+          DB: DB_DB,
+          SC: "allusers",
+          email,
+          username,
+          password,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        });
+  
+        console.log("token: ", token);
+        return token;  
+      } catch(err) {
+        console.error(err);
+        throw err;        
+      }
     },
     async signin(user) {
       const {email, password} = user;
-      const {DB_USER, DB_PASS, DB_NS, DB_DB} = env;
+      const {DB_NS, DB_DB} = env;
 
   		console.log(user);
 
@@ -105,9 +104,13 @@ export const actions = (db, store) => {
 
         return token;
       } catch (err) {
-        throw new Error(err);
+        console.error(err);
+        throw err;
       }
     },
+    async logout(session) {
+    
+    }
   };
 };
 

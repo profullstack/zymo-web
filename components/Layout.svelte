@@ -5,7 +5,7 @@
 </script>
 
 
-<NavBar />
+<NavBar {data} />
 
 <div>
   T{data.hello}T This is a layout

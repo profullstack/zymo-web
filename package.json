@@ -1,27 +1,27 @@
-{
   "name": "primate-app",
+{
+  "name": "hynt.us",
   "private": true,
-  "dependencies": {
-    "primate": "^0.x",
-    "@primate/svelte": "^0.15.0",
-    "@primate/liveview": "^0.2.3",
-    "@primate/store": "^0.10.2",
-    "surrealdb.js": "^0.8.3",
-    "@primate/types": "^0.5.0",
-    "@primate/session": "^0.9.0",
-    "@primate/ws": "^0.3.0",
-    "@primate/esbuild": "^0.8.0"
-  },
   "scripts": {
-    "start": "npx primate",
-    "dev": "npx primate dev",
-    "serve": "npx primate serve",
+    "dev": "npx primate",
+    "start": "npx primate serve",
     "db:start": ". ./.env && . ./.env.local && surreal start --user root --pass root --bind 0.0.0.0:$DB_PORT file:data/db",
     "db:console": ". ./.env && . ./.env.local && surreal sql --conn http://localhost:$DB_PORT --user root --pass root --ns $DB_NS --db $DB_DB --pretty",
     "db:export": ". ./.env && . ./.env.local && surreal export --conn http://localhost:$DB_PORT --user root --pass root --ns $DB_NS --db $DB_DB dump.sql",
     "db:import": ". ./.env && . ./.env.local && surreal import --conn http://localhost:$DB_PORT --user root --pass root --ns $DB_NS --db $DB_DB dump.sql",
     "deploy": "./bin/deploy.sh"
-
+  },
+  "dependencies": {
+    "@primate/session": "^0.9.0",
+    "@primate/store": "^0.11.0",
+    "@primate/svelte": "^0.15.2",
+    "@primate/types": "^0.5.0",
+    "primate": "^0.21.4",
+    "runtime-compat": "^0.25.0",
+    "surrealdb.js": "^0.8.4"
+  },
+  "devDependencies": {
+    "maximin": "^0.1.5"
   },
   "type": "module"
 }

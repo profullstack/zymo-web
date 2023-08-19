@@ -1,4 +1,6 @@
-node_modules/
+build
+node_modules
 package-lock.json
-build/
+.env.local
 data/
+history.txt
