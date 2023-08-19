@@ -1,6 +1,5 @@
-  "name": "primate-app",
 {
-  "name": "hynt.us",
+  "name": "primate-app",
   "private": true,
   "scripts": {
     "dev": "npx primate",
