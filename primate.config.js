@@ -1,6 +1,6 @@
 import svelte from "@primate/svelte";
 import store from "@primate/store";
-import { surrealdb } from "@primate/store";
+import {surrealdb} from "@primate/store";
 import types from "@primate/types";
 import session from "@primate/session";
 import ws from "@primate/ws";
@@ -26,15 +26,17 @@ export default {
   http: {
     port,
   },
-  transform: {
-    files: ["pages/app.html", "static/manifest.json"],
-    mapper: (contents) =>
-      contents
-        .replaceAll("APP_DOMAIN", APP_DOMAIN)
-        .replaceAll("GOOGLE_ANALYTICS_ID", GOOGLE_ANALYTICS_ID)
-        .replaceAll("APP_NAME", APP_NAME)
-        .replaceAll("APP_SHORT_NAME", APP_SHORT_NAME)
-        .replaceAll("APP_DESCRIPTION", APP_DESCRIPTION),
+  build: {
+    transform: {
+      files: ["pages/app.html", "static/manifest.json"],
+      mapper: (contents) =>
+        contents
+          .replaceAll("APP_DOMAIN", APP_DOMAIN)
+          .replaceAll("GOOGLE_ANALYTICS_ID", GOOGLE_ANALYTICS_ID)
+          .replaceAll("APP_NAME", APP_NAME)
+          .replaceAll("APP_SHORT_NAME", APP_SHORT_NAME)
+          .replaceAll("APP_DESCRIPTION", APP_DESCRIPTION),
+    },
   },
   modules: [
     svelte(),
