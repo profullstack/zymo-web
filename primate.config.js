@@ -26,6 +26,9 @@ export default {
   http: {
     port,
   },
+  logger: {
+    trace: true,
+  },
   build: {
     transform: {
       files: ["pages/app.html", "static/manifest.json"],
