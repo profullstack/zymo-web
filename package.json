@@ -23,7 +23,8 @@
     "surrealdb.js": "^0.8.4"
   },
   "devDependencies": {
-    "maximin": "^0.1.5"
+    "maximin": "^0.1.5",
+    "prettier": "^3.0.2"
   },
   "type": "module"
 }
