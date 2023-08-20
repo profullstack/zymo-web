@@ -69,6 +69,23 @@ export const actions = (db, store) => {
 				console.error(err);
 				throw err;
 			}
+		},
+		async getAllByUserId(createdBy) {
+			const query = `SELECT * FROM links WHERE createdBy = $createdBy`;
+
+			console.log(query, createdBy);
+			try {
+				const links = await db.query(query, {
+					createdBy
+				});
+
+				console.log('all links:', links);
+
+				return links[0].result;
+			} catch (err) {
+				console.error(err);
+				throw err;
+			}
 		}
 	};
 };
