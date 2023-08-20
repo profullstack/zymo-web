@@ -53,16 +53,18 @@ export const actions = (db, store) => {
 			}
 		},
 		async getById(id) {
-			console.log(id);
+			console.log('id:', id);
+			const query = `SELECT * FROM links WHERE id = $id`;
 
+			console.log(query);
 			try {
-				const link = await db.query('SELECT * FROM links WHERE id = $id', {
+				const link = await db.query(query, {
 					id
 				});
 
 				console.log('id link:', link);
 
-				return link;
+				return link[0].result[0];
 			} catch (err) {
 				console.error(err);
 				throw err;
