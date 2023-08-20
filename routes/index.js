@@ -1,7 +1,9 @@
-import {view} from "primate";
+import { view } from 'primate';
 
 export default {
-  get() {
-    return view("Index.svelte", {});
-  },
+	get() {
+		const { env } = process;
+    console.log(env, '<--- env');
+		return view('Index.svelte', { APP_NAME: env.APP_NAME });
+	}
 };

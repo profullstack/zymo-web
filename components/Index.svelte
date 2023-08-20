@@ -1,1 +1,5 @@
-<h1>Welcome to profullstack.com!</h1>
+<script>
+    export let data;
+</script>
+
+<h1>Welcome to {data.APP_NAME}!</h1>

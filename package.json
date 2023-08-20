@@ -18,6 +18,7 @@
     "@primate/svelte": "^0.15.3",
     "@primate/types": "^0.5.0",
     "@primate/ws": "^0.3.0",
+    "dotenv-flow": "^3.2.0",
     "primate": "^0.21.4",
     "runtime-compat": "^0.25.4",
     "surrealdb.js": "^0.8.4"

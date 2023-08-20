@@ -6,8 +6,10 @@ import session from '@primate/session';
 import ws from '@primate/ws';
 import esbuild from '@primate/esbuild';
 import liveview from '@primate/liveview';
-import env from 'runtime-compat/env';
+import { config } from 'dotenv-flow';
 import { Logger } from 'primate';
+
+config();
 
 const {
 	PORT: port,
@@ -21,7 +23,9 @@ const {
 	APP_NAME,
 	APP_SHORT_NAME,
 	APP_DESCRIPTION
-} = env;
+} = process.env;
+
+console.log(process.env);
 
 export default {
 	logger: {
