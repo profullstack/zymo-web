@@ -1,0 +1,42 @@
+import { view, redirect } from 'primate';
+// const form = (params = {}) => view('links/Form.svelte', { ...params });
+
+export default {
+	async get(request) {
+		const { session, path, store } = request;
+		const {
+			link: { Link }
+		} = store;
+		const id = path.get('id');
+		const link = await Link.getById(id);
+		console.log('id link2:', link);
+
+		return view('links/Edit.svelte', { link, method: 'put' });
+	},
+
+	async put(request) {
+		const { session, path, store } = request;
+		const {
+			link: { Form, Link }
+		} = store;
+
+		const id = path.get('id');
+		const link = await Link.getById(id);
+
+		try {
+			const data = request.body.get();
+
+			await Form.validate(data);
+
+			try {
+				const link = await Link.update(data);
+				console.log('link:', link);
+				return redirect('/dashboard');
+			} catch (err) {
+				return { status: err.message };
+			}
+		} catch ({ errors }) {
+			return { errors };
+		}
+	}
+};

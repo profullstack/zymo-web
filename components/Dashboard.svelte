@@ -1,7 +1,7 @@
 <script>
-    export let data;
+	export let data;
 </script>
-  
+
 <h1>Dashboard</h1>
 
 <a href="/links">links</a>
