@@ -36,9 +36,12 @@ export const actions = (db, store) => {
 		},
 		async getByAlias(alias) {
 			console.log('alias:', alias);
+			const query = `SELECT * FROM links WHERE alias = $alias`;
+
+			console.log(query);
 
 			try {
-				const link = await db.query('SELECT * FROM links WHERE alias = $alias', {
+				const link = await db.query(query, {
 					alias
 				});
 

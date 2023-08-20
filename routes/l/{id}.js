@@ -1,5 +1,4 @@
 import { view, redirect } from 'primate';
-const form = (params = {}) => view('links/Form.svelte', { ...params });
 
 export default {
 	async get(request) {
@@ -7,8 +6,10 @@ export default {
 		const {
 			link: { Link }
 		} = store;
-		const alias = path.get('id');
+		const id = path.get('id');
 		const link = await Link.getById(id);
+
+		console.log('link id:', link);
 
 		return redirect(link.url);
 	}
