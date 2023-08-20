@@ -5,6 +5,9 @@
 <h1>Login</h1>
 
 <form method="post">
+  {#if data?.next}
+    <input type="hidden" name="next" value={data.next} />
+  {/if}
   {data?.status ?? ""}
   <div><input name="email" placeholder="Enter email address" required /></div>
   <div>{data?.errors?.email ?? ""}</div>
