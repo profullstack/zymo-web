@@ -8,8 +8,7 @@ export default {
 		} = store;
 		const id = path.get('id');
 		const link = await Link.getById(id);
-
-		console.log('link id:', link);
+		console.log('id link2:', link);
 
 		return redirect(link.url);
 	}
