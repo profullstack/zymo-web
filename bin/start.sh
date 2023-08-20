@@ -8,4 +8,6 @@
 
 
 npm run db:start &
-PORT=${PORT} NODE_ENV=${NODE_ENV} npm start
+sleep 10
+PORT=$PORT NODE_ENV=$NODE_ENV npm start
+

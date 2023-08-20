@@ -24,7 +24,7 @@ if [ -d "$HOME/www/${name}/${project}" ]; then
     ./migrations/users.sh
     # ./migrations/deals.sh
     # ./migrations/comments.sh
-    ./migrations/articles.sh
+    ./migrations/links.sh
     # ./migrations/applications.sh
     # ./migrations/services.sh
     # ./migrations/inquiries.sh
