@@ -17,6 +17,7 @@ const {
 	DB_PASS: pass,
 	DB_HOST: host,
 	DB_NS: ns,
+	DB_DB: db,
 	DB_PORT: db_port,
 	APP_DOMAIN,
 	GOOGLE_ANALYTICS_ID,
@@ -57,6 +58,7 @@ export default {
 				host,
 				port: db_port,
 				ns,
+				db,
 				user,
 				pass
 			})
