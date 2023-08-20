@@ -10,6 +10,8 @@
     <div>{data?.errors?.url ?? ""}</div>
     <div><input name="alias" placeholder="Enter alias (optional)" /></div>
     <div>{data?.errors?.alias ?? ""}</div>
-    <div><button type="submit">Create</button></div>
+    <div><button type="submit">
+      Create
+    </button></div>
   </form>
   

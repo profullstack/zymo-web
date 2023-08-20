@@ -86,6 +86,29 @@ export const actions = (db, store) => {
 				console.error(err);
 				throw err;
 			}
+		},
+		async update(data) {
+			// const { User } = store;
+
+			console.log('update:', data);
+			let { id, url, alias } = data;
+			const { DB_NS, DB_DB } = env;
+			const me = await this.me();
+			console.log('db:', DB_NS, DB_DB);
+
+			try {
+				const link = await db.change(id, {
+					url,
+					alias,
+					updatedAt: new Date().toISOString()
+				});
+
+				console.log('link: ', link);
+				return link;
+			} catch (err) {
+				console.error(err);
+				throw err;
+			}
 		}
 	};
 };
