@@ -46,7 +46,7 @@ export const actions = (db, store) => {
 				});
 
 				console.log('alias link:', link);
-				return link;
+				return link[0].result[0];
 			} catch (err) {
 				console.error(err);
 				throw err;
@@ -59,6 +59,8 @@ export const actions = (db, store) => {
 				const link = await db.query('SELECT * FROM links WHERE id = $id', {
 					id
 				});
+
+				console.log('id link:', link);
 
 				return link;
 			} catch (err) {

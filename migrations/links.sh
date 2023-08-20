@@ -9,6 +9,7 @@ DATA="DEFINE TABLE links SCHEMALESS
     FOR create WHERE \$scope = \"allusers\",
 	FOR update WHERE createdBy = \$auth.id,
 	FOR delete WHERE createdBy = \$auth.id;
+	DEFINE INDEX idx_alias ON links COLUMNS alias UNIQUE;
 "
 # 	-- FOR select WHERE \$scope = \"allusers\" -- limit to only users in db
 
