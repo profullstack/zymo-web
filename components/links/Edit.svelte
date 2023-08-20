@@ -8,8 +8,8 @@
         body: data,
       });
 
-      const data = await res.json();
-      console.log(data);
+      const result = await res.json();
+      console.log(result);
     }
 
   </script>
