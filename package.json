@@ -11,16 +11,16 @@
     "deploy": "./bin/deploy.sh"
   },
   "dependencies": {
-    "@primate/esbuild": "^0.x",
-    "@primate/liveview": "^0.x",
-    "@primate/session": "^0.x",
-    "@primate/store": "^0.x",
-    "@primate/svelte": "^0.x",
-    "@primate/types": "^0.x",
-    "@primate/ws": "^0.x",
-    "primate": "^0.x",
-    "runtime-compat": "^0.x",
-    "surrealdb.js": "^0.8.x"
+    "@primate/esbuild": "^0.8.1",
+    "@primate/liveview": "^0.3.5",
+    "@primate/session": "^0.9.0",
+    "@primate/store": "^0.11.0",
+    "@primate/svelte": "^0.15.3",
+    "@primate/types": "^0.5.0",
+    "@primate/ws": "^0.3.0",
+    "primate": "^0.21.4",
+    "runtime-compat": "^0.25.4",
+    "surrealdb.js": "^0.8.4"
   },
   "devDependencies": {
     "maximin": "^0.1.5"
