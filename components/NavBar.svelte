@@ -3,5 +3,5 @@
 </script>
 <nav>
     <a href="/dashboard">Dashboard</a>
-    <a href="/links">Links</a>
+    <a href="/links">Create Link</a>
 </nav>
