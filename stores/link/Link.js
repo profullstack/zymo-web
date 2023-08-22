@@ -87,14 +87,9 @@ export const actions = (db, store) => {
 				throw err;
 			}
 		},
-		async update(data) {
-			// const { User } = store;
-
+		async update(id, data) {
 			console.log('update:', data);
-			let { id, url, alias } = data;
-			const { DB_NS, DB_DB } = env;
-			const me = await this.me();
-			console.log('db:', DB_NS, DB_DB);
+			let { url, alias } = data;
 
 			try {
 				const link = await db.change(id, {

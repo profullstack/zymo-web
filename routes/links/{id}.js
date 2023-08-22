@@ -21,17 +21,17 @@ export default {
 		} = store;
 
 		const id = path.get('id');
-		const link = await Link.getById(id);
 
 		try {
 			const data = request.body.get();
+			console.log('put:', data);
 
 			await Form.validate(data);
 
 			try {
-				const link = await Link.update(data);
+				const link = await Link.update(id, data);
 				console.log('link:', link);
-				return redirect('/dashboard');
+				return { status: 'Link updated' };
 			} catch (err) {
 				return { status: err.message };
 			}

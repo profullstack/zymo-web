@@ -5,7 +5,7 @@ import types from '@primate/types';
 import session from '@primate/session';
 import ws from '@primate/ws';
 import esbuild from '@primate/esbuild';
-import liveview from '@primate/liveview';
+// import liveview from '@primate/liveview';
 import { config } from 'dotenv-flow';
 import { Logger } from 'primate';
 
@@ -25,8 +25,6 @@ const {
 	APP_SHORT_NAME,
 	APP_DESCRIPTION
 } = process.env;
-
-console.log(process.env);
 
 export default {
 	logger: {
@@ -51,7 +49,7 @@ export default {
 	},
 	modules: [
 		svelte(),
-		liveview(),
+		// liveview(),
 		store({
 			strict: true,
 			driver: surrealdb({

@@ -1,11 +1,13 @@
 <script>
     export let data;
+
+    const { link } = data;
     
     async function submit(e) {
       e.preventDefault();
-      const res = await fetch(`/links/${data.link?.id}`, {
+      const res = await fetch(`/links/${link.id}`, {
         method: 'PUT',
-        body: data,
+        body: JSON.stringify(link),
       });
 
       const result = await res.json();
@@ -18,9 +20,9 @@
 
   <form on:submit={submit}>
     {data?.status ?? ""}
-    <div><input name="url" placeholder="Enter url" required bind:value={data.link?.url} /></div>
+    <div><input name="url" placeholder="Enter url" required bind:value={link.url} /></div>
     <div>{data?.errors?.url ?? ""}</div>
-    <div><input name="alias" placeholder="Enter alias (optional)" bind:value={data.link?.alias}/></div>
+    <div><input name="alias" placeholder="Enter alias (optional)" bind:value={link.alias}/></div>
     <div>{data?.errors?.alias ?? ""}</div>
     <div><button type="submit">
       Update
