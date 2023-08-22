@@ -90,17 +90,13 @@ export const actions = (db, store) => {
 		async update(id, data) {
 			console.log('update:', data);
 			let { url, alias } = data;
-      const query = `
-       UPDATE links SET url = $url, alias = $alias, updatedAt = $updateAt WHERE id = $id
-      `;
+			const query = `UPDATE links SET url = $url, alias = $alias, updatedAt = $updateAt WHERE id = $id`;
 
 			try {
-        console.log("HI", url, alias);
-				const link = await db.query(query, {
-          id,
-          url,
-          alias,
-          updatedAt: new Date().toISOString(),
+				const link = await db.merge(id, {
+					url,
+					alias,
+					updatedAt: new Date().toISOString()
 				});
 
 				console.log('link: ', link);

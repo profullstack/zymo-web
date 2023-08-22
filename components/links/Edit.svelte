@@ -2,6 +2,7 @@
     export let data;
 
     const { link } = data;
+    let status;
     
     async function submit(e) {
       e.preventDefault();
@@ -14,6 +15,10 @@
       });
 
       const result = await res.json();
+
+      // status = result.status;
+      data = result;
+
       console.log(result);
     }
 
