@@ -8,6 +8,9 @@
       const res = await fetch(`/links/${link.id}`, {
         method: 'PUT',
         body: JSON.stringify(link),
+        headers: {
+          "Content-Type": "application/json",
+        }, 
       });
 
       const result = await res.json();
