@@ -37,7 +37,7 @@ export default {
 	},
 	build: {
 		transform: {
-			files: ['pages/app.html', 'static/manifest.json'],
+			paths: ['pages/app.html', 'static/manifest.json'],
 			mapper: (contents) =>
 				contents
 					.replaceAll('APP_DOMAIN', APP_DOMAIN)

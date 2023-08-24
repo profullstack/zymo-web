@@ -19,8 +19,8 @@
     "@primate/types": "^0.6.0",
     "@primate/ws": "^0.4.0",
     "dotenv-flow": "^3.2.0",
-    "primate": "^0.22.1",
-    "runtime-compat": "^0.25.7",
+    "primate": "^0.22.3",
+    "runtime-compat": "^0.25.8",
     "surrealdb.js": "^0.8.4"
   },
   "devDependencies": {
