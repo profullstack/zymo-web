@@ -14,7 +14,7 @@ export const actions = (db, store) => {
 			const me = await this.me();
 			const list = {};
 
-			for (const [key, val] of headers.raw) {
+			for (const [key, val] of Object.entries(headers.get())) {
 				list[key] = val;
 			}
 
