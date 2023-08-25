@@ -104,6 +104,19 @@ export const actions = (db, store) => {
 				console.error(err);
 				throw err;
 			}
+		},
+		async delete(id) {
+			console.log('delete:', id);
+
+			try {
+				const res = await db.delete(id);
+
+				console.log('res: ', res);
+				return res;
+			} catch (err) {
+				console.error(err);
+				throw err;
+			}
 		}
 	};
 };

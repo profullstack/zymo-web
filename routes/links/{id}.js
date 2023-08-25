@@ -38,5 +38,28 @@ export default {
 		} catch ({ errors }) {
 			return { errors };
 		}
+	},
+
+	async delete(request) {
+		const { session, path, store } = request;
+		const {
+			link: { Form, Link }
+		} = store;
+
+		const id = path.get('id');
+
+		try {
+			console.log('delete:', id);
+
+			try {
+				const res = await Link.delete(id);
+				console.log('delete link:', res);
+				return { status: 'Link deleted' };
+			} catch (err) {
+				return { status: err.message };
+			}
+		} catch ({ errors }) {
+			return { errors };
+		}
 	}
 };
