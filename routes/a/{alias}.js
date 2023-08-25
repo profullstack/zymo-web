@@ -11,7 +11,7 @@ export default {
 
 		console.log('alias link2:', link);
 
-		await Link.visit(link, headers);
+		// await Link.visit(link, headers);
 		const url = link.url.startsWith('http') ? link.url : `http://${link.url}`;
 
 		return redirect(url);

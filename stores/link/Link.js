@@ -119,25 +119,27 @@ export const actions = (db, store) => {
 			}
 		},
 
-		async visit(id, headers) {
+		async visit(id, headers, data) {
 			const list = {};
-
 
 			for (const pair of headers.raw) {
 				console.log(`${pair[0]}: ${pair[1]}`);
 				list[pair[0]] = pair[1];
 			}
 
-
-			console.log('visit:', id, list);
+			console.log('visit:', id, list, data);
 
 			try {
-				const link = await db.query(`
-					UPDATE $id SET visits += $headers
+				const link = await db.query(
+					`
+					UPDATE $id SET visits += $visit
 				`,
 					{
 						id,
-						headers: list,
+						visit: {
+							headers: list,
+							browser: data,
+						}
 					}
 				);
 
