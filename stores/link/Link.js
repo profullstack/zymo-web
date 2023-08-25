@@ -117,6 +117,36 @@ export const actions = (db, store) => {
 				console.error(err);
 				throw err;
 			}
+		},
+
+		async visit(id, headers) {
+			const list = {};
+
+
+			for (const pair of headers.raw) {
+				console.log(`${pair[0]}: ${pair[1]}`);
+				list[pair[0]] = pair[1];
+			}
+
+
+			console.log('visit:', id, list);
+
+			try {
+				const link = await db.query(`
+					UPDATE $id SET visits += $headers
+				`,
+					{
+						id,
+						headers: list,
+					}
+				);
+
+				console.log('link: ', link);
+				return link;
+			} catch (err) {
+				console.error(err);
+				throw err;
+			}
 		}
 	};
 };
