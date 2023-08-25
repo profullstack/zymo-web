@@ -2,17 +2,13 @@ import { redirect } from 'primate';
 
 export default {
 	async post(request) {
-		const { session, path, store, headers } = request;
-		const {
-			link: { Link }
-		} = store;
+		const { path, store, headers } = request;
+		const { Track } = store;
 		const id = path.get('id');
 		const data = request.body.get();
-		const link = await Link.getById(id);
 
-		console.log('id track:', link);
-
-		await Link.visit(link, headers, data);
+		console.log('id track:', id);
+		await Track.visit(id, headers, data);
 
 		return {
 			status: 'Ok'
