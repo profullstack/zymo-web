@@ -12,11 +12,7 @@ export const actions = (db, store) => {
 			if (!id) return;
 
 			const me = await this.me();
-			const list = {};
-
-			for (const [key, val] of Object.entries(headers.get())) {
-				list[key] = val;
-			}
+			const list = headers.get();
 
 			console.log('visit:', id, list, data, me);
 
