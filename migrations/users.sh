@@ -23,6 +23,8 @@ DEFINE FIELD settings.timezone ON user TYPE string;
 DEFINE FIELD settings.languages ON user TYPE array;
 DEFINE FIELD settings.languages.* ON user TYPE string;
 DEFINE FIELD settings.offset ON user TYPE string;
+DEFINE FIELD settings.apikeys ON user TYPE array;
+DEFINE FIELD settings.apikeys.* ON user TYPE object;
 DEFINE FIELD verify ON user TYPE object;
 DEFINE FIELD verify.email ON user TYPE object;
 DEFINE FIELD verify.email.code ON user TYPE string;
@@ -57,7 +59,7 @@ DATA="DEFINE SCOPE allusers
   -- It is designed to check if a record exists in the database.
   -- If set, it needs to return a record or a record id
   -- The variables can be passed in to the signin method
-  SIGNIN ( SELECT * FROM user WHERE email = \$email AND crypto::argon2::compare(password, \$password) )
+  SIGNIN ( SELECT * FROM user WHERE settings.apiKeys.key = \$apikey OR (email = \$email AND crypto::argon2::compare(password, \$password)) )
   -- this optional clause will be run when calling the signup method for this scope
 "
 
