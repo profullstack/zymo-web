@@ -6,11 +6,13 @@
 </script>
 
 
-<GlobalNavBar {data} />
+<main>
+  <GlobalNavBar {data} />
 
-          <div>
-  {#if data.isLoggedIn}
-    <NavBar {data} />
-  {/if}
-  <slot />
-</div>
+            <div>
+    {#if data.isLoggedIn}
+      <NavBar {data} />
+    {/if}
+    <slot />
+  </div>
+</main>
