@@ -65,7 +65,7 @@ export default {
 		session(),
 		ws(),
 		esbuild({
-			ignores: ['woff', 'ttf']
+			ignores: ['woff', 'ttf', 'png', 'svg']
 		})
 	]
 };
