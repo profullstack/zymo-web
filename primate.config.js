@@ -64,6 +64,8 @@ export default {
 		types(),
 		session(),
 		ws(),
-		esbuild()
+		esbuild({
+			ignores: ['woff', 'ttf']
+		})
 	]
 };
