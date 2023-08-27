@@ -35,8 +35,8 @@ export default {
 	http: {
 		port,
 		csp: {
-      "script-src": "'unsafe-inline' 'self' https://plausible.io https://www.googletagmanager.com", //"yash.test.com:8443 'unsafe-eval';"
-		},
+			'script-src': "'unsafe-inline' 'self' https://plausible.io https://www.googletagmanager.com" //"yash.test.com:8443 'unsafe-eval';"
+		}
 	},
 	build: {
 		transform: {
