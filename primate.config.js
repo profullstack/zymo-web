@@ -33,7 +33,11 @@ export default {
 		trace: true
 	},
 	http: {
-		port
+		port,
+		csp: {
+			'script-src': "'self'",
+			'unsafe-inline': "'self'"
+		}
 	},
 	build: {
 		transform: {
