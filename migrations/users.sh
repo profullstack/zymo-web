@@ -18,7 +18,7 @@ DEFINE FIELD updatedAt ON user TYPE datetime;
 DEFINE FIELD loggedInAt ON user TYPE datetime;
 DEFINE FIELD password ON user TYPE string PERMISSIONS NONE;
 DEFINE FIELD settings ON user TYPE object;
-DEFINE FIELD settings.location ON user TYPE geometry (point);
+DEFINE FIELD settings.location ON user TYPE geometry<point>;
 DEFINE FIELD settings.timezone ON user TYPE string;
 DEFINE FIELD settings.languages ON user TYPE array;
 DEFINE FIELD settings.languages.* ON user TYPE string;
