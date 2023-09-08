@@ -45,7 +45,7 @@ export const actions = (db, store) => {
     },
     async create(user) {
       console.log('create:', user);
-      let {email, username, password, password2} = user;
+      let {email, username, phone, password, password2} = user;
       const {DB_NS, DB_DB} = env;
 
       console.log('db:', DB_NS, DB_DB)
@@ -64,6 +64,7 @@ export const actions = (db, store) => {
           SC: "allusers",
           email,
           username,
+          phone,
           password,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
