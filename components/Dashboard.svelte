@@ -1,5 +1,5 @@
 <script>
-	export let data;
+	export let links;
     let status = {};
 
     async function deleteLink(e, link) {
@@ -97,7 +97,7 @@
 <h1>Links</h1>
 
 <ol>
-{#each data.links as link}
+{#each links as link}
     <li>
         <a href="{link.url}" target="_new">{link.url}</a>
          <nav>

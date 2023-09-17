@@ -1,5 +1,5 @@
 <script>
-    export let data;
+    export let APP_NAME;
 </script>
 
-<h1>Welcome to {data.APP_NAME}!</h1>
+<h1>Welcome to {APP_NAME}!</h1>

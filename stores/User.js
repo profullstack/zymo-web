@@ -1,7 +1,7 @@
 import env from "runtime-compat/env";
 import {primary} from "@primate/types";
 
-export const actions = (db, store) => {
+export const actions = ({connection: db}) => {
   return {
     async me() {
       const me = await db.info();
@@ -55,7 +55,7 @@ export const actions = (db, store) => {
       }
 
       username = username.replace(/[^a-zA-Z0-9]+/g, "");
-      console.log('user:', user);
+      console.log('user:', user, DB_NS, DB_DB);
 
       try {
         const token = await db.signup({
@@ -64,17 +64,16 @@ export const actions = (db, store) => {
           SC: "allusers",
           email,
           username,
-          phone,
           password,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
+//          createdAt: new Date().toISOString(),
+ //         updatedAt: new Date().toISOString(),
         });
-  
+
         console.log("token: ", token);
-        return token;  
+        return token;
       } catch(err) {
         console.error(err);
-        throw err;        
+        throw err;
       }
     },
     async signin(user) {
@@ -110,7 +109,7 @@ export const actions = (db, store) => {
       }
     },
     async logout(session) {
-    
+
     }
   };
 };

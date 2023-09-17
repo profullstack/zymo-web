@@ -1,7 +1,7 @@
 <script>
-    export let data;
+    export let isLoggedIn;
     const home = "/";
-    
+
     async function logout(e) {
         e.preventDefault();
 
@@ -19,7 +19,7 @@
     }
 </script>
 <nav>
-    {#if data.isLoggedIn}
+    {#if isLoggedIn}
         <a href="#" on:click={logout}>Logout</a>
     {:else}
         <a href="/login">Login</a>

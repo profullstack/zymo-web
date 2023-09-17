@@ -1,6 +1,6 @@
-import svelte from '@primate/svelte';
+import {svelte} from '@primate/frontend';
 import store from '@primate/store';
-import { surrealdb } from '@primate/store';
+import {surrealdb} from '@primate/store';
 import types from '@primate/types';
 import session from '@primate/session';
 import ws from '@primate/ws';
@@ -25,6 +25,8 @@ const {
 	APP_SHORT_NAME,
 	APP_DESCRIPTION
 } = process.env;
+
+console.log(host, db_port)
 
 export default {
 	logger: {
@@ -66,7 +68,7 @@ export default {
 			})
 		}),
 		types(),
-		session({ implicit: true }),
+		session(),
 		ws(),
 		esbuild({
 			ignores: ['woff', 'ttf', 'png', 'svg']

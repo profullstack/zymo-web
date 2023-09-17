@@ -6,9 +6,9 @@
 . .env.local
 
 DATA="DEFINE TABLE user SCHEMAFULL
-  PERMISSIONS 
+  PERMISSIONS
     FOR select FULL,
-    FOR update, delete WHERE id = \$auth.id, 
+    FOR update, delete WHERE id = \$auth.id,
     FOR create NONE;
 DEFINE FIELD email ON user TYPE string;
 DEFINE FIELD phone ON user TYPE string;
@@ -16,7 +16,7 @@ DEFINE FIELD username ON user TYPE string;
 DEFINE FIELD createdAt ON user TYPE datetime;
 DEFINE FIELD updatedAt ON user TYPE datetime;
 DEFINE FIELD loggedInAt ON user TYPE datetime;
-DEFINE FIELD password ON user TYPE string PERMISSIONS NONE;
+DEFINE FIELD password ON user TYPE string;
 DEFINE FIELD settings ON user TYPE object;
 DEFINE FIELD settings.location ON user TYPE geometry<point>;
 DEFINE FIELD settings.timezone ON user TYPE string;
@@ -50,19 +50,22 @@ curl -k -L -s --compressed POST \
 DATA="DEFINE SCOPE allusers
   -- the JWT session will be valid for 14 days
   SESSION 14d
+	SIGNUP ( CREATE user SET username = \$username, email = \$email, password = crypto::argon2::generate(\$password) )
+	SIGNIN ( SELECT * FROM user WHERE email = \$email AND crypto::argon2::compare(password, \$password) )
+
   -- The optional SIGNUP clause will be run when calling the signup method for this scope
   -- It is designed to create or add a new record to the database.
   -- If set, it needs to return a record or a record id
   -- The variables can be passed in to the signin method
-  SIGNUP ( CREATE user SET username = \$username, email = \$email, phone = \$phone, password = crypto::argon2::generate(\$password), createdAt = \$createdAt, updatedAt = \$updatedAt )
+  -- SIGNUP ( CREATE user SET username = \$username, email = \$email, phone = \$phone, password = crypto::argon2::generate(\$password), createdAt = \$createdAt, updatedAt = \$updatedAt )
   -- The optional SIGNIN clause will be run when calling the signin method for this scope
   -- It is designed to check if a record exists in the database.
   -- If set, it needs to return a record or a record id
   -- The variables can be passed in to the signin method
-  SIGNIN ( SELECT * FROM user WHERE email = \$email AND crypto::argon2::compare(password, \$password) )
+  -- SIGNIN ( SELECT * FROM user WHERE email = \$email AND crypto::argon2::compare(password, \$password) )
   -- SIGNIN ( SELECT * FROM user WHERE settings.apiKeys.key = \$apikey OR (email = \$email AND crypto::argon2::compare(password, \$password)) )
   -- this optional clause will be run when calling the signup method for this scope
-"
+;"
 
 curl -k -L -s --compressed POST \
 	--header "Accept: application/json" \

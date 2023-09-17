@@ -7,6 +7,7 @@ export default {
 		const { session, query } = request;
 		const next = query.get('next') || '/dashboard';
 
+		console.log(session.exists);
 		if (session.exists) {
 			return redirect(next);
 		}

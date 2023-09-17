@@ -1,6 +1,6 @@
 import { primary } from '@primate/types';
 
-export const actions = (db, store) => {
+export const actions = ({connection: db}) => {
 	return {
 		async me() {
 			const me = await db.info();

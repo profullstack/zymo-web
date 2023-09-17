@@ -1,5 +1,5 @@
 <script>
-	export let data;
+	export let isLoggedIn;
 </script>
 <nav>
     <a href="/dashboard">Dashboard</a>

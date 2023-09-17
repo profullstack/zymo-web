@@ -1,18 +1,16 @@
 <script>
-    export let data;
-
-    const { APP_NAME, EMAIL, PHONE } = data;
+    export let APP_NAME, EMAIL, PHONE;
 </script>
 
 <h1>Privacy Policy for {APP_NAME}</h1>
-    
+
     <p>Last updated: [Date]</p>
 
     <h2>Introduction</h2>
     <p>Welcome to {APP_NAME}. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our mobile application. Please read this Privacy Policy carefully. If you disagree with the terms of this privacy policy, please do not access the application.</p>
 
     <h2>Collection and Use of Personal Data</h2>
-    
+
     <h3>Personal Data</h3>
     <p>While using {APP_NAME}, we may ask you to provide us with certain personal data that can be used to contact or identify you. Personal data may include, but is not limited to:</p>
     <ul>

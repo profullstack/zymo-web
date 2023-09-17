@@ -1,11 +1,9 @@
 <script>
-    export let data;
-
-    const { APP_NAME, EMAIL, PHONE } = data;
+    export let APP_NAME, EMAIL, PHONE;
 </script>
 
 <h1>Terms of Service for {APP_NAME}</h1>
-    
+
     <p>Last updated: [Date]</p>
 
     <h2>1. Agreement to Terms</h2>
