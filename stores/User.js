@@ -43,6 +43,7 @@ export const actions = ({connection: db}) => {
       console.log("user: ", result);
       return result;
     },
+    
     async create(user) {
       console.log('create:', user);
       let {email, username, phone, password, password2} = user;
@@ -76,6 +77,7 @@ export const actions = ({connection: db}) => {
         throw err;
       }
     },
+
     async signin(user) {
       const {email, password} = user;
       const {DB_NS, DB_DB} = env;
