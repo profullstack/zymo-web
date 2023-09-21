@@ -4,7 +4,6 @@
   "scripts": {
     "dev": "npx nodemon -i ./build -e js,css,svelte,html primate",
     "start": "npx primate serve",
-    "db:startv": ". ./.env && . ./.env.local && surreal start --log trace --bind 0.0.0.0:$DB_PORT file:data/db",
     "db:start": ". ./.env && . ./.env.local && surreal start -A --auth --user root --pass root --bind 0.0.0.0:$DB_PORT file:data/db",
     "db:console": ". ./.env && . ./.env.local && surreal sql --conn http://localhost:$DB_PORT --user root --pass root --ns $DB_NS --db $DB_DB --pretty",
     "db:export": ". ./.env && . ./.env.local && surreal export --conn http://localhost:$DB_PORT --user root --pass root --ns $DB_NS --db $DB_DB dump.sql",
