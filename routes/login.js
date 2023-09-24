@@ -1,4 +1,4 @@
-import {view, redirect} from "primate";
+import { view, redirect } from 'primate';
 
 const form = (params = {}) => view('login/Form.svelte', { ...params });
 
@@ -27,7 +27,7 @@ export default {
 
 			await Form.validate(user);
 
-      let token;
+			let token;
 			let me;
 
 			try {

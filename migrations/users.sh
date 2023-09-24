@@ -50,7 +50,8 @@ curl -k -L -s --compressed POST \
 DATA="DEFINE SCOPE allusers
   -- the JWT session will be valid for 14 days
   SESSION 14d
-	SIGNIN ( SELECT * FROM user WHERE email = \$email AND crypto::argon2::compare(password, \$password) )
+  -- SIGNIN ( SELECT * FROM user WHERE email = \$email AND crypto::argon2::compare(password, \$password) )
+  SIGNIN ( SELECT * FROM user WHERE settings.apiKeys.key = \$apikey OR (email = \$email AND crypto::argon2::compare(password, \$password)) )
   SIGNUP ( CREATE user SET username = \$username, email = \$email, phone = \$phone, password = crypto::argon2::generate(\$password), createdAt = \$createdAt, updatedAt = \$updatedAt )
 
   -- The optional SIGNUP clause will be run when calling the signup method for this scope
