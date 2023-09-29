@@ -117,6 +117,44 @@ export const actions = ({ connection: db }) => {
 				throw err;
 			}
 		},
+
+		async signinApi(request) {
+			const { headers } = request;
+			const { DB_NS, DB_DB } = env;
+
+			console.log(headers);
+
+			try {
+				const token = await db.signin({
+					NS: DB_NS,
+					DB: DB_DB,
+					SC: 'apiusers',
+					apiKey,
+				});
+
+				console.log('token: ', token);
+
+				const me = await this.me();
+				const { id } = me;
+				const now = new Date();
+
+				await db.query('UPDATE $id SET loggedInAt = $now', {
+					id,
+					now
+				});
+
+				await db.query('UPDATE $id SET apiQueries += 1', {
+					id,
+					now
+				});
+
+				return token;
+			} catch (err) {
+				console.error(err);
+				throw err;
+			}
+		},
+
 		async logout(session) {}
 	};
 };
