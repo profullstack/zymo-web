@@ -23,8 +23,6 @@ DEFINE FIELD settings.timezone ON user TYPE option<string>;
 DEFINE FIELD settings.languages ON user TYPE option<array>;
 DEFINE FIELD settings.languages.* ON user TYPE option<string>;
 DEFINE FIELD settings.offset ON user TYPE option<string>;
-DEFINE FIELD settings.apikeys ON user TYPE option<array>;
-DEFINE FIELD settings.apikeys.* ON user TYPE option<object>;
 DEFINE FIELD verify ON user TYPE option<object>;
 DEFINE FIELD verify.email ON user TYPE option<object>;
 DEFINE FIELD verify.email.code ON user TYPE option<string>;
@@ -80,7 +78,7 @@ DATA="DEFINE SCOPE apiusers
   -- the JWT session will be valid for 14 days
   SESSION 14d
   -- SIGNIN ( SELECT * FROM user WHERE email = \$email AND crypto::argon2::compare(password, \$password) )
-  SIGNIN ( SELECT * FROM user WHERE settings.apiKeys.key = \$apikey )
+  SIGNIN ( SELECT *, (SELECT * FROM apikeys) as apikeys FROM user WHERE apikeys.id = \$apikey )
   -- The optional SIGNUP clause will be run when calling the signup method for this scope
   -- It is designed to create or add a new record to the database.
   -- If set, it needs to return a record or a record id

@@ -1,5 +1,5 @@
 import { view, redirect } from 'primate';
-const form = (params = {}) => view('links/Form.svelte', { ...params });
+const form = (params = {}) => view('apikeys/Form.svelte', { ...params });
 
 export default {
 	get(request) {
@@ -9,7 +9,7 @@ export default {
 	async post(request) {
 		const { session, store } = request;
 		const {
-			link: { Form, Link }
+			apikey: { Form, Apikey }
 		} = store;
 
 		try {
@@ -18,8 +18,8 @@ export default {
 			await Form.validate(data);
 
 			try {
-				const link = await Link.create(data);
-				console.log('link:', link);
+				const apikey = await Apikey.create(data);
+				console.log('apikey:', apikey);
 				return redirect('/dashboard');
 			} catch (err) {
 				return form({ status: err.message });

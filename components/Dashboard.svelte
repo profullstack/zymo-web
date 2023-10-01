@@ -15,11 +15,24 @@
         } catch(err) {
             status[link.id] = err;
         }
-
-
     }
 
+    async function deleteApiKey(e, apikey) {
+        e.preventDefault();
+        try {
+            const res = await fetch(`/apikeys/${apikey.id}`, {
+                method: 'DELETE',
+            });
 
+            const result = await res.json();
+            status[apikey.id] = result;
+            e.target.closest('li').remove();
+        } catch(err) {
+            status[apikey.id] = err;
+        }
+    }
+
+    
     function gatherBrowserInfo() {
         return {
             navigator: {
@@ -94,7 +107,7 @@
     }
 </script>
 
-<h1>Links</h1>
+<h2>Links</h2>
 
 <ol>
 {#each links as link}
@@ -113,6 +126,21 @@
 {/each}
 </ol>
 
+<h2>API keys</h2>
+
+<ol>
+{#each apikeys as apikey}
+    <li>
+         <nav>
+            <a href="/apikeys/{apikey.id}">edit</a>
+            <a href="#" on:click={(e) => {
+                deleteApiKey(e, apikey)
+            }}>delete</a>
+            {#if status[apikey.id]?.status}{status[apikey.id].status}{/if}
+        </nav>
+    </li>
+{/each}
+</ol>
 <style>
     li {
         margin-bottom: 1.2rem;
