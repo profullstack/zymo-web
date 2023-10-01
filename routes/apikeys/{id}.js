@@ -5,19 +5,19 @@ export default {
 	async get(request) {
 		const { session, path, store } = request;
 		const {
-			link: { Link }
+			apikeys: { Apikey }
 		} = store;
 		const id = path.get('id');
-		const link = await Link.getById(id);
-		console.log('id link2:', link);
+		const apikey = await Apikey.getById(id);
+		console.log('id apikey:', apikey);
 
-		return view('links/Edit.svelte', { link, method: 'put' });
+		return view('apikeys/Edit.svelte', { apikey, method: 'put' });
 	},
 
 	async put(request) {
 		const { session, path, store } = request;
 		const {
-			link: { Form, Link }
+			apikeys: { Form, Apikey }
 		} = store;
 
 		const id = path.get('id');
@@ -29,9 +29,9 @@ export default {
 			await Form.validate(data);
 
 			try {
-				const link = await Link.update(id, data);
-				console.log('link:', link);
-				return { status: 'Link updated' };
+				const apikey = await Apikey.update(id, data);
+				console.log('apikey:', apikey);
+				return { status: 'API key updated' };
 			} catch (err) {
 				return { status: err.message };
 			}
@@ -43,7 +43,7 @@ export default {
 	async delete(request) {
 		const { session, path, store } = request;
 		const {
-			link: { Form, Link }
+			apikeys: { Form, Apikey }
 		} = store;
 
 		const id = path.get('id');
@@ -52,9 +52,9 @@ export default {
 			console.log('delete:', id);
 
 			try {
-				const res = await Link.delete(id);
-				console.log('delete link:', res);
-				return { status: 'Link deleted' };
+				const res = await Apikey.delete(id);
+				console.log('delete apikey:', res);
+				return { status: 'API key deleted' };
 			} catch (err) {
 				return { status: err.message };
 			}

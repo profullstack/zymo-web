@@ -9,7 +9,7 @@ export default {
 	async post(request) {
 		const { session, store } = request;
 		const {
-			apikey: { Form, Apikey }
+			apikeys: { Form, Apikey }
 		} = store;
 
 		try {

@@ -13,7 +13,7 @@ export const actions = ({connection: db}) => {
 			// const { User } = store;
 
 			console.log('create:', data);
-			let { url, alias } = data;
+			let { name } = data;
 			const { DB_NS, DB_DB } = env;
 			const me = await this.me();
 			console.log('db:', DB_NS, DB_DB);

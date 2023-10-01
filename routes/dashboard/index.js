@@ -4,12 +4,16 @@ export default {
 	async get(request) {
 		const { session, path, store } = request;
 		const {
-			link: { Link }
+			link: { Link },
+			apikeys: { Apikey },
 		} = store;
-    const links = await Link.getAllByUserId(session.get().user.id);
 
-    console.log('links2:', links);
+	const userId = session.get().user.id
+    const links = await Link.getAllByUserId(userId);
+	const apikeys = await Apikey.getAllByUserId(userId)
+
+    console.log('links2:', links, apikeys);
     
-    return view("Dashboard.svelte", { links });
+    return view("Dashboard.svelte", { links, apikeys });
   },
 };

@@ -1,5 +1,7 @@
 <script>
 	export let links;
+    export let apikeys;
+
     let status = {};
 
     async function deleteLink(e, link) {
@@ -131,6 +133,7 @@
 <ol>
 {#each apikeys as apikey}
     <li>
+        {apikey.name}
          <nav>
             <a href="/apikeys/{apikey.id}">edit</a>
             <a href="#" on:click={(e) => {
