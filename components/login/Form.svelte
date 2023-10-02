@@ -9,13 +9,15 @@
     <input type="hidden" name="next" value={next} />
   {/if}
   {status ?? ""}
-  <div><input name="email" placeholder="Enter email address" required /></div>
+  <div class="field"><input name="email" placeholder="Enter email address" /></div>
   <div>{errors?.email ?? ""}</div>
-  <div><input name="password" type="password" placeholder="Enter password"
+  <p><strong>-- or --</strong></p>
+  <div class="field"><input name="phone" type="tel" placeholder="Enter phone number" /></div>
+  <div>{errors?.phone ?? ""}</div>
+  <div class="field"><input name="password" type="password" placeholder="Enter password"
     required /></div>
   <div>{errors?.password ?? ""}</div>
-  <div><button type="submit">Login</button></div>
-  <div>{errors?.email ?? ""}</div>
+  <footer><button type="submit">Login</button></footer>
 </form>
 
 <p><a href="/reset">Forgot password?</a></p>
