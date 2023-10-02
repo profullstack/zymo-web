@@ -6,47 +6,46 @@ export const actions = ({ connection: db }) => {
 		async me() {
 			const me = await db.info();
 			delete me.password;
-			console.log('me: ', me.email);
+
+			console.log('me: ', me);
+
 			return me;
 		},
+
 		async generateEmailVerifyCode(id) {
+			console.log('email user id:', id);
 			const code = Math.random().toString(36).substr(2, 10);
 			const expiration = new Date(Date.now() + 2 * (60 * 60 * 1000));
 
-			const result = (
-				await db.query(
-					"UPDATE $id SET verify.email.code = $code, verify.email.status = 'pending', verify.email.expiration = $expiration",
-					{
-						id,
-						code,
-						expiration
-					}
-				)
-			)
-				.pop()
-				.result.pop();
+			const result = await db.query(
+				"UPDATE $id SET verify.email.code = $code, verify.email.status = 'pending', verify.email.expiration = $expiration",
+				{
+					id,
+					code,
+					expiration
+				}
+			);
 
-			console.log('user: ', result);
+			console.log('user email verification: ', result);
 			return result;
 		},
+
 		async generatePhoneVerifyCode(id) {
+			console.log('phone user id:', id);
 			const code = Math.random().toString().substr(2, 6);
 			const expiration = new Date(Date.now() + 2 * (60 * 60 * 1000));
 
-			const result = (
-				await db.query(
-					"UPDATE $id SET verify.phone.code = $code, verify.phone.status = 'pending', verify.phone.expiration = $expiration",
-					{
-						id,
-						code,
-						expiration
-					}
-				)
-			)
-				.pop()
-				.result.pop();
+			const result = await db.query(
+				"UPDATE $id SET verify.phone.code = $code, verify.phone.status = 'pending', verify.phone.expiration = $expiration",
+				{
+					id,
+					code,
+					expiration
+				}
+			);
 
-			console.log('user: ', result);
+			console.log('user phone verification: ', result);
+
 			return result;
 		},
 
@@ -129,7 +128,7 @@ export const actions = ({ connection: db }) => {
 					NS: DB_NS,
 					DB: DB_DB,
 					SC: 'apiusers',
-					apiKey,
+					apiKey
 				});
 
 				console.log('token: ', token);

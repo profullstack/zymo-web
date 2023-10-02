@@ -1,4 +1,5 @@
 <script>
+  
   export let status, errors;
 </script>
 
@@ -21,3 +22,4 @@
   <div>{errors?.password2 ?? ""}</div>
   <div><button type="submit">Register</button></div>
 </form>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/css/intlTelInput.css">
