@@ -17,3 +17,5 @@
   <div><button type="submit">Login</button></div>
   <div>{errors?.email ?? ""}</div>
 </form>
+
+<p><a href="/reset">Forgot password?</a></p>

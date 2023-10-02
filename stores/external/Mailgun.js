@@ -1,6 +1,5 @@
 import env from "runtime-compat/env";
 import { Base64 } from "runtime-compat/string";
-// use `import {MediaType} from "primate";` in primate 0.21
 import { MediaType } from "runtime-compat/http";
 
 export const ambiguous = true;

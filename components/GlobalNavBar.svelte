@@ -19,6 +19,7 @@
     }
 </script>
 <nav>
+    <a href="/" id="logo">Home</a>
     {#if isLoggedIn}
         <a href="#" on:click={logout}>Logout</a>
     {:else}
