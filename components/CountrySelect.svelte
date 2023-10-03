@@ -35,6 +35,7 @@
 
         const el = e.currentTarget.parentNode.querySelector('ul') || e.currentTarget;
         el.classList.add('open');
+        e.currentTarget.parentNode.querySelector('ul .filter input').focus();
     }
 </script>
 
