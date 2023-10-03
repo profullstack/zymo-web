@@ -1,7 +1,11 @@
 # Hynt-Web: URL Shortener
 
-## About
 Hynt-Web is a URL shortening service that allows you to easily convert long and complex URLs into short, manageable links. It simplifies link sharing and tracking, making it ideal for various use cases, such as social media sharing, marketing campaigns, or personal convenience. This repository is ready for **Hacktoberfest 2023**
+
+![GitHub](https://img.shields.io/github/license/profullstack/hynt-web)
+![GitHub issues](https://img.shields.io/github/issues/profullstack/hynt-web)
+![GitHub stars](https://img.shields.io/github/stars/profullstack/hynt-web)
+![GitHub last commit](https://img.shields.io/github/last-commit/profullstack/hynt-web)
 
 ## Features
 
