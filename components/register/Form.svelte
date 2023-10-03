@@ -21,7 +21,7 @@
   <div>{errors?.username ?? ""}</div>
   <div class="field row">
     <CountrySelect countries={countries} status={status} errors={errors} />
-    <input name="phone" type="tel" placeholder="Enter phone number" />
+    <input name="phone" type="tel" placeholder="Enter phone number" required />
   </div>
   <div>{errors?.phone ?? ""}</div>
   <div class="field"><input name="password" type="password" placeholder="Enter password"

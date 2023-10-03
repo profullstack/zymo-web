@@ -45,7 +45,7 @@
       <label>
         <span class="fi fi-{selected.code}"></span>
         {selected.code.toUpperCase()}
-        <input type="text" name="phonePrefix" value={selected.telephonePrefix || ''} style="width: {selected.telephonePrefix ? selected.telephonePrefix.length + 2 : 3}rem;"/>
+        <input type="text" name="phonePrefix" value={selected.telephonePrefix || ''} style="width: {selected.telephonePrefix ? selected.telephonePrefix.length + 2 : 3}rem;" required />
       </label>
 
     </div>
