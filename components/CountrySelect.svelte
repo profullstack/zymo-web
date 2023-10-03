@@ -39,7 +39,6 @@
     }
 </script>
 
-
 <div class="dropdown">
     <div class="selected" on:click={openDropDown}>
       <label>
