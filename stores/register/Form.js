@@ -10,6 +10,7 @@ export default {
   email,
   username: string,
   phone: string,
+  phonePrefix: string,
   password: string,
   password2: string,
 };

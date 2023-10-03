@@ -47,7 +47,7 @@ export default {
 			try {
 				await User.generateEmailVerifyCode(me.id);
 
-				if (me.phone) {
+				if (me.phone && me.phonePrefix) {
 					await User.generatePhoneVerifyCode(me.id);
 				}
 			} catch (err) {

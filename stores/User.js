@@ -17,7 +17,7 @@ export const actions = ({ connection: db }) => {
 			const code = Math.random().toString(36).substr(2, 10);
 			const expiration = new Date(Date.now() + 2 * (60 * 60 * 1000));
 
-			const result = await db
+			const result =(await db
 				.query(
 					"UPDATE $id SET verify.email.code = $code, verify.email.status = 'pending', verify.email.expiration = $expiration",
 					{
@@ -25,7 +25,7 @@ export const actions = ({ connection: db }) => {
 						code,
 						expiration
 					}
-				)
+				))
 				.pop()
 				.result.pop();
 
@@ -38,7 +38,7 @@ export const actions = ({ connection: db }) => {
 			const code = Math.random().toString().substr(2, 6);
 			const expiration = new Date(Date.now() + 2 * (60 * 60 * 1000));
 
-			const result = await db
+			const result = (await db
 				.query(
 					"UPDATE $id SET verify.phone.code = $code, verify.phone.status = 'pending', verify.phone.expiration = $expiration",
 					{
@@ -46,7 +46,7 @@ export const actions = ({ connection: db }) => {
 						code,
 						expiration
 					}
-				)
+				))
 				.pop()
 				.result.pop();
 
@@ -57,7 +57,7 @@ export const actions = ({ connection: db }) => {
 
 		async create(user) {
 			console.log('create:', user);
-			let { email, username, phone, password, password2 } = user;
+			let { email, username, phone, phonePrefix, password, password2 } = user;
 			const { DB_NS, DB_DB } = env;
 
 			console.log('db:', DB_NS, DB_DB);
@@ -76,6 +76,7 @@ export const actions = ({ connection: db }) => {
 					SC: 'allusers',
 					email,
 					phone,
+					phonePrefix,
 					username,
 					password,
 					createdAt: new Date().toISOString(),

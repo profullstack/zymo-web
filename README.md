@@ -1,5 +1,12 @@
 # hynt-web
 
+![npm](https://img.shields.io/npm/v/hynt-web)
+![npm](https://img.shields.io/npm/dt/hynt-web)
+![GitHub](https://img.shields.io/github/license/profullstack/hynt-web)
+![GitHub issues](https://img.shields.io/github/issues/profullstack/hynt-web)
+![GitHub stars](https://img.shields.io/github/stars/profullstack/hynt-web)
+![Node.js Version](https://img.shields.io/node/v/hynt-web)
+![GitHub last commit](https://img.shields.io/github/last-commit/profullstack/hynt-web)
 
 ## installation
 
