@@ -1,53 +1,58 @@
 form {
-    width: max-content;
+	width: max-content;
 }
 
 button {
-    background-color: var(--button-background-color);
-    color: var(--button-color);
-    padding: .8rem 1.2rem;
-    border: 1px solid var(--button-color);
-    font-weight: 700;
+	background-color: var(--button-background-color);
+	color: var(--button-color);
+	padding: 0.8rem 1.2rem;
+	border: 1px solid var(--button-color);
+	font-weight: 700;
 }
 
-
 form fieldset {
-    background-color: var(--form-fieldset-background-color);
-    border: 1px solid var(--form-field-border-color);
-    margin-bottom: 1.2rem;
+	background-color: var(--form-fieldset-background-color);
+	border: 1px solid var(--form-field-border-color);
+	margin-bottom: 1.2rem;
 }
 
 form fieldset legend {
-    padding: .8rem 1.2rem;
-    font-weight: 700;
-    text-transform: capitalize;
+	padding: 0.8rem 1.2rem;
+	font-weight: 700;
+	text-transform: capitalize;
 }
 
 form .field {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    flex-direction: column;
-    margin-bottom: 1.2rem;
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-start;
+	margin-bottom: 1.2rem;
 }
 
-form input:not([type=checkbox], [type=radio]) {
-    background-color: var(--form-field-background-color);
-    color: var(--form-field-color);
-    padding: .8rem 1.2rem;
-    border: 1px solid var(--form-field-border-color);
-    outline: none;
-    width: 100%;
+form .field.row {
+	flex-direction: row;
+}
+
+form input:not([type='checkbox'], [type='radio']) {
+	background-color: var(--form-field-background-color);
+	color: var(--form-field-color);
+	padding: 0.8rem 1.2rem;
+	border: 1px solid var(--form-field-border-color);
+	outline: none;
+	width: 100%;
 }
 
 form input:focus {
-    border-color: var(--form-field-active-border-color);
-    border-width: 2px;
+	border-color: var(--form-field-active-border-color);
+	border-width: 1px;
+	outline-color: var(--form-field-active-border-color);
+	outline-width: 1px;
+    outline-style: solid;
 }
 
 form footer {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    flex-direction: column;
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-start;
+	flex-direction: column;
 }

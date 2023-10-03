@@ -4,16 +4,19 @@ const form = (params = {}) => view('register/Form.svelte', { ...params });
 const home = '/dashboard';
 
 export default {
-	get(request) {
-		const { session } = request;
+	async get(request) {
+		const { session, store } = request;
 
 		if (session.exists) {
 			// already logged in, redirect to dashboard
 			return redirect(home);
 		}
 
+		const { Countries } = store;
+		const countries = await Countries.get();
+
 		// show form
-		return form();
+		return form({ countries });
 	},
 	async post(request) {
 		const { session, store } = request;
