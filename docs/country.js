@@ -29,7 +29,8 @@ const addPhoneCodesToJSON = async () => {
           // Add the "Phone Code" from the CSV to the existing JSON object
           existingData['telephonePrefix'] = row['Phone Code'];
           existingData['timezone'] = row['Time Zone in Capital'];
-          existingData['currency'] = row['Currency'];	
+          existingData['currency'] = row['Currency'];
+          existingData['iso3'] = row['ISO3'];
 
         }
       })

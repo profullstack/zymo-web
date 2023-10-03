@@ -9,7 +9,8 @@
     "name": "Afghanistan",
     "telephonePrefix": "93",
     "timezone": "Asia/Kabul",
-    "currency": "Afghani"
+    "currency": "Afghani",
+    "iso3": "AFG"
   },
   {
     "capital": "Mariehamn",
@@ -31,7 +32,8 @@
     "name": "Albania",
     "telephonePrefix": "355",
     "timezone": "Europe/Tirane",
-    "currency": "Lek"
+    "currency": "Lek",
+    "iso3": "ALB"
   },
   {
     "capital": "Algiers",
@@ -43,7 +45,8 @@
     "name": "Algeria",
     "telephonePrefix": "213",
     "timezone": "Africa/Algiers",
-    "currency": "Dinar"
+    "currency": "Dinar",
+    "iso3": "DZA"
   },
   {
     "capital": "Pago Pago",
@@ -55,7 +58,8 @@
     "name": "American Samoa",
     "telephonePrefix": "1-684",
     "timezone": "Pacific/Pago_Pago",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "ASM"
   },
   {
     "capital": "Andorra la Vella",
@@ -67,7 +71,8 @@
     "name": "Andorra",
     "telephonePrefix": "376",
     "timezone": "Europe/Andorra",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "AND"
   },
   {
     "capital": "Luanda",
@@ -79,7 +84,8 @@
     "name": "Angola",
     "telephonePrefix": "244",
     "timezone": "Africa/Lagos",
-    "currency": "Kwanza"
+    "currency": "Kwanza",
+    "iso3": "AGO"
   },
   {
     "capital": "The Valley",
@@ -91,7 +97,8 @@
     "name": "Anguilla",
     "telephonePrefix": "1-264",
     "timezone": "America/Port_of_Spain",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "AIA"
   },
   {
     "code": "aq",
@@ -101,7 +108,8 @@
     "name": "Antarctica",
     "telephonePrefix": "672",
     "timezone": "Antarctica/Troll",
-    "currency": ""
+    "currency": "",
+    "iso3": "ATA"
   },
   {
     "capital": "St. John's",
@@ -113,7 +121,8 @@
     "name": "Antigua and Barbuda",
     "telephonePrefix": "1-268",
     "timezone": "America/Antigua",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "ATG"
   },
   {
     "capital": "Buenos Aires",
@@ -125,7 +134,8 @@
     "name": "Argentina",
     "telephonePrefix": "54",
     "timezone": "America/Argentina/Buenos_Aires",
-    "currency": "Peso"
+    "currency": "Peso",
+    "iso3": "ARG"
   },
   {
     "capital": "Yerevan",
@@ -137,7 +147,8 @@
     "name": "Armenia",
     "telephonePrefix": "374",
     "timezone": "Asia/Yerevan",
-    "currency": "Dram"
+    "currency": "Dram",
+    "iso3": "ARM"
   },
   {
     "capital": "Oranjestad",
@@ -149,7 +160,8 @@
     "name": "Aruba",
     "telephonePrefix": "297",
     "timezone": "America/Curacao",
-    "currency": "Guilder"
+    "currency": "Guilder",
+    "iso3": "ABW"
   },
   {
     "capital": "Georgetown",
@@ -171,7 +183,8 @@
     "name": "Australia",
     "telephonePrefix": "61",
     "timezone": "Australia/Sydney",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "AUS"
   },
   {
     "capital": "Vienna",
@@ -183,7 +196,8 @@
     "name": "Austria",
     "telephonePrefix": "43",
     "timezone": "Europe/Vienna",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "AUT"
   },
   {
     "capital": "Baku",
@@ -195,7 +209,8 @@
     "name": "Azerbaijan",
     "telephonePrefix": "994",
     "timezone": "Asia/Baku",
-    "currency": "Manat"
+    "currency": "Manat",
+    "iso3": "AZE"
   },
   {
     "capital": "Nassau",
@@ -207,7 +222,8 @@
     "name": "Bahamas",
     "telephonePrefix": "1-242",
     "timezone": "America/Nassau",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "BHS"
   },
   {
     "capital": "Manama",
@@ -219,7 +235,8 @@
     "name": "Bahrain",
     "telephonePrefix": "973",
     "timezone": "Asia/Bahrain",
-    "currency": "Dinar"
+    "currency": "Dinar",
+    "iso3": "BHR"
   },
   {
     "capital": "Dhaka",
@@ -231,7 +248,8 @@
     "name": "Bangladesh",
     "telephonePrefix": "880",
     "timezone": "Asia/Dhaka",
-    "currency": "Taka"
+    "currency": "Taka",
+    "iso3": "BGD"
   },
   {
     "capital": "Bridgetown",
@@ -243,7 +261,8 @@
     "name": "Barbados",
     "telephonePrefix": "1-246",
     "timezone": "America/Barbados",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "BRB"
   },
   {
     "code": "es-pv",
@@ -263,7 +282,8 @@
     "name": "Belarus",
     "telephonePrefix": "375",
     "timezone": "Europe/Minsk",
-    "currency": "Ruble"
+    "currency": "Ruble",
+    "iso3": "BLR"
   },
   {
     "capital": "Brussels",
@@ -275,7 +295,8 @@
     "name": "Belgium",
     "telephonePrefix": "32",
     "timezone": "Europe/Brussels",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "BEL"
   },
   {
     "capital": "Belmopan",
@@ -287,7 +308,8 @@
     "name": "Belize",
     "telephonePrefix": "501",
     "timezone": "America/Belize",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "BLZ"
   },
   {
     "capital": "Porto-Novo",
@@ -299,7 +321,8 @@
     "name": "Benin",
     "telephonePrefix": "229",
     "timezone": "Africa/Lagos",
-    "currency": "Franc"
+    "currency": "Franc",
+    "iso3": "BEN"
   },
   {
     "capital": "Hamilton",
@@ -311,7 +334,8 @@
     "name": "Bermuda",
     "telephonePrefix": "1-441",
     "timezone": "Atlantic/Bermuda",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "BMU"
   },
   {
     "capital": "Thimphu",
@@ -323,7 +347,8 @@
     "name": "Bhutan",
     "telephonePrefix": "975",
     "timezone": "Asia/Thimphu",
-    "currency": "Ngultrum"
+    "currency": "Ngultrum",
+    "iso3": "BTN"
   },
   {
     "capital": "Sucre",
@@ -335,7 +360,8 @@
     "name": "Bolivia",
     "telephonePrefix": "591",
     "timezone": "America/La_Paz",
-    "currency": "Boliviano"
+    "currency": "Boliviano",
+    "iso3": "BOL"
   },
   {
     "capital": "Kralendijk",
@@ -357,7 +383,8 @@
     "name": "Bosnia and Herzegovina",
     "telephonePrefix": "387",
     "timezone": "Europe/Belgrade",
-    "currency": "Marka"
+    "currency": "Marka",
+    "iso3": "BIH"
   },
   {
     "capital": "Gaborone",
@@ -369,7 +396,8 @@
     "name": "Botswana",
     "telephonePrefix": "267",
     "timezone": "Africa/Maputo",
-    "currency": "Pula"
+    "currency": "Pula",
+    "iso3": "BWA"
   },
   {
     "code": "bv",
@@ -389,7 +417,8 @@
     "name": "Brazil",
     "telephonePrefix": "55",
     "timezone": "America/Sao_Paulo",
-    "currency": "Real"
+    "currency": "Real",
+    "iso3": "BRA"
   },
   {
     "capital": "Diego Garcia",
@@ -401,7 +430,8 @@
     "name": "British Indian Ocean Territory",
     "telephonePrefix": "246",
     "timezone": "Indian/Chagos",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "IOT"
   },
   {
     "capital": "Bandar Seri Begawan",
@@ -413,7 +443,8 @@
     "name": "Brunei Darussalam",
     "telephonePrefix": "673",
     "timezone": "Asia/Brunei",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "BRN"
   },
   {
     "capital": "Sofia",
@@ -425,7 +456,8 @@
     "name": "Bulgaria",
     "telephonePrefix": "359",
     "timezone": "Europe/Sofia",
-    "currency": "Lev"
+    "currency": "Lev",
+    "iso3": "BGR"
   },
   {
     "capital": "Ouagadougou",
@@ -437,7 +469,8 @@
     "name": "Burkina Faso",
     "telephonePrefix": "226",
     "timezone": "Africa/Abidjan",
-    "currency": "Franc"
+    "currency": "Franc",
+    "iso3": "BFA"
   },
   {
     "capital": "Bujumbura",
@@ -449,7 +482,8 @@
     "name": "Burundi",
     "telephonePrefix": "257",
     "timezone": "Africa/Maputo",
-    "currency": "Franc"
+    "currency": "Franc",
+    "iso3": "BDI"
   },
   {
     "capital": "Praia",
@@ -461,7 +495,8 @@
     "name": "Cabo Verde",
     "telephonePrefix": "238",
     "timezone": "Atlantic/Cape_Verde",
-    "currency": "Escudo"
+    "currency": "Escudo",
+    "iso3": "CPV"
   },
   {
     "capital": "Phnom Penh",
@@ -473,7 +508,8 @@
     "name": "Cambodia",
     "telephonePrefix": "855",
     "timezone": "Asia/Phnom_Penh",
-    "currency": "Riels"
+    "currency": "Riels",
+    "iso3": "KHM"
   },
   {
     "capital": "Yaoundé",
@@ -485,7 +521,8 @@
     "name": "Cameroon",
     "telephonePrefix": "237",
     "timezone": "Africa/Lagos",
-    "currency": "Franc"
+    "currency": "Franc",
+    "iso3": "CMR"
   },
   {
     "capital": "Ottawa",
@@ -497,7 +534,8 @@
     "name": "Canada",
     "telephonePrefix": "1",
     "timezone": "America/Toronto",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "CAN"
   },
   {
     "code": "ic",
@@ -523,7 +561,8 @@
     "name": "Cayman Islands",
     "telephonePrefix": "1-345",
     "timezone": "America/Cayman",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "CYM"
   },
   {
     "capital": "Bangui",
@@ -535,7 +574,8 @@
     "name": "Central African Republic",
     "telephonePrefix": "236",
     "timezone": "Africa/Lagos",
-    "currency": "Franc"
+    "currency": "Franc",
+    "iso3": "CAF"
   },
   {
     "code": "cefta",
@@ -554,7 +594,8 @@
     "name": "Chad",
     "telephonePrefix": "235",
     "timezone": "Africa/Ndjamena",
-    "currency": "Franc"
+    "currency": "Franc",
+    "iso3": "TCD"
   },
   {
     "capital": "Santiago",
@@ -566,7 +607,8 @@
     "name": "Chile",
     "telephonePrefix": "56",
     "timezone": "America/Santiago",
-    "currency": "Peso"
+    "currency": "Peso",
+    "iso3": "CHL"
   },
   {
     "capital": "Beijing",
@@ -578,7 +620,8 @@
     "name": "China",
     "telephonePrefix": "86",
     "timezone": "Asia/Shanghai",
-    "currency": "Yuan Renminbi"
+    "currency": "Yuan Renminbi",
+    "iso3": "CHN"
   },
   {
     "capital": "Flying Fish Cove",
@@ -590,7 +633,8 @@
     "name": "Christmas Island",
     "telephonePrefix": "61",
     "timezone": "Indian/Christmas",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "CXR"
   },
   {
     "code": "cp",
@@ -609,7 +653,8 @@
     "name": "Cocos (Keeling) Islands",
     "telephonePrefix": "61",
     "timezone": "Indian/Cocos",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "CCK"
   },
   {
     "capital": "Bogotá",
@@ -621,7 +666,8 @@
     "name": "Colombia",
     "telephonePrefix": "57",
     "timezone": "America/Bogota",
-    "currency": "Peso"
+    "currency": "Peso",
+    "iso3": "COL"
   },
   {
     "capital": "Moroni",
@@ -633,7 +679,8 @@
     "name": "Comoros",
     "telephonePrefix": "269",
     "timezone": "Indian/Comoro",
-    "currency": "Franc"
+    "currency": "Franc",
+    "iso3": "COM"
   },
   {
     "capital": "Avarua",
@@ -645,7 +692,8 @@
     "name": "Cook Islands",
     "telephonePrefix": "682",
     "timezone": "Pacific/Rarotonga",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "COK"
   },
   {
     "capital": "San José",
@@ -657,7 +705,8 @@
     "name": "Costa Rica",
     "telephonePrefix": "506",
     "timezone": "America/Costa_Rica",
-    "currency": "Colon"
+    "currency": "Colon",
+    "iso3": "CRI"
   },
   {
     "capital": "Zagreb",
@@ -669,7 +718,8 @@
     "name": "Croatia",
     "telephonePrefix": "385",
     "timezone": "Europe/Belgrade",
-    "currency": "Kuna"
+    "currency": "Kuna",
+    "iso3": "HRV"
   },
   {
     "capital": "Havana",
@@ -681,7 +731,8 @@
     "name": "Cuba",
     "telephonePrefix": "53",
     "timezone": "America/Havana",
-    "currency": "Peso"
+    "currency": "Peso",
+    "iso3": "CUB"
   },
   {
     "capital": "Willemstad",
@@ -693,7 +744,8 @@
     "name": "Curaçao",
     "telephonePrefix": "599",
     "timezone": "America/Curacao",
-    "currency": "Guilder"
+    "currency": "Guilder",
+    "iso3": "CUW"
   },
   {
     "capital": "Nicosia",
@@ -705,7 +757,8 @@
     "name": "Cyprus",
     "telephonePrefix": "357",
     "timezone": "Asia/Nicosia",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "CYP"
   },
   {
     "capital": "Prague",
@@ -717,7 +770,8 @@
     "name": "Czech Republic",
     "telephonePrefix": "420",
     "timezone": "Europe/Prague",
-    "currency": "Koruna"
+    "currency": "Koruna",
+    "iso3": "CZE"
   },
   {
     "capital": "Yamoussoukro",
@@ -729,7 +783,8 @@
     "name": "Côte d'Ivoire",
     "telephonePrefix": "225",
     "timezone": "Africa/Abidjan",
-    "currency": "Franc"
+    "currency": "Franc",
+    "iso3": "CIV"
   },
   {
     "capital": "Kinshasa",
@@ -741,7 +796,8 @@
     "name": "Democratic Republic of the Congo",
     "telephonePrefix": "243",
     "timezone": "Africa/Lagos",
-    "currency": "Franc"
+    "currency": "Franc",
+    "iso3": "COD"
   },
   {
     "capital": "Copenhagen",
@@ -753,7 +809,8 @@
     "name": "Denmark",
     "telephonePrefix": "45",
     "timezone": "Europe/Copenhagen",
-    "currency": "Krone"
+    "currency": "Krone",
+    "iso3": "DNK"
   },
   {
     "code": "dg",
@@ -772,7 +829,8 @@
     "name": "Djibouti",
     "telephonePrefix": "253",
     "timezone": "Africa/Djibouti",
-    "currency": "Franc"
+    "currency": "Franc",
+    "iso3": "DJI"
   },
   {
     "capital": "Roseau",
@@ -784,7 +842,8 @@
     "name": "Dominica",
     "telephonePrefix": "1-767",
     "timezone": "America/Port_of_Spain",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "DMA"
   },
   {
     "capital": "Santo Domingo",
@@ -796,7 +855,8 @@
     "name": "Dominican Republic",
     "telephonePrefix": "1-809, 1-829, 1-849",
     "timezone": "America/Santo_Domingo",
-    "currency": "Peso"
+    "currency": "Peso",
+    "iso3": "DOM"
   },
   {
     "code": "eac",
@@ -815,7 +875,8 @@
     "name": "Ecuador",
     "telephonePrefix": "593",
     "timezone": "America/Guayaquil",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "ECU"
   },
   {
     "capital": "Cairo",
@@ -827,7 +888,8 @@
     "name": "Egypt",
     "telephonePrefix": "20",
     "timezone": "Africa/Cairo",
-    "currency": "Pound"
+    "currency": "Pound",
+    "iso3": "EGY"
   },
   {
     "capital": "San Salvador",
@@ -839,7 +901,8 @@
     "name": "El Salvador",
     "telephonePrefix": "503",
     "timezone": "America/El_Salvador",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "SLV"
   },
   {
     "capital": "London",
@@ -860,7 +923,8 @@
     "name": "Equatorial Guinea",
     "telephonePrefix": "240",
     "timezone": "Africa/Lagos",
-    "currency": "Franc"
+    "currency": "Franc",
+    "iso3": "GNQ"
   },
   {
     "capital": "Asmara",
@@ -872,7 +936,8 @@
     "name": "Eritrea",
     "telephonePrefix": "291",
     "timezone": "Africa/Asmara",
-    "currency": "Nakfa"
+    "currency": "Nakfa",
+    "iso3": "ERI"
   },
   {
     "capital": "Tallinn",
@@ -884,7 +949,8 @@
     "name": "Estonia",
     "telephonePrefix": "372",
     "timezone": "Europe/Tallinn",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "EST"
   },
   {
     "capital": "Lobamba, Mbabane",
@@ -896,7 +962,8 @@
     "name": "Eswatini",
     "telephonePrefix": "268",
     "timezone": "Africa/Johannesburg",
-    "currency": "Lilangeni"
+    "currency": "Lilangeni",
+    "iso3": "SWZ"
   },
   {
     "capital": "Addis Ababa",
@@ -908,7 +975,8 @@
     "name": "Ethiopia",
     "telephonePrefix": "251",
     "timezone": "Africa/Addis_Ababa",
-    "currency": "Birr"
+    "currency": "Birr",
+    "iso3": "ETH"
   },
   {
     "code": "eu",
@@ -927,7 +995,8 @@
     "name": "Falkland Islands",
     "telephonePrefix": "500",
     "timezone": "Atlantic/Stanley",
-    "currency": "Pound"
+    "currency": "Pound",
+    "iso3": "FLK"
   },
   {
     "capital": "Tórshavn",
@@ -939,7 +1008,8 @@
     "name": "Faroe Islands",
     "telephonePrefix": "298",
     "timezone": "Atlantic/Faroe",
-    "currency": "Krone"
+    "currency": "Krone",
+    "iso3": "FRO"
   },
   {
     "capital": "Palikir",
@@ -951,7 +1021,8 @@
     "name": "Federated States of Micronesia",
     "telephonePrefix": "691",
     "timezone": "Pacific/Pohnpei",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "FSM"
   },
   {
     "capital": "Suva",
@@ -963,7 +1034,8 @@
     "name": "Fiji",
     "telephonePrefix": "679",
     "timezone": "Pacific/Fiji",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "FJI"
   },
   {
     "capital": "Helsinki",
@@ -975,7 +1047,8 @@
     "name": "Finland",
     "telephonePrefix": "358",
     "timezone": "Europe/Helsinki",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "FIN"
   },
   {
     "capital": "Paris",
@@ -987,7 +1060,8 @@
     "name": "France",
     "telephonePrefix": "33",
     "timezone": "Europe/Paris",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "FRA"
   },
   {
     "capital": "Cayenne",
@@ -1008,7 +1082,8 @@
     "name": "French Polynesia",
     "telephonePrefix": "689",
     "timezone": "Pacific/Tahiti",
-    "currency": "Franc"
+    "currency": "Franc",
+    "iso3": "PYF"
   },
   {
     "capital": "Saint-Pierre, Réunion",
@@ -1029,7 +1104,8 @@
     "name": "Gabon",
     "telephonePrefix": "241",
     "timezone": "Africa/Lagos",
-    "currency": "Franc"
+    "currency": "Franc",
+    "iso3": "GAB"
   },
   {
     "code": "es-ga",
@@ -1048,7 +1124,8 @@
     "name": "Gambia",
     "telephonePrefix": "220",
     "timezone": "Africa/Abidjan",
-    "currency": "Dalasi"
+    "currency": "Dalasi",
+    "iso3": "GMB"
   },
   {
     "capital": "Tbilisi",
@@ -1060,7 +1137,8 @@
     "name": "Georgia",
     "telephonePrefix": "995",
     "timezone": "Asia/Tbilisi",
-    "currency": "Lari"
+    "currency": "Lari",
+    "iso3": "GEO"
   },
   {
     "capital": "Berlin",
@@ -1072,7 +1150,8 @@
     "name": "Germany",
     "telephonePrefix": "49",
     "timezone": "Europe/Berlin",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "DEU"
   },
   {
     "capital": "Accra",
@@ -1084,7 +1163,8 @@
     "name": "Ghana",
     "telephonePrefix": "233",
     "timezone": "Africa/Accra",
-    "currency": "Cedi"
+    "currency": "Cedi",
+    "iso3": "GHA"
   },
   {
     "capital": "Gibraltar",
@@ -1096,7 +1176,8 @@
     "name": "Gibraltar",
     "telephonePrefix": "350",
     "timezone": "Europe/Gibraltar",
-    "currency": "Pound"
+    "currency": "Pound",
+    "iso3": "GIB"
   },
   {
     "capital": "Athens",
@@ -1108,7 +1189,8 @@
     "name": "Greece",
     "telephonePrefix": "30",
     "timezone": "Europe/Athens",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "GRC"
   },
   {
     "capital": "Nuuk",
@@ -1120,7 +1202,8 @@
     "name": "Greenland",
     "telephonePrefix": "299",
     "timezone": "America/Godthab",
-    "currency": "Krone"
+    "currency": "Krone",
+    "iso3": "GRL"
   },
   {
     "capital": "St. George's",
@@ -1132,7 +1215,8 @@
     "name": "Grenada",
     "telephonePrefix": "1-473",
     "timezone": "America/Port_of_Spain",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "GRD"
   },
   {
     "capital": "Basse-Terre",
@@ -1153,7 +1237,8 @@
     "name": "Guam",
     "telephonePrefix": "1-671",
     "timezone": "Pacific/Guam",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "GUM"
   },
   {
     "capital": "Guatemala City",
@@ -1165,7 +1250,8 @@
     "name": "Guatemala",
     "telephonePrefix": "502",
     "timezone": "America/Guatemala",
-    "currency": "Quetzal"
+    "currency": "Quetzal",
+    "iso3": "GTM"
   },
   {
     "capital": "Saint Peter Port",
@@ -1177,7 +1263,8 @@
     "name": "Guernsey",
     "telephonePrefix": "44-1481",
     "timezone": "Europe/London",
-    "currency": "Pound"
+    "currency": "Pound",
+    "iso3": "GGY"
   },
   {
     "capital": "Conakry",
@@ -1189,7 +1276,8 @@
     "name": "Guinea",
     "telephonePrefix": "224",
     "timezone": "Africa/Abidjan",
-    "currency": "Franc"
+    "currency": "Franc",
+    "iso3": "GIN"
   },
   {
     "capital": "Bissau",
@@ -1201,7 +1289,8 @@
     "name": "Guinea-Bissau",
     "telephonePrefix": "245",
     "timezone": "Africa/Bissau",
-    "currency": "Franc"
+    "currency": "Franc",
+    "iso3": "GNB"
   },
   {
     "capital": "Georgetown",
@@ -1213,7 +1302,8 @@
     "name": "Guyana",
     "telephonePrefix": "592",
     "timezone": "America/Guyana",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "GUY"
   },
   {
     "capital": "Port-au-Prince",
@@ -1225,7 +1315,8 @@
     "name": "Haiti",
     "telephonePrefix": "509",
     "timezone": "America/Port-au-Prince",
-    "currency": "Gourde"
+    "currency": "Gourde",
+    "iso3": "HTI"
   },
   {
     "code": "hm",
@@ -1244,7 +1335,8 @@
     "name": "Holy See",
     "telephonePrefix": "379",
     "timezone": "Europe/Rome",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "VAT"
   },
   {
     "capital": "Tegucigalpa",
@@ -1256,7 +1348,8 @@
     "name": "Honduras",
     "telephonePrefix": "504",
     "timezone": "America/Tegucigalpa",
-    "currency": "Lempira"
+    "currency": "Lempira",
+    "iso3": "HND"
   },
   {
     "capital": "Hong Kong",
@@ -1268,7 +1361,8 @@
     "name": "Hong Kong",
     "telephonePrefix": "852",
     "timezone": "Asia/Hong_Kong",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "HKG"
   },
   {
     "capital": "Budapest",
@@ -1280,7 +1374,8 @@
     "name": "Hungary",
     "telephonePrefix": "36",
     "timezone": "Europe/Budapest",
-    "currency": "Forint"
+    "currency": "Forint",
+    "iso3": "HUN"
   },
   {
     "capital": "Reykjavik",
@@ -1292,7 +1387,8 @@
     "name": "Iceland",
     "telephonePrefix": "354",
     "timezone": "Atlantic/Reykjavik",
-    "currency": "Krona"
+    "currency": "Krona",
+    "iso3": "ISL"
   },
   {
     "capital": "New Delhi",
@@ -1304,7 +1400,8 @@
     "name": "India",
     "telephonePrefix": "91",
     "timezone": "Asia/Kolkata",
-    "currency": "Rupee"
+    "currency": "Rupee",
+    "iso3": "IND"
   },
   {
     "capital": "Jakarta",
@@ -1316,7 +1413,8 @@
     "name": "Indonesia",
     "telephonePrefix": "62",
     "timezone": "Asia/Jakarta",
-    "currency": "Rupiah"
+    "currency": "Rupiah",
+    "iso3": "IDN"
   },
   {
     "capital": "Tehran",
@@ -1328,7 +1426,8 @@
     "name": "Iran",
     "telephonePrefix": "98",
     "timezone": "Asia/Tehran",
-    "currency": "Rial"
+    "currency": "Rial",
+    "iso3": "IRN"
   },
   {
     "capital": "Baghdad",
@@ -1340,7 +1439,8 @@
     "name": "Iraq",
     "telephonePrefix": "964",
     "timezone": "Asia/Baghdad",
-    "currency": "Dinar"
+    "currency": "Dinar",
+    "iso3": "IRQ"
   },
   {
     "capital": "Dublin",
@@ -1352,7 +1452,8 @@
     "name": "Ireland",
     "telephonePrefix": "353",
     "timezone": "Europe/Dublin",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "IRL"
   },
   {
     "capital": "Douglas",
@@ -1364,7 +1465,8 @@
     "name": "Isle of Man",
     "telephonePrefix": "44-1624",
     "timezone": "Europe/London",
-    "currency": "Pound"
+    "currency": "Pound",
+    "iso3": "IMN"
   },
   {
     "capital": "Jerusalem",
@@ -1376,7 +1478,8 @@
     "name": "Israel",
     "telephonePrefix": "972",
     "timezone": "Asia/Jerusalem",
-    "currency": "Shekel"
+    "currency": "Shekel",
+    "iso3": "ISR"
   },
   {
     "capital": "Rome",
@@ -1388,7 +1491,8 @@
     "name": "Italy",
     "telephonePrefix": "39",
     "timezone": "Europe/Rome",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "ITA"
   },
   {
     "capital": "Kingston",
@@ -1400,7 +1504,8 @@
     "name": "Jamaica",
     "telephonePrefix": "1-876",
     "timezone": "America/Jamaica",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "JAM"
   },
   {
     "capital": "Tokyo",
@@ -1412,7 +1517,8 @@
     "name": "Japan",
     "telephonePrefix": "81",
     "timezone": "Asia/Tokyo",
-    "currency": "Yen"
+    "currency": "Yen",
+    "iso3": "JPN"
   },
   {
     "capital": "Saint Helier",
@@ -1424,7 +1530,8 @@
     "name": "Jersey",
     "telephonePrefix": "44-1534",
     "timezone": "Europe/London",
-    "currency": "Pound"
+    "currency": "Pound",
+    "iso3": "JEY"
   },
   {
     "capital": "Amman",
@@ -1436,7 +1543,8 @@
     "name": "Jordan",
     "telephonePrefix": "962",
     "timezone": "Asia/Amman",
-    "currency": "Dinar"
+    "currency": "Dinar",
+    "iso3": "JOR"
   },
   {
     "capital": "Astana",
@@ -1448,7 +1556,8 @@
     "name": "Kazakhstan",
     "telephonePrefix": "7",
     "timezone": "Asia/Almaty",
-    "currency": "Tenge"
+    "currency": "Tenge",
+    "iso3": "KAZ"
   },
   {
     "capital": "Nairobi",
@@ -1460,7 +1569,8 @@
     "name": "Kenya",
     "telephonePrefix": "254",
     "timezone": "Africa/Nairobi",
-    "currency": "Shilling"
+    "currency": "Shilling",
+    "iso3": "KEN"
   },
   {
     "capital": "South Tarawa",
@@ -1472,7 +1582,8 @@
     "name": "Kiribati",
     "telephonePrefix": "686",
     "timezone": "Pacific/Tarawa",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "KIR"
   },
   {
     "capital": "Pristina",
@@ -1484,7 +1595,8 @@
     "name": "Kosovo",
     "telephonePrefix": "383",
     "timezone": "Europe/Belgrade",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "XKX"
   },
   {
     "capital": "Kuwait City",
@@ -1496,7 +1608,8 @@
     "name": "Kuwait",
     "telephonePrefix": "965",
     "timezone": "Asia/Kuwait",
-    "currency": "Dinar"
+    "currency": "Dinar",
+    "iso3": "KWT"
   },
   {
     "capital": "Bishkek",
@@ -1508,7 +1621,8 @@
     "name": "Kyrgyzstan",
     "telephonePrefix": "996",
     "timezone": "Asia/Bishkek",
-    "currency": "Som"
+    "currency": "Som",
+    "iso3": "KGZ"
   },
   {
     "capital": "Vientiane",
@@ -1520,7 +1634,8 @@
     "name": "Laos",
     "telephonePrefix": "856",
     "timezone": "Asia/Vientiane",
-    "currency": "Kip"
+    "currency": "Kip",
+    "iso3": "LAO"
   },
   {
     "capital": "Riga",
@@ -1532,7 +1647,8 @@
     "name": "Latvia",
     "telephonePrefix": "371",
     "timezone": "Europe/Riga",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "LVA"
   },
   {
     "code": "arab",
@@ -1551,7 +1667,8 @@
     "name": "Lebanon",
     "telephonePrefix": "961",
     "timezone": "Asia/Beirut",
-    "currency": "Pound"
+    "currency": "Pound",
+    "iso3": "LBN"
   },
   {
     "capital": "Maseru",
@@ -1563,7 +1680,8 @@
     "name": "Lesotho",
     "telephonePrefix": "266",
     "timezone": "Africa/Johannesburg",
-    "currency": "Loti"
+    "currency": "Loti",
+    "iso3": "LSO"
   },
   {
     "capital": "Monrovia",
@@ -1575,7 +1693,8 @@
     "name": "Liberia",
     "telephonePrefix": "231",
     "timezone": "Africa/Monrovia",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "LBR"
   },
   {
     "capital": "Tripoli",
@@ -1587,7 +1706,8 @@
     "name": "Libya",
     "telephonePrefix": "218",
     "timezone": "Africa/Tripoli",
-    "currency": "Dinar"
+    "currency": "Dinar",
+    "iso3": "LBY"
   },
   {
     "capital": "Vaduz",
@@ -1599,7 +1719,8 @@
     "name": "Liechtenstein",
     "telephonePrefix": "423",
     "timezone": "Europe/Zurich",
-    "currency": "Franc"
+    "currency": "Franc",
+    "iso3": "LIE"
   },
   {
     "capital": "Vilnius",
@@ -1611,7 +1732,8 @@
     "name": "Lithuania",
     "telephonePrefix": "370",
     "timezone": "Europe/Vilnius",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "LTU"
   },
   {
     "capital": "Luxembourg City",
@@ -1623,7 +1745,8 @@
     "name": "Luxembourg",
     "telephonePrefix": "352",
     "timezone": "Europe/Luxembourg",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "LUX"
   },
   {
     "capital": "Macau",
@@ -1635,7 +1758,8 @@
     "name": "Macau",
     "telephonePrefix": "853",
     "timezone": "Asia/Macau",
-    "currency": "Pataca"
+    "currency": "Pataca",
+    "iso3": "MAC"
   },
   {
     "capital": "Antananarivo",
@@ -1647,7 +1771,8 @@
     "name": "Madagascar",
     "telephonePrefix": "261",
     "timezone": "Indian/Antananarivo",
-    "currency": "Ariary"
+    "currency": "Ariary",
+    "iso3": "MDG"
   },
   {
     "capital": "Lilongwe",
@@ -1659,7 +1784,8 @@
     "name": "Malawi",
     "telephonePrefix": "265",
     "timezone": "Africa/Maputo",
-    "currency": "Kwacha"
+    "currency": "Kwacha",
+    "iso3": "MWI"
   },
   {
     "capital": "Kuala Lumpur",
@@ -1671,7 +1797,8 @@
     "name": "Malaysia",
     "telephonePrefix": "60",
     "timezone": "Asia/Kuala_Lumpur",
-    "currency": "Ringgit"
+    "currency": "Ringgit",
+    "iso3": "MYS"
   },
   {
     "capital": "Malé",
@@ -1683,7 +1810,8 @@
     "name": "Maldives",
     "telephonePrefix": "960",
     "timezone": "Indian/Maldives",
-    "currency": "Rufiyaa"
+    "currency": "Rufiyaa",
+    "iso3": "MDV"
   },
   {
     "capital": "Bamako",
@@ -1695,7 +1823,8 @@
     "name": "Mali",
     "telephonePrefix": "223",
     "timezone": "Africa/Abidjan",
-    "currency": "Franc"
+    "currency": "Franc",
+    "iso3": "MLI"
   },
   {
     "capital": "Valletta",
@@ -1707,7 +1836,8 @@
     "name": "Malta",
     "telephonePrefix": "356",
     "timezone": "Europe/Malta",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "MLT"
   },
   {
     "capital": "Majuro",
@@ -1719,7 +1849,8 @@
     "name": "Marshall Islands",
     "telephonePrefix": "692",
     "timezone": "Pacific/Majuro",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "MHL"
   },
   {
     "capital": "Fort-de-France",
@@ -1740,7 +1871,8 @@
     "name": "Mauritania",
     "telephonePrefix": "222",
     "timezone": "Africa/Abidjan",
-    "currency": "Ouguiya"
+    "currency": "Ouguiya",
+    "iso3": "MRT"
   },
   {
     "capital": "Port Louis",
@@ -1752,7 +1884,8 @@
     "name": "Mauritius",
     "telephonePrefix": "230",
     "timezone": "Indian/Mauritius",
-    "currency": "Rupee"
+    "currency": "Rupee",
+    "iso3": "MUS"
   },
   {
     "capital": "Mamoudzou",
@@ -1764,7 +1897,8 @@
     "name": "Mayotte",
     "telephonePrefix": "262",
     "timezone": "Indian/Mayotte",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "MYT"
   },
   {
     "capital": "Mexico City",
@@ -1776,7 +1910,8 @@
     "name": "Mexico",
     "telephonePrefix": "52",
     "timezone": "America/Mexico_City",
-    "currency": "Peso"
+    "currency": "Peso",
+    "iso3": "MEX"
   },
   {
     "capital": "Chișinău",
@@ -1788,7 +1923,8 @@
     "name": "Moldova",
     "telephonePrefix": "373",
     "timezone": "Europe/Chisinau",
-    "currency": "Leu"
+    "currency": "Leu",
+    "iso3": "MDA"
   },
   {
     "capital": "Monaco",
@@ -1800,7 +1936,8 @@
     "name": "Monaco",
     "telephonePrefix": "377",
     "timezone": "Europe/Monaco",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "MCO"
   },
   {
     "capital": "Ulaanbaatar",
@@ -1812,7 +1949,8 @@
     "name": "Mongolia",
     "telephonePrefix": "976",
     "timezone": "Asia/Ulaanbaatar",
-    "currency": "Tugrik"
+    "currency": "Tugrik",
+    "iso3": "MNG"
   },
   {
     "capital": "Podgorica",
@@ -1824,7 +1962,8 @@
     "name": "Montenegro",
     "telephonePrefix": "382",
     "timezone": "Europe/Belgrade",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "MNE"
   },
   {
     "capital": "Little Bay, Brades, Plymouth",
@@ -1836,7 +1975,8 @@
     "name": "Montserrat",
     "telephonePrefix": "1-664",
     "timezone": "America/Port_of_Spain",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "MSR"
   },
   {
     "capital": "Rabat",
@@ -1848,7 +1988,8 @@
     "name": "Morocco",
     "telephonePrefix": "212",
     "timezone": "Africa/Casablanca",
-    "currency": "Dirham"
+    "currency": "Dirham",
+    "iso3": "MAR"
   },
   {
     "capital": "Maputo",
@@ -1860,7 +2001,8 @@
     "name": "Mozambique",
     "telephonePrefix": "258",
     "timezone": "Africa/Maputo",
-    "currency": "Metical"
+    "currency": "Metical",
+    "iso3": "MOZ"
   },
   {
     "capital": "Naypyidaw",
@@ -1872,7 +2014,8 @@
     "name": "Myanmar",
     "telephonePrefix": "95",
     "timezone": "Asia/Rangoon",
-    "currency": "Kyat"
+    "currency": "Kyat",
+    "iso3": "MMR"
   },
   {
     "capital": "Windhoek",
@@ -1884,7 +2027,8 @@
     "name": "Namibia",
     "telephonePrefix": "264",
     "timezone": "Africa/Windhoek",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "NAM"
   },
   {
     "capital": "Yaren District",
@@ -1896,7 +2040,8 @@
     "name": "Nauru",
     "telephonePrefix": "674",
     "timezone": "Pacific/Nauru",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "NRU"
   },
   {
     "capital": "Kathmandu",
@@ -1908,7 +2053,8 @@
     "name": "Nepal",
     "telephonePrefix": "977",
     "timezone": "Asia/Kathmandu",
-    "currency": "Rupee"
+    "currency": "Rupee",
+    "iso3": "NPL"
   },
   {
     "capital": "Amsterdam",
@@ -1920,7 +2066,8 @@
     "name": "Netherlands",
     "telephonePrefix": "31",
     "timezone": "Europe/Amsterdam",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "NLD"
   },
   {
     "capital": "Nouméa",
@@ -1932,7 +2079,8 @@
     "name": "New Caledonia",
     "telephonePrefix": "687",
     "timezone": "Pacific/Noumea",
-    "currency": "Franc"
+    "currency": "Franc",
+    "iso3": "NCL"
   },
   {
     "capital": "Wellington",
@@ -1944,7 +2092,8 @@
     "name": "New Zealand",
     "telephonePrefix": "64",
     "timezone": "Pacific/Auckland",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "NZL"
   },
   {
     "capital": "Managua",
@@ -1956,7 +2105,8 @@
     "name": "Nicaragua",
     "telephonePrefix": "505",
     "timezone": "America/Managua",
-    "currency": "Cordoba"
+    "currency": "Cordoba",
+    "iso3": "NIC"
   },
   {
     "capital": "Niamey",
@@ -1968,7 +2118,8 @@
     "name": "Niger",
     "telephonePrefix": "227",
     "timezone": "Africa/Lagos",
-    "currency": "Franc"
+    "currency": "Franc",
+    "iso3": "NER"
   },
   {
     "capital": "Abuja",
@@ -1980,7 +2131,8 @@
     "name": "Nigeria",
     "telephonePrefix": "234",
     "timezone": "Africa/Lagos",
-    "currency": "Naira"
+    "currency": "Naira",
+    "iso3": "NGA"
   },
   {
     "capital": "Alofi",
@@ -1992,7 +2144,8 @@
     "name": "Niue",
     "telephonePrefix": "683",
     "timezone": "Pacific/Niue",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "NIU"
   },
   {
     "capital": "Kingston",
@@ -2013,7 +2166,8 @@
     "name": "North Korea",
     "telephonePrefix": "850",
     "timezone": "Asia/Pyongyang",
-    "currency": "Won"
+    "currency": "Won",
+    "iso3": "PRK"
   },
   {
     "capital": "Skopje",
@@ -2025,7 +2179,8 @@
     "name": "North Macedonia",
     "telephonePrefix": "389",
     "timezone": "Europe/Belgrade",
-    "currency": "Denar"
+    "currency": "Denar",
+    "iso3": "MKD"
   },
   {
     "capital": "Belfast",
@@ -2046,7 +2201,8 @@
     "name": "Northern Mariana Islands",
     "telephonePrefix": "1-670",
     "timezone": "Pacific/Saipan",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "MNP"
   },
   {
     "capital": "Oslo",
@@ -2058,7 +2214,8 @@
     "name": "Norway",
     "telephonePrefix": "47",
     "timezone": "Europe/Oslo",
-    "currency": "Krone"
+    "currency": "Krone",
+    "iso3": "NOR"
   },
   {
     "capital": "Muscat",
@@ -2070,7 +2227,8 @@
     "name": "Oman",
     "telephonePrefix": "968",
     "timezone": "Asia/Muscat",
-    "currency": "Rial"
+    "currency": "Rial",
+    "iso3": "OMN"
   },
   {
     "capital": "Islamabad",
@@ -2082,7 +2240,8 @@
     "name": "Pakistan",
     "telephonePrefix": "92",
     "timezone": "Asia/Karachi",
-    "currency": "Rupee"
+    "currency": "Rupee",
+    "iso3": "PAK"
   },
   {
     "capital": "Ngerulmud",
@@ -2094,7 +2253,8 @@
     "name": "Palau",
     "telephonePrefix": "680",
     "timezone": "Pacific/Palau",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "PLW"
   },
   {
     "capital": "Panama City",
@@ -2106,7 +2266,8 @@
     "name": "Panama",
     "telephonePrefix": "507",
     "timezone": "America/Panama",
-    "currency": "Balboa"
+    "currency": "Balboa",
+    "iso3": "PAN"
   },
   {
     "capital": "Port Moresby",
@@ -2118,7 +2279,8 @@
     "name": "Papua New Guinea",
     "telephonePrefix": "675",
     "timezone": "Pacific/Port_Moresby",
-    "currency": "Kina"
+    "currency": "Kina",
+    "iso3": "PNG"
   },
   {
     "capital": "Asunción",
@@ -2130,7 +2292,8 @@
     "name": "Paraguay",
     "telephonePrefix": "595",
     "timezone": "America/Asuncion",
-    "currency": "Guarani"
+    "currency": "Guarani",
+    "iso3": "PRY"
   },
   {
     "capital": "Lima",
@@ -2142,7 +2305,8 @@
     "name": "Peru",
     "telephonePrefix": "51",
     "timezone": "America/Lima",
-    "currency": "Sol"
+    "currency": "Sol",
+    "iso3": "PER"
   },
   {
     "capital": "Manila",
@@ -2154,7 +2318,8 @@
     "name": "Philippines",
     "telephonePrefix": "63",
     "timezone": "Asia/Manila",
-    "currency": "Peso"
+    "currency": "Peso",
+    "iso3": "PHL"
   },
   {
     "capital": "Adamstown",
@@ -2166,7 +2331,8 @@
     "name": "Pitcairn",
     "telephonePrefix": "64",
     "timezone": "Pacific/Pitcairn",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "PCN"
   },
   {
     "capital": "Warsaw",
@@ -2178,7 +2344,8 @@
     "name": "Poland",
     "telephonePrefix": "48",
     "timezone": "Europe/Warsaw",
-    "currency": "Zloty"
+    "currency": "Zloty",
+    "iso3": "POL"
   },
   {
     "capital": "Lisbon",
@@ -2190,7 +2357,8 @@
     "name": "Portugal",
     "telephonePrefix": "351",
     "timezone": "Europe/Lisbon",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "PRT"
   },
   {
     "capital": "San Juan",
@@ -2202,7 +2370,8 @@
     "name": "Puerto Rico",
     "telephonePrefix": "1-787, 1-939",
     "timezone": "America/Puerto_Rico",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "PRI"
   },
   {
     "capital": "Doha",
@@ -2214,7 +2383,8 @@
     "name": "Qatar",
     "telephonePrefix": "974",
     "timezone": "Asia/Qatar",
-    "currency": "Rial"
+    "currency": "Rial",
+    "iso3": "QAT"
   },
   {
     "capital": "Brazzaville",
@@ -2226,7 +2396,8 @@
     "name": "Republic of the Congo",
     "telephonePrefix": "242",
     "timezone": "Africa/Lagos",
-    "currency": "Franc"
+    "currency": "Franc",
+    "iso3": "COG"
   },
   {
     "capital": "Bucharest",
@@ -2238,7 +2409,8 @@
     "name": "Romania",
     "telephonePrefix": "40",
     "timezone": "Europe/Bucharest",
-    "currency": "Leu"
+    "currency": "Leu",
+    "iso3": "ROU"
   },
   {
     "capital": "Moscow",
@@ -2250,7 +2422,8 @@
     "name": "Russia",
     "telephonePrefix": "7",
     "timezone": "Europe/Moscow",
-    "currency": "Ruble"
+    "currency": "Ruble",
+    "iso3": "RUS"
   },
   {
     "capital": "Kigali",
@@ -2262,7 +2435,8 @@
     "name": "Rwanda",
     "telephonePrefix": "250",
     "timezone": "Africa/Maputo",
-    "currency": "Franc"
+    "currency": "Franc",
+    "iso3": "RWA"
   },
   {
     "capital": "Saint-Denis",
@@ -2274,7 +2448,8 @@
     "name": "Réunion",
     "telephonePrefix": "262",
     "timezone": "Indian/Reunion",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "REU"
   },
   {
     "capital": "Gustavia",
@@ -2286,7 +2461,8 @@
     "name": "Saint Barthélemy",
     "telephonePrefix": "590",
     "timezone": "America/Port_of_Spain",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "BLM"
   },
   {
     "capital": "Jamestown",
@@ -2298,7 +2474,8 @@
     "name": "Saint Helena, Ascension and Tristan da Cunha",
     "telephonePrefix": "290",
     "timezone": "Africa/Abidjan",
-    "currency": "Pound"
+    "currency": "Pound",
+    "iso3": "SHN"
   },
   {
     "capital": "Basseterre",
@@ -2310,7 +2487,8 @@
     "name": "Saint Kitts and Nevis",
     "telephonePrefix": "1-869",
     "timezone": "America/Port_of_Spain",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "KNA"
   },
   {
     "capital": "Castries",
@@ -2322,7 +2500,8 @@
     "name": "Saint Lucia",
     "telephonePrefix": "1-758",
     "timezone": "America/Port_of_Spain",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "LCA"
   },
   {
     "capital": "Marigot",
@@ -2334,7 +2513,8 @@
     "name": "Saint Martin",
     "telephonePrefix": "590",
     "timezone": "America/Port_of_Spain",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "MAF"
   },
   {
     "capital": "Saint-Pierre",
@@ -2346,7 +2526,8 @@
     "name": "Saint Pierre and Miquelon",
     "telephonePrefix": "508",
     "timezone": "America/Miquelon",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "SPM"
   },
   {
     "capital": "Kingstown",
@@ -2358,7 +2539,8 @@
     "name": "Saint Vincent and the Grenadines",
     "telephonePrefix": "1-784",
     "timezone": "America/Port_of_Spain",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "VCT"
   },
   {
     "capital": "Apia",
@@ -2370,7 +2552,8 @@
     "name": "Samoa",
     "telephonePrefix": "685",
     "timezone": "Pacific/Apia",
-    "currency": "Tala"
+    "currency": "Tala",
+    "iso3": "WSM"
   },
   {
     "capital": "San Marino",
@@ -2382,7 +2565,8 @@
     "name": "San Marino",
     "telephonePrefix": "378",
     "timezone": "Europe/Rome",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "SMR"
   },
   {
     "capital": "São Tomé",
@@ -2394,7 +2578,8 @@
     "name": "Sao Tome and Principe",
     "telephonePrefix": "239",
     "timezone": "Africa/Abidjan",
-    "currency": "Dobra"
+    "currency": "Dobra",
+    "iso3": "STP"
   },
   {
     "capital": "Riyadh",
@@ -2406,7 +2591,8 @@
     "name": "Saudi Arabia",
     "telephonePrefix": "966",
     "timezone": "Asia/Riyadh",
-    "currency": "Rial"
+    "currency": "Rial",
+    "iso3": "SAU"
   },
   {
     "capital": "Edinburgh",
@@ -2427,7 +2613,8 @@
     "name": "Senegal",
     "telephonePrefix": "221",
     "timezone": "Africa/Abidjan",
-    "currency": "Franc"
+    "currency": "Franc",
+    "iso3": "SEN"
   },
   {
     "capital": "Belgrade",
@@ -2439,7 +2626,8 @@
     "name": "Serbia",
     "telephonePrefix": "381",
     "timezone": "Europe/Belgrade",
-    "currency": "Dinar"
+    "currency": "Dinar",
+    "iso3": "SRB"
   },
   {
     "capital": "Victoria",
@@ -2451,7 +2639,8 @@
     "name": "Seychelles",
     "telephonePrefix": "248",
     "timezone": "Indian/Mahe",
-    "currency": "Rupee"
+    "currency": "Rupee",
+    "iso3": "SYC"
   },
   {
     "capital": "Freetown",
@@ -2463,7 +2652,8 @@
     "name": "Sierra Leone",
     "telephonePrefix": "232",
     "timezone": "Africa/Abidjan",
-    "currency": "Leone"
+    "currency": "Leone",
+    "iso3": "SLE"
   },
   {
     "capital": "Singapore",
@@ -2475,7 +2665,8 @@
     "name": "Singapore",
     "telephonePrefix": "65",
     "timezone": "Asia/Singapore",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "SGP"
   },
   {
     "capital": "Philipsburg",
@@ -2487,7 +2678,8 @@
     "name": "Sint Maarten",
     "telephonePrefix": "1-721",
     "timezone": "America/Curacao",
-    "currency": "Guilder"
+    "currency": "Guilder",
+    "iso3": "SXM"
   },
   {
     "capital": "Bratislava",
@@ -2499,7 +2691,8 @@
     "name": "Slovakia",
     "telephonePrefix": "421",
     "timezone": "Europe/Prague",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "SVK"
   },
   {
     "capital": "Ljubljana",
@@ -2511,7 +2704,8 @@
     "name": "Slovenia",
     "telephonePrefix": "386",
     "timezone": "Europe/Belgrade",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "SVN"
   },
   {
     "capital": "Honiara",
@@ -2523,7 +2717,8 @@
     "name": "Solomon Islands",
     "telephonePrefix": "677",
     "timezone": "Pacific/Guadalcanal",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "SLB"
   },
   {
     "capital": "Mogadishu",
@@ -2535,7 +2730,8 @@
     "name": "Somalia",
     "telephonePrefix": "252",
     "timezone": "Africa/Mogadishu",
-    "currency": "Shilling"
+    "currency": "Shilling",
+    "iso3": "SOM"
   },
   {
     "capital": "Pretoria",
@@ -2547,7 +2743,8 @@
     "name": "South Africa",
     "telephonePrefix": "27",
     "timezone": "Africa/Johannesburg",
-    "currency": "Rand"
+    "currency": "Rand",
+    "iso3": "ZAF"
   },
   {
     "capital": "King Edward Point",
@@ -2568,7 +2765,8 @@
     "name": "South Korea",
     "telephonePrefix": "82",
     "timezone": "Asia/Seoul",
-    "currency": "Won"
+    "currency": "Won",
+    "iso3": "KOR"
   },
   {
     "capital": "Juba",
@@ -2580,7 +2778,8 @@
     "name": "South Sudan",
     "telephonePrefix": "211",
     "timezone": "Africa/Khartoum",
-    "currency": "Pound"
+    "currency": "Pound",
+    "iso3": "SSD"
   },
   {
     "capital": "Madrid",
@@ -2592,7 +2791,8 @@
     "name": "Spain",
     "telephonePrefix": "34",
     "timezone": "Europe/Madrid",
-    "currency": "Euro"
+    "currency": "Euro",
+    "iso3": "ESP"
   },
   {
     "capital": "Sri Jayawardenepura Kotte, Colombo",
@@ -2604,7 +2804,8 @@
     "name": "Sri Lanka",
     "telephonePrefix": "94",
     "timezone": "Asia/Colombo",
-    "currency": "Rupee"
+    "currency": "Rupee",
+    "iso3": "LKA"
   },
   {
     "capital": "Ramallah",
@@ -2616,7 +2817,8 @@
     "name": "State of Palestine",
     "telephonePrefix": "970",
     "timezone": "Asia/Hebron",
-    "currency": "Shekel"
+    "currency": "Shekel",
+    "iso3": "PSE"
   },
   {
     "capital": "Khartoum",
@@ -2628,7 +2830,8 @@
     "name": "Sudan",
     "telephonePrefix": "249",
     "timezone": "Africa/Khartoum",
-    "currency": "Pound"
+    "currency": "Pound",
+    "iso3": "SDN"
   },
   {
     "capital": "Paramaribo",
@@ -2640,7 +2843,8 @@
     "name": "Suriname",
     "telephonePrefix": "597",
     "timezone": "America/Paramaribo",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "SUR"
   },
   {
     "capital": "Longyearbyen",
@@ -2652,7 +2856,8 @@
     "name": "Svalbard and Jan Mayen",
     "telephonePrefix": "47",
     "timezone": "Europe/Oslo",
-    "currency": "Krone"
+    "currency": "Krone",
+    "iso3": "SJM"
   },
   {
     "capital": "Stockholm",
@@ -2664,7 +2869,8 @@
     "name": "Sweden",
     "telephonePrefix": "46",
     "timezone": "Europe/Stockholm",
-    "currency": "Krona"
+    "currency": "Krona",
+    "iso3": "SWE"
   },
   {
     "capital": "Bern",
@@ -2676,7 +2882,8 @@
     "name": "Switzerland",
     "telephonePrefix": "41",
     "timezone": "Europe/Zurich",
-    "currency": "Franc"
+    "currency": "Franc",
+    "iso3": "CHE"
   },
   {
     "capital": "Damascus",
@@ -2688,7 +2895,8 @@
     "name": "Syria",
     "telephonePrefix": "963",
     "timezone": "Asia/Damascus",
-    "currency": "Pound"
+    "currency": "Pound",
+    "iso3": "SYR"
   },
   {
     "capital": "Taipei",
@@ -2700,7 +2908,8 @@
     "name": "Taiwan",
     "telephonePrefix": "886",
     "timezone": "Asia/Taipei",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "TWN"
   },
   {
     "capital": "Dushanbe",
@@ -2712,7 +2921,8 @@
     "name": "Tajikistan",
     "telephonePrefix": "992",
     "timezone": "Asia/Dushanbe",
-    "currency": "Somoni"
+    "currency": "Somoni",
+    "iso3": "TJK"
   },
   {
     "capital": "Dodoma",
@@ -2724,7 +2934,8 @@
     "name": "Tanzania",
     "telephonePrefix": "255",
     "timezone": "Africa/Dar_es_Salaam",
-    "currency": "Shilling"
+    "currency": "Shilling",
+    "iso3": "TZA"
   },
   {
     "capital": "Bangkok",
@@ -2736,7 +2947,8 @@
     "name": "Thailand",
     "telephonePrefix": "66",
     "timezone": "Asia/Bangkok",
-    "currency": "Baht"
+    "currency": "Baht",
+    "iso3": "THA"
   },
   {
     "capital": "Dili",
@@ -2748,7 +2960,8 @@
     "name": "Timor-Leste",
     "telephonePrefix": "670",
     "timezone": "Asia/Dili",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "TLS"
   },
   {
     "capital": "Lomé",
@@ -2760,7 +2973,8 @@
     "name": "Togo",
     "telephonePrefix": "228",
     "timezone": "Africa/Abidjan",
-    "currency": "Franc"
+    "currency": "Franc",
+    "iso3": "TGO"
   },
   {
     "capital": "Nukunonu, Atafu,Tokelau",
@@ -2772,7 +2986,8 @@
     "name": "Tokelau",
     "telephonePrefix": "690",
     "timezone": "Pacific/Fakaofo",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "TKL"
   },
   {
     "capital": "Nukuʻalofa",
@@ -2784,7 +2999,8 @@
     "name": "Tonga",
     "telephonePrefix": "676",
     "timezone": "Pacific/Tongatapu",
-    "currency": "Pa'anga"
+    "currency": "Pa'anga",
+    "iso3": "TON"
   },
   {
     "capital": "Port of Spain",
@@ -2796,7 +3012,8 @@
     "name": "Trinidad and Tobago",
     "telephonePrefix": "1-868",
     "timezone": "America/Port_of_Spain",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "TTO"
   },
   {
     "code": "ta",
@@ -2815,7 +3032,8 @@
     "name": "Tunisia",
     "telephonePrefix": "216",
     "timezone": "Africa/Tunis",
-    "currency": "Dinar"
+    "currency": "Dinar",
+    "iso3": "TUN"
   },
   {
     "capital": "Ashgabat",
@@ -2827,7 +3045,8 @@
     "name": "Turkmenistan",
     "telephonePrefix": "993",
     "timezone": "Asia/Ashgabat",
-    "currency": "Manat"
+    "currency": "Manat",
+    "iso3": "TKM"
   },
   {
     "capital": "Cockburn Town",
@@ -2839,7 +3058,8 @@
     "name": "Turks and Caicos Islands",
     "telephonePrefix": "1-649",
     "timezone": "America/Grand_Turk",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "TCA"
   },
   {
     "capital": "Funafuti",
@@ -2851,7 +3071,8 @@
     "name": "Tuvalu",
     "telephonePrefix": "688",
     "timezone": "Pacific/Funafuti",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "TUV"
   },
   {
     "capital": "Ankara",
@@ -2863,7 +3084,8 @@
     "name": "Türkiye",
     "telephonePrefix": "90",
     "timezone": "Europe/Istanbul",
-    "currency": "Lira"
+    "currency": "Lira",
+    "iso3": "TUR"
   },
   {
     "capital": "Kampala",
@@ -2875,7 +3097,8 @@
     "name": "Uganda",
     "telephonePrefix": "256",
     "timezone": "Africa/Kampala",
-    "currency": "Shilling"
+    "currency": "Shilling",
+    "iso3": "UGA"
   },
   {
     "capital": "Kiev",
@@ -2887,7 +3110,8 @@
     "name": "Ukraine",
     "telephonePrefix": "380",
     "timezone": "Europe/Kiev",
-    "currency": "Hryvnia"
+    "currency": "Hryvnia",
+    "iso3": "UKR"
   },
   {
     "capital": "Abu Dhabi",
@@ -2899,7 +3123,8 @@
     "name": "United Arab Emirates",
     "telephonePrefix": "971",
     "timezone": "Asia/Dubai",
-    "currency": "Dirham"
+    "currency": "Dirham",
+    "iso3": "ARE"
   },
   {
     "capital": "London",
@@ -2911,7 +3136,8 @@
     "name": "United Kingdom",
     "telephonePrefix": "44",
     "timezone": "Europe/London",
-    "currency": "Pound"
+    "currency": "Pound",
+    "iso3": "GBR"
   },
   {
     "code": "un",
@@ -2939,7 +3165,8 @@
     "name": "United States of America",
     "telephonePrefix": "1",
     "timezone": "America/New_York",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "USA"
   },
   {
     "code": "xx",
@@ -2958,7 +3185,8 @@
     "name": "Uruguay",
     "telephonePrefix": "598",
     "timezone": "America/Montevideo",
-    "currency": "Peso"
+    "currency": "Peso",
+    "iso3": "URY"
   },
   {
     "capital": "Tashkent",
@@ -2970,7 +3198,8 @@
     "name": "Uzbekistan",
     "telephonePrefix": "998",
     "timezone": "Asia/Tashkent",
-    "currency": "Som"
+    "currency": "Som",
+    "iso3": "UZB"
   },
   {
     "capital": "Port Vila",
@@ -2982,7 +3211,8 @@
     "name": "Vanuatu",
     "telephonePrefix": "678",
     "timezone": "Pacific/Efate",
-    "currency": "Vatu"
+    "currency": "Vatu",
+    "iso3": "VUT"
   },
   {
     "capital": "Caracas",
@@ -2994,7 +3224,8 @@
     "name": "Venezuela",
     "telephonePrefix": "58",
     "timezone": "America/Caracas",
-    "currency": "Bolivar"
+    "currency": "Bolivar",
+    "iso3": "VEN"
   },
   {
     "capital": "Hanoi",
@@ -3006,7 +3237,8 @@
     "name": "Vietnam",
     "telephonePrefix": "84",
     "timezone": "Asia/Ho_Chi_Minh",
-    "currency": "Dong"
+    "currency": "Dong",
+    "iso3": "VNM"
   },
   {
     "capital": "Road Town",
@@ -3018,7 +3250,8 @@
     "name": "Virgin Islands (British)",
     "telephonePrefix": "1-284",
     "timezone": "America/Port_of_Spain",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "VGB"
   },
   {
     "capital": "Charlotte Amalie",
@@ -3030,7 +3263,8 @@
     "name": "Virgin Islands (U.S.)",
     "telephonePrefix": "1-340",
     "timezone": "America/Port_of_Spain",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "VIR"
   },
   {
     "capital": "Cardiff",
@@ -3051,7 +3285,8 @@
     "name": "Wallis and Futuna",
     "telephonePrefix": "681",
     "timezone": "Pacific/Wallis",
-    "currency": "Franc"
+    "currency": "Franc",
+    "iso3": "WLF"
   },
   {
     "capital": "Laayoune",
@@ -3063,7 +3298,8 @@
     "name": "Western Sahara",
     "telephonePrefix": "212",
     "timezone": "Africa/El_Aaiun",
-    "currency": "Dirham"
+    "currency": "Dirham",
+    "iso3": "ESH"
   },
   {
     "capital": "Sana'a",
@@ -3075,7 +3311,8 @@
     "name": "Yemen",
     "telephonePrefix": "967",
     "timezone": "Asia/Aden",
-    "currency": "Rial"
+    "currency": "Rial",
+    "iso3": "YEM"
   },
   {
     "capital": "Lusaka",
@@ -3087,7 +3324,8 @@
     "name": "Zambia",
     "telephonePrefix": "260",
     "timezone": "Africa/Maputo",
-    "currency": "Kwacha"
+    "currency": "Kwacha",
+    "iso3": "ZMB"
   },
   {
     "capital": "Harare",
@@ -3099,6 +3337,7 @@
     "name": "Zimbabwe",
     "telephonePrefix": "263",
     "timezone": "Africa/Maputo",
-    "currency": "Dollar"
+    "currency": "Dollar",
+    "iso3": "ZWE"
   }
 ]
