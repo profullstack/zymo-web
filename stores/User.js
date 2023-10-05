@@ -57,7 +57,7 @@ export const actions = ({ connection: db }) => {
 
 		async create(user) {
 			console.log('create:', user);
-			let { email, username, phone, phonePrefix, password, password2 } = user;
+			let { email, username, firstName, lastName, phone, phonePrefix, password, password2 } = user;
 			const { DB_NS, DB_DB } = env;
 
 			console.log('db:', DB_NS, DB_DB);
@@ -75,6 +75,8 @@ export const actions = ({ connection: db }) => {
 					DB: DB_DB,
 					SC: 'allusers',
 					email,
+					firstName,
+					lastName,
 					phone,
 					phonePrefix,
 					username,
