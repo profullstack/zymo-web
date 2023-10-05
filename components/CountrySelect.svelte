@@ -1,7 +1,7 @@
 <script>
     export let status, errors, countries;
 
-    let selected = countries.find(item => item.code === 'us');
+    let selected = countries?.find(item => item.code === 'us');
     let filter = '';
     let filteredCountries = countries;
 
@@ -40,16 +40,22 @@
 </script>
 
 <div class="dropdown">
+  {#if selected}
     <div class="selected" on:click={openDropDown}>
       <label>
         <span class="fi fi-{selected.code}"></span>
         {selected.code.toUpperCase()}
         <input type="text" name="phonePrefix" value={selected.telephonePrefix || ''} style="width: {selected.telephonePrefix ? selected.telephonePrefix.length + 2 : 3}rem;" required />
       </label>
-
     </div>
+  {/if}
+  {#if filteredCountries}
     <ul on:mouseleave={closeDropDown}>
-        <li><div class="filter"><input type="text" name="filter" bind:value={filter} on:input={filterValues}/></div></li>
+        <li>
+          <div class="filter">
+            <input type="text" bind:value={filter} on:input={filterValues} />
+          </div>
+        </li>
       {#each filteredCountries as country}
         <li on:click={(e) => selectItem(e, country)}>
           <span class="fi fi-{country.code}"></span>
@@ -59,6 +65,7 @@
         </li>
       {/each}
     </ul>
+    {/if}
   </div>.
 <style>
 
