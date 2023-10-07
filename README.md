@@ -40,12 +40,14 @@ To run Hynt-Web on your server, make sure you have the following prerequisites:
    npm install
    ```
 
-3. Configure your database connection and other settings in `config.js` or `.env` files.
+3. Configure your database connection and other settings in `.env` files.
 
 4. Start the Hynt-Web server:
 
    ```shell
-   npm start
+   npm run db:start
+   # new window
+   npm run dev
    ```
 
    The application will run on the default port (e.g., 3000). You can access it via your web browser at `http://localhost:3000`.
