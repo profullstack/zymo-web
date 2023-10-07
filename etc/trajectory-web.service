@@ -1,0 +1,17 @@
+[Unit]
+Description=trajectory-web
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=ubuntu
+WorkingDirectory=/home/ubuntu/www/trajectory.us.com/trajectory-web/
+ExecStart=/home/ubuntu/www/trajectory.us.com/trajectory-web/bin/start.sh
+StandardOutput=append:/var/log/trajectory-web.log
+StandardError=append:/var/log/trajectory-web.error.log
+
+[Install]
+WantedBy=multi-user.target
