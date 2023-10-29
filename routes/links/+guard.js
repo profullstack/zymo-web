@@ -12,7 +12,7 @@ export default (request) => {
 
 	console.log('loggedIn:', session.get().loggedIn);
 
-	if (session.get().loggedIn || User.tryApiLogin()) {
+	if (session.get().loggedIn || User.tryApiLogin(request)) {
 		return true;
 	}
 
