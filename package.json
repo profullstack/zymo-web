@@ -25,7 +25,6 @@
     "dotenv-flow": "^4.0.0",
     "fast-csv": "^4.3.6",
     "flag-icons": "^6.11.2",
-    "prettier-plugin-svelte": "^3.0.3",
     "primate": "^0.25.0",
     "runtime-compat": "^0.32.3",
     "surrealdb.js": "^0.10.1",
@@ -35,7 +34,8 @@
   "devDependencies": {
     "maximin": "^0.2.2",
     "nodemon": "^3.0.1",
-    "prettier": "^3.0.3"
+    "prettier": "^3.0.3",
+    "prettier-plugin-svelte": "^3.0.3"
   },
   "type": "module"
 }
