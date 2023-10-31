@@ -17,15 +17,16 @@ export const actions = ({ connection: db }) => {
 			const code = Math.random().toString(36).substr(2, 10);
 			const expiration = new Date(Date.now() + 2 * (60 * 60 * 1000));
 
-			const result =(await db
-				.query(
+			const result = (
+				await db.query(
 					"UPDATE $id SET verify.email.code = $code, verify.email.status = 'pending', verify.email.expiration = $expiration",
 					{
 						id,
 						code,
 						expiration
 					}
-				))
+				)
+			)
 				.pop()
 				.result.pop();
 
@@ -38,15 +39,16 @@ export const actions = ({ connection: db }) => {
 			const code = Math.random().toString().substr(2, 6);
 			const expiration = new Date(Date.now() + 2 * (60 * 60 * 1000));
 
-			const result = (await db
-				.query(
+			const result = (
+				await db.query(
 					"UPDATE $id SET verify.phone.code = $code, verify.phone.status = 'pending', verify.phone.expiration = $expiration",
 					{
 						id,
 						code,
 						expiration
 					}
-				))
+				)
+			)
 				.pop()
 				.result.pop();
 
@@ -57,7 +59,8 @@ export const actions = ({ connection: db }) => {
 
 		async create(user) {
 			console.log('create:', user);
-			let { email, username, firstName, lastName, phone, phonePrefix, password, password2 } = user;
+			let { email, username, firstName, lastName, phone, phonePrefix, password, password2 } =
+				user;
 			const { DB_NS, DB_DB } = env;
 
 			console.log('db:', DB_NS, DB_DB);
@@ -126,18 +129,17 @@ export const actions = ({ connection: db }) => {
 			}
 		},
 
-		async signinApi(request) {
-			const { headers } = request;
+		async signinApi(apikey) {
 			const { DB_NS, DB_DB } = env;
 
-			console.log(headers);
+			console.log(apikey);
 
 			try {
 				const token = await db.signin({
 					NS: DB_NS,
 					DB: DB_DB,
 					SC: 'apiusers',
-					apiKey
+					apikey
 				});
 
 				console.log('token: ', token);
@@ -163,7 +165,17 @@ export const actions = ({ connection: db }) => {
 			}
 		},
 
-		async logout(session) {}
+		async logout(session) {},
+		async tryApiLogin(request) {
+			const { headers } = request;
+			const apikey = headers.get('x-api-key');
+
+			if (!apikey) {
+				return false;
+			}
+
+			return this.signinApi(apikey);
+		}
 	};
 };
 
