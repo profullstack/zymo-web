@@ -27,7 +27,7 @@
     "flag-icons": "^6.11.2",
     "primate": "^0.25.0",
     "runtime-compat": "^0.32.3",
-    "surrealdb.js": "^0.10.1",
+    "surrealdb.js": "^0.9.x",
     "svelte": "^4.2.2",
     "twilio": "^4.19.0"
   },
