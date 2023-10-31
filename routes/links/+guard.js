@@ -1,13 +1,20 @@
-import {redirect} from "primate";
+import { redirect } from 'primate';
 
-export default request => {
-  const {url: {pathname}, session} = request;
+export default (request) => {
+	const {
+		url: { pathname },
+		session,
+		store
+	} = request;
+	const { User } = store;
 
-  console.log('loggedIn:', session.get().loggedIn);
+	console.log(request, '<--- request');
 
-  if (session.get().loggedIn) {
-    return true;
-  }
+	console.log('loggedIn:', session.get().loggedIn);
 
-  return redirect(`/login?next=${pathname}`);
+	if (session.get().loggedIn || User.tryApiLogin()) {
+		return true;
+	}
+
+	return redirect(`/login?next=${pathname}`);
 };
