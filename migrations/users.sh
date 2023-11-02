@@ -80,8 +80,8 @@ curl -k -L -s --compressed POST \
 DATA="DEFINE SCOPE apiusers
   -- the JWT session will be valid for 14 days
   SESSION 14d
-  SIGNIN ( SELECT *, (SELECT * FROM apikeys) as apikeys FROM user WHERE apikeys.id = \$apikey )
-;"
+  SIGNIN ( SELECT *, (SELECT VALUE apikey FROM apikeys WHERE apikeys.createdBy = id) as apikeys FROM user WHERE apikeys contains \$apikey );
+"
 
 curl -k -L -s --compressed POST \
 	--header "Accept: application/json" \
