@@ -19,7 +19,7 @@
     "@primate/frontend": "^0.6.0",
     "@primate/liveview": "^0.7.0",
     "@primate/session": "^0.13.0",
-    "@primate/store": "^0.15.0",
+    "@primate/store": "^0.16.0",
     "@primate/types": "^0.9.0",
     "@primate/ws": "^0.7.0",
     "dotenv-flow": "^4.0.0",
@@ -27,7 +27,7 @@
     "flag-icons": "^6.11.2",
     "primate": "^0.25.0",
     "runtime-compat": "^0.32.3",
-    "surrealdb.js": "^0.9.x",
+    "surrealdb.js": "^0.11.x",
     "svelte": "^4.2.2",
     "twilio": "^4.19.0"
   },
