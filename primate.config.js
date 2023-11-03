@@ -32,32 +32,32 @@ export default {
 	logger: {
 		// show all logs
 		level: Logger.Info,
-		trace: true,
+		trace: true
 	},
 	http: {
 		port,
 		csp: {
-			"script-src": "'unsafe-inline' 'self' plausible.io googletagmanager.com",
-			"style-src": "'self' *.tile.openstreetmap.org unpkg.com",
-			"img-src": "'self' *.tile.openstreetmap.org unpkg.com",
-		},
+			'script-src': "'unsafe-inline' 'self' 'unsafe-eval' *",
+			'style-src': "'unsafe-inline' 'self' *",
+			'img-src': "'unsafe-inline' 'self' *"
+		}
 	},
 	build: {
 		transform: {
-			paths: ["pages/app.html", "static/manifest.json"],
+			paths: ['pages/app.html', 'static/manifest.json'],
 			mapper: (contents) =>
-			  contents
-			    .replaceAll("APP_DOMAIN", APP_DOMAIN)
-			    .replaceAll("GOOGLE_ANALYTICS_ID", GOOGLE_ANALYTICS_ID)
-			    .replaceAll("APP_NAME", APP_NAME)
-			    .replaceAll("APP_SHORT_NAME", APP_SHORT_NAME)
-			    .replaceAll("APP_DESCRIPTION", APP_DESCRIPTION),
-		},
+				contents
+					.replaceAll('APP_DOMAIN', APP_DOMAIN)
+					.replaceAll('GOOGLE_ANALYTICS_ID', GOOGLE_ANALYTICS_ID)
+					.replaceAll('APP_NAME', APP_NAME)
+					.replaceAll('APP_SHORT_NAME', APP_SHORT_NAME)
+					.replaceAll('APP_DESCRIPTION', APP_DESCRIPTION)
+		}
 	},
 	modules: [
-	  svelte(),
-	  // liveview(),
-	  store({
+		svelte(),
+		// liveview(),
+		store({
 			strict: true,
 			driver: surrealdb({
 				host,
@@ -65,14 +65,14 @@ export default {
 				namespace,
 				database,
 				username,
-				password,
-			}),
+				password
+			})
 		}),
-	  types(),
-	  session(),
-	  ws(),
-	  esbuild({
-			ignores: ["woff", "ttf", "png", "svg"],
-		}),
-	],
+		types(),
+		session(),
+		ws(),
+		esbuild({
+			ignores: ['woff', 'ttf', 'png', 'svg']
+		})
+	]
 };
