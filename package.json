@@ -24,7 +24,7 @@
     "@primate/ws": "^0.7.0",
     "dotenv-flow": "^4.0.1",
     "fast-csv": "^4.3.6",
-    "flag-icons": "^6.12.0",
+    "flag-icons": "^6.13.2",
     "primate": "^0.25.0",
     "runtime-compat": "^0.32.3",
     "surrealdb.js": "^0.11.x",
