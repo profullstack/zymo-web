@@ -11,6 +11,12 @@ user=$HOST_USER
 name=$HOST_PATH
 project=$HOST_PROJECT
 
+
+if [ -z "$name" ] || [ -z "$project" ]; then
+    echo "One or both directories do not exist"
+    exit 1
+fi
+
 result=$(ssh $user@$HOST_DOMAIN "[ -d ~/www/$name ] && [ -d ~/www/$name/$project ] && echo 'exists' || echo 'does not exist'")
 
 if [ "$result" == "exists" ]; then
