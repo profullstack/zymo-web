@@ -19,8 +19,8 @@ if [ -d "$HOME/www/${name}/${project}" ]; then
     node -v
     npm -v
     npm i
-		curl --proto '=https' --tlsv1.2 -sSf https://install.surrealdb.com | sh -s -- --nightl
-
+		# curl --proto '=https' --tlsv1.2 -sSf https://install.surrealdb.com | sh -s -- --nightl
+    surreal upgrade
     # run migrations
     ./migrations/users.sh
     # ./migrations/deals.sh
