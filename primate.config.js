@@ -37,6 +37,7 @@ export default {
 	http: {
 		port,
 		csp: {
+			'default-src': '*',
 			'script-src': "'unsafe-inline' 'self' 'unsafe-eval' *",
 			'style-src': "'unsafe-inline' 'self' *",
 			'img-src': "'unsafe-inline' 'self' *"
