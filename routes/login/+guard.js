@@ -7,7 +7,7 @@ export default (request) => {
 		session
 	} = request;
 
-	if (session.get().loggedIn) {
+	if (session.get('loggedIn')) {
 		return redirect(query.get('next') || '/dashboard');
 	}
 

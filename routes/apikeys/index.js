@@ -13,7 +13,7 @@ export default {
 		} = store;
 
 		try {
-			const data = request.body.get();
+			const data = request.body.all();
 
 			await Form.validate(data);
 

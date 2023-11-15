@@ -2,6 +2,12 @@ import { config } from 'dotenv-flow';
 import { keywords, fisherYatesShuffle } from './tools.js';
 import slugify from 'slugify';
 import { writeFile } from 'fs/promises';
+import minimist from 'minimist';
+
+const argv = minimist(process.argv.slice(2), {
+	default: { total: 10 }
+});
+console.log(argv);
 
 config();
 
@@ -71,6 +77,7 @@ async function writeBlogPostToFile(title, content, tags) {
 		filePath,
 		`export const article = {
         title: \`${title}\`,
+		slug: "${slugify(title.toLowerCase())}",
         content: \`${content}\`,
         createdAt: "${new Date().toISOString()}",
         author: 'chovy',
@@ -79,10 +86,12 @@ async function writeBlogPostToFile(title, content, tags) {
 	);
 }
 
-let runs = 0;
+let errorsFound = 0;
+let runs = 1;
+
 async function run() {
-	runs++;
-	console.log('run:', runs);
+	console.log('runs:', runs, ' of ', argv.total);
+	console.log('errors:', errorsFound);
 
 	try {
 		const keyword = fisherYatesShuffle(keywords).pop();
@@ -95,7 +104,17 @@ async function run() {
 		await writeBlogPostToFile(title, content, tags);
 	} catch (err) {
 		console.error(err);
-		run();
+		errorsFound++;
+
+		if (errorsFound < 10) {
+			run();
+		}
+	} finally {
+		runs++;
+
+		if (runs < argv.total) {
+			run();
+		}
 	}
 }
 
