@@ -6,6 +6,7 @@ import minimist from 'minimist';
 import { createWriteStream } from 'fs';
 import { pipeline } from 'stream';
 import { promisify } from 'util';
+import sharp from 'sharp';
 
 const streamPipeline = promisify(pipeline);
 const argv = minimist(process.argv.slice(2), {
@@ -92,6 +93,15 @@ async function downloadImage(url, path) {
 	return streamPipeline(res.body, createWriteStream(`.${path}`));
 }
 
+async function resizeImage(inputPath, outputPath, newWidth = '256') {
+	try {
+		await sharp(inputPath).resize(newWidth).toFile(outputPath);
+		console.log('Image resized successfully.');
+	} catch (error) {
+		console.error('Error resizing image:', error);
+	}
+}
+
 async function calculateTokenSize(text) {
 	const response = await fetch('https://api.openai.com/v1/tokens', {
 		method: 'POST',
@@ -158,9 +168,12 @@ async function run() {
 		}
 
 		const imagePath = `/static/_posts/${slugify(blogPost.title.toLowerCase())}-001.png`;
+		const thumbPath = `/static/_posts/${slugify(blogPost.title.toLowerCase())}-thumb-001.png`;
 		blogPost.image = imagePath;
+		blogPost.thumb = thumbPath;
 
 		await downloadImage(bannerImage, imagePath);
+		await resizeImage(imagePath, thumbPath);
 		await writeBlogPostToFile(blogPost);
 	} catch (err) {
 		console.error(err);

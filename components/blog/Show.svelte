@@ -42,7 +42,20 @@
 		padding: 1.2rem;
 	}
 	article h1 {
+		font-size: 2rem;
 		margin-bottom: 0.2rem;
+	}
+
+	article h2 {
+		font-size: 1.8rem;
+	}
+
+	article h3 {
+		font-size: 1.6rem;
+	}
+
+	article h4 {
+		font-size: 1.4rem;
 	}
 
 	article .tags {
