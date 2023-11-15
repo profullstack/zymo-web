@@ -60,10 +60,24 @@
 
 	article .tags {
 		list-style-type: none;
-		display: flex;
-		justify-content: flex-start;
-		align-items: flex-start;
-		gap: 1rem;
+	}
+
+	article .tags li {
+		display: inline-block;
+		margin: .8rem;
+	}
+
+	article .tags li a {
+		display: inline-block;
+		text-decoration: none;
+		background-color: #00f;
+		color: #fff;
+		/* move to theme */
+		border: 1px solid #00f;
+		border-radius: 10rem;
+		padding: .8rem 1.2rem;
+		min-width: 5rem;
+		text-align: center;
 	}
 
 	.image-container {
