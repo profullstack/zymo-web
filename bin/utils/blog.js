@@ -36,7 +36,7 @@ async function generateTableOfContents(prompt) {
 
 async function generateBlogPost(toc) {
 	console.log('toc:', toc);
-	const prompt = `Write a detailed 2000 word blog post about the following topics and return it to me as raw JSON with 'content' property as raw markdown and 'title' property with a unique title, a 'tags' property with related tags related to the topic:\n\n=================\n\n${toc}`;
+	const prompt = `Write a detailed 2000 word blog post about the following topics and return it to me as raw JSON with 'content' property as raw markdown (do not include article title or "# Introduction" at top) and 'title' property with a unique title, a 'tags' property with related tags related to the topic:\n\n=================\n\n${toc}`;
 
 	const tokenSize = await calculateTokenSize(prompt);
 	const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -72,7 +72,7 @@ async function calculateTokenSize(text) {
 
 async function writeBlogPostToFile(title, content, tags) {
 	const slug = slugify(title.toLowerCase());
-	const filePath = `./routes/blog/_posts/${slug}.js`;
+	const filePath = `./static/_posts/${slug}.js`;
 	await writeFile(
 		filePath,
 		`export const article = {

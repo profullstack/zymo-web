@@ -20,6 +20,7 @@
 </script>
 <nav>
     <a href="/" id="logo">Home</a>
+    <a href="/blog">Blog</a>
     {#if isLoggedIn}
         <a href="#" on:click={logout}>Logout</a>
     {:else}
