@@ -15,7 +15,7 @@
     "deploy": "./bin/deploy.sh"
   },
   "dependencies": {
-    "@primate/esbuild": "^0.13.1",
+    "@primate/build": "^0.13.1",
     "@primate/frontend": "^0.7.1",
     "@primate/liveview": "^0.8.0",
     "@primate/session": "^0.14.0",
