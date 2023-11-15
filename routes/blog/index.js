@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 async function loadPosts() {
-	const directoryPath = path.join(process.cwd(), 'routes', 'blog', '_posts');
+	const directoryPath = path.join(process.cwd(), 'static', '_posts');
     console.log(directoryPath);
 	const files = fs.readdirSync(directoryPath);
 	const posts = [];
