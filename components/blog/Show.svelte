@@ -21,20 +21,26 @@
 	<article>
 		<h1>{post.title}</h1>
 		<div>By {post.author} on {formatter.format(new Date(post.createdAt))}</div>
-		<img src={post.image} alt="" border="0" style="display: block;" />
+		<p>{post.summary}</p>
+		<div class="image-container">
+			<img src={post.image} alt="" border="0" style="display: block;" />
+		</div>
 
 		{@html html}
 
 		<h4>Topics</h4>
 		<ul class="tags">
 			{#each post.tags as tag}
-			<li><a href="/blog/tag/{tag}">{tag}</a></li>
+				<li><a href="/blog/tag/{tag}">{tag}</a></li>
 			{/each}
 		</ul>
 	</article>
 {/if}
 
 <style>
+	article {
+		padding: 1.2rem;
+	}
 	article h1 {
 		margin-bottom: 0.2rem;
 	}
@@ -45,5 +51,19 @@
 		justify-content: flex-start;
 		align-items: flex-start;
 		gap: 1rem;
+	}
+
+	.image-container {
+		width: 51.2rem;
+		height: 25.6rem;
+		overflow: hidden;
+		position: relative;
+	}
+
+	.image-container img {
+		position: absolute;
+		top: -50%;
+		left: 0;
+		width: 100%;
 	}
 </style>
