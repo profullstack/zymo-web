@@ -8,14 +8,14 @@ path=$HOME
 now=$(date +%Y-%m-%d_%H.%M.%S)
 
 backup() {
-	mkdir -p ${path}/backups/${now}/mongo
-	dump-mongo
+	mkdir -p ${path}/backups/${now}/mongo ${path}/backups/${now}/mysql
+	# dump-mongo
 	tar czfh ${path}/backups/${now}/www.tgz ${path}/www
 	scp -r ${path}/backups/${now}/ profullstack:~/backups/
 }
 
 dump-mysql() {
- 	mysqldump --all-databases --add-drop-table --single-transaction --set-gtid-purged=OFF --user=root -h 127.0.0.1 -P 33061 -psomewordpress > ${path}/backups/${now}/mysql/leeniesbluebay.sql
+ 	sudo mysqldump --all-databases --add-drop-table --all-databases --single-transaction --set-gtid-purged=OFF --user=root -h 127.0.0.1 -P 33061 > ${path}/backups/${now}/mysql/dump.sql
 }
 
 dump-mongo(){
