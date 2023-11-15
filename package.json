@@ -25,6 +25,7 @@
     "dotenv-flow": "^4.0.1",
     "fast-csv": "^4.3.6",
     "flag-icons": "^6.15.0",
+    "marked": "^10.0.0",
     "minimist": "^1.2.8",
     "primate": "^0.26.1",
     "runtime-compat": "^0.32.3",
