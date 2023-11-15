@@ -25,7 +25,7 @@ export default {
 		const slug = path.get('slug');
 		const post = await getPostBySlug(slug);
 		const html = marked.parse(post.content);
-		// console.log(html);
+		console.log(html);
 
 		return view('blog/Show.svelte', { post, html });
 	}

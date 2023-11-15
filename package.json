@@ -28,6 +28,7 @@
     "marked": "^10.0.0",
     "minimist": "^1.2.8",
     "primate": "^0.26.1",
+    "promisify": "^0.0.3",
     "runtime-compat": "^0.32.3",
     "slugify": "^1.6.6",
     "surrealdb.js": "^0.11.x",
