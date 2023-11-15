@@ -41,25 +41,26 @@
 	article {
 		padding: 1.2rem;
 	}
-	article h1 {
-		font-size: 2rem;
+	article :global(h1) {
+		font-size: 1.8rem;
 		margin-bottom: 0.2rem;
 	}
 
-	article h2 {
-		font-size: 1.8rem;
-	}
-
-	article h3 {
+	article :global(h2) {
 		font-size: 1.6rem;
 	}
 
-	article h4 {
+	article :global(h3) {
 		font-size: 1.4rem;
+	}
+
+	article :global(h4) {
+		font-size: 1.2rem;
 	}
 
 	article .tags {
 		list-style-type: none;
+		padding: 0;
 	}
 
 	article .tags li {
