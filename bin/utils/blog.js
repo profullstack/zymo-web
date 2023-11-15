@@ -93,9 +93,9 @@ async function downloadImage(url, path) {
 	return streamPipeline(res.body, createWriteStream(`.${path}`));
 }
 
-async function resizeImage(inputPath, outputPath, newWidth = '256') {
+async function resizeImage(inputPath, outputPath, newWidth = 256) {
 	try {
-		await sharp(inputPath).resize(newWidth).toFile(outputPath);
+		await sharp(`.${inputPath}`).resize(newWidth).toFile(`.${outputPath}`);
 		console.log('Image resized successfully.');
 	} catch (error) {
 		console.error('Error resizing image:', error);
@@ -117,7 +117,7 @@ async function calculateTokenSize(text) {
 }
 
 async function writeBlogPostToFile(blogPost) {
-	const { title, content, tags, image, summary } = blogPost;
+	const { title, content, tags, image, summary, thumbnail } = blogPost;
 	const slug = slugify(title.toLowerCase());
 	const filePath = `./static/_posts/${slug}.js`;
 	await writeFile(
@@ -125,6 +125,7 @@ async function writeBlogPostToFile(blogPost) {
 		`export const article = {
         title: \`${title}\`,
 		image: \`${image}\`,
+		thumbnail: \`${thumbnail}\`,
 		slug: "${slugify(title.toLowerCase())}",
 		summary: \`${summary}\`,
         content: \`${content}\`,
@@ -170,10 +171,10 @@ async function run() {
 		const imagePath = `/static/_posts/${slugify(blogPost.title.toLowerCase())}-001.png`;
 		const thumbPath = `/static/_posts/${slugify(blogPost.title.toLowerCase())}-thumb-001.png`;
 		blogPost.image = imagePath;
-		blogPost.thumb = thumbPath;
+		blogPost.thumbnail = thumbPath;
 
 		await downloadImage(bannerImage, imagePath);
-		await resizeImage(imagePath, thumbPath);
+		await resizeImage(imagePath, thumbPath, 256);
 		await writeBlogPostToFile(blogPost);
 	} catch (err) {
 		console.error(err);
