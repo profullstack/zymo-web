@@ -10,9 +10,9 @@ export default (request) => {
 
 	console.log(request, '<--- request');
 
-	console.log('loggedIn:', session.get().loggedIn);
+	console.log('loggedIn:', session.get('loggedIn'));
 
-	if (session.get().loggedIn || User.tryApiLogin(request)) {
+	if (session.get('loggedIn') || User.tryApiLogin(request)) {
 		return true;
 	}
 

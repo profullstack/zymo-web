@@ -16,7 +16,7 @@ export default {
 		} = store;
 
 		try {
-			const user = request.body.get();
+			const user = request.body.all();
 
 			await Form.validate(user);
 

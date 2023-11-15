@@ -7,7 +7,7 @@ export default {
 	async get(request) {
 		const { session, store } = request;
 
-		if (session.exists) {
+		if (session.exists && session.get('loggedIn')) {
 			// already logged in, redirect to dashboard
 			return redirect(home);
 		}

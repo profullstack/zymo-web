@@ -12,7 +12,7 @@ export const actions = ({connection: db}) => {
 			if (!id) return;
 
 			const me = await this.me();
-			const list = headers.get();
+			const list = headers.all();
 
 			console.log('visit:', id, list, data, me);
 

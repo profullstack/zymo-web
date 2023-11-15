@@ -23,7 +23,7 @@ export default {
 		const id = path.get('id');
 
 		try {
-			const data = request.body.get();
+			const data = request.body.all();
 			console.log('put:', data);
 
 			await Form.validate(data);

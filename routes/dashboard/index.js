@@ -8,7 +8,7 @@ export default {
 			apikeys: { Apikey },
 		} = store;
 
-	const userId = session.get().user.id
+	const userId = session.get('user').id
     const links = await Link.getAllByUserId(userId);
 	const apikeys = await Apikey.getAllByUserId(userId)
 
