@@ -27,6 +27,7 @@ if [ -d "$HOME/www/${name}/${project}" ]; then
     # ./migrations/comments.sh
     ./migrations/links.sh
     ./migrations/apikeys.sh
+    ./migrations/nostrusers.sh
     # ./migrations/applications.sh
     # ./migrations/services.sh
     # ./migrations/inquiries.sh
