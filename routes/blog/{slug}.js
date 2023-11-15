@@ -8,7 +8,8 @@ const __dirname = dirname(__filename);
 
 async function getPostBySlug(slug) {
 	try {
-		const filePath = join(__dirname, `./_posts/${slug}.js`);
+		const directoryPath = join(process.cwd(), 'static', '_posts');
+		const filePath = join(directoryPath, `/${slug}.js`);
 		console.log(filePath);
 		const postModule = await import(filePath);
 		return postModule.article;
