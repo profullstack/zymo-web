@@ -17,7 +17,7 @@ export const actions = ({ connection: db }) => {
 			const code = Math.random().toString(36).substr(2, 10);
 			const expiration = new Date(Date.now() + 2 * (60 * 60 * 1000));
 
-			const result = (
+			const [[result]] =
 				await db.query(
 					"UPDATE $id SET verify.email.code = $code, verify.email.status = 'pending', verify.email.expiration = $expiration",
 					{
@@ -25,10 +25,7 @@ export const actions = ({ connection: db }) => {
 						code,
 						expiration
 					}
-				)
-			)
-				.pop()
-				.result.pop();
+				);
 
 			console.log('user email verification: ', result);
 			return result;
@@ -39,7 +36,7 @@ export const actions = ({ connection: db }) => {
 			const code = Math.random().toString().substr(2, 6);
 			const expiration = new Date(Date.now() + 2 * (60 * 60 * 1000));
 
-			const result = (
+			const [[result]] =
 				await db.query(
 					"UPDATE $id SET verify.phone.code = $code, verify.phone.status = 'pending', verify.phone.expiration = $expiration",
 					{
@@ -48,9 +45,6 @@ export const actions = ({ connection: db }) => {
 						expiration
 					}
 				)
-			)
-				.pop()
-				.result.pop();
 
 			console.log('user phone verification: ', result);
 
