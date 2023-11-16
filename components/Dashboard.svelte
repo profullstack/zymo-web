@@ -1,6 +1,6 @@
 <script>
-	export let links;
-    export let apikeys;
+	export let links = [];
+    export let apikeys = [];
 
     let status = {};
 
@@ -34,7 +34,7 @@
         }
     }
 
-    
+
     function gatherBrowserInfo() {
         return {
             navigator: {
