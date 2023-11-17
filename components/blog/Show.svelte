@@ -43,19 +43,22 @@
 	}
 	article :global(h1) {
 		font-size: 1.8rem;
-		margin-bottom: 0.2rem;
+		margin: 0.8rem 0;
 	}
 
 	article :global(h2) {
 		font-size: 1.6rem;
+		margin: .8rem 0;
 	}
 
 	article :global(h3) {
 		font-size: 1.4rem;
+		margin: .8rem 0;
 	}
 
 	article :global(h4) {
 		font-size: 1.2rem;
+		margin: .8rem 0;
 	}
 
 	article .tags {
