@@ -140,7 +140,7 @@ let errorsFound = 0;
 let runs = 1;
 
 const tone = `Begin with a clear and objective overview of the topic. Avoid colloquial language or personal anecdotes.
-Include quotes or insights from industry experts to add credibility.
+Include quotes or insights from industry experts to add credibility (do not fake any sources).
 Use industry-specific terminology accurately to establish authority and expertise.
 Use descriptive subheadings to guide the reader through the article.
 Present relevant case studies or examples in a formal and detailed manner.
