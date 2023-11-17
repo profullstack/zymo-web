@@ -17,6 +17,7 @@ console.log(argv);
 config();
 
 const { env } = process;
+const strip = /[*+~.()'"!:@]/g;
 
 async function generateTableOfContents(prompt) {
 	console.log(prompt);
@@ -118,7 +119,7 @@ async function calculateTokenSize(text) {
 
 async function writeBlogPostToFile(blogPost) {
 	const { title, content, tags, image, summary, thumbnail } = blogPost;
-	const slug = slugify(title.toLowerCase());
+	const slug = slugify(title.toLowerCase(), { remove: strip });
 	const filePath = `./static/_posts/${slug}.js`;
 	await writeFile(
 		filePath,
@@ -126,12 +127,14 @@ async function writeBlogPostToFile(blogPost) {
         title: \`${title}\`,
 		image: \`${image}\`,
 		thumbnail: \`${thumbnail}\`,
-		slug: "${slugify(title.toLowerCase())}",
+		slug: "${slugify(title.toLowerCase(), { remove: strip })}",
 		summary: \`${summary}\`,
         content: \`${content}\`,
         createdAt: "${new Date().toISOString()}",
         author: 'chovy',
-		tags: [${[...new Set(tags)].map((tag) => `'${slugify(tag.toLowerCase())}'`).join(', ')}],
+		tags: [${[...new Set(tags)]
+			.map((tag) => `'${slugify(tag.toLowerCase(), { remove: strip })}'`)
+			.join(', ')}],
     };`
 	);
 }
@@ -168,8 +171,12 @@ async function run() {
 			return run();
 		}
 
-		const imagePath = `/static/_posts/${slugify(blogPost.title.toLowerCase())}-001.png`;
-		const thumbPath = `/static/_posts/${slugify(blogPost.title.toLowerCase())}-thumb-001.png`;
+		const imagePath = `/static/_posts/${slugify(blogPost.title.toLowerCase(), {
+			remove: strip
+		})}-001.png`;
+		const thumbPath = `/static/_posts/${slugify(blogPost.title.toLowerCase(), {
+			remove: strip
+		})}-thumb-001.png`;
 		blogPost.image = imagePath;
 		blogPost.thumbnail = thumbPath;
 

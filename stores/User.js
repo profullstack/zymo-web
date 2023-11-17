@@ -94,7 +94,7 @@ export const actions = ({ connection: db }) => {
 			const { email, password } = user;
 			const { DB_NS, DB_DB } = env;
 
-			console.log(user);
+			console.log('signin:', email, password, DB_NS, DB_DB);
 
 			try {
 				const token = await db.signin({
