@@ -78,7 +78,7 @@ export default {
 			options: {
 				minify: false
 			},
-			ignores: ['woff', 'ttf', 'png', 'svg']
+			ignores: ['woff', 'ttf', 'png', 'jpg', 'jpeg', 'mp4', 'mp3', 'svg']
 		})
 	]
 };
