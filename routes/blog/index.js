@@ -10,9 +10,13 @@ async function loadPosts() {
 
 	for (const file of files) {
 		if (file.endsWith('.js')) {
-			const filePath = path.join(directoryPath, file);
-			const post = await import(`file://${filePath}`);
-			posts.push(post.article); // Assuming each module exports an object named 'article'
+			// avoid crashing on corrupt module loads
+			try {
+				const post = await import(`file://${filePath}`);
+				posts.push(post.article);
+			} catch (err) {
+				console.error(err);
+			}
 		}
 	}
 
