@@ -1,32 +1,43 @@
-import { view, redirect } from 'primate';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-import { marked } from 'marked';
+import { view } from 'primate';
+import fs from 'fs';
+import path from 'path';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+async function loadPosts(tag) {
+	const directoryPath = path.join(process.cwd(), 'static', '_posts');
+	console.log(directoryPath);
+	const files = fs.readdirSync(directoryPath);
+	const posts = [];
 
-async function getPostBySlug(slug) {
-	try {
-		const directoryPath = join(process.cwd(), 'static', '_posts');
-		const filePath = join(directoryPath, `/${slug}.js`);
-		console.log(filePath);
-		const postModule = await import(filePath);
-		return postModule.article;
-	} catch (error) {
-		console.error('Error loading post:', error);
-		return null;
+	for (const file of files) {
+		if (file.endsWith('.js')) {
+			// avoid crashing on corrupt module loads
+			try {
+				const filePath = path.join(directoryPath, file);
+				const post = await import(`file://${filePath}`);
+				posts.push(post.article);
+			} catch (err) {
+				console.error(err);
+			}
+		}
 	}
+
+	return posts
+		.sort((a, b) => {
+			return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+		})
+		.filter((post) => {
+			return post.tags.indexOf(tag) > -1;
+		});
 }
 
 export default {
 	async get(request) {
+		const { env } = process;
+		const { APP_NAME, APP_DESCRIPTION } = env;
 		const { session, path, store } = request;
-		const slug = path.get('slug');
-		const post = await getPostBySlug(slug);
-		const html = marked.parse(post.content);
-		console.log(html);
+		const tag = path.get('tag');
+		const posts = await loadPosts(tag);
 
-		return view('blog/Show.svelte', { post, html });
+		return view('blog/Index.svelte', { APP_NAME, APP_DESCRIPTION, posts });
 	}
 };
