@@ -12,6 +12,7 @@ async function loadPosts() {
 		if (file.endsWith('.js')) {
 			// avoid crashing on corrupt module loads
 			try {
+				const filePath = path.join(directoryPath, file);
 				const post = await import(`file://${filePath}`);
 				posts.push(post.article);
 			} catch (err) {
