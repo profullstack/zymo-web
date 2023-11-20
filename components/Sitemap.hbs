@@ -1,0 +1,10 @@
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    {{#each posts as |post|}}
+    <url>
+        <loc>https://{{../APP_DOMAIN}}/blog/{{post.slug}}</loc>
+        <lastmod>{{post.createdAt}}</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    {{/each}}
+</urlset>
