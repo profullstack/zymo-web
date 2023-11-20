@@ -61,7 +61,7 @@ async function generateBannerImage(prompt) {
 async function generateBlogPost(toc) {
 	console.log('toc:', toc);
 	const prompt = `Use the following tone:\n\n=========\n\n${tone}\n\n============\n\n
-	...and write a detailed 2000 word blog post about the topic above and return it to me as raw JSON with 'content' property as raw markdown (do not include article title or "# Introduction" at top of markdown) and 'title' property with a unique title, a 'summary' property with a brief abstract of the article, a 'tags' property with tags related to the following TOC:
+	...and write a detailed 2000 word blog post about the topic above as an expert in the subject matter and return it to me as raw JSON with 'content' property as raw markdown (do not include article title or "# Introduction" at top of markdown) and 'title' property with a unique title, a 'summary' property with a brief abstract of the article, a 'tags' property with tags related to the following TOC:
 	\n\n=================\n\nTable of Contents:\n\n${toc}`;
 
 	const tokenSize = await calculateTokenSize(prompt);
@@ -142,7 +142,7 @@ async function writeBlogPostToFile(blogPost) {
 let errorsFound = 0;
 let runs = 1;
 
-const tone = `Begin with a clear and objective overview of the topic. Avoid colloquial language or personal anecdotes.
+const tone = `Act as an expert in the topic. Begin with a clear and objective overview of the topic. Avoid colloquial language or personal anecdotes.
 Include quotes or insights from industry experts to add credibility (do not fake any sources).
 Use industry-specific terminology accurately to establish authority and expertise.
 Use descriptive subheadings to guide the reader through the article.
@@ -157,7 +157,7 @@ async function run() {
 	try {
 		const keyword = fisherYatesShuffle(keywords).pop();
 		const toc = await generateTableOfContents(
-			`Generate a Table of Contents for a blog post about ${keyword} using the following tone: ${tone}`
+			`You will act as an expert in ${keyword} and generate a Table of Contents for a blog post about ${keyword} using the following tone: ${tone}`
 		);
 		const blogPost = await generateBlogPost(toc);
 		const bannerImage = await generateBannerImage(
