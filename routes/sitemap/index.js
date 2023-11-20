@@ -34,6 +34,6 @@ export default {
 
 		console.log(APP_DOMAIN);
 
-		return view('Sitemap.hbs', { posts, APP_DOMAIN });
+		return view('Sitemap.hbs', { posts, APP_DOMAIN }, { partial: true });
 	}
 };
