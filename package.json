@@ -2,9 +2,9 @@
 	"name": "hynt.us",
 	"private": true,
 	"scripts": {
-		"dev": "SURREAL_INSECURE_FORWARD_SCOPE_ERRORS=true; npx nodemon --exec 'npx primate' -i ./build -e js,css,svelte,html,hbs",
+		"dev": "npx nodemon --exec 'npx primate' -i ./build -e js,css,svelte,html,hbs",
 		"start": "npx primate serve",
-		"db:start": ". ./.env && . ./.env.local && surreal start --log trace -A --auth --user root --pass root --bind 0.0.0.0:$DB_PORT file:data/db",
+		"db:start": ". ./.env && . ./.env.local && SURREAL_INSECURE_FORWARD_SCOPE_ERRORS=true && surreal start --log trace -A --auth --user root --pass root --bind 0.0.0.0:$DB_PORT file:data/db",
 		"db:console": ". ./.env && . ./.env.local && surreal sql --conn http://localhost:$DB_PORT --user root --pass root --ns $DB_NS --db $DB_DB --pretty",
 		"db:export": ". ./.env && . ./.env.local && surreal export --conn http://localhost:$DB_PORT --user root --pass root --ns $DB_NS --db $DB_DB dump.sql",
 		"db:import": ". ./.env && . ./.env.local && surreal import --conn http://localhost:$DB_PORT --user root --pass root --ns $DB_NS --db $DB_DB dump.sql",
