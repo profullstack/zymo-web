@@ -46,7 +46,7 @@ export const actions = ({connection: db}) => {
 				});
 
 				console.log('alias link:', link);
-				return link[0].result[0];
+				return link.pop().pop();
 			} catch (err) {
 				console.error(err);
 				throw err;
@@ -64,7 +64,7 @@ export const actions = ({connection: db}) => {
 
 				console.log('id link:', link);
 
-				return link[0].result[0];
+				return link.pop().pop();
 			} catch (err) {
 				console.error(err);
 				throw err;
@@ -81,7 +81,7 @@ export const actions = ({connection: db}) => {
 
 				console.log('all links:', links);
 
-				return links[0].result;
+				return links.pop();
 			} catch (err) {
 				console.error(err);
 				throw err;

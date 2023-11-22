@@ -132,7 +132,7 @@ export const actions = ({ connection: db }) => {
 				const token = await db.signin({
 					namespace: DB_NS,
 					database: DB_DB,
-					scopeC: 'apiusers',
+					scope: 'apiusers',
 					apikey
 				});
 
