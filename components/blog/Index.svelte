@@ -10,7 +10,7 @@
 			{#each posts as post}
 				<li>
 					<a href="/blog/{post.slug}"
-						><img src={post.thumbnail} alt="" style="width: 20rem; display: block;" />
+						><img src={post.thumbnail} alt="" />
 						{post.title}</a
 					>
 					<p>{post.summary.slice(0, 200)}...</p>
@@ -35,7 +35,26 @@
 		margin: 0;
 	}
 
-    .blog-idx > ul > li {
-        width: 22rem;
-    }
+	.blog-idx img {
+		display: block;
+		width: 20rem;
+	}
+
+	.blog-idx > ul > li {
+		width: 22rem;
+	}
+
+	@media only screen and (max-width: 767px) {
+		.blog-idx ul {
+			gap: 0;
+		}
+
+		.blog-idx > ul > li {
+			width: 100%;
+		}
+
+		.blog-idx img {
+			width: 100%;
+		}
+	}
 </style>

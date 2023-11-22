@@ -1,18 +1,15 @@
 <script>
-  import GlobalNavBar from "./GlobalNavBar.svelte";
-  import NavBar from "./NavBar.svelte";
+	import GlobalNavBar from './GlobalNavBar.svelte';
+	import NavBar from './NavBar.svelte';
 
-  export let isLoggedIn;
+	export let isLoggedIn;
 </script>
 
-
 <main>
-  <GlobalNavBar {isLoggedIn} />
+	<GlobalNavBar {isLoggedIn} />
 
-            <div>
-    {#if isLoggedIn}
-      <NavBar {isLoggedIn} />
-    {/if}
-    <slot />
-  </div>
+	{#if isLoggedIn}
+		<NavBar {isLoggedIn} />
+	{/if}
+	<slot />
 </main>
