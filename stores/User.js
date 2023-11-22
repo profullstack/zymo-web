@@ -68,9 +68,9 @@ export const actions = ({ connection: db }) => {
 
 			try {
 				const token = await db.signup({
-					NS: DB_NS,
-					DB: DB_DB,
-					SC: 'allusers',
+					namespace: DB_NS,
+					database: DB_DB,
+					scope: 'allusers',
 					email,
 					firstName,
 					lastName,
@@ -98,9 +98,9 @@ export const actions = ({ connection: db }) => {
 
 			try {
 				const token = await db.signin({
-					NS: DB_NS,
-					DB: DB_DB,
-					SC: 'allusers',
+					namespace: DB_NS,
+					database: DB_DB,
+					scope: 'allusers',
 					email,
 					password
 				});
@@ -130,9 +130,9 @@ export const actions = ({ connection: db }) => {
 
 			try {
 				const token = await db.signin({
-					NS: DB_NS,
-					DB: DB_DB,
-					SC: 'apiusers',
+					namespace: DB_NS,
+					database: DB_DB,
+					scopeC: 'apiusers',
 					apikey
 				});
 
