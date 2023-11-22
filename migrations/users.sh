@@ -64,7 +64,7 @@ curl -k -L -s --compressed POST \
 
 DATA="DEFINE SCOPE apiusers
   SESSION 14d
-  SIGNIN ( SELECT *, (SELECT VALUE apikey FROM apikeys WHERE apikeys.createdBy = id) as apikeys FROM user WHERE apikeys contains \$apikey );
+SIGNIN ( SELECT *, (SELECT * FROM apikeys WHERE createdBy = \$parent.id and name = \$apikey) as apikeys FROM user WHERE [pikeys.createdBy = \$parent.id])
 "
 
 curl -k -L -s --compressed POST \
