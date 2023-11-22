@@ -1,0 +1,17 @@
+[Unit]
+Description=divebars-web
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=ubuntu
+WorkingDirectory=/home/ubuntu/www/divebars.guide/divebars-web/
+ExecStart=/home/ubuntu/www/divebars.guide/divebars-web/bin/start.sh
+StandardOutput=append:/var/log/divebars-web.log
+StandardError=append:/var/log/divebars-web.error.log
+
+[Install]
+WantedBy=multi-user.target
