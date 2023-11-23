@@ -9,16 +9,18 @@ export const actions = ({connection: db}) => {
 			console.log('me: ', me.email);
 			return me;
 		},
-		async create(data) {
+		async create(data, token) {
 			// const { User } = store;
 
 			console.log('create:', data);
+			console.log('token foobar:', token);
 			let { url, alias } = data;
 			const { DB_NS, DB_DB } = env;
 			const me = await this.me();
-			console.log('db:', DB_NS, DB_DB);
+			console.log('db:', DB_NS, DB_DB, me.id, url, alias);
 
 			try {
+				// await db.authenticate(token);
 				const link = await db.create('links', {
 					url,
 					alias,
@@ -27,7 +29,7 @@ export const actions = ({connection: db}) => {
 					updatedAt: new Date().toISOString()
 				});
 
-				console.log('link: ', link);
+				console.log('link foobar: ', link);
 				return link;
 			} catch (err) {
 				console.error(err);

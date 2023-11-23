@@ -17,15 +17,14 @@ export const actions = ({ connection: db }) => {
 			const code = Math.random().toString(36).substr(2, 10);
 			const expiration = new Date(Date.now() + 2 * (60 * 60 * 1000));
 
-			const [[result]] =
-				await db.query(
-					"UPDATE $id SET verify.email.code = $code, verify.email.status = 'pending', verify.email.expiration = $expiration",
-					{
-						id,
-						code,
-						expiration
-					}
-				);
+			const [[result]] = await db.query(
+				"UPDATE $id SET verify.email.code = $code, verify.email.status = 'pending', verify.email.expiration = $expiration",
+				{
+					id,
+					code,
+					expiration
+				}
+			);
 
 			console.log('user email verification: ', result);
 			return result;
@@ -36,15 +35,14 @@ export const actions = ({ connection: db }) => {
 			const code = Math.random().toString().substr(2, 6);
 			const expiration = new Date(Date.now() + 2 * (60 * 60 * 1000));
 
-			const [[result]] =
-				await db.query(
-					"UPDATE $id SET verify.phone.code = $code, verify.phone.status = 'pending', verify.phone.expiration = $expiration",
-					{
-						id,
-						code,
-						expiration
-					}
-				)
+			const [[result]] = await db.query(
+				"UPDATE $id SET verify.phone.code = $code, verify.phone.status = 'pending', verify.phone.expiration = $expiration",
+				{
+					id,
+					code,
+					expiration
+				}
+			);
 
 			console.log('user phone verification: ', result);
 
@@ -148,8 +146,7 @@ export const actions = ({ connection: db }) => {
 				});
 
 				await db.query('UPDATE $id SET apiQueries += 1', {
-					id,
-					now
+					id
 				});
 
 				return token;
@@ -161,14 +158,20 @@ export const actions = ({ connection: db }) => {
 
 		async logout(session) {},
 		async tryApiLogin(request) {
-			const { headers } = request;
+			const { headers, session } = request;
 			const apikey = headers.get('x-api-key');
 
 			if (!apikey) {
 				return false;
 			}
+			const token = await this.signinApi(apikey);
+			console.log('foobar:', token);
+			const me = await this.me();
+			console.log('foo3:', me);
 
-			return this.signinApi(apikey);
+			await session.create({ token, user: me, loggedIn: Boolean(token) });
+
+			return session.get('loggedIn');
 		}
 	};
 };
