@@ -2,7 +2,7 @@
 	"name": "hynt.us",
 	"private": true,
 	"scripts": {
-		"dev": "npx nodemon --exec 'npx primate' -i ./build -e js,css,svelte,html,hbs",
+		"dev": "npx primate",
 		"start": "npx primate serve",
 		"db:start": ". ./.env && . ./.env.local && SURREAL_INSECURE_FORWARD_SCOPE_ERRORS=true && surreal start --log trace -A --auth --user root --pass root --bind 0.0.0.0:$DB_PORT file:data/db",
 		"db:console": ". ./.env && . ./.env.local && surreal sql --conn http://localhost:$DB_PORT --user root --pass root --ns $DB_NS --db $DB_DB --pretty",
@@ -43,7 +43,7 @@
 		"maximin": "^0.2.2",
 		"nodemon": "^3.0.1",
 		"prettier": "^3.1.0",
-		"prettier-plugin-svelte": "^3.1.1"
+		"prettier-plugin-svelte": "^3.1.2"
 	},
 	"type": "module"
 }
