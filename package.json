@@ -27,6 +27,7 @@
 		"fast-csv": "^4.3.6",
 		"flag-icons": "^7.0.2",
 		"handlebars": "^4.7.8",
+		"jsdom": "^22.1.0",
 		"marked": "^10.0.0",
 		"minimist": "^1.2.8",
 		"primate": "^0.26.4",
