@@ -63,12 +63,3 @@ We welcome contributions from the community. If you'd like to contribute to Hynt
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgements
-
-We would like to thank the open-source community and the following projects for their valuable contributions and inspiration:
-
-- [Express.js](https://expressjs.com/)
-- [Redis](https://redis.io/)
-- [Bootstrap](https://getbootstrap.com/)
-- [Font Awesome](https://fontawesome.com/)
