@@ -8,8 +8,6 @@ export default (request) => {
 	} = request;
 	const { User } = store;
 
-	console.log(request, '<--- request');
-
 	console.log('loggedIn:', session.get('loggedIn'));
 
 	if (session.get('loggedIn') || User.tryApiLogin(request)) {

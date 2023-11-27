@@ -23,24 +23,23 @@
 		<div>By {post.author} on {formatter.format(new Date(post.createdAt))}</div>
 		<p>{post.summary}</p>
 		<div class="image-container">
-			<img src={post.image} alt="" border="0" style="display: block;" />
+			<img src={post.image} alt="" border="0" />
 		</div>
 
 		{@html html}
 
-		<h4>Topics</h4>
-		<ul class="tags">
-			{#each post.tags as tag}
-				<li><a href="/blog/tag/{tag}">{tag}</a></li>
-			{/each}
-		</ul>
+		{#if post.tags.length}
+			<h4>Topics</h4>
+			<ul class="tags">
+				{#each post.tags as tag}
+					<li><a href="/blog/tag/{tag}">{tag}</a></li>
+				{/each}
+			</ul>
+		{/if}
 	</article>
 {/if}
 
 <style>
-	article {
-		padding: 1.2rem;
-	}
 	article :global(h1) {
 		font-size: 1.8rem;
 		margin: 0.8rem 0;
@@ -48,17 +47,17 @@
 
 	article :global(h2) {
 		font-size: 1.6rem;
-		margin: .8rem 0;
+		margin: 0.8rem 0;
 	}
 
 	article :global(h3) {
 		font-size: 1.4rem;
-		margin: .8rem 0;
+		margin: 0.8rem 0;
 	}
 
 	article :global(h4) {
 		font-size: 1.2rem;
-		margin: .8rem 0;
+		margin: 0.8rem 0;
 	}
 
 	article .tags {
@@ -68,7 +67,7 @@
 
 	article .tags li {
 		display: inline-block;
-		margin: .8rem;
+		margin: 0.8rem;
 	}
 
 	article .tags li a {
@@ -79,7 +78,7 @@
 		/* move to theme */
 		border: 1px solid #00f;
 		border-radius: 10rem;
-		padding: .8rem 1.2rem;
+		padding: 0.8rem 1.2rem;
 		min-width: 5rem;
 		text-align: center;
 	}
@@ -96,5 +95,18 @@
 		top: -50%;
 		left: 0;
 		width: 100%;
+	}
+	@media only screen and (max-width: 767px) {
+		.image-container {
+			width: 100%;
+			height: 20rem;
+		}
+
+		.image-container img {
+			position: absolute;
+			top: -50%;
+			left: 0;
+			width: 100%;
+		}
 	}
 </style>

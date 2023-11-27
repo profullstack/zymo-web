@@ -63,7 +63,7 @@ export const actions = ({connection: db}) => {
 
 				console.log('id apikey:', apikey);
 
-				return apikey[0].result[0];
+				return apikey.pop().pop();
 			} catch (err) {
 				console.error(err);
 				throw err;
@@ -80,7 +80,7 @@ export const actions = ({connection: db}) => {
 
 				console.log('all apikeys:', apikeys);
 
-				return apikeys[0].result;
+				return apikeys.pop();
 			} catch (err) {
 				console.error(err);
 				throw err;

@@ -11,14 +11,14 @@ export default {
 	},
 	async post(request) {
 		const { session, store, body } = request;
-		const next = body.get('next') || '/dashboard';
+		const next = body.next || '/dashboard';
 		const {
 			login: { Form },
 			User
 		} = store;
 
 		try {
-			const user = request.body.all();
+			const user = request.body;
 
 			await Form.validate(user);
 
