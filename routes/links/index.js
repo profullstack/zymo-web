@@ -12,13 +12,14 @@ export default {
 			link: { Form, Link }
 		} = store;
 
+		console.log('foo2:', session.get('user'), 'token2:', session.get('token'));
 		try {
 			const data = request.body.all();
 
 			await Form.validate(data);
 
 			try {
-				const link = await Link.create(data);
+				const link = await Link.create(data, session.get('token'));
 				console.log('link:', link);
 				return redirect('/dashboard');
 			} catch (err) {
