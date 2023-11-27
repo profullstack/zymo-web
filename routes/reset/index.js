@@ -1,41 +1,41 @@
-import { view, redirect } from 'primate';
+import { view, redirect } from "primate";
 
-const form = (params = {}) => view('reset/Form.svelte', { ...params });
+const form = (params = {}) => view("reset/Form.svelte", { ...params });
 
 export default {
 	get(request) {
-		const { session, query } = request;
-		return form();
+	  const { session, query } = request;
+	  return form();
 	},
 	async post(request) {
-		const { session, store, body } = request;
-		const next = body.get('next') || '/dashboard';
-		const {
-			reset: { Form, Reset },
-			User
-		} = store;
+	  const { session, store, body } = request;
+	  const next = body.next || "/dashboard";
+	  const {
+	    reset: { Form, Reset },
+	    User,
+	  } = store;
 
-		try {
-			const user = request.body.all();
+	  try {
+	    const user = request.body;
 
-			await Form.validate(user);
+	    await Form.validate(user);
 
-			let token;
-			let me;
+	    let token;
+	    let me;
 
-			try {
-                const mail = {
+	    try {
+	      const mail = {
 
                 };
-				token = await Reset.send(mail);
-				me = await User.me();
-			} catch (err) {
-				return form({ status: err.message });
-			}
+	      token = await Reset.send(mail);
+	      me = await User.me();
+	    } catch (err) {
+	      return form({ status: err.message });
+	    }
 
-			return redirect('/');
-		} catch ({ errors }) {
-			return form({ errors });
-		}
-	}
+	    return redirect("/");
+	  } catch ({ errors }) {
+	    return form({ errors });
+	  }
+	},
 };

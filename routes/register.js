@@ -26,7 +26,7 @@ export default {
 	    User,
 	  } = store;
 	  try {
-	    const user = request.body.all();
+	    const user = request.body;
 	    console.log("post user:", user);
 
 	    // validate

@@ -1,42 +1,42 @@
-import { view, redirect } from 'primate';
+import { view, redirect } from "primate";
 
-const form = (params = {}) => view('login/Form.svelte', { ...params });
+const form = (params = {}) => view("login/Form.svelte", { ...params });
 
 export default {
 	get(request) {
-		const { query } = request;
-		const next = query.get('next') || '/dashboard';
+	  const { query } = request;
+	  const next = query.get("next") || "/dashboard";
 
-		return form({ next });
+	  return form({ next });
 	},
 	async post(request) {
-		const { session, store, body } = request;
-		const next = body.next || '/dashboard';
-		const {
-			login: { Form },
-			User
-		} = store;
+	  const { session, store, body } = request;
+	  const next = body.next || "/dashboard";
+	  const {
+	    login: { Form },
+	    User,
+	  } = store;
 
-		try {
-			const user = request.body;
+	  try {
+	    const user = request.body;
 
-			await Form.validate(user);
+	    await Form.validate(user);
 
-			let token;
-			let me;
+	    let token;
+	    let me;
 
-			try {
-				token = await User.signin(user);
-				me = await User.me();
-			} catch (err) {
-				return form({ status: err.message });
-			}
+	    try {
+	      token = await User.signin(user);
+	      me = await User.me();
+	    } catch (err) {
+	      return form({ status: err.message });
+	    }
 
-			await session.create({ token, user: me, loggedIn: Boolean(token) });
+	    await session.create({ token, user: me, loggedIn: Boolean(token) });
 
-			return redirect(next);
-		} catch ({ errors }) {
-			return form({ errors });
-		}
-	}
+	    return redirect(next);
+	  } catch ({ errors }) {
+	    return form({ errors });
+	  }
+	},
 };
