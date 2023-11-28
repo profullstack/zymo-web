@@ -6,7 +6,7 @@
 DATA="DEFINE TABLE links SCHEMALESS
   PERMISSIONS 
     FOR select FULL,
-    FOR create WHERE \$scope = \"allusers\",
+    FOR create WHERE \$scope = \"allusers\" OR \$scope = \"apiusers\",
 	FOR update WHERE createdBy = \$auth.id,
 	FOR delete WHERE createdBy = \$auth.id;
 	DEFINE INDEX idx_alias ON links COLUMNS alias UNIQUE;

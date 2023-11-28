@@ -133,7 +133,7 @@
 <ol>
 {#each apikeys as apikey}
     <li>
-        {apikey.name}
+        {apikey.name} - {apikey.id}
          <nav>
             <a href="/apikeys/{apikey.id}">edit</a>
             <a href="#" on:click={(e) => {

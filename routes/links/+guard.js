@@ -1,6 +1,6 @@
 import { redirect } from 'primate';
 
-export default (request) => {
+export default async (request) => {
 	const {
 		url: { pathname },
 		session,
@@ -10,7 +10,7 @@ export default (request) => {
 
 	console.log('loggedIn:', session.get('loggedIn'));
 
-	if (session.get('loggedIn') || User.tryApiLogin(request)) {
+	if (session.get('loggedIn') || await User.tryApiLogin(request)) {
 		return true;
 	}
 
