@@ -21,13 +21,15 @@ export const actions = ({connection: db}) => {
 
 			try {
 				// await db.authenticate(token);
-				const link = await db.create('links', {
+				const body = {
 					url,
 					alias,
 					createdBy: me.id,
 					createdAt: new Date().toISOString(),
 					updatedAt: new Date().toISOString()
-				});
+				};
+				console.log('body:', body);
+				const link = await db.create('links', body);
 
 				console.log('link foobar: ', link);
 				return link;
