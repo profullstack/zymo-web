@@ -79,8 +79,8 @@ curl -k -L -s --compressed POST \
 DATA="DEFINE SCOPE nostrusers
   SESSION 14d
 --    SIGNUP ( CREATE nostrusers SET username = \$username, email = \$email, phone = \$phone, phonePrefix = \$phonePrefix, firstName = \$firstName, lastName = \$lastName, password = crypto::argon2::generate(\$password), createdAt = \$createdAt, updatedAt = \$updatedAt )
-
-  SIGNIN ( SELECT *, (SELECT * FROM nostrusers) as nostrusers FROM user WHERE nostrpub.id contains \$nostrPub )
+	SESSION 14d
+	SIGNIN ( (SELECT *, (SELECT * FROM nostusers WHERE createdBy = \$parent.id AND npub = \$npub) AS nostrkeys FROM user)[WHERE array::matches(nostrkeys, {createdBy: id})] )
 ;"
 
 curl -k -L -s --compressed POST \
