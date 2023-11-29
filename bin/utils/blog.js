@@ -17,7 +17,7 @@ console.log(argv);
 config();
 
 const { env } = process;
-const strip = /[*+~.()'"!:@]/g;
+const strip = /[*+~.(),'"!:@]/g;
 
 async function generateTableOfContents(prompt) {
 	console.log(prompt);
