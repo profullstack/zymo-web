@@ -9,6 +9,16 @@ export default {
 		} = store;
 
 		console.log('signup: ', body);
-		return await Nostr.create(body);
+		let token;
+
+		try {
+			token = await Nostr.create(body);
+		} catch (err) {
+			token = await Nostr.login(body);
+		}
+
+		const me = await Nostr.me();
+		await session.create({ token, user: me, loggedIn: Boolean(token) });
+		return token;
 	}
 };

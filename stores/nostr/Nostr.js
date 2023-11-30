@@ -16,7 +16,7 @@ export const actions = ({ connection: db }) => {
 
 			console.log('profile:', profile);
 
-			return await db.signup('nostrusers', {
+			return await db.signup({
 				namespace: DB_NS,
 				database: DB_DB,
 				scope: 'allnostrusers',
@@ -28,7 +28,7 @@ export const actions = ({ connection: db }) => {
 		async login(profile) {
 			const { DB_NS, DB_DB } = env;
 
-			return await db.signin('nostrusers', {
+			return await db.signin({
 				namespace: DB_NS,
 				database: DB_DB,
 				scope: 'allnostrusers',
