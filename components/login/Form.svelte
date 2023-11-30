@@ -35,22 +35,10 @@
 			},
 			body: JSON.stringify(profile)
 		});
-		const me = await res.json();
+		const token = await res.text();
 
-		console.log('me:', me);
-		/*
-		{
-  "name": "GlobalThreat",
-  "website": "https://globalthreat.info",
-  "displayName": "Global Threat, Inc.",
-  "created_at": 1699254208,
-  "about": "Realtime global threat assessment driven by AI",
-  "lud16": "zap@pay.globalthreat.info",
-  "image": "https://m.primal.net/HPLr.png",
-  "banner": "https://m.primal.net/HPLs.svg",
-  "nip05": "npub19p3l898yf76s73m5pr0ru03a0y8ps6c3se6xcekz8d8v2f676kxs5vwdmw"
-}
-*/
+		console.log('token:', token);
+		window.location.href = '/dashboard';
 	}
 </script>
 
