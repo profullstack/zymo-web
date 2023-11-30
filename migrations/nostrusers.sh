@@ -3,13 +3,14 @@
 . .env
 . .env.local
 
-DATA="DEFINE TABLE nostusers SCHEMALESS
+DATA="DEFINE TABLE nostrusers SCHEMALESS
   PERMISSIONS 
     FOR select FULL,
-    FOR create WHERE \$scope = \"allusers\",
-	FOR update WHERE createdBy = \$auth.id,
-	FOR delete WHERE createdBy = \$auth.id;
---	DEFINE INDEX idx_name ON nostrusers COLUMNS name UNIQUE;
+    FOR create NONE,
+	FOR update WHERE nip05 = \$auth.nip05,
+	FOR delete WHERE nip05 = \$auth.nip05;
+    DEFINE INDEX idx_name ON nostrusers COLUMNS name UNIQUE;
+	DEFINE INDEX idx_nip05 ON nostrusers COLUMNS nip05 UNIQUE;
 "
 # 	-- FOR select WHERE \$scope = \"allusers\" -- limit to only users in db
 
