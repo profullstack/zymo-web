@@ -1,5 +1,3 @@
-import { redirect } from 'primate';
-
 export default {
 	async post(request) {
 		const { path, store, headers } = request;
@@ -8,7 +6,7 @@ export default {
 		const data = request.body;
 
 		console.log('id track:', id);
-		await Track.visit(id, headers, data);
+		await Track.visit(id, headers.json(), data);
 
 		return {
 			status: 'Ok'
