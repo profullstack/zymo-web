@@ -14,6 +14,7 @@ export const actions = ({connection: db}) => {
 			const me = await this.me();
 
 			console.log('visit:', headers);
+			console.log('id2:', id);
 
 			try {
 				const link = await db.query(
