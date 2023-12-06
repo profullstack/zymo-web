@@ -1,6 +1,11 @@
 <script>
 	export let posts = [];
+	export let tag = '';
 </script>
+
+<svelte:head>
+	<title>{tag} blog posts</title>
+</svelte:head>
 
 <section class="blog-idx">
 	<h1>Blog</h1>
