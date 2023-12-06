@@ -38,6 +38,6 @@ export default {
 		const tag = path.get('tag');
 		const posts = await loadPosts(tag);
 
-		return view('blog/Index.svelte', { APP_NAME, APP_DESCRIPTION, posts });
+		return view('blog/Index.svelte', { APP_NAME, APP_DESCRIPTION, posts, tag });
 	}
 };
