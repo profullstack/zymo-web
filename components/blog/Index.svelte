@@ -1,14 +1,16 @@
 <script>
 	export let posts = [];
 	export let tag = '';
+
+	const title = `${tag.split('-').join(' ')} blog posts`.trim();
 </script>
 
 <svelte:head>
-	<title>{tag} blog posts</title>
+	<title>{title}</title>
 </svelte:head>
 
 <section class="blog-idx">
-	<h1>Blog</h1>
+	<h1>{title}</h1>
 
 	{#if posts.length}
 		<ul>
