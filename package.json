@@ -31,7 +31,7 @@
 		"jsdom": "^23.0.1",
 		"marked": "^11.1.0",
 		"minimist": "^1.2.8",
-		"primate": "^0.27.5",
+		"primate": "^0.27.6",
 		"promisify": "^0.0.3",
 		"runtime-compat": "^0.32.3",
 		"sharp": "^0.33.0",
