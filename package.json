@@ -17,7 +17,7 @@
 	"dependencies": {
 		"@nostr-dev-kit/ndk": "^2.3.1",
 		"@primate/build": "^0.2.0",
-		"@primate/frontend": "^0.10.0",
+		"@primate/frontend": "^0.10.1",
 		"@primate/liveview": "^0.10.0",
 		"@primate/session": "^0.15.0",
 		"@primate/store": "^0.20.2",
