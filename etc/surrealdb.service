@@ -1,0 +1,17 @@
+[Unit]
+Description=surrealdb
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=ubuntu
+WorkingDirectory=/home/ubuntu/hynt.us/hynt-web
+ExecStart=/home/ubuntu/www/hynt.us/hynt-web/bin/surrealdb-start.sh
+StandardOutput=append:/var/log/surrealdb.log
+StandardError=append:/var/log/surrealdb.error.log
+
+[Install]
+WantedBy=multi-user.target
