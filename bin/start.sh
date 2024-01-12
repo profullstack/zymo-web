@@ -6,8 +6,5 @@
 . .env
 . .env.local
 
-
-npm run db:start &
-sleep 10
 PORT=$PORT NODE_ENV=$NODE_ENV npm start
 
