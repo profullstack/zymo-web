@@ -1,0 +1,17 @@
+[Unit]
+Description=gpuprices-web
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=ubuntu
+WorkingDirectory=/home/ubuntu/www/gpuprices.lol/gpuprices-web/
+ExecStart=/home/ubuntu/www/gpuprices.lol/gpuprices-web/bin/start.sh
+StandardOutput=append:/var/log/gpuprices-web.log
+StandardError=append:/var/log/gpuprices-web.error.log
+
+[Install]
+WantedBy=multi-user.target
