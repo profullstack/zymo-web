@@ -3,12 +3,30 @@
 	import Results from './Results.svelte';
 
 	export let results = [];
+
+	async function search(event) {
+		const search = event.detail;
+
+		const res = await fetch('/prices', {
+			method: 'POST',
+			headers: {
+				'content-type': 'application/json',
+			},
+			body: JSON.stringify(search)
+		});
+
+		if (res.ok) {
+			results = await res.json();
+		}
+	}
+
+	$: results;
 </script>
 
 <h1>GPU Prices</h1>
 
 <div class="results">
-	<SearchBar />
+	<SearchBar on:search={search} />
 	<Results {results} />
 </div>
 
