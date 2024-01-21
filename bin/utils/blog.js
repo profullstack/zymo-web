@@ -72,7 +72,7 @@ async function generateBlogPost(toc) {
 			Authorization: `Bearer ${env.OPENAI_API_KEY}`
 		},
 		body: JSON.stringify({
-			model: 'gpt-3.5-turbo',
+			model: 'gpt-4-1106-preview',
 			messages: [{ role: 'system', content: prompt }],
 			max_tokens: 4000 - Number(tokenSize)
 		})
