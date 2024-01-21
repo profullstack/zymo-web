@@ -15,7 +15,7 @@
 		"deploy": "./bin/deploy.sh"
 	},
 	"dependencies": {
-		"@nostr-dev-kit/ndk": "^2.3.1",
+		"@nostr-dev-kit/ndk": "^2.3.3",
 		"@primate/build": "^0.2.0",
 		"@primate/frontend": "^0.10.1",
 		"@primate/liveview": "^0.10.0",
@@ -23,27 +23,27 @@
 		"@primate/store": "^0.20.2",
 		"@primate/types": "^0.11.0",
 		"@primate/ws": "^0.9.0",
-		"dotenv-flow": "^4.0.1",
-		"esbuild": "^0.19.10",
-		"fast-csv": "^4.3.6",
+		"dotenv-flow": "^4.1.0",
+		"esbuild": "^0.19.11",
+		"fast-csv": "^5.0.0",
 		"flag-icons": "^7.1.0",
 		"handlebars": "^4.7.8",
-		"jsdom": "^23.0.1",
-		"marked": "^11.1.0",
+		"jsdom": "^23.2.0",
+		"marked": "^11.1.1",
 		"minimist": "^1.2.8",
 		"primate": "^0.27.6",
 		"promisify": "^0.0.3",
 		"runtime-compat": "^0.32.3",
-		"sharp": "^0.33.1",
+		"sharp": "^0.33.2",
 		"slugify": "^1.6.6",
 		"surrealdb.js": "^0.11.0",
-		"svelte": "^4.2.8",
-		"twilio": "^4.20.0"
+		"svelte": "^4.2.9",
+		"twilio": "^4.20.1"
 	},
 	"devDependencies": {
 		"maximin": "^0.2.2",
-		"nodemon": "^3.0.2",
-		"prettier": "^3.1.1",
+		"nodemon": "^3.0.3",
+		"prettier": "^3.2.4",
 		"prettier-plugin-svelte": "^3.1.2"
 	},
 	"type": "module"
