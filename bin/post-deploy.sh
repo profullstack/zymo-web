@@ -30,7 +30,7 @@ if [ -d "$HOME/www/${name}/${project}" ]; then
     # run migrations
     ./migrations/users.sh
     # ./migrations/comments.sh
-    ./migrations/links.sh
+    # ./migrations/links.sh
     ./migrations/apikeys.sh
     ./migrations/nostrusers.sh
 
