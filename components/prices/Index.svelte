@@ -1,13 +1,15 @@
 <script>
 	import SearchBar from './SearchBar.svelte';
 	import Results from './Results.svelte';
+
+	export let results = [];
 </script>
 
 <h1>GPU Prices</h1>
 
 <div class="results">
 	<SearchBar />
-	<Results />
+	<Results {results} />
 </div>
 
 <style>

@@ -1,6 +1,14 @@
 <nav>
 	<form>
 		<fieldset>
+			<legend>Search</legend>
+			<div class="field">
+				<label>
+					<input type="text" name="search" value="" placeholder="Enter search"/>
+				</label>
+			</div>
+		</fieldset>
+		<fieldset>
 			<legend>GPU Type</legend>
 			<div class="field">
 				<label>

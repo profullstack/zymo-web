@@ -1,11 +1,15 @@
-import {view} from "primate";
+import { view } from 'primate';
 
 export default {
 	async get(request) {
-        const { session, path, store } = request;
+		const { session, path, store } = request;
+		const {
+			prices: { GPU }
+		} = store;
 
-	    // const userId = session.get('user').id;
+		const results = await GPU.search(request.body);
 
-        return view("prices/Index.svelte", {  });
-  }
+		console.log(JSON.stringify(results, null, 2));
+		return view('prices/Index.svelte', { results });
+	}
 };
