@@ -6,6 +6,5 @@
 . .env
 . .env.local
 
-
-npm run db:start &
+npm run db:start
 

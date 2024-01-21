@@ -4,11 +4,11 @@
 	"scripts": {
 		"dev": "npx primate",
 		"start": "npx primate serve",
-		"db:start": ". ./.env && . ./.env.local && SURREAL_INSECURE_FORWARD_SCOPE_ERRORS=true surreal start --log trace -A --auth --user root --pass root --bind 0.0.0.0:$DB_PORT file://${HOME}/data/db",
+		"db:start": ". ./.env && . ./.env.local && SURREAL_INSECURE_FORWARD_SCOPE_ERRORS=true surreal start --log trace -A --auth --user root --pass root --bind 0.0.0.0:$DB_PORT file:///${HOME}/data/db",
 		"db:console": ". ./.env && . ./.env.local && surreal sql --conn http://localhost:$DB_PORT --user root --pass root --ns $DB_NS --db $DB_DB --pretty",
 		"db:export": ". ./.env && . ./.env.local && surreal export --conn http://localhost:$DB_PORT --user root --pass root --ns $DB_NS --db $DB_DB dump.sql",
 		"db:import": ". ./.env && . ./.env.local && surreal import --conn http://localhost:$DB_PORT --user root --pass root --ns $DB_NS --db $DB_DB dump.sql",
-		"win:db:start": "call ./.env.bat && call ./.env.local.bat && surreal start -A --user root --pass root --bind 0.0.0.0:$DB_PORT file://${HOME}/data/db",
+		"win:db:start": "call ./.env.bat && call ./.env.local.bat && surreal start -A --user root --pass root --bind 0.0.0.0:$DB_PORT file:///${HOME}/data/db",
 		"win:db:console": "call ./.env.bat && call ./.env.local.bat && surreal sql --conn http://localhost:$DB_PORT --user root --pass root --ns $DB_NS --db $DB_DB --pretty",
 		"win:db:export": "call ./.env.bat && call ./.env.local.bat && surreal export --conn http://localhost:$DB_PORT --user root --pass root --ns $DB_NS --db $DB_DB dump.sql",
 		"win:db:import": "call ./.env.bat && call ./.env.local.bat && surreal import --conn http://localhost:$DB_PORT --user root --pass root --ns $DB_NS --db $DB_DB dump.sql",
