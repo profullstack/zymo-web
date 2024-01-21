@@ -1,23 +1,37 @@
+<script>
+	import { createEventDispatcher } from 'svelte';
+
+	let search = {
+		query: '',
+		priceRange: '',
+		priceRangeMin: '',
+		priceRangeMax: '',
+		graphicsRam: [],
+		mfr: [],
+		interface: [],
+	};
+
+	const dispatch = createEventDispatcher();
+
+	function onSubmit(e) {
+		e.preventDefault();
+		console.log(e);
+		dispatch('search', { search });
+	}
+</script>
+
 <nav>
-	<form>
+	<form on:submit={onSubmit}>
 		<fieldset>
 			<legend>Search</legend>
 			<div class="field">
 				<label>
-					<input type="text" name="search" value="" placeholder="Enter search"/>
-				</label>
-			</div>
-		</fieldset>
-		<fieldset>
-			<legend>GPU Type</legend>
-			<div class="field">
-				<label>
-					<input type="checkbox" name="type" value="desktop" /> Desktop
-				</label>
-			</div>
-			<div class="field">
-				<label>
-					<input type="checkbox" name="type" value="server" /> Server
+					<input
+						type="text"
+						name="query"
+						bind:value={search.query}
+						placeholder="Enter search keyword"
+					/>
 				</label>
 			</div>
 		</fieldset>
@@ -25,37 +39,72 @@
 			<legend>Prices</legend>
 			<div class="field">
 				<label>
-					<input type="radio" name="priceRange" value="<25" /> Under $25
+					<input
+						type="radio"
+						name="priceRange"
+						bind:group={search.priceRange}
+						value="<25"
+					/> Under $25
 				</label>
 			</div>
 			<div class="field">
 				<label>
-					<input type="radio" name="priceRange" value="25,50" /> $25 - $50
+					<input
+						type="radio"
+						name="priceRange"
+						bind:group={search.priceRange}
+						value="25,50"
+					/> $25 - $50
 				</label>
 			</div>
 			<div class="field">
 				<label>
-					<input type="radio" name="priceRange" value="50,100" /> $50 - $100
+					<input
+						type="radio"
+						name="priceRange"
+						bind:group={search.priceRange}
+						value="50,100"
+					/> $50 - $100
 				</label>
 			</div>
 			<div class="field">
 				<label>
-					<input type="radio" name="priceRange" value="100,200" /> $100 - $200
+					<input
+						type="radio"
+						name="priceRange"
+						bind:group={search.priceRange}
+						value="100,200"
+					/> $100 - $200
 				</label>
 			</div>
 			<div class="field">
 				<label>
-					<input type="radio" name="priceRange" value="200+" /> $200 &amp; above
+					<input
+						type="radio"
+						name="priceRange"
+						bind:group={search.priceRange}
+						value="200+"
+					/> $200 &amp; above
 				</label>
 			</div>
 			<div class="field">
 				<label>
-					<input type="number" name="priceRangeMin" value="" placeholder="Min" />
+					<input
+						type="number"
+						name="priceRangeMin"
+						bind:value={search.priceRangeMin}
+						placeholder="Min"
+					/>
 				</label>
 			</div>
 			<div class="field">
 				<label>
-					<input type="number" name="priceRangeMax" value="" placeholder="Max" />
+					<input
+						type="number"
+						name="priceRangeMax"
+						bind:value={search.priceRangeMax}
+						placeholder="Max"
+					/>
 				</label>
 			</div>
 		</fieldset>
@@ -63,22 +112,42 @@
 			<legend>Graphics Ram</legend>
 			<div class="field">
 				<label>
-					<input type="checkbox" name="graphicsRam" value="GDDR3" /> GDDR3
+					<input
+						type="checkbox"
+						name="graphicsRam"
+						bind:group={search.graphicsRam}
+						value="GDDR3"
+					/> GDDR3
 				</label>
 			</div>
 			<div class="field">
 				<label>
-					<input type="checkbox" name="graphicsRam" value="GDDR5" /> GDDR5
+					<input
+						type="checkbox"
+						name="graphicsRam"
+						bind:group={search.graphicsRam}
+						value="GDDR5"
+					/> GDDR5
 				</label>
 			</div>
 			<div class="field">
 				<label>
-					<input type="checkbox" name="graphicsRam" value="GDDR6" /> GDDR6
+					<input
+						type="checkbox"
+						name="graphicsRam"
+						bind:group={search.graphicsRam}
+						value="GDDR6"
+					/> GDDR6
 				</label>
 			</div>
 			<div class="field">
 				<label>
-					<input type="checkbox" name="graphicsRam" value="GDDR6X" /> GDDR6X
+					<input
+						type="checkbox"
+						name="graphicsRam"
+						bind:group={search.graphicsRam}
+						value="GDDR6X"
+					/> GDDR6X
 				</label>
 			</div>
 		</fieldset>
@@ -86,12 +155,12 @@
 			<legend>Manufacturer</legend>
 			<div class="field">
 				<label>
-					<input type="checkbox" name="mfgr" value="AMD" /> AMD
+					<input type="checkbox" name="mfr" bind:group={search.mfr} value="AMD" /> AMD
 				</label>
 			</div>
 			<div class="field">
 				<label>
-					<input type="checkbox" name="mfgr" value="Nvidia" /> Nvidia
+					<input type="checkbox" name="mfr" bind:group={search.mfr} value="Nvidia" /> Nvidia
 				</label>
 			</div>
 		</fieldset>
@@ -99,35 +168,68 @@
 			<legend>Video Output Interface</legend>
 			<div class="field">
 				<label>
-					<input type="checkbox" name="interface" value="DisplayPort" /> DisplayPort
+					<input
+						type="checkbox"
+						name="interface"
+						bind:group={search.interface}
+						value="DisplayPort"
+					/> DisplayPort
 				</label>
 			</div>
 			<div class="field">
 				<label>
-					<input type="checkbox" name="interface" value="DVI" /> DVI
+					<input
+						type="checkbox"
+						name="interface"
+						bind:group={search.interface}
+						value="DVI"
+					/> DVI
 				</label>
 			</div>
 			<div class="field">
 				<label>
-					<input type="checkbox" name="interface" value="HDMI" /> HDMI
+					<input
+						type="checkbox"
+						name="interface"
+						bind:group={search.interface}
+						value="HDMI"
+					/> HDMI
 				</label>
 			</div>
 			<div class="field">
 				<label>
-					<input type="checkbox" name="interface" value="Mini DisplayPort" /> Mini DisplayPort
+					<input
+						type="checkbox"
+						name="interface"
+						bind:group={search.interface}
+						value="Mini DisplayPort"
+					/> Mini DisplayPort
 				</label>
 			</div>
 			<div class="field">
 				<label>
-					<input type="checkbox" name="interface" value="PCI Express" /> PCI Express
+					<input
+						type="checkbox"
+						name="interface"
+						bind:group={search.interface}
+						value="PCI Express"
+					/> PCI Express
 				</label>
 			</div>
 			<div class="field">
 				<label>
-					<input type="checkbox" name="interface" value="VGA" /> VGA
+					<input
+						type="checkbox"
+						name="interface"
+						bind:group={search.interface}
+						value="VGA"
+					/> VGA
 				</label>
 			</div>
 		</fieldset>
+		<footer>
+			<button>Search</button>
+		</footer>
 	</form>
 </nav>
 
