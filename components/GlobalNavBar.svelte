@@ -27,5 +27,4 @@
         <a href="/login">Login</a>
         <a href="/register">Signup</a>
     {/if}
-    <a href="/prices">GPU Prices</a>
 </nav>
