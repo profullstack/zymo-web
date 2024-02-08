@@ -16,7 +16,7 @@
 	},
 	"dependencies": {
 		"@nostr-dev-kit/ndk": "^2.4.0",
-		"@primate/build": "^0.3.1",
+		"@primate/build": "^0.3.2",
 		"@primate/frontend": "^0.11.0",
 		"@primate/liveview": "^0.11.0",
 		"@primate/session": "^0.16.0",
@@ -29,7 +29,7 @@
 		"flag-icons": "^7.1.0",
 		"handlebars": "^4.7.8",
 		"jsdom": "^24.0.0",
-		"marked": "^11.2.0",
+		"marked": "^11.0.0",
 		"minimist": "^1.2.8",
 		"primate": "^0.28.0",
 		"promisify": "^0.0.3",
@@ -37,13 +37,13 @@
 		"sharp": "^0.33.2",
 		"slugify": "^1.6.6",
 		"surrealdb.js": "^0.11.0",
-		"svelte": "^4.2.9",
+		"svelte": "^4.2.10",
 		"twilio": "^4.21.0"
 	},
 	"devDependencies": {
 		"maximin": "^0.2.2",
 		"nodemon": "^3.0.3",
-		"prettier": "^3.2.4",
+		"prettier": "^3.2.5",
 		"prettier-plugin-svelte": "^3.1.2"
 	},
 	"type": "module"
