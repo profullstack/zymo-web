@@ -3,11 +3,10 @@ import store from '@primate/store';
 import { surrealdb } from '@primate/store';
 import types from '@primate/types';
 import session from '@primate/session';
-import ws from '@primate/ws';
 import { esbuild } from '@primate/build';
 // import liveview from '@primate/liveview';
 import { config } from 'dotenv-flow';
-import { Logger } from 'primate';
+import { Logger, ws } from 'primate';
 
 config();
 
