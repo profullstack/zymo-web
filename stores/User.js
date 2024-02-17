@@ -1,4 +1,4 @@
-import env from 'runtime-compat/env';
+import env from 'rcompat/env';
 import { primary } from '@primate/types';
 
 export const actions = ({ connection: db }) => {
