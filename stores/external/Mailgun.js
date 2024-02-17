@@ -1,6 +1,6 @@
-import env from 'runtime-compat/env';
-import { Base64 } from 'runtime-compat/string';
-import { MediaType } from 'runtime-compat/http';
+import env from 'rcompat/env';
+import { Base64 } from 'rcompat/string';
+import { MediaType } from 'rcompat/http';
 
 export const ambiguous = true;
 

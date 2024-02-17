@@ -15,11 +15,11 @@
 		"deploy": "./bin/deploy.sh"
 	},
 	"dependencies": {
-		"@nostr-dev-kit/ndk": "^2.4.1",
+		"@nostr-dev-kit/ndk": "^2.4.2",
 		"@primate/build": "^0.4.2",
-		"@primate/frontend": "^0.13.5",
+		"@primate/frontend": "^0.13.9",
 		"@primate/session": "^0.17.1",
-		"@primate/store": "^0.22.2",
+		"@primate/store": "^0.22.3",
 		"@primate/types": "^0.13.1",
 		"dotenv-flow": "^4.1.0",
 		"esbuild": "^0.20.0",
@@ -29,13 +29,12 @@
 		"jsdom": "^24.0.0",
 		"marked": "^12.0.0",
 		"minimist": "^1.2.8",
-		"primate": "^0.29.5",
+		"primate": "^0.29.7",
 		"promisify": "^0.0.3",
-		"runtime-compat": "^0.32.3",
 		"sharp": "^0.33.2",
 		"slugify": "^1.6.6",
 		"surrealdb.js": "^0.11.0",
-		"svelte": "^4.2.10",
+		"svelte": "^4.2.11",
 		"twilio": "^4.22.0"
 	},
 	"devDependencies": {
