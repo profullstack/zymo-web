@@ -18,6 +18,7 @@ if [ -d "$HOME/www/${name}/${project}" ]; then
     nvm install v20
     node -v
     npm -v
+    rm -f package-lock.json
     npm cache clean --force
     npm cache verify
     npm i
