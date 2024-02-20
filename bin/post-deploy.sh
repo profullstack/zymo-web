@@ -18,6 +18,8 @@ if [ -d "$HOME/www/${name}/${project}" ]; then
     nvm install v20
     node -v
     npm -v
+    npm cache clean --force
+    npm cache verify
     npm i
 		# curl --proto '=https' --tlsv1.2 -sSf https://install.surrealdb.com | sh -s -- --nightl
     sudo systemctl stop ${META_SERVICE}
