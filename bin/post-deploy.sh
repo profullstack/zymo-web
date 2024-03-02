@@ -19,6 +19,7 @@ if [ -d "$HOME/www/${name}/${project}" ]; then
     node -v
     npm -v
     rm -f package-lock.json
+    rm -rf ./node_modules
     npm cache clean --force
     npm cache verify
     npm i
@@ -41,4 +42,5 @@ if [ -d "$HOME/www/${name}/${project}" ]; then
   else
     echo "One or both directories do not exist"
 fi
+
 
