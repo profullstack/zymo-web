@@ -15,7 +15,7 @@
 		"deploy": "./bin/deploy.sh"
 	},
 	"dependencies": {
-		"@nostr-dev-kit/ndk": "^2.5.1",
+		"@nostr-dev-kit/ndk": "^2.6.1",
 		"@primate/build": "^0.5.1",
 		"@primate/frontend": "^0.14.1",
 		"@primate/session": "^0.18.0",
