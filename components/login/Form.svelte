@@ -31,7 +31,7 @@
 		const res = await fetch('/api/nostr/signup', {
 			method: 'POST',
 			headers: {
-				'content-type': 'application/json',
+				'content-type': 'application/json'
 			},
 			body: JSON.stringify(profile)
 		});
