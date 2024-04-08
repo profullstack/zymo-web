@@ -1,0 +1,17 @@
+[
+	{
+	  "name": "Newspaper Delivery",
+	  "price": 29,
+	  "mode": "subscription"
+	},
+	{
+	  "name": "Milk Delivery",
+	  "price": 99,
+	  "mode": "subscription"
+	},
+	{
+	  "name": "Refrigerator",
+	  "price": 2499,
+	  "mode": "payment"
+	}
+  ]
