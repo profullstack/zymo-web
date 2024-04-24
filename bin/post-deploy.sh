@@ -37,6 +37,8 @@ if [ -d "$HOME/www/${name}/${project}" ]; then
     # ./migrations/comments.sh
     ./migrations/links.sh
     ./migrations/apikeys.sh
+    ./migrations/products.sh
+    ./migrations/send_email.sh
     ./migrations/nostrusers.sh
 
   else
