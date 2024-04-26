@@ -20,3 +20,4 @@ curl -k -L -s --compressed POST \
 	--user "root:root" \
 	--data "${DATA}" \
 	${DB_SQL_URL}
+
