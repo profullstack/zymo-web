@@ -21,8 +21,8 @@ if [ -d "$HOME/www/${name}/${project}" ]; then
     rm -f package-lock.json
     rm -f pnpm-lock.yaml
     rm -rf ./node_modules
-    pnpm cache clean --force
-    pnpm cache verify
+    #pnpm cache clean --force
+    #pnpm cache verify
     pnpm i
 		# curl --proto '=https' --tlsv1.2 -sSf https://install.surrealdb.com | sh -s -- --nightl
     sudo systemctl stop ${META_SERVICE}
