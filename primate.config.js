@@ -6,7 +6,7 @@ import session from '@primate/session';
 import { esbuild } from '@primate/build';
 // import liveview from '@primate/liveview';
 import { config } from 'dotenv-flow';
-import { Logger, ws } from 'primate';
+import { Logger} from 'primate';
 
 config();
 
@@ -73,7 +73,7 @@ export default {
 		}),
 		types(),
 		session(),
-		ws(),
+		// ws(),
 		esbuild({
 			options: {
 				minify: false
