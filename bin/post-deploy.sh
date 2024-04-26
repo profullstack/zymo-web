@@ -17,12 +17,13 @@ if [ -d "$HOME/www/${name}/${project}" ]; then
     cd $HOME/www/${name}/${project}
     nvm install v20
     node -v
-    npm -v
+    pnpm -v
     rm -f package-lock.json
+    rm -f pnpm-lock.yaml
     rm -rf ./node_modules
-    npm cache clean --force
-    npm cache verify
-    npm i
+    pnpm cache clean --force
+    pnpm cache verify
+    pnpm i
 		# curl --proto '=https' --tlsv1.2 -sSf https://install.surrealdb.com | sh -s -- --nightl
     sudo systemctl stop ${META_SERVICE}
     sudo systemctl stop surrealdb

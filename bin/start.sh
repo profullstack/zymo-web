@@ -6,5 +6,5 @@
 . .env
 . .env.local
 
-PORT=$PORT NODE_ENV=$NODE_ENV npm start
+PORT=$PORT NODE_ENV=$NODE_ENV pnpm start
 
