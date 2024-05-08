@@ -21,6 +21,7 @@ if [ -d "$HOME/www/${name}/${project}" ]; then
     rm -f package-lock.json
     rm -f pnpm-lock.yaml
     rm -rf ./node_modules
+		npm i -g pnpm
     #pnpm cache clean --force
     #pnpm cache verify
     pnpm i
