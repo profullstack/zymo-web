@@ -3,8 +3,6 @@ import store from '@primate/store';
 import { surrealdb } from '@primate/store';
 import types from '@primate/types';
 import session from '@primate/session';
-import { esbuild } from '@primate/build';
-// import liveview from '@primate/liveview';
 import { config } from 'dotenv-flow';
 import { Logger, ws } from 'primate';
 
@@ -54,7 +52,9 @@ export default {
 					.replaceAll('APP_NAME', APP_NAME)
 					.replaceAll('APP_SHORT_NAME', APP_SHORT_NAME)
 					.replaceAll('APP_DESCRIPTION', APP_DESCRIPTION)
-		}
+		},
+		minify: false,
+		excludes: ['woff', 'ttf', 'png', 'jpg', 'jpeg', 'mp4', 'mp3', 'svg']
 	},
 	modules: [
 		handlebars(),
@@ -73,12 +73,6 @@ export default {
 		}),
 		types(),
 		session(),
-		ws(),
-		esbuild({
-			options: {
-				minify: false
-			},
-			ignores: ['woff', 'ttf', 'png', 'jpg', 'jpeg', 'mp4', 'mp3', 'svg']
-		})
+		ws()
 	]
 };
