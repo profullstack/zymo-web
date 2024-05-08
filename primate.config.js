@@ -54,7 +54,9 @@ export default {
 					.replaceAll('APP_DESCRIPTION', APP_DESCRIPTION)
 		},
 		minify: false,
-		excludes: ['woff', 'ttf', 'png', 'jpg', 'jpeg', 'mp4', 'mp3', 'svg']
+		excludes: ['woff', 'ttf', 'png', 'jpg', 'jpeg', 'mp4', 'mp3', 'svg'].map(
+			(ext) => `*.${ext}`
+		)
 	},
 	modules: [
 		handlebars(),
