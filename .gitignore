@@ -7,3 +7,4 @@ pnpm-lock.yaml
 .env.local.bat
 data/
 history.txt
+service_account_key.json
