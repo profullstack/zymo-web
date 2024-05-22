@@ -13,6 +13,7 @@ DATA="DEFINE TABLE user SCHEMAFULL
 DEFINE FIELD email ON user TYPE string;
 DEFINE FIELD phone ON user TYPE option<string>;
 DEFINE FIELD stripeCustomerId ON user TYPE option<string>;
+DEFINE FIELD googleRefreshToken ON user TYPE option<string>;
 DEFINE FIELD phonePrefix ON user TYPE option<string>;
 DEFINE FIELD firstName ON user TYPE string;
 DEFINE FIELD lastName ON user TYPE string;
