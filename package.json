@@ -37,7 +37,7 @@
 		"promisify": "^0.0.3",
 		"puppeteer-extra": "^3.3.6",
 		"puppeteer-extra-plugin-stealth": "^2.11.2",
-		"rcompat": "^0.11.2",
+		"rcompat": "^0.14.0",
 		"replicate": "^0.30.1",
 		"retext": "^9.0.0",
 		"retext-keywords": "^8.0.1",
@@ -53,7 +53,7 @@
 		"maximin": "^0.2.2",
 		"nodemon": "^3.1.2",
 		"pnpm": "^9.1.4",
-		"prettier": "^3.2.5",
+		"prettier": "^3.3.0",
 		"prettier-plugin-svelte": "^3.2.3"
 	},
 	"type": "module"
