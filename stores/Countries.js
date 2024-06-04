@@ -1,4 +1,4 @@
-import FS from 'rcompat/fs';
+import * as FS from 'rcompat/fs';
 
 const countries = await FS.File.join(import.meta.dirname, '..', 'static', 'country.json').json();
 
