@@ -3,10 +3,10 @@ import env from 'rcompat/env';
 import Stripe from 'stripe';
 
 
-function stringifyStripeBody(object, a = false) {
+function stringifyStripeBody(object) {
     var string = JSON.stringify(object, null, 2);
 
-    string = string.replaceAll(/(.*)"(.*)": \[\]/g, (_, space, name) => `${space}"${name}": [\n\n${space}]`);
+    string = string.replaceAll(/(.*)"(.*)": \[\]/g, (_, space, name) => `${space}"${name}": [\n${space}]`);
     string = string.replaceAll(/(.*)"(.*)": {}/g, (_, space, name) => `${space}"${name}": {\n${space}}`);
 
     return string;
@@ -19,14 +19,14 @@ export default {
     async post(request) {
         let { store, body } = request;
         let { STRIPE_WEBHOOK_SECRET } = process.env;
-        
+
         const stripe = new Stripe(env.STRIPE_SK);
-    
-        const { User, Payment } = store;
+
+        const { User, Payment, Product, Referral, Affiliate } = store;
 
         let event;
 
-        const listen_events = ['customer.subscription.updated', 'payment_intent.succeeded', 'customer.subscription.deleted']
+        const listen_events = ['customer.subscription.updated', 'payment_intent.succeeded', 'customer.subscription.deleted', 'charge.succeeded']
 
         if (!listen_events.includes(body.type)) return new Response(Status.OK)
 
@@ -72,13 +72,32 @@ export default {
             }
         }
 
-        switch (event.type) {
+        const addAffiliateCommission = async (session) => {
+            try {
+                const user = await User.getUserByStripeCustumerId(session.customer);
+                const referral = await Referral.getReferralByUserId(user.id);
 
+                if (referral) {
+                    const affiliate = await Affiliate.getByReferralCode(referral.referralCode);
+
+                    if (affiliate) {
+                        const commission = Math.round(((session.amount / 100) / 0.9) * 0.1);
+                        await Affiliate.addCommission(affiliate.id, affiliate.commissions + commission);
+                    }
+                }
+            } catch (err) {
+                console.error(err)
+            }
+        }
+
+        switch (event.type) {
+            case "charge.succeeded":
+                await addAffiliateCommission(session);
+                break;
             case "customer.subscription.updated":
                 await handlePaymentOrSubUpdate(session);
                 break;
             case "payment_intent.succeeded":
-                
                 if (!session.metadata || !session.metadata.productId) break;
                 await handlePaymentOrSubUpdate(session);
                 break;
@@ -86,7 +105,7 @@ export default {
                 await handlePaymentOrSubUpdate(session);
                 break;
             case "invoice.payment_succeeded":
-                
+
                 if (session["billing_reason"] == "subscription_create") {
                     const subscription_id = session["subscription"];
                     const payment_intent_id = session["payment_intent"];
