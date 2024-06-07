@@ -1,5 +1,21 @@
 <script>
     export let products = [];
+    
+    let stripePriceId;
+
+    async function createCheckoutSession(stripeProductId, priceId){
+
+        const response = await fetch('/payment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ stripeProductId, priceId })
+        });
+
+        const body = await response.json()
+        window.open(body.url, '_blank').focus()
+    }
 </script>
 
 <div>
@@ -13,17 +29,17 @@
                     {#if product.mode == "subscription"}
                         <div>
                             <label for="subscription_type">$ {product.price} / </label>
-                            <select id="{product.stripeProductId}_subscription_select">
+                            <select bind:value={product.stripePriceId}>
                                 {#each product.subscriptionPriceIds as subscriptionPriceId}
                                     <option value="{subscriptionPriceId.id}">{subscriptionPriceId.type}</option>
                                 {/each}
                             </select> 
                         </div>
                         
-                        <button onclick="createCheckoutSession('{product.stripeProductId}')">Subscribe</button>
+                        <button on:click={() => createCheckoutSession(product.stripeProductId, product.stripePriceId)}>Subscribe</button>
                     {:else}
                         <div> $ {product.price}</div>
-                        <button onclick="createCheckoutSession('{product.stripeProductId}', '{product.stripePriceId}')">Pay</button>
+                        <button on:click={() => createCheckoutSession(product.stripeProductId, product.stripePriceId)}>Pay</button>
                     {/if}
                 </div>
             {/each}
@@ -54,21 +70,7 @@
             }
         </style>
         <script>
-            async function createCheckoutSession(stripeProductId, priceId = null){
-
-                if(!priceId) priceId = document.getElementById(stripeProductId + "_subscription_select").value
-
-                const response = await fetch('/payment', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ stripeProductId, priceId })
-                });
-
-                const body = await response.json()
-                window.open(body.url, '_blank').focus()
-            }
+            
         </script>
     
     {:else}

@@ -1,8 +1,27 @@
 <script>
 	export let GOOGLE_CLIENT_ID, authorized, error, success, appointment;
 	export let type;
+	
+	let durationVisible = true;
+	let appointmentType = "call";
+
 	if(appointment){
 		type = appointment.extendedProperties.shared.type;
+	}
+
+	async function unauthorizeGoogleCalendar() {
+		fetch('/google/auth', {
+			method: 'POST'
+		});
+		window.location = window.location.href;
+	}
+
+	async function cancelAppointment() {
+		fetch('/appointment/cancel', {
+			method: 'POST'
+		});
+
+		window.location = window.location.href;
 	}
 </script>
 
@@ -38,17 +57,11 @@
 			{appointment.description}
 			<p></p>
 
-			<button onclick="cancelAppointment();" style="background-color: red;">
+			<button on:click={cancelAppointment} style="background-color: red;">
 				Cancel Appointment
 			</button>
 			<script>
-				function cancelAppointment() {
-					fetch('/appointment/cancel', {
-						method: 'POST'
-					});
-
-					window.location = window.location.href;
-				}
+				
 			</script>
 		{:else}
 			<link
@@ -56,14 +69,13 @@
 				href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
 			/>
 			<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+			
 			<form method="post">
 				<h3>Type</h3>
 				<select
 					name="type"
 					class="form_input"
-					onchange="hideDuration();"
-					onfocus="this.selectedIndex = -1;"
-					id="type"
+					on:change="{(e) => durationVisible = (e.target.value != 'pickup')}"
 					required>
 					<option value="call">Call</option>
 					<option value="pickup">Pickup</option>
@@ -75,7 +87,6 @@
 					class="form_input"
 					id="recurring"
 					required>
-					
 					<option value="disabled">Disabled</option>
 					<option value="daily">Daily</option>
 					<option value="weekly">Weekly</option>
@@ -94,16 +105,18 @@
 					style="height: 250px; width: 500px; max-width: none;"
 					required
 				/>
-				<h3 id="duration_label">Duration</h3>
-				<select name="duration" class="form_input" id="duration">
-					<option value="10">10 minutes</option>
-					<option value="30">30 minutes</option>
-					<option value="60"> 1 hour</option>
-				</select>
+				{#if durationVisible}
+					<h3>Duration</h3>
+					<select name="duration" class="form_input">
+						<option value="10">10 minutes</option>
+						<option value="30">30 minutes</option>
+						<option value="60"> 1 hour</option>
+					</select>
+				{/if}
 				<p></p>
 				<button type="submit">Schedule Appointment</button>
 			</form>
-			<button onclick="unauthorizeGoogle();" type="submit" style="background-color: red;">
+			<button on:click={unauthorizeGoogleCalendar} type="submit" style="background-color: red;">
 				Unauthorize Google Calendar
 			</button>
 
@@ -113,25 +126,6 @@
 					dateFormat: 'Y-m-d H:i',
 					minDate: 'today'
 				});
-				function hideDuration() {
-					const duration = document.getElementById('duration');
-					const durationLabel = document.getElementById('duration_label');
-					const type = document.getElementById('type');
-
-					if (type.value == 'pickup') {
-						duration.style.display = 'none';
-						durationLabel.style.display = 'none';
-					} else {
-						duration.style.display = 'block';
-						durationLabel.style.display = 'block';
-					}
-				}
-				function unauthorizeGoogle() {
-					fetch('/google/auth', {
-						method: 'POST'
-					});
-					location.reload();
-				}
 			</script>
 			<style>
 				input[type='text'] {
@@ -158,7 +152,7 @@
 		{/if}
 	{:else}
 		<div id="GOOGLE_CLIENT_ID" content={GOOGLE_CLIENT_ID}></div>
-
+		
 		<script src="https://accounts.google.com/gsi/client" async defer></script>
 		<script async defer>
 			const GOOGLE_CLIENT_ID = document
