@@ -3,22 +3,14 @@ import env from 'rcompat/env';
 import Stripe from 'stripe';
 
 
-function stringifyStripeBody(object) {
-    var string = JSON.stringify(object, null, 2);
-
-    string = string.replaceAll(/(.*)"(.*)": \[\]/g, (_, space, name) => `${space}"${name}": [\n${space}]`);
-    string = string.replaceAll(/(.*)"(.*)": {}/g, (_, space, name) => `${space}"${name}": {\n${space}}`);
-
-    return string;
-}
-
-
-
 export default {
 
     async post(request) {
-        let { store, body } = request;
-        let { STRIPE_WEBHOOK_SECRET } = process.env;
+        const { store } = request;
+        const originalBody = request.body;
+        const body = JSON.parse(request.body)
+
+        const { STRIPE_WEBHOOK_SECRET } = process.env;
 
         const stripe = new Stripe(env.STRIPE_SK);
 
@@ -31,16 +23,14 @@ export default {
         if (!listen_events.includes(body.type)) return new Response(Status.OK)
 
         try {
-            event = stripe.webhooks.constructEvent(stringifyStripeBody(body), request.headers.get('stripe-signature'), STRIPE_WEBHOOK_SECRET);
+            event = stripe.webhooks.constructEvent(originalBody, request.headers.get('stripe-signature'), STRIPE_WEBHOOK_SECRET);
         }
         catch (err) {
-            console.log("Webhook Error:", err)
+            console.error("Webhook Error:", err)
             return new Response(`Webhook Error: ${err.message}`, Status.ERROR)
         }
 
-
         const session = body.data.object;
-        const sessionId = session.id;
 
         const handlePaymentOrSubUpdate = async (session) => {
             const user = await User.getUserByStripeCustumerId(session.customer);
@@ -68,7 +58,7 @@ export default {
                         }
                 )
             } catch (e) {
-                console.log(e)
+                console.error(e)
             }
         }
 

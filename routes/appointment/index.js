@@ -21,6 +21,12 @@ const getOAuth2Client = () => {
 
 const acceptSharedCalendar = async (calendar) => {
 
+  /**
+   * Note: Ensure that a Google calendar is shared from a 
+   * regular Google account to your service account email address
+   * before running this function.
+   */
+
   const response = await calendar.calendarList.list();
   const calendars = response.data.items;
 
@@ -239,6 +245,10 @@ const getAppointment = async (id, appointmentStore, mainCalendarEventId, userCal
     mainCalendarEvent = mainCalendarEvent?.data
     userCalendarEvent = userCalendarEvent?.data
 
+    /**
+     * TODO: Implement Google webhooks to handle appointment cancellations.
+     */
+
     if (userCalendarEvent?.status === "cancelled" && mainCalendarEvent?.status !== "cancelled") {
       await mainCalendar.events.delete({ calendarId: GOOGLE_CALENDAR_ID, eventId: mainCalendarEventId });
       await appointmentStore.delete(id);
@@ -255,7 +265,6 @@ const getAppointment = async (id, appointmentStore, mainCalendarEventId, userCal
       await appointmentStore.delete(id);
       return null;
     }
-
 
     if (mainCalendarEvent.end.dateTime < Date.now()) {
 

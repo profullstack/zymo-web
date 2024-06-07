@@ -75,6 +75,18 @@ export default {
 		}),
 		types(),
 		session(),
-		ws()
+		ws(),
+		{
+			name: "stripe-webhook-intercept",
+			handle(request, next) {
+				if (request.url.pathname == "/payment/webhook") {
+					//set content-type to plain so the request body is unadulterated
+					request.original.headers.set("content-type", "text/plain");
+				}
+				return next({
+					...request,
+				})
+			},
+		}
 	]
 };
