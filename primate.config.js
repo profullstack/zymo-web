@@ -4,7 +4,7 @@ import { surrealdb } from '@primate/store';
 import types from '@primate/types';
 import session from '@primate/session';
 import { config } from 'dotenv-flow';
-import { Logger, ws } from 'primate';
+import { Logger } from 'primate';
 
 config();
 
@@ -75,7 +75,6 @@ export default {
 		}),
 		types(),
 		session(),
-		ws(),
 		{
 			name: "stripe-webhook-intercept",
 			handle(request, next) {
