@@ -37,7 +37,7 @@
 		"promisify": "^0.0.3",
 		"puppeteer-extra": "^3.3.6",
 		"puppeteer-extra-plugin-stealth": "^2.11.2",
-		"rcompat": "^0.16.0",
+		"rcompat": "^0.17.0",
 		"replicate": "^0.30.1",
 		"retext": "^9.0.0",
 		"retext-keywords": "^8.0.1",
