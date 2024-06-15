@@ -1,6 +1,6 @@
-# Hynt-Web: URL Shortener
+# Fastest-Engineer-Web: URL Shortener
 
-Hynt-Web is a URL shortening service that allows you to easily convert long and complex URLs into short, manageable links. It simplifies link sharing and tracking, making it ideal for various use cases, such as social media sharing, marketing campaigns, or personal convenience. This repository is ready for **Hacktoberfest 2023**
+Fastest-Engineer-Web: Ship your SaaS in days, not months. Start building and working on the features that matter and get to market quicker. Save weeks of work by using a ready made SAAS boilerplate.
 
 ![GitHub](https://img.shields.io/github/license/profullstack/hynt-web)
 ![GitHub issues](https://img.shields.io/github/issues/profullstack/hynt-web)
@@ -9,56 +9,67 @@ Hynt-Web is a URL shortening service that allows you to easily convert long and 
 
 ## Features
 
-- Shorten long URLs into user-friendly, custom aliases.
-- Track link click statistics and analytics.
-- Customizable link expiration and password protection.
-- User-friendly web interface for easy link management.
-- API support for programmatic link generation and retrieval.
+-   PrimateJS boilerplate
+-   SEO & Blog
+-   Mailgun emails
+-   Twilio SMS
+-   Stripe
+-   SurrealDB 1.x
+-   SurrealDB User Auth
+-   Svelte Components
+-   ChatGPT prompts for terms & privacy
+-   Discord community & Leaderboard
+-   Lifetime updates
+-   Pay once. Build unlimited projects!
 
 ## Getting Started
 
 ### Prerequisites
 
-To run Hynt-Web on your server, make sure you have the following prerequisites:
+To run Fastest-Web on your server, make sure you have the following prerequisites:
 
-- Node.js and npm installed.
-- Database system (e.g., MySQL, PostgreSQL, MongoDB) for storing link data.
-- Redis (optional) for caching and performance optimization.
+-   Node.js and npm installed.
+-   Database system (e.g., MySQL, PostgreSQL, MongoDB, SurrealDB) for storing link data.
+-   Redis (optional) for caching and performance optimization.
 
 ### Installation
 
-1. Clone the Hynt-Web repository to your server:
+1. Clone the Fastest-Web repository to your server:
 
-   ```shell
-   git clone https://github.com/yourusername/hynt-web.git
-   ```
+    ```shell
+    git clone https://github.com/fastestengineer/fastest-web.git
+    ```
 
 2. Install project dependencies:
 
-   ```shell
-   cd hynt-web
-   npm install
-   ```
+    ```shell
+    cd fastest-web
+    npm install
+    ```
 
 3. Configure your database connection and other settings in `.env` files.
 
-4. Start the Hynt-Web server:
+    # be sure to delete windows and/or linux variables if not using that OS
 
-   ```shell
-   npm run db:start
-   # new window
-   npm run dev
-   ```
+    cp .env.sample .env.local
 
-   The application will run on the default port (e.g., 3000). You can access it via your web browser at `http://localhost:3000`.
+4. Start the Fastest-Web server:
+
+    ```shell
+    npm run db:start
+    # new window
+    npm run dev
+    ```
+
+    The application will run on the default port (e.g., 3000). You can access it via your web browser at `http://localhost:3000`.
 
 ## Contributing
 
-We welcome contributions from the community. If you'd like to contribute to Hynt-Web, please follow these guidelines:
+We welcome contributions from the community. If you'd like to contribute to Fastest-Web, please follow these guidelines:
 
-- Fork the repository and create a new branch.
-- Ensure your code follows the coding standards and conventions.
-- Submit a pull request with a clear description of your changes.
+-   Fork the repository and create a new branch.
+-   Ensure your code follows the coding standards and conventions.
+-   Submit a pull request with a clear description of your changes.
 
 ## License
 
