@@ -21,6 +21,10 @@ Fastest-Engineer-Web: Ship your SaaS in days, not months. Start building and wor
 -   Discord community & Leaderboard
 -   Lifetime updates
 -   Pay once. Build unlimited projects!
+-   Affiliate program
+-   Calendar scheduling
+-   Event scheduling
+-   Live maps using openmaps
 
 ## Getting Started
 
