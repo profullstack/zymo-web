@@ -1,6 +1,6 @@
 import { view, Response, Status, redirect } from "primate";
 import env from 'rcompat/env';
-const { APP_DOMAIN } = env;
+const { APP_DOMAIN, AFFILIATE_COMMISSION_PERCENT } = env;
 
 export default {
 
@@ -20,7 +20,8 @@ export default {
         return view('AffiliateDashboard.svelte', {
             affiliate,
             referrals,
-            APP_DOMAIN
+            APP_DOMAIN,
+            AFFILIATE_COMMISSION_PERCENT
         });
     },
 

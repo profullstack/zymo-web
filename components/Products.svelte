@@ -11,7 +11,7 @@
 
     async function createCheckoutSession(stripeProductId, priceId){
 
-        const response = await fetch('/payment', {
+        const response = await fetch('/payment/stripe', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

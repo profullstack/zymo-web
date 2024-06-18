@@ -1,7 +1,7 @@
 <script>
 	export let payments = [];
 	async function cancelSubscription(subscriptionId) {
-		const response = await fetch('/payment/cancel', {
+		const response = await fetch('/payment/stripe/cancel', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'

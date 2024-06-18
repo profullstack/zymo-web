@@ -73,7 +73,8 @@ export default {
                     const affiliate = await Affiliate.getByReferralCode(referral.referralCode);
 
                     if (affiliate) {
-                        const commission = Math.round(((session.amount / 100) / 0.9) * 0.1);
+                        const originalAmount = session.amount / (100 - env.AFFILIATE_DISCOUNT_PERCENT);
+                        const commission = Math.round(originalAmount * env.AFFILIATE_COMMISSION_PERCENT);
                         await Affiliate.addCommission(affiliate.id, affiliate.commissions + commission);
                     }
                 }

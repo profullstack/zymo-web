@@ -3,7 +3,7 @@ import { redirect } from "primate";
 export default request => {
 	const { url: { pathname }} = request;
 
-	const allow = ['/payment/webhook',]
+	const allow = ['/payment/stripe/webhook',]
 	
 	if (allow.includes(pathname)) {
 		return true;

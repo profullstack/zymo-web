@@ -16,7 +16,7 @@ const getReferralCoupon = async () => {
 
       coupon = await stripe.coupons.create({
         duration: 'forever',
-        percent_off: 10,
+        percent_off: env.AFFILIATE_DISCOUNT_PERCENT,
       })
 
     }
@@ -81,7 +81,7 @@ export default {
       payment_intent_data,
     }
 
-    if (referral && coupon) {
+    if (referral && coupon && env.AFFILIATE_DISCOUNT_PERCENT) {
       checkoutData.discounts = [
         {
           coupon: coupon.id
