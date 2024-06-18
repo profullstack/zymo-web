@@ -42,6 +42,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Login</title>
+</svelte:head>
+
 <section>
 	<h1>Login</h1>
 
