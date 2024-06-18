@@ -2,6 +2,10 @@
 	export let APP_NAME, EMAIL, PHONE;
 </script>
 
+<svelte:head>
+	<title>Privacy</title>
+</svelte:head>
+
 <section>
 	<h1>Privacy Policy for {APP_NAME}</h1>
 

@@ -2,6 +2,10 @@
 	export let next, status, errors;
 </script>
 
+<svelte:head>
+	<title>Reset password</title>
+</svelte:head>
+
 <h1>Login</h1>
 
 <form method="post">

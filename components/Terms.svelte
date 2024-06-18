@@ -2,6 +2,10 @@
 	export let APP_NAME, EMAIL, PHONE;
 </script>
 
+<svelte:head>
+	<title>Terms</title>
+</svelte:head>
+
 <section>
 	<h1>Terms of Service for {APP_NAME}</h1>
 

@@ -4,6 +4,7 @@
 </script>
 
 <svelte:head>
+	<title>Register</title>
 	<link rel="stylesheet" href="/static/flags.css" />
 </svelte:head>
 
