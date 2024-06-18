@@ -5,17 +5,23 @@ export const actions = ({ connection: db }) => {
     return {
         async create(data) {
 
-            let { userId, status, subscriptionInterval, stripeSubscriptionId, productId, renewalDate, cancelAtPeriodEnd } = data;
+            let { userId, status, amount, subscriptionInterval, stripeSubscriptionId, productId, renewalDate, cancelAtPeriodEnd } = data;
 
             try {
+                
+                const now = new Date().toISOString();
+
                 const body = {
                     userId,
                     status,
+                    amount,
                     subscriptionInterval,
                     stripeSubscriptionId,
                     productId,
                     renewalDate,
-                    cancelAtPeriodEnd
+                    cancelAtPeriodEnd,
+                    createdAt: now,
+                    updatedAt: now
                 }
 
                 const payments = await db.create("payments", body);
@@ -30,7 +36,7 @@ export const actions = ({ connection: db }) => {
         async update(id, data) {
 
             try {
-                const payment = await db.merge(id, data);
+                const payment = await db.merge(id, {...data, updatedAt: new Date().toISOString()});
                 return payment;
 
             } catch (e) {
@@ -55,7 +61,7 @@ export const actions = ({ connection: db }) => {
             }
         },
         async getAllByUserId(id) {
-            const query = `SELECT * FROM payments WHERE userId = $id`;
+            const query = `SELECT * FROM payments WHERE userId = $id ORDER BY updatedAt DESC`;
 
             try {
 

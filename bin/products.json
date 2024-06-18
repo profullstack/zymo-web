@@ -1,17 +1,24 @@
 [
 	{
-	  "name": "Newspaper Delivery",
-	  "price": 29,
-	  "mode": "subscription"
+		"name": "FastestEngineer - Solopreneur",
+		"price": 279,
+		"mode": "payment"
 	},
 	{
-	  "name": "Milk Delivery",
-	  "price": 99,
-	  "mode": "subscription"
+		"name": "FastestEngineer - Serialpreneur",
+		"price": 479,
+		"mode": "payment"
 	},
 	{
-	  "name": "Refrigerator",
-	  "price": 2499,
-	  "mode": "payment"
+		"name": "FastestEngineer - MVP",
+		"price": 5000,
+		"mode": "subscription",
+		"subscriptionOptions": [{ "type": "month" }, { "type": "year", "price": 50000 }]
+	},
+	{
+		"name": "FastestEngineer - Enterprise",
+		"price": 20000,
+		"mode": "subscription",
+		"subscriptionOptions": [{ "type": "month" }, { "type": "year", "price": 200000 }]
 	}
-  ]
+]

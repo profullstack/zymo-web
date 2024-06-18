@@ -7,7 +7,17 @@ export const actions = ({ connection: db }) => {
 
             try {
 
-                return await db.select('products');
+                const query = `SELECT * FROM products ORDER BY createdAt`;
+
+                try {
+    
+                    const product = await db.query(query);
+    
+                    return product.pop();
+                } catch (e) {
+                    console.error(e)
+                    throw e;
+                }
 
             } catch (e) {
                 console.error(e)

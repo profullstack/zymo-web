@@ -1,4 +1,4 @@
-import { view } from "primate";
+import { view, redirect } from "primate";
 import env from 'rcompat/env';
 import Stripe from 'stripe'
 
@@ -29,7 +29,9 @@ const getReferralCoupon = async () => {
 }
 
 export default {
-
+  async get() {
+    return redirect("/products");
+  },
   async post(request) {
 
     const { body, store } = request;

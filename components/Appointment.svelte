@@ -1,11 +1,12 @@
 <script>
+	import { onMount } from 'svelte';
 	export let GOOGLE_CLIENT_ID, authorized, error, success, appointment;
 	export let type;
-	
-	let durationVisible = true;
-	let appointmentType = "call";
 
-	if(appointment){
+	let durationVisible = true;
+	let appointmentType = 'call';
+
+	if (appointment) {
 		type = appointment.extendedProperties.shared.type;
 	}
 
@@ -23,6 +24,44 @@
 
 		window.location = window.location.href;
 	}
+
+	var client;
+	
+	function loadScript(src) {
+		return new Promise((resolve, reject) => {
+			const script = document.createElement('script');
+			script.src = src;
+			script.async = true;
+			script.defer = true;
+			script.onload = resolve;
+			script.onerror = reject;
+			document.head.appendChild(script);
+		});
+	}
+
+	onMount(async () => {
+		if (authorized && !appointment) {
+			await loadScript('https://cdn.jsdelivr.net/npm/flatpickr');
+			flatpickr('#datetime', {
+				enableTime: true,
+				dateFormat: 'Y-m-d H:i',
+				minDate: 'today'
+			});
+		} else {
+			await loadScript('https://accounts.google.com/gsi/client');
+			client = google.accounts.oauth2.initCodeClient({
+				client_id: GOOGLE_CLIENT_ID,
+				scope: 'https://www.googleapis.com/auth/calendar openid profile email',
+				callback: async (response) => {
+					const authResponse = await fetch('/google/auth?code=' + response.code, {
+						method: 'GET'
+					});
+
+					location.reload();
+				}
+			});
+		}
+	});
 </script>
 
 <div>
@@ -37,13 +76,12 @@
 
 	{#if authorized == true}
 		{#if appointment}
-
 			<h3>Type</h3>
 			<p style="text-transform: capitalize">{type}</p>
 			<h3>Summary</h3>
 			{appointment.summary}
 
-			{#if type == "pickup"}
+			{#if type == 'pickup'}
 				<h3>Time</h3>
 				{new Date(appointment.start.dateTime).toLocaleString()} UTC
 			{:else}
@@ -61,32 +99,27 @@
 				Cancel Appointment
 			</button>
 			<script>
-				
 			</script>
 		{:else}
 			<link
 				rel="stylesheet"
 				href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
 			/>
-			<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-			
+
 			<form method="post">
 				<h3>Type</h3>
 				<select
 					name="type"
 					class="form_input"
-					on:change="{(e) => durationVisible = (e.target.value != 'pickup')}"
-					required>
+					on:change={(e) => (durationVisible = e.target.value != 'pickup')}
+					required
+				>
 					<option value="call">Call</option>
 					<option value="pickup">Pickup</option>
 					<option value="visit">Visit</option>
 				</select>
 				<h3>Recurring</h3>
-				<select
-					name="recurring"
-					class="form_input"
-					id="recurring"
-					required>
+				<select name="recurring" class="form_input" id="recurring" required>
 					<option value="disabled">Disabled</option>
 					<option value="daily">Daily</option>
 					<option value="weekly">Weekly</option>
@@ -116,17 +149,13 @@
 				<p></p>
 				<button type="submit">Schedule Appointment</button>
 			</form>
-			<button on:click={unauthorizeGoogleCalendar} type="submit" style="background-color: red;">
+			<button
+				on:click={unauthorizeGoogleCalendar}
+				type="submit"
+				style="background-color: red;"
+			>
 				Unauthorize Google Calendar
 			</button>
-
-			<script>
-				flatpickr('#datetime', {
-					enableTime: true,
-					dateFormat: 'Y-m-d H:i',
-					minDate: 'today'
-				});
-			</script>
 			<style>
 				input[type='text'] {
 					border: 1px solid #c3c3c3;
@@ -151,26 +180,6 @@
 			</style>
 		{/if}
 	{:else}
-		<div id="GOOGLE_CLIENT_ID" content={GOOGLE_CLIENT_ID}></div>
-		
-		<script src="https://accounts.google.com/gsi/client" async defer></script>
-		<script async defer>
-			const GOOGLE_CLIENT_ID = document
-				.getElementById('GOOGLE_CLIENT_ID')
-				.getAttribute('content');
-
-			const client = google.accounts.oauth2.initCodeClient({
-				client_id: GOOGLE_CLIENT_ID,
-				scope: 'https://www.googleapis.com/auth/calendar openid profile email',
-				callback: async (response) => {
-					const authResponse = await fetch('/google/auth?code=' + response.code, {
-						method: 'GET'
-					});
-
-					location.reload();
-				}
-			});
-		</script>
-		<button onclick="client.requestCode();">Authorize Google Calendar</button>
+		<button on:click={client.requestCode()}>Authorize Google Calendar</button>
 	{/if}
 </div>
