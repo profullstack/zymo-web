@@ -60,7 +60,7 @@ export default {
 	},
 	modules: [
 		handlebars(),
-		svelte(),
+		svelte({ spa: false }),
 		// liveview(),
 		store({
 			strict: true,
