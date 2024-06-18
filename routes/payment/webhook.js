@@ -41,6 +41,7 @@ export default {
                         ? {
                             userId: user.id,
                             status: session.status,
+                            amount: (session.plan.amount / 100),
                             subscriptionInterval: session.plan.interval,
                             stripeSubscriptionId: session.id,
                             renewalDate: session.current_period_end,
@@ -50,6 +51,7 @@ export default {
                         : {
                             userId: user.id,
                             status: "active",
+                            amount: (session.amount / 100),
                             subscriptionInterval: "",
                             stripeSubscriptionId: "",
                             renewalDate: 0,

@@ -3,6 +3,12 @@
     
     let stripePriceId;
 
+    const currencyFormatter = new Intl.NumberFormat('en-US', {
+		style: 'currency',
+		currency: 'USD',
+        maximumFractionDigits: 0,
+	});
+
     async function createCheckoutSession(stripeProductId, priceId){
 
         const response = await fetch('/payment', {
@@ -13,9 +19,23 @@
             body: JSON.stringify({ stripeProductId, priceId })
         });
 
+        if (response.redirected) {
+            window.location.href = response.url;
+        }
+
         const body = await response.json()
-        window.open(body.url, '_blank').focus()
+		window.location.href = body.url;
     }
+
+    function getSubscriptionPrice(product) {
+		const subscriptionOptions = product.subscriptionOptions;
+		const stripePriceId = product.stripePriceId;
+
+		let subscriptionPrice = subscriptionOptions.find((o) => o.id == stripePriceId).price;
+		if (!subscriptionPrice) subscriptionPrice = subscriptionOptions[0].price;
+
+		return subscriptionPrice;
+	}
 </script>
 
 <div>
@@ -28,15 +48,28 @@
                     <div class="title">{product.name}</div>
                     {#if product.mode == "subscription"}
                         <div>
-                            <label for="subscription_type">$ {product.price} / </label>
-                            <select bind:value={product.stripePriceId}>
-                                {#each product.subscriptionPriceIds as subscriptionPriceId}
-                                    <option value="{subscriptionPriceId.id}">{subscriptionPriceId.type}</option>
+                            <label>{currencyFormatter.format(product.price)} / </label>
+                            <select
+                                bind:value={product.stripePriceId}
+                                on:change={() =>
+                                    (product.price = getSubscriptionPrice(product))}
+                            >
+                                {#each product.subscriptionOptions as subscriptionOption}
+                                    <option value={subscriptionOption.id}
+                                        >{subscriptionOption.type}</option
+                                    >
                                 {/each}
-                            </select> 
+                            </select>
                         </div>
-                        
-                        <button on:click={() => createCheckoutSession(product.stripeProductId, product.stripePriceId)}>Subscribe</button>
+
+                        <button
+                            class="button button--primary"
+                            on:click={() =>
+                                createCheckoutSession(
+                                    product.stripeProductId,
+                                    product.stripePriceId
+                                )}>Subscribe</button
+                        >
                     {:else}
                         <div> $ {product.price}</div>
                         <button on:click={() => createCheckoutSession(product.stripeProductId, product.stripePriceId)}>Pay</button>

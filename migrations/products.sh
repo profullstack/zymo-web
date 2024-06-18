@@ -16,7 +16,7 @@ DEFINE FIELD mode ON products TYPE string;
 DEFINE FIELD stripeProductId ON products TYPE string;
 DEFINE FIELD stripePriceId ON products TYPE option<string>;
 DEFINE FIELD price ON products TYPE number;
-DEFINE FIELD subscriptionPriceIds ON products TYPE option<array>;
+DEFINE FIELD subscriptionOptions ON products TYPE option<array>;
 "
 
 
@@ -37,6 +37,7 @@ DATA="DEFINE TABLE payments SCHEMALESS
     FOR update, create WHERE \$scope = \"allusers\" OR \$scope = \"apiusers\" OR \$scope = \"allnostrusers\",
 	FOR delete WHERE id = \$auth.id;
 DEFINE FIELD status ON payments TYPE string;
+DEFINE FIELD amount ON payments TYPE number;
 DEFINE FIELD subscriptionInterval ON payments TYPE option<string>;
 DEFINE FIELD stripeSubscriptionId ON payments TYPE option<string>;
 DEFINE FIELD productId ON payments TYPE string;

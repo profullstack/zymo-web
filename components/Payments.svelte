@@ -30,7 +30,7 @@
 						{#if payment.product.mode == 'subscription'}
 							<div>
 								<label for="subscription_type"
-									>$ {payment.product.price} / {payment.subscriptionInterval}
+									>$ {payment.amount} / {payment.subscriptionInterval}
 								</label>
 							</div>
 							{#if payment.cancelAtPeriodEnd}
@@ -45,7 +45,7 @@
 								>
 							{/if}
 						{:else}
-							<div>$ {payment.product.price}</div>
+							<div>$ {payment.amount}</div>
 						{/if}
 					</div>
 				{/if}
