@@ -20,12 +20,12 @@
 				<button>Become an Affiliate</button>
 			</form>
 		{/if}
+		<p>
+			For payouts, we recommend using <a href="https://wise.com/invite/dic/anthonye828"
+				>wise.com</a
+			> as they support International payments via ACH.
+		</p>
 	</div>
-	<p>
-		For payouts, we recommend using <a href="https://wise.com/invite/dic/anthonye828"
-			>wise.com</a
-		> as they support International payments via ACH.
-	</p>
 </div>
 
 <style>
