@@ -20,18 +20,23 @@
 				<button>Become an Affiliate</button>
 			</form>
 		{/if}
-		<p>
-			For payouts, we recommend using <a
-				href="https://wise.com/invite/dic/anthonye828"
-				style="text-decoration: underline; font-weight: 700;">wise.com</a
-			>
-			as they support International payments via ACH. You can setup a US-based business bank
-			account at
-			<a
-				href="https://mercury.com/r/profullstack"
-				style="text-decoration: underline; font-weight: 700;">mercury.com</a
-			>.
-		</p>
+		<div class="promos">
+			<p>
+				For payouts, we recommend using <a href="https://wise.com/invite/dic/anthonye828"
+					>wise.com</a
+				>
+				as they support International payments via ACH. You can setup a US-based business bank
+				account at
+				<a href="https://mercury.com/r/profullstack">mercury.com</a>.
+			</p>
+			<p>
+				You can apply for a business credit card from <a
+					href=" https://americanexpress.com/en-us/referral/bluebusinesscash-credit-card?ref=ANTHOEhFtj&xl=cp15"
+					>americanexpress.com</a
+				>
+				or <a href="https://www.referyourchasecard.com/21q/2X53EJ4KH6">chase.com</a>
+			</p>
+		</div>
 	</div>
 </div>
 
@@ -42,5 +47,11 @@
 	h4 {
 		margin-block-start: 0.83em;
 		margin-block-end: 0.83em;
+	}
+
+	.promos a,
+	.promos a:visited {
+		text-decoration: underline;
+		font-weight: 700;
 	}
 </style>
