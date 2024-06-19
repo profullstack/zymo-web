@@ -37,6 +37,20 @@
 				or <a href="https://www.referyourchasecard.com/21q/2X53EJ4KH6">chase.com</a>
 			</p>
 		</div>
+
+		<p>
+			Here's some promo text you can use:
+
+			<textarea
+				>🚀 Maximize Your Earnings with FastestEngineer!
+				
+				Join the FastestEngineer affiliate
+				program and unlock the potential to earn up to $4K/month recurring per sale! Boost
+				your monthly income by promoting our comprehensive SaaS tools, and offer your
+				subscribers a special 10% discount. It’s an excellent opportunity for sustainable
+				and significant earnings. Get started now: https://fastest.engineer/affiliate</textarea
+			>
+		</p>
 	</div>
 </div>
 
