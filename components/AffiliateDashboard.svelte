@@ -46,7 +46,7 @@ Join the FastestEngineer affiliate
 program and unlock the potential to earn up to $4K/month recurring per sale! Boost
 your monthly income by promoting our comprehensive SaaS tools, and offer your
 subscribers a special 10% discount. It’s an excellent opportunity for sustainable
-and significant earnings. Get started now: https://fastest.engineer/affiliate`}</textarea
+and significant earnings. Get started now: http://${APP_DOMAIN}/referral/${affiliate.referralCode}`}</textarea
 		>
 		<p>Here's some text you can use to promote FastestEngineer:</p>
 		<textarea class="promo-text"
