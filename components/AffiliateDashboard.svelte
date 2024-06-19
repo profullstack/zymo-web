@@ -63,6 +63,10 @@ and significant earnings. Get started now: https://fastest.engineer/affiliate`}<
 		margin-block-end: 0.83em;
 	}
 
+	p {
+		margin: 1.2rem 0;
+	}
+
 	.promos a,
 	.promos a:visited {
 		text-decoration: underline;
