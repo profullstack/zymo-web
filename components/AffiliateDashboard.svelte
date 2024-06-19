@@ -40,7 +40,7 @@
 
 		<p>Here's some promo text you can use to promote our affiliate program:</p>
 		<textarea class="promo-text"
-			>${`🚀 Maximize Your Earnings with FastestEngineer!
+			>{`🚀 Maximize Your Earnings with FastestEngineer!
 				
 Join the FastestEngineer affiliate
 program and unlock the potential to earn up to $4K/month recurring per sale! Boost
@@ -50,7 +50,7 @@ and significant earnings. Get started now: http://${APP_DOMAIN}/referral/${affil
 		>
 		<p>Here's some text you can use to promote FastestEngineer:</p>
 		<textarea class="promo-text"
-			>${`Launch Your SaaS Faster with FastestEngineer! 🚀
+			>{`Launch Your SaaS Faster with FastestEngineer! 🚀
 
 Ready to transform your SaaS vision into reality? With FastestEngineer's fully featured boilerplate, you can build and launch your app in record time—days, not months! Our pre-built solution saves you weeks of development, allowing you to focus on perfecting the features that truly matter. Accelerate your path to market and stay ahead of the competition.
 
