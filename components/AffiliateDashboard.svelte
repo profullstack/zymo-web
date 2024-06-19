@@ -24,7 +24,7 @@
 			For payouts, we recommend using <a
 				href="https://wise.com/invite/dic/anthonye828"
 				style="text-decoration: underline; font-weight: 700;">wise.com</a
-			> as they support International payments via ACH.
+			> as they support International payments via ACH. You can setup a US-based business bank account at <a href="https://mercury.com/r/profullstack">mercury.com</a>.
 		</p>
 	</div>
 </div>
