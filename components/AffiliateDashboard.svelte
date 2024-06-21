@@ -13,7 +13,7 @@
 				<h4>Commission Percentage: {AFFILIATE_COMMISSION_PERCENT} %</h4>
 				<h4>Commissions Earned: $ {affiliate.commissions}</h4>
 				<h4>Referral Code: {affiliate.referralCode}</h4>
-				<h4>Referral Link: http://{APP_DOMAIN}/referral/{affiliate.referralCode}</h4>
+				<h4>Referral Link: http://{APP_DOMAIN}/r/{affiliate.referralCode}</h4>
 			</div>
 		{:else}
 			<form method="post">
@@ -46,7 +46,7 @@ Join the FastestEngineer affiliate
 program and unlock the potential to earn up to $4K/month recurring per sale! Boost
 your monthly income by promoting our comprehensive SaaS tools, and offer your
 subscribers a special 10% discount. It’s an excellent opportunity for sustainable
-and significant earnings. Get started now: http://${APP_DOMAIN}/referral/${affiliate.referralCode}`}</textarea
+and significant earnings. Get started now: http://${APP_DOMAIN}/r/${affiliate.referralCode}`}</textarea
 		>
 		<p>Here's some text you can use to promote FastestEngineer:</p>
 		<textarea class="promo-text"
@@ -60,7 +60,7 @@ Ready to transform your SaaS vision into reality? With FastestEngineer's fully f
     Efficiency: Focus more on product and less on process.
     Scalability: Grow your SaaS with a robust foundation.
 
-Ready to start building? Use this link to get started and take advantage of all that FastestEngineer has to offer: http://${APP_DOMAIN}/referral/${affiliate.referralCode}
+Ready to start building? Use this link to get started and take advantage of all that FastestEngineer has to offer: http://${APP_DOMAIN}/r/${affiliate.referralCode}
 
 Build smart, launch fast, grow your SaaS with FastestEngineer!`}</textarea
 		>
