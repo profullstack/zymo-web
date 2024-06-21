@@ -78,7 +78,7 @@ export default {
 		{
 			name: 'stripe-webhook-intercept',
 			handle(request, next) {
-				if (request.url.pathname == '/payment/webhook') {
+				if (request.url.pathname == '/payment/stripe/webhook') {
 					//set content-type to plain so the request body is unadulterated
 					request.original.headers.set('content-type', 'text/plain');
 				}
