@@ -11,7 +11,7 @@ export default {
 			status: Status.FOUND,
 			headers: {
 				"Set-Cookie": `referralCode=${referralCode}; expires=${futureDate.toUTCString()}; path=/; SameSite=Strict`,
-				"Location": "/register"
+				"Location": "/"
 			}
 		});
 
