@@ -37,7 +37,7 @@
 				or <a href="https://www.referyourchasecard.com/21q/2X53EJ4KH6">chase.com</a>. Apply
 				for a loan from
 				<a href="https://refer.lightstream.com/Anthony40">lightstream.com</a>
-			</p>s
+			</p>
 		</div>
 
 		<p>Here's some promo text you can use to promote our affiliate program:</p>
