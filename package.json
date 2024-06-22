@@ -52,6 +52,9 @@
 		"twilio": "^5.2.0"
 	},
 	"devDependencies": {
+		"@eslint/js": "^9.5.0",
+		"eslint": "9.x",
+		"globals": "^15.6.0",
 		"maximin": "^0.3.2",
 		"nodemon": "^3.1.4",
 		"pnpm": "^9.4.0",
