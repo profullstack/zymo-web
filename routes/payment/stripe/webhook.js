@@ -14,7 +14,7 @@ export default {
 
         const stripe = new Stripe(env.STRIPE_SK);
 
-        const { User, Payment, Product, Referral, Affiliate } = store;
+        const { User, Payment, Product, Referral, Affiliate, ReferralCode } = store;
 
         let event;
 
@@ -70,12 +70,14 @@ export default {
                 const referral = await Referral.getReferralByUserId(user.id);
 
                 if (referral) {
-                    const affiliate = await Affiliate.getByReferralCode(referral.referralCode);
+                    const referralCode = await ReferralCode.getByCode(referral.referralCode);
 
-                    if (affiliate) {
+                    if (referralCode) {
                         const originalAmount = session.amount / (100 - env.AFFILIATE_DISCOUNT_PERCENT);
-                        const commission = Math.round(originalAmount * env.AFFILIATE_COMMISSION_PERCENT);
-                        await Affiliate.addCommission(affiliate.id, affiliate.commissions + commission);
+                        const commission = Math.round(originalAmount * (env.AFFILIATE_COMMISSION_PERCENT / 100));
+
+                        await Affiliate.updateBalance(referralCode.affiliateId, commission)
+                        await ReferralCode.updateCommissions(referral.referralCode, commission);
                     }
                 }
             } catch (err) {

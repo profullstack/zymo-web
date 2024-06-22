@@ -23,7 +23,7 @@ export default {
 
 		const {
 			register: { Form },
-			User, Referral
+			User, Referral, ReferralCode
 		} = store;
 		try {
 			const user = request.body;
@@ -58,6 +58,7 @@ export default {
 				const referralCode = cookies.get("referralCode");
 				if (referralCode) {
 					const referral = await Referral.create(referralCode, me.id)
+					await ReferralCode.updateConversions(referralCode);
 				}
 			} catch (err) {
 				console.error(err)

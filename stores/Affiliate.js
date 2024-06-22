@@ -3,32 +3,30 @@ import { primary } from '@primate/types';
 
 export const actions = ({ connection: db }) => {
     return {
-        async create(userId, referralCode) {
+        async create(userId) {
 
             try {
-                const affiliate = await db.create("affiliates", { userId, referralCode, commissions: 0 });
-                return affiliate;
+                const affiliate = await db.create("affiliates", { userId });
+                return affiliate.pop();
 
             } catch (e) {
-                throw e;
                 console.error(e)
             }
 
         },
-        async getByReferralCode(referralCode) {
-
+        async updateBalance(id, amount) {
             try {
 
-                const query = `SELECT * FROM affiliates WHERE referralCode = $referralCode`;
+                const query = `UPDATE $id SET balance += $amount`;
 
                 const affiliate = await db.query(query, {
-                    referralCode
+                    id,
+                    amount
                 });
 
                 return affiliate.pop().pop();
             } catch (e) {
                 console.error(e)
-                throw e;
             }
         },
         async getByUserId(id) {
@@ -43,36 +41,7 @@ export const actions = ({ connection: db }) => {
                 return affiliate.pop().pop();
             } catch (e) {
                 console.error(e)
-                throw e;
             }
-        },
-        async addCommission(id, commission) {
-            try {
-
-                const query = `UPDATE $id SET commissions = $commission`;
-
-                const affiliate = await db.query(query, {
-                    id,
-                    commission
-                });
-
-                return affiliate.pop().pop();
-
-
-            } catch (e) {
-                console.error(e)
-                throw e;
-            }
-        },
-        async generateReferralCode(length = 8) {
-            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-            let code = '';
-
-            for (let i = 0; i < length; i++) {
-                const randomIndex = Math.floor(Math.random() * characters.length);
-                code += characters[randomIndex];
-            }
-            return code;
         }
     }
 }
