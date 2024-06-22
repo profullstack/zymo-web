@@ -1,6 +1,6 @@
-import * as FS from 'rcompat/fs';
+import { join } from 'rcompat/fs';
 
-const countries = await FS.FlatFile.join(
+const countries = await join(
 	import.meta.dirname,
 	'..',
 	'static',
