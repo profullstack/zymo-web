@@ -47,7 +47,7 @@ async function connectDB() {
                 await db.query('UPDATE $id SET balance = $amount, commissions = NONE', { id: affiliate.id, amount: affiliate.commissions });
             }
         } catch (err) {
-            console.err(err);
+            console.error(err);
         }
     }
 
