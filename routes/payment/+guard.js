@@ -6,6 +6,7 @@ export default (request) => {
 	} = request;
 
 	const allow = ['/payment/stripe/webhook'];
+	console.log(allow, pathname);
 
 	if (allow.includes(pathname)) {
 		return true;
