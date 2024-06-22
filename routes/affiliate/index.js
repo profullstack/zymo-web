@@ -6,20 +6,16 @@ export default {
 
     async get(request) {
         const { store, session } = request;
-        const { Affiliate, Referral } = store;
+        const { Affiliate, Referral, ReferralCode } = store;
 
         const userId = session.get("user").id;
 
         const affiliate = await Affiliate.getByUserId(userId);
-        let referrals;
+        const referralCodes = await ReferralCode.getByUserId(userId);
 
-        if (affiliate) {
-            referrals = await Referral.getReferralsByCode(affiliate.referralCode);
-        }
-
-        return view('AffiliateDashboard.svelte', {
+        return view('affiliate/Dashboard.svelte', {
             affiliate,
-            referrals,
+            referralCodes,
             APP_DOMAIN,
             AFFILIATE_COMMISSION_PERCENT
         });
@@ -28,14 +24,15 @@ export default {
     async post(request) {
 
         const { store, session } = request;
-        const { Affiliate } = store;
+        const { Affiliate, ReferralCode } = store;
         const userId = session.get("user").id;
 
         const affiliate = await Affiliate.getByUserId(userId);
 
         if (!affiliate) {
-            const referralCode = await Affiliate.generateReferralCode();
-            const affiliate = await Affiliate.create(userId, referralCode);
+            const affiliate = await Affiliate.create(userId);
+            const code = await ReferralCode.generateCode();
+            const referralCode = await ReferralCode.create(userId, affiliate.id, "Default", code);
         }
 
         return redirect("/affiliate");

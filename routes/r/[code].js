@@ -2,10 +2,14 @@ import { Response, Status } from 'primate';
 
 export default {
 	async get(request) {
-		const { path } = request;
+		const { path, store } = request;
+		const { Affiliate, ReferralCode } = store;
 
 		const referralCode = path.get("code")
+		await ReferralCode.updateClicks(referralCode);
+
 		const futureDate = new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 365 * 2);
+
 
 		const response = new Response(null, {
 			status: Status.FOUND,
