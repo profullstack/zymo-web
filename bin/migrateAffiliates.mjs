@@ -38,6 +38,7 @@ async function connectDB() {
             if (affiliate.referralCode) {
                 const referralCodes = await getReferralCodesByAffiliateId(affiliate.id);
                 if (!referralCodes || referralCodes.length == 0) {
+                    const referrals = await getReferralsByCode(affiliate.referralCode);
                     await createReferralCode(affiliate.userId, affiliate.id, "Default", affiliate.referralCode, referrals.length, referrals.length, affiliate.commissions);
                     await db.query('UPDATE $id SET referralCode = NONE', { id: affiliate.id });
                 }
