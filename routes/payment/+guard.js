@@ -1,14 +1,16 @@
-import { redirect } from "primate";
+import { redirect } from 'primate';
 
-export default request => {
-	const { url: { pathname }} = request;
+export default (request) => {
+	const {
+		url: { pathname }
+	} = request;
 
-	const allow = ['/payment/stripe/webhook',]
-	
+	const allow = ['/payment/stripe/webhook'];
+
 	if (allow.includes(pathname)) {
 		return true;
 	}
-	
+
 	const { session } = request;
 
 	if (session.get('loggedIn')) {
@@ -17,4 +19,3 @@ export default request => {
 
 	return redirect(`/login?next=${pathname}`);
 };
-
