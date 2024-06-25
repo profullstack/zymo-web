@@ -18,7 +18,8 @@ export default {
 
         let event;
 
-        const listen_events = ['customer.subscription.updated', 'payment_intent.succeeded', 'customer.subscription.deleted', 'charge.succeeded']
+        const listen_events = ['customer.subscription.updated', 'payment_intent.succeeded',
+            'customer.subscription.deleted', 'charge.succeeded', 'charge.refunded', 'charge.refund.updated']
 
         if (!listen_events.includes(body.type)) return new Response(Status.OK)
 
@@ -34,7 +35,16 @@ export default {
 
         const handlePaymentOrSubUpdate = async (session) => {
             const user = await User.getUserByStripeCustumerId(session.customer);
+            
+            var subscriptionRefunded = false;
 
+            if(session.object ==  "subscription") {
+                var subscription = await Payment.getBySubscriptionId(session.id);
+                if(subscription){
+                    subscriptionRefunded = subscription.refunded && (session.cancel_at_period_end == true);
+                }
+            }
+            
             try {
                 Payment.updateOrCreate(
                     session.object == "subscription"
@@ -44,16 +54,20 @@ export default {
                             amount: (session.plan.amount / 100),
                             subscriptionInterval: session.plan.interval,
                             stripeSubscriptionId: session.id,
+                            stripePaymentIntent: session.payment_intent,
+                            refunded: subscriptionRefunded,
                             renewalDate: session.current_period_end,
                             productId: session.plan.product,
                             cancelAtPeriodEnd: session.cancel_at_period_end,
                         }
                         : {
                             userId: user.id,
-                            status: "active",
+                            status: session.refunded || "active",
                             amount: (session.amount / 100),
                             subscriptionInterval: "",
                             stripeSubscriptionId: "",
+                            stripePaymentIntent: session.id,
+                            refunded: false,
                             renewalDate: 0,
                             productId: session.metadata.productId,
                             cancelAtPeriodEnd: false,
@@ -85,11 +99,39 @@ export default {
             }
         }
 
+        const getPaymentIntentFromSubscription = async (subscriptionId) => {
+            try {
+                const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+                const latestInvoiceId = subscription.latest_invoice;
+
+                if (!latestInvoiceId) {
+                    throw new Error('No invoice found for this subscription.');
+                }
+                const invoice = await stripe.invoices.retrieve(latestInvoiceId);
+
+                const paymentIntentId = invoice.payment_intent;
+
+                if (!paymentIntentId) {
+                    throw new Error('No payment intent found for this invoice.');
+                }
+
+                const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+
+                return paymentIntent;
+            } catch (error) {
+                console.error('Error retrieving payment intent from subscription:', error);
+                throw error;
+            }
+        };
+
         switch (event.type) {
             case "charge.succeeded":
                 await addAffiliateCommission(session);
                 break;
             case "customer.subscription.updated":
+                const payment_intent = await getPaymentIntentFromSubscription(session.id);
+                session.payment_intent = payment_intent.id;
+
                 await handlePaymentOrSubUpdate(session);
                 break;
             case "payment_intent.succeeded":
@@ -98,6 +140,15 @@ export default {
                 break;
             case "customer.subscription.deleted":
                 await handlePaymentOrSubUpdate(session);
+                break;
+            case "charge.refunded":
+            case "charge.refund.updated":
+                try {
+                    await Payment.updatePaymentRefund(session.payment_intent, session.status);
+                } catch (err) {
+                    console.error(err)
+                }
+
                 break;
             case "invoice.payment_succeeded":
 
