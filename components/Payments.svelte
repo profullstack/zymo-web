@@ -27,6 +27,9 @@
 				{#if payment.product}
 					<div class="payment">
 						<div class="title">{payment.product.name}</div>
+						{#if payment.refunded}
+							<p style="color:gray;">Refunded</p>
+						{/if}
 						{#if payment.product.mode == 'subscription'}
 							<div>
 								<label for="subscription_type"
