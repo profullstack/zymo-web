@@ -40,6 +40,8 @@ DEFINE FIELD status ON payments TYPE string;
 DEFINE FIELD amount ON payments TYPE number;
 DEFINE FIELD subscriptionInterval ON payments TYPE option<string>;
 DEFINE FIELD stripeSubscriptionId ON payments TYPE option<string>;
+DEFINE FIELD stripePaymentIntent ON payments TYPE option<string>;
+DEFINE FIELD refunded ON payments TYPE option<bool>;
 DEFINE FIELD productId ON payments TYPE string;
 DEFINE FIELD renewalDate ON payments TYPE option<number>;
 DEFINE FIELD cancelAtPeriodEnd ON payments TYPE option<bool>;
