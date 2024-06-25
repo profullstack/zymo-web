@@ -72,6 +72,7 @@
 				</table>
 				<a href="/affiliate/code/add">Add New</a>
 			</div>
+			<a href="/affiliate/payout"><button>Payout</button></a>
 			{#if referralCodes[0]}
 				<div class="promos">
 					<p>
