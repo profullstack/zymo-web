@@ -44,6 +44,8 @@ if [ -d "$HOME/www/${name}/${project}" ]; then
     ./migrations/nostrusers.sh
     ./migrations/affiliates.sh
     ./migrations/appointments.sh
+    ./migrations/payouts.sh
+    ./migrations/waitlist.sh
 
   else
     echo "One or both directories do not exist"
