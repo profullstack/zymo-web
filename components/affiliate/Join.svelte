@@ -24,4 +24,9 @@
 		max-width: 80vw;
 		margin: 0 auto;
 	}
+
+	a,
+	a:visited {
+		text-decoration: underline;
+	}
 </style>
