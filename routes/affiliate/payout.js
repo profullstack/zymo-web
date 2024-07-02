@@ -38,7 +38,7 @@ export default {
         }
 
         const method = request.body.method;
-        const amount = Number(request.body.amount) || 0;
+        //const amount = Number(request.body.amount) || 0;
 
         const availableMethods = ["bank", "cryptocurrency"];
 
@@ -50,13 +50,14 @@ export default {
             });
         }
 
+        /*
         if (amount > affiliate.balance || amount <= 0) {
             return view('affiliate/Payout.svelte', {
                 affiliate,
                 payouts,
                 error: "Invalid payout amount"
             });
-        }
+        }*/
         
         let details;
         let payout;
@@ -73,7 +74,7 @@ export default {
                 }
 
                 details = { accountCategory, accountType, routingNumber, accountNumber, accountName }
-                payout = await Payout.create(method, amount, "pending", details, userId);
+                payout = await Payout.create(method, "pending", details, userId);
                 
                 payouts.unshift(payout)
                 break;
@@ -89,7 +90,7 @@ export default {
                 }
 
                 details = { coin, address };
-                payout = await Payout.create(method, amount, "pending", details, userId);
+                payout = await Payout.create(method, "pending", details, userId);
 
                 payouts.unshift(payout)
                 break;
