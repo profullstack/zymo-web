@@ -9,6 +9,7 @@ DATA="DEFINE TABLE affiliates SCHEMALESS
     FOR update, create WHERE \$scope = \"allusers\" OR \$scope = \"apiusers\" OR \$scope = \"allnostrusers\",
 	FOR delete WHERE userId = \$auth.id;
 DEFINE FIELD balance ON affiliates TYPE option<number> DEFAULT 0;
+DEFINE FIELD payoutMethods ON affiliates TYPE option<array>;
 DEFINE INDEX idx_userId ON affiliates COLUMNS userId UNIQUE;
 "
 
