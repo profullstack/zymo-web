@@ -1,5 +1,5 @@
 {
-	"name": "hynt.us",
+	"name": "fastest-engineer-web",
 	"private": true,
 	"scripts": {
 		"dev": "npx primate",
