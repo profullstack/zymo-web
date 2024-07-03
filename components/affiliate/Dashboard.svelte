@@ -4,14 +4,29 @@
 	export let APP_DOMAIN, AFFILIATE_COMMISSION_PERCENT;
 
 	async function deleteReferralCode(code) {
-		await fetch('/affiliate/code/delete', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ code })
-		});
-		window.location.reload();
+		try {
+			await fetch('/affiliate/code/delete', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ code })
+			});
+			window.location.reload();
+		} catch (e) {}
+	}
+
+	async function deletePayoutMethod(id) {
+		try {
+			await fetch('/affiliate/payouts/method/delete', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ id })
+			});
+			window.location.reload();
+		} catch (e) {}
 	}
 </script>
 
@@ -72,7 +87,51 @@
 				</table>
 				<a href="/affiliate/code/add">Add New</a>
 			</div>
-			<a href="/affiliate/payout"><button>Payout</button></a>
+			<div style="padding: 10px;border: 1px solid;border-radius: 10px; margin: 10px 0;">
+				<h4>Payout Methods</h4>
+				<table style="width: 100%; text-align: center;">
+					<tr>
+						<th>Method</th>
+						<th>Details</th>
+						<th></th>
+					</tr>
+					{#each affiliate.payoutMethods as payoutMethod}
+						<tr>
+							<td>{payoutMethod.method}</td>
+							<div>
+								{#if payoutMethod.method == 'bank'}
+									<p>
+										<b>Account category:</b>
+										{payoutMethod.details.accountCategory}
+									</p>
+									<p><b>Account type:</b> {payoutMethod.details.accountType}</p>
+									<p>
+										<b>Routing number:</b>
+										{payoutMethod.details.routingNumber}
+									</p>
+									<p>
+										<b>Account number:</b>
+										{payoutMethod.details.accountNumber}
+									</p>
+									<p><b>Account name:</b> {payoutMethod.details.accountName}</p>
+								{/if}
+								{#if payoutMethod.method == 'cryptocurrency'}
+									<p><b>Coin</b>: {payoutMethod.details.coin}</p>
+									<p><b>Address</b>: {payoutMethod.details.address}</p>
+								{/if}
+							</div>
+							<td
+								><a href="/affiliate/payouts/method/{payoutMethod.id}">Edit</a>
+								<a href="#" on:click={() => deletePayoutMethod(payoutMethod.id)}
+									>Delete</a
+								></td
+							>
+						</tr>
+					{/each}
+				</table>
+				<a href="/affiliate/payouts/method/add">Add Payout Method</a>
+				<a href="/affiliate/payouts">View Payouts</a>
+			</div>
 			{#if referralCodes[0]}
 				<div class="promos">
 					<p>
