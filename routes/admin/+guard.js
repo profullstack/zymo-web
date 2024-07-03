@@ -1,11 +1,16 @@
-import {redirect} from "primate";
+import { redirect } from 'primate';
 
-export default request => {
-  const {url: {pathname}, session} = request;
+export default (request) => {
+	const {
+		url: { pathname },
+		session
+	} = request;
+	const user = session.get('user');
+	const { isAdmin } = user;
 
-  if (session.get('admin')) {
+	if (isAdmin) {
 		return true;
-  }
+	}
 
-  return redirect(`/login?next=${pathname}`);
+	return redirect(`/login?next=${pathname}`);
 };
