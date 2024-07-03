@@ -3,13 +3,13 @@ import { primary } from '@primate/types';
 
 export const actions = ({ connection: db }) => {
     return {
-        async create(method, amount, status, details, userId) {
+        async create(method, status, details, userId) {
 
             try {
                 
                 const now = new Date().toISOString();
 
-                const payout = await db.create("payouts", { method, amount, status, details, userId, createdAt: now, updatedAt: now  });
+                const payout = await db.create("payouts", { method, status, details, userId, createdAt: now, updatedAt: now  });
                 return payout.pop();
 
             } catch (e) {

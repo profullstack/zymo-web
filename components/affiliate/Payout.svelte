@@ -47,8 +47,6 @@
             <br/><br/>
             <input required name="accountName" placeholder="Account name" />
             <br/><br/>
-            <input required name="amount" placeholder="Amount" type="number" max="{affiliate.balance}"/>
-            <br/><br/>
             <button>Payout</button>
 		</form>
 	{/if}
@@ -65,8 +63,6 @@
                 </select>
             </label>
             <br/><br/>
-            <input required name="amount" placeholder="Amount" type="number" max="{affiliate.balance}"/>
-            <br/><br/>
             <input required name="address" placeholder="Address"/>
             <br/><br/>
             <button>Payout</button>
@@ -77,7 +73,7 @@
     {#if payouts.length}
         {#each payouts as payout}
             <div style="padding: 1rem; border: 0.1rem solid black; border-radius: 0.5rem;">
-                <h3>$ {payout.amount}</h3>
+                <!--<h3>$ {payout.amount}</h3>-->
                 <p>Status: {payout.status}</p>
                 <p>Payout Method: {payout.method}</p>
                 <p>Created: {new Date(payout.createdAt).toLocaleString()} UTC</p>
