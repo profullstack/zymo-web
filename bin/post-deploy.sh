@@ -40,7 +40,7 @@ if [ -d "$HOME/www/${name}/${project}" ]; then
     ./migrations/links.sh
     ./migrations/apikeys.sh
     ./migrations/products.sh
-    ./migrations/send_email.sh
+    # ./migrations/send_email.sh
     ./migrations/nostrusers.sh
     ./migrations/affiliates.sh
     ./migrations/appointments.sh
