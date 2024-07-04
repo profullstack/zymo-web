@@ -11,6 +11,7 @@ DATA="DEFINE TABLE user SCHEMAFULL
     FOR update, delete WHERE id = \$auth.id,
     FOR create NONE;
 DEFINE FIELD email ON user TYPE string;
+DEFINE FIELD isAdmin ON user TYPE option<bool> DEFAULT false;
 DEFINE FIELD phone ON user TYPE option<string>;
 DEFINE FIELD stripeCustomerId ON user TYPE option<string>;
 DEFINE FIELD googleRefreshToken ON user TYPE option<string>;

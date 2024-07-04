@@ -10,7 +10,7 @@ DATA="DEFINE TABLE payouts SCHEMALESS
 	FOR delete WHERE userId = \$auth.id;
 DEFINE FIELD method ON payouts TYPE string;
 DEFINE FIELD amount ON payouts TYPE option<number>;
-DEFINE FIELD status ON payouts TYPE string;
+DEFINE FIELD status ON payouts TYPE option<string>;
 DEFINE FIELD details ON payouts TYPE object;
 DEFINE INDEX idx_userId ON payouts COLUMNS userId;
 "
