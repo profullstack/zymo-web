@@ -1,7 +1,9 @@
 <script>
-	export let affiliate,
-		referralCodes = [];
+	export let affiliate, referralCodes = [];
 	export let APP_DOMAIN, AFFILIATE_COMMISSION_PERCENT;
+
+	
+	let payoutMethods = affiliate.payoutMethods || [];
 
 	async function deleteReferralCode(code) {
 		try {
@@ -95,7 +97,7 @@
 						<th>Details</th>
 						<th></th>
 					</tr>
-					{#each affiliate.payoutMethods as payoutMethod}
+					{#each payoutMethods as payoutMethod}
 						<tr>
 							<td>{payoutMethod.method}</td>
 							<div>
