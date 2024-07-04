@@ -9,7 +9,6 @@
 			<div style="padding: 1rem; border: 0.1rem solid black; border-radius: 0.5rem;">
 				{#if payout.amount}<h3>$ {payout.amount}</h3>
 				{/if}
-				<p>Status: {payout.status}</p>
 				<p>Payout Method: {payout.method}</p>
 				<p>Created: {new Date(payout.createdAt).toLocaleString()} UTC</p>
 				<div style="display: flex; gap: 1rem; flex-wrap: wrap;">

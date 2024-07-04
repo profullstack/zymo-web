@@ -1,5 +1,9 @@
+import { view } from "primate";
+
 export default {
-  get() {
-    return "admin";
+
+  async get(request) {
+
+    return view('admin/Index.svelte');
   },
-};
+}

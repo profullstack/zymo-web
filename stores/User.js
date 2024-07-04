@@ -50,6 +50,18 @@ export const actions = ({ connection: db }) => {
 				throw e;
 			}
 		},
+		async getById(id) {
+			const query = `SELECT * FROM user WHERE id = $id`;
+			try {
+				const user = await db.query(query, {
+					id
+				});
+				return user.pop().pop();
+			} catch (e) {
+				console.error(e)
+				throw e;
+			}
+		},
 		async generateEmailVerifyCode(id) {
 			console.log('email user id:', id);
 			const code = Math.random().toString(36).substr(2, 10);

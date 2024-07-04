@@ -5,12 +5,19 @@ export default (request) => {
 		url: { pathname },
 		session
 	} = request;
-	const user = session.get('user');
-	const { isAdmin } = user;
 
-	if (isAdmin) {
-		return true;
+	if (session.get('loggedIn')) {
+
+		const user = session.get('user');
+		const { isAdmin } = user;
+
+		if (isAdmin) {
+			return true;
+		} else {
+			return redirect(`/`);
+		}
 	}
+
 
 	return redirect(`/login?next=${pathname}`);
 };
