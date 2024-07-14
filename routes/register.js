@@ -23,6 +23,7 @@ export default {
 
 		const {
 			register: { Form },
+			external: { Mailgun },
 			User, Referral, ReferralCode
 		} = store;
 		try {
@@ -42,11 +43,15 @@ export default {
 
 			console.log("token/me:", token, me);
 
-			await session.create({ token, user: me, loggedIn: true });
+			await session.create({ token, user: me, loggedIn: false, unverifiedEmail: true });
 
 			try {
-				await User.generateEmailVerifyCode(me.id);
+				const evcResult = await User.generateEmailVerifyCode(me.id);
+				const evCode = evcResult.verify.email.code;
 
+				if (evCode) {
+					await Mailgun.sendVerifyEmail({ to: me.email, code: evCode });
+				}
 				if (me.phone && me.phonePrefix) {
 					await User.generatePhoneVerifyCode(me.id);
 				}
@@ -66,7 +71,7 @@ export default {
 
 			// todo: add a way to flash something to the user, can use a hash for now
 			// for example: /dashboard#flash=Some message
-			return redirect("/dashboard");
+			return redirect("/verify/email");
 		} catch ({ errors }) {
 			console.error(errors);
 			return form({ errors });

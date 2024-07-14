@@ -79,7 +79,34 @@ export const actions = ({ connection: db }) => {
 			console.log('user email verification: ', result);
 			return result;
 		},
+		async verifyEmail(id) {
+			try {
 
+				const query = `
+					UPDATE $id SET verify.email.status = 'verified'
+				`;
+
+				const [[result]] = await db.query(query, { id });
+
+				return result;
+			} catch (error) {
+				console.error(error);
+			}
+		},
+		async getByEmailVerificationCode(code) {
+			try {
+				const query = `
+					SELECT * FROM user
+					WHERE verify.email.code = $code
+				`;
+
+				const [[result]] = await db.query(query, { code });
+
+				return result;
+			} catch (error) {
+				console.error(error);
+			}
+		},
 		async generatePhoneVerifyCode(id) {
 			console.log('phone user id:', id);
 			const code = Math.random().toString().substr(2, 6);

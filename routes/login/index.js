@@ -32,6 +32,11 @@ export default {
 	      return form({ status: err.message });
 	    }
 
+		if(me.verify.email.status !== "verified") {
+			await session.create({ token, user: me, loggedIn: false, unverifiedEmail: true });
+			return redirect("/verify/email");
+		}
+
 	    await session.create({ token, user: me, loggedIn: Boolean(token) });
 
 	    return redirect(next);
