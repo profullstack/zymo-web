@@ -62,6 +62,85 @@ export const actions = ({ connection: db }) => {
 				throw e;
 			}
 		},
+		async getByEmail(email) {
+			const query = `SELECT * FROM user WHERE email = $email`;
+			try {
+				const user = await db.query(query, {
+					email
+				});
+				return user.pop().pop();
+			} catch (e) {
+				console.error(e)
+				throw e;
+			}
+		},
+		async generatePasswordResetToken(id) {
+			try{
+				const token = this.generateToken();
+				const expiration = new Date(Date.now() + 2 * (60 * 60 * 1000));
+	
+				const [[result]] = await db.query(
+					"UPDATE $id SET passwordReset.token = $_token, passwordReset.expiration = $expiration",
+					{
+						id,
+						_token: token,
+						expiration
+					}
+				);
+				return result;
+			}catch(e){
+				console.error(e)
+			}
+		},
+		generateToken(length = 30) {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+            let token = '';
+
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * characters.length);
+                token += characters[randomIndex];
+            }
+            return token;
+        },
+		async getByPasswordResetToken(token) {
+			const query = `SELECT * FROM user WHERE passwordReset.token = $_token`;
+			try {
+				const user = await db.query(query, {
+					_token: token
+				});
+				return user.pop().pop();
+			} catch (e) {
+				console.error(e)
+				throw e;
+			}
+		},
+		async deletePasswordResetToken(id) {
+			try{
+				const [[result]] = await db.query(
+					"UPDATE $id SET passwordReset = {}",
+					{
+						id
+					}
+				);
+				return result;
+			}catch(e){
+				console.error(e)
+			}
+		},
+		async updatePassword(id, password) {
+			try{
+				const [[result]] = await db.query(
+					"UPDATE $id SET password = crypto::argon2::generate($password)",
+					{
+						id,
+						password
+					}
+				);
+				return result;
+			}catch(e){
+				console.error(e)
+			}
+		},
 		async generateEmailVerifyCode(id) {
 			console.log('email user id:', id);
 			const code = Math.random().toString(36).substr(2, 10);
