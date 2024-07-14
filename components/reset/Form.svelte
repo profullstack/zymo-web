@@ -6,7 +6,7 @@
 	<title>Reset password</title>
 </svelte:head>
 
-<h1>Login</h1>
+<h1>Reset password</h1>
 
 <form method="post">
 	{status ?? ''}

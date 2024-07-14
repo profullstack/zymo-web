@@ -4,38 +4,41 @@ const form = (params = {}) => view("reset/Form.svelte", { ...params });
 
 export default {
 	get(request) {
-	  const { session, query } = request;
-	  return form();
+		const { session, query } = request;
+		return form();
 	},
 	async post(request) {
-	  const { session, store, body } = request;
-	  const next = body.next || "/dashboard";
-	  const {
-	    reset: { Form, Reset },
-	    User,
-	  } = store;
+		const { session, store, body } = request;
 
-	  try {
-	    const user = request.body;
+		const {
+			reset: { Form, Reset },
+			external: { Mailgun },
+			User
+		} = store;
 
-	    await Form.validate(user);
+		try {
+			const body = request.body;
+			await Form.validate(body);
 
-	    let token;
-	    let me;
+			const email = body.email;
+			const user = await User.getByEmail(email);
 
-	    try {
-	      const mail = {
+			if (!user) {
+				return view("reset/Form.svelte", { status: "No user found with that email address" })
+			}
 
-                };
-	      token = await Reset.send(mail);
-	      me = await User.me();
-	    } catch (err) {
-	      return form({ status: err.message });
-	    }
+			const result = await User.generatePasswordResetToken(user.id);
 
-	    return redirect("/");
-	  } catch ({ errors }) {
-	    return form({ errors });
-	  }
+			if (result) {
+				const response = await Mailgun.sendPasswordResetEmail({ token: result.passwordReset.token, to: email });
+				if (response.ok) {
+					return view("reset/Form.svelte", { status: "Click the link sent to your email to reset your password" })
+				}
+			}
+
+			return view("reset/Form.svelte", { status: "An error occured" });
+		} catch ({ errors }) {
+			return form({ errors });
+		}
 	},
 };

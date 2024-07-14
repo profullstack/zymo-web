@@ -62,6 +62,40 @@ https://${APP_DOMAIN}/verify/email/${code}
 			} catch (err) {
 				console.error(err);
 			}
+		},
+		async sendPasswordResetEmail(cfg) {
+			const { to, token } = cfg;
+
+			let opts = {
+				to,
+				subject: `${APP_NAME} - Password Reset`,
+				text: `We recieved a request to reset the password for your account
+
+-------------------------
+
+Please click here to reset your password:
+
+https://${APP_DOMAIN}/reset/${token}
+
+-------------------------
+
+(Do not reply to this email, nobody receives replies at this email address).`,
+				html: ``
+			};
+
+			try {
+				const res = await fetch(`https://api.mailgun.net/v3/${MAILGUN_DOMAIN}/messages`, {
+					method: 'POST',
+					headers: {
+						'Content-Type': MediaType.APPLICATION_FORM_URLENCODED,
+						Authorization: `Basic ${Base64.encode(`api:${MAILGUN_API_KEY}`)}`
+					},
+					body: `from=${FROM_EMAIL}&to=${encodeURIComponent(opts.to)}&subject=${opts.subject}&text=${opts.text}`
+				});
+				return res;
+			} catch (err) {
+				console.error(err);
+			}
 		}
 
 	};

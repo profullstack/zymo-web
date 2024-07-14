@@ -38,6 +38,9 @@ DEFINE FIELD verify.phone ON user TYPE option<object>;
 DEFINE FIELD verify.phone.code ON user TYPE option<string>;
 DEFINE FIELD verify.phone.expiration ON user TYPE option<datetime>;
 DEFINE FIELD verify.phone.status ON user TYPE option<string>;
+DEFINE FIELD passwordReset ON user TYPE option<object>;
+DEFINE FIELD passwordReset.token ON user TYPE option<string>;
+DEFINE FIELD passwordReset.expiration ON user TYPE option<string>;
 DEFINE INDEX idx_email ON user COLUMNS email UNIQUE;
 DEFINE INDEX idx_username ON user COLUMNS username UNIQUE;
 "
