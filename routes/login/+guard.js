@@ -9,6 +9,8 @@ export default (request) => {
 
 	if (session.get('loggedIn')) {
 		return redirect(query.get('next') || '/dashboard');
+	} else if (session.get("unverifiedEmail")) {
+		return redirect("/verify/email")
 	}
 
 	return true;

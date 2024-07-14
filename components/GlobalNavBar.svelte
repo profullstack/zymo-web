@@ -1,7 +1,6 @@
 <script>
-	export let isLoggedIn;
+	export let isLoggedIn, unverifiedUser;
 	const home = '/';
-
 	async function logout(e) {
 		e.preventDefault();
 
@@ -23,7 +22,7 @@
 	<a href="/" id="logo">Home</a>
 	<a href="/blog">Blog</a>
     <a href="/products">Products</a>
-	{#if isLoggedIn}
+	{#if isLoggedIn || unverifiedUser}
 		<a href="#" on:click={logout}>Logout</a>
 	{:else}
 		<a href="/login">Login</a>
