@@ -21,7 +21,7 @@ SYSTEMD_SYMLINK="/etc/systemd/system/$PROJECT_NAME.service"
 user=$HOST_USER
 
 # Create the directory if it does not exist
-ssh $user@$HOST_DOMAIN "mkdir -p $TARGET_PATH"
+ssh $user@$HOST_DOMAIN "mkdir -p $TARGET_PATH/static/_posts"
 
 # Deploy the code
 rsync -azvP --delete --exclude=node_modules --exclude=.idea --exclude=data --exclude=static/_posts ./ ${user}@${HOST_DOMAIN}:${TARGET_PATH}
