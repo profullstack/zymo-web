@@ -1,10 +1,8 @@
 # todo
 
--   show stats for visits
 -   document api for end users (see markdown stuff)
 -   password reset link
--   schedule an appointment
--   stripe payments (one-time, recurring, multiple products -- as per Daniel)
 -   crypto payments (one-time)
--   fix logo path in 504 ./static/errors/ pages
 -   switch fonts to .woff2 instead of .ttf
+-   autoblogger: search google for top 5 articles and combine them into one new article rewritten with ai
+-   switch to ollama llama:8b instead of openai for all ai calls, keep openai calls but make a call method for custom instance (ie: ai.profullstack.com)
