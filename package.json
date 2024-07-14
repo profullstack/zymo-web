@@ -2,8 +2,8 @@
 	"name": "fastest-engineer-web",
 	"private": true,
 	"scripts": {
-		"dev": "npx primate",
-		"start": "npx primate serve",
+		"dev": "pnpm run env:dev && npx primate",
+		"start": "pnpm run env:prod && npx primate serve",
 		"db:start": ". ./.env && . ./.env.local && SURREAL_INSECURE_FORWARD_SCOPE_ERRORS=true surreal start --log trace -A --auth --user root --pass root --bind 0.0.0.0:$DB_PORT file:///${HOME}/data/db",
 		"db:console": ". ./.env && . ./.env.local && surreal sql --conn http://localhost:$DB_PORT --user root --pass root --ns $DB_NS --db $DB_DB --pretty",
 		"db:export": ". ./.env && . ./.env.local && surreal export --conn http://localhost:$DB_PORT --user root --pass root --ns $DB_NS --db $DB_DB dump.sql",
@@ -12,7 +12,9 @@
 		"win:db:console": "call ./.env.bat && call ./.env.local.bat && call surreal sql --conn http://localhost:%DB_PORT% --user root --pass root --ns %DB_NS% --db %DB_DB% --pretty",
 		"win:db:export": "call ./.env.bat && call ./.env.local.bat && call surreal export --conn http://localhost:%DB_PORT% --user root --pass root --ns %DB_NS% --db %DB_DB% dump.sql",
 		"win:db:import": "call ./.env.bat && call ./.env.local.bat && call surreal import --conn http://localhost:%DB_PORT% --user root --pass root --ns %DB_NS% --db %DB_DB% dump.sql",
-		"deploy": "./bin/deploy.sh"
+		"deploy": "./bin/deploy.sh",
+		"env:prod": "ln -sf .env.prod .env.local ",
+		"env:dev": "ln -sf .env.dev .env.local"
 	},
 	"dependencies": {
 		"@nostr-dev-kit/ndk": "^2.8.2",
