@@ -2,7 +2,7 @@ import env from 'rcompat/env';
 import { Base64 } from 'rcompat/string';
 import { MediaType } from 'rcompat/http';
 
-const { APP_DOMAIN, TOLL_FREE, MAILGUN_DOMAIN, APP_NAME, MAILGUN_API_KEY, DO_NOT_REPLY, FROM_EMAIL } = env;
+const { APP_DOMAIN, TOLL_FREE, MAILGUN_DOMAIN, APP_NAME, MAILGUN_API_KEY, DO_NOT_REPLY, FROM_EMAIL } = process.env;
 
 export const ambiguous = true;
 
