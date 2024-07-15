@@ -19,6 +19,8 @@
 	};
 </script>
 
+<!-- standard tags -->
+<title>{currentMetaData.title || 'Home'}</title>
 <meta name="description" content={currentMetaData.description} />
 
 <!-- Open Graph Meta Tags -->
@@ -27,6 +29,8 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content={`https://APP_DOMAIN${currentMetaData.path}`} />
 <meta property="og:image" content={`https://APP_DOMAIN${currentMetaData.imagePath}`} />
+<meta property="og:locale" content="en_US" />
+<meta property="og:site_name" content={title} />
 
 <!-- Twitter Card Meta Tags -->
 <meta property="twitter:card" content="summary_large_image" />
