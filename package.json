@@ -39,7 +39,7 @@
 		"nlcst-to-string": "^4.0.0",
 		"node-fetch": "^3.3.2",
 		"npm-check-updates": "^16.14.20",
-		"primate": "^0.31.9",
+		"primate": "^0.31.10",
 		"promisify": "^0.0.3",
 		"puppeteer-extra": "^3.3.6",
 		"puppeteer-extra-plugin-stealth": "^2.11.2",
