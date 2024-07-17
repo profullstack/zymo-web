@@ -40,7 +40,7 @@
 		"nlcst-to-string": "^4.0.0",
 		"node-fetch": "^3.3.2",
 		"npm-check-updates": "^16.14.20",
-		"primate": "0.31.11",
+		"primate": "0.31.12",
 		"promisify": "^0.0.3",
 		"puppeteer-extra": "^3.3.6",
 		"puppeteer-extra-plugin-stealth": "^2.11.2",
@@ -64,7 +64,7 @@
 		"nodemon": "^3.1.4",
 		"pnpm": "^9.5.0",
 		"prettier": "^3.3.3",
-		"prettier-plugin-svelte": "^3.2.5"
+		"prettier-plugin-svelte": "^3.2.6"
 	},
 	"type": "module"
 }
