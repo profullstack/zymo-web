@@ -1,4 +1,6 @@
 <script>
+	import MetaTags from './MetaTags.svelte';
+
 	export let APP_NAME, APP_DESCRIPTION;
 
 	let waitlistEmail = '';
