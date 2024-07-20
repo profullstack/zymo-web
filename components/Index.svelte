@@ -1,8 +1,6 @@
 <script>
 	import MetaTags from './MetaTags.svelte';
 
-	export let APP_NAME, APP_DESCRIPTION;
-
 	let waitlistEmail = '';
 
 	function isEmail(email) {
@@ -43,9 +41,7 @@
 	};
 </script>
 
-<svelte:head>
-	<MetaTags {...meta} />
-</svelte:head>
+<MetaTags {...meta} />
 
 <h1>Welcome to {APP_NAME}!</h1>
 
