@@ -43,7 +43,12 @@ export default {
 	},
 	build: {
 		transform: {
-			paths: ['pages/app.html', 'static/manifest.json', 'components/MetaTags.svelte'],
+			paths: [
+				'pages/app.html',
+				'static/manifest.json',
+				'components/MetaTags.svelte',
+				'components/Index.svelte'
+			],
 			mapper: (contents) =>
 				contents
 					.replaceAll('APP_DOMAIN', APP_DOMAIN)
