@@ -1,5 +1,12 @@
-.env.local
-.env.prod
-.env.dev
+.vscode
+build
 node_modules
+package-lock.json
+pnpm-lock.yaml
+.env.local
+.env.local.bat
+.env.dev
+data/
+history.txt
 *.mp4
+.env.prod

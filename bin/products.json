@@ -1,0 +1,24 @@
+[
+	{
+		"name": "FastestEngineer - Solopreneur",
+		"price": 279,
+		"mode": "payment"
+	},
+	{
+		"name": "FastestEngineer - Serialpreneur",
+		"price": 479,
+		"mode": "payment"
+	},
+	{
+		"name": "FastestEngineer - MVP",
+		"price": 5000,
+		"mode": "subscription",
+		"subscriptionOptions": [{ "type": "month" }, { "type": "year", "price": 50000 }]
+	},
+	{
+		"name": "FastestEngineer - Enterprise",
+		"price": 20000,
+		"mode": "subscription",
+		"subscriptionOptions": [{ "type": "month" }, { "type": "year", "price": 200000 }]
+	}
+]

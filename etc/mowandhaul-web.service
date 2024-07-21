@@ -1,0 +1,17 @@
+[Unit]
+Description=mowandhaul-web
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=ubuntu
+WorkingDirectory=/home/ubuntu/www/mowandhaul.com/mowandhaul-web/
+ExecStart=/home/ubuntu/www/mowandhaul.com/mowandhaul-web/bin/start.sh
+StandardOutput=append:/var/log/mowandhaul-web.log
+StandardError=append:/var/log/mowandhaul-web.error.log
+
+[Install]
+WantedBy=multi-user.target
