@@ -184,7 +184,7 @@
         <div id="hamburger" onclick="toggleSidebar()">&#9776;</div>
         <h1>Live TV on watch.theater</h1>
         <input type="text" id="filter-input" placeholder="Type to filter channels...">
-        <div id="channel-list-container">
+        <div id="channel-list-container" class="hidden">
             <ul id="channel-list"></ul>
         </div>
         <h2 id="current-channel">Select a channel to play</h2>
@@ -203,6 +203,9 @@
         document.addEventListener('DOMContentLoaded', function() {
             fetchChannels();
             document.getElementById('filter-input').addEventListener('input', filterChannels);
+            document.getElementById('filter-input').addEventListener('focus', function() {
+                document.getElementById('channel-list-container').classList.remove('hidden');
+            });
         });
 
         function fetchChannels() {
@@ -257,7 +260,7 @@
 
         function updateCurrentChannel(channelId, channelName) {
             const currentChannelElement = document.getElementById('current-channel');
-            currentChannelElement.innerHTML = `<img src="${embyServerAddress}/emby/Items/${channelId}/Images/Primary?api_key=${apiKey}" alt="" style="width: auto; height: 50px; margin-right: 10px;"> Now Playing: ${channelName}`;
+            currentChannelElement.innerHTML = `<img src="${embyServerAddress}/emby/Items/${channelId}/Images/Primary?api_key=${apiKey}" alt="" style="width: auto; height: 50px; margin-right: 10px;"> ${channelName}`;
         }
 
         function stopCurrentPlayback() {
