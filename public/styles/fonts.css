@@ -1,0 +1,33 @@
+@font-face {
+    font-family: 'Rubik';
+    src: url("../fonts/Rubik-Regular.ttf") format('opentype');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Rubik-Bold';
+    src: url("../fonts/Rubik-Bold.ttf") format('opentype');
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: 'SpaceMono-Bold';
+    src: url("../fonts/SpaceMono-Bold.ttf") format('opentype');
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: 'SpaceMono-BoldItalic';
+    src: url("../fonts/SpaceMono-BoldItalic.ttf") format('opentype');
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: 'SpaceMono-Italic';
+    src: url("../fonts/SpaceMono-Italic.ttf") format('opentype');
+}
+
+@font-face {
+    font-family: 'SpaceMono';
+    src: url("../fonts/SpaceMono-Regular.ttf") format('opentype');
+}

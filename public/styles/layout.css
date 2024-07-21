@@ -1,0 +1,73 @@
+*,
+*::after,
+*::before {
+	font-family: Rubik, sans-serif;
+}
+
+.bold,
+strong {
+	font-family: Rubik-Bold;
+}
+
+section {
+	padding: .8rem;
+}
+
+main {
+	min-height: calc(100vh - 12.4rem);
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-start;
+	flex-direction: column;
+	max-width: 80vw;
+	margin: 1.2rem auto;
+}
+
+h1 {
+	font-weight: 700;
+	font-size: 2.2rem;
+}
+
+form {
+	margin-top: 1.2rem;
+}
+
+pre {
+    overflow-y: auto;
+    height: 170px;
+}
+
+#html-log::before {
+    position: absolute;
+    content: "";
+    height: 8%;
+    width: -moz-available;
+    width: -webkit-fill-available;
+    background: linear-gradient(white, transparent);
+    pointer-events: none;
+}
+
+footer {
+	margin: 1.2rem;
+	text-align: center;
+}
+
+#logo {
+	width: 9rem;
+	display: inline-block;
+	border: 1px solid black;
+	border-radius: 50px;
+	margin: 1.2rem;
+}
+
+h1 {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	margin-bottom: 1.2rem;
+}
+
+p {
+	margin-bottom: 1.6rem;
+}

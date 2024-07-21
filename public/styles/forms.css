@@ -1,0 +1,87 @@
+form {
+	width: max-content;
+}
+
+button,
+select {
+	padding: 0.8rem 1.2rem;
+	font-weight: 700;
+	outline: none;
+}
+
+button {
+	border: 1px solid var(--button-border-color);
+	background-color: var(--button-background-color);
+	color: var(--button-color);
+	border-left: none;
+	border-radius: 0 .2rem .2rem 0;
+}
+
+button:disabled {
+	color: var(--button-disabled-color);
+	background-color: var(--button-disabled-background-color);
+	border-color: var(--button-border-color);
+}
+
+form .advanced-options {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+form .advanced-options summary {
+    color: gray;
+}
+
+form fieldset {
+	background-color: var(--form-fieldset-background-color);
+	border: 1px solid var(--form-field-border-color);
+	margin-bottom: 1.2rem;
+}
+
+form fieldset legend {
+	padding: 0.8rem 1.2rem;
+	font-weight: 700;
+	text-transform: capitalize;
+}
+
+form .field {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 1.2rem;
+}
+
+form .field.row {
+	flex-direction: row;
+}
+
+form .hidden {
+    display: none;
+}
+
+form input:not([type='checkbox'], [type='radio']) {
+	background-color: var(--form-field-background-color);
+	color: var(--form-field-color);
+	border-radius: .2rem 0 0 .2rem;
+	padding: 0.8rem 1.2rem;
+	border: 1px solid var(--form-field-border-color);
+	outline: none;
+	width: 100%;
+}
+
+form input:focus {
+	border-color: var(--form-field-active-border-color);
+	border-width: 1px;
+	outline-color: var(--form-field-active-border-color);
+	outline-width: 1px;
+	outline-style: solid;
+}
+
+form footer {
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-start;
+	flex-direction: column;
+}
+

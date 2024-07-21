@@ -1,0 +1,15 @@
+:root {
+    --link-color: #fc0;
+    --button-background-color: #fc0;
+    --button-disabled-background-color: #ccc;
+    --button-color: #000;
+    --button-border-color: #000;
+    --button-disabled-color: #000;
+    --form-field-border-color: #303030;
+    --form-field-color: #000;
+    --form-field-placeholder-color: #888;
+    --form-field-background-color: #fff;
+    --form-field-active-border-color: #000;
+    --form-fieldset-background-color: #f3f3f3;
+    --form-legend-background-color: #fff;
+}

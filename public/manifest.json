@@ -1,0 +1,14 @@
+{
+  "name": "encryptfil.es",
+  "version": "1.0",
+  "description": "encryptfil.es online",
+  "short_name": "encryptfiles",
+  "icons": {
+    "16": "logo.png",
+    "48": "logo.png",
+    "128": "logo.png"
+  },
+  "start_url": "https://encryptfil.es/",
+  "background_color": "#f7f7f7",
+  "theme_color": "#333"
+}
