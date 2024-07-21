@@ -6,11 +6,84 @@
     <title>Live TV on watch.theater</title>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        h1 {
+            text-align: center;
+        }
+        #sidebar {
+            height: 100vh;
+            width: 60px;
+            background-color: #333;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: width 0.3s;
+            overflow: hidden;
+        }
+        #sidebar.expanded {
+            width: 200px;
+        }
+        #sidebar .menu-item {
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        #sidebar .menu-item span {
+            display: none;
+            margin-left: 10px;
+        }
+        #sidebar.expanded .menu-item span {
+            display: inline;
+        }
+        #sidebar .menu-item:hover {
+            background-color: #575757;
+        }
+        #sidebar .toggle-btn {
+            margin-top: auto;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        #main-content {
+            margin-left: 60px;
+            padding: 20px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: margin-left 0.3s;
+        }
+        #main-content.expanded {
+            margin-left: 200px;
+        }
+        #hamburger {
+            display: none;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            font-size: 30px;
+            cursor: pointer;
+            z-index: 1000;
+        }
         #channel-list-container {
             max-height: 300px;
-            overflow-y: scroll;
+            overflow-y: hidden;
             border: 1px solid #ccc;
             margin-bottom: 20px;
+            width: 100%;
+            max-width: 600px;
         }
         #channel-list {
             list-style-type: none;
@@ -35,23 +108,96 @@
             margin-bottom: 10px;
             padding: 5px;
             width: 100%;
-        }
-        #channel-list-container.hidden {
-            display: none;
+            max-width: 600px;
+            box-sizing: border-box;
         }
         #current-channel {
             margin-top: 20px;
+            text-align: center;
+        }
+        video {
+            width: 100%;
+            max-width: 640px;
+            height: auto;
+        }
+        .pagination-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .pagination-buttons button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        @media (max-width: 600px) {
+            #sidebar {
+                width: 0;
+                overflow: hidden;
+            }
+            #sidebar.expanded {
+                width: 200px;
+            }
+            #main-content {
+                margin-left: 0;
+            }
+            #main-content.expanded {
+                margin-left: 200px;
+            }
+            #hamburger {
+                display: block;
+            }
+            #channel-list-container {
+                max-height: 200px;
+            }
+            #channel-list li img {
+                width: 40px;
+                height: 40px;
+                margin-right: 8px;
+            }
+            video {
+                width: 100%;
+                height: auto;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Live TV on watch.theater</h1>
-    <input type="text" id="filter-input" placeholder="Type to filter channels...">
-    <div id="channel-list-container">
-        <ul id="channel-list"></ul>
+    <div id="sidebar">
+        <div class="menu-item" onclick="navigateTo('live-tv')">
+            <span>Live TV</span>
+        </div>
+        <div class="menu-item" onclick="navigateTo('books')">
+            <span>Books</span>
+        </div>
+        <div class="menu-item" onclick="navigateTo('music')">
+            <span>Music</span>
+        </div>
+        <div class="menu-item" onclick="navigateTo('movies')">
+            <span>Movies</span>
+        </div>
+        <div class="menu-item" onclick="navigateTo('podcasts')">
+            <span>Podcasts</span>
+        </div>
+        <div class="menu-item" onclick="navigateTo('tv')">
+            <span>TV</span>
+        </div>
+        <div class="toggle-btn" onclick="toggleSidebar()">&#9664;</div>
     </div>
-    <h2 id="current-channel">Select a channel to play</h2>
-    <video id="video" controls width="640" height="360"></video>
+    <div id="main-content">
+        <div id="hamburger" onclick="toggleSidebar()">&#9776;</div>
+        <h1>Live TV on watch.theater</h1>
+        <input type="text" id="filter-input" placeholder="Type to filter channels...">
+        <div id="channel-list-container">
+            <ul id="channel-list"></ul>
+        </div>
+        <div class="pagination-buttons">
+            <button onclick="prevPage()">Previous</button>
+            <button onclick="nextPage()">Next</button>
+        </div>
+        <h2 id="current-channel">Select a channel to play</h2>
+        <video id="video" controls></video>
+    </div>
 
     <script>
         const apiKey = '00cd6d6968af4b2f9d86b0fc3d3d7cd5';
@@ -60,6 +206,9 @@
         const deviceId = generateUUID();
         let currentChannelName = '';
         let currentPlaySessionId = '';
+        let currentPage = 0;
+        const itemsPerPage = 5;
+        let filteredChannels = [];
 
         document.addEventListener('DOMContentLoaded', function() {
             fetchChannels();
@@ -71,31 +220,59 @@
                 .then(response => response.json())
                 .then(data => {
                     const channelList = document.getElementById('channel-list');
-                    data.Items.forEach(channel => {
-                        const listItem = document.createElement('li');
-                        const logoUrl = `${embyServerAddress}/emby/Items/${channel.Id}/Images/Primary?api_key=${apiKey}`;
-                        listItem.innerHTML = `<span>${channel.Name}</span>`;
-                        listItem.dataset.name = channel.Name.toLowerCase();
-                        listItem.dataset.channelName = channel.Name;
-                        listItem.onclick = () => startPlayback(channel.Id, channel.Name);
-                        channelList.appendChild(listItem);
-                    });
+                    filteredChannels = data.Items;
+                    displayChannels();
                 })
                 .catch(error => console.error('Error fetching channels:', error));
         }
 
         function filterChannels() {
-            const channelListContainer = document.getElementById('channel-list-container');
-            channelListContainer.classList.remove('hidden');
             const filterValue = document.getElementById('filter-input').value.toLowerCase();
-            const channelListItems = document.getElementById('channel-list').getElementsByTagName('li');
-            Array.from(channelListItems).forEach(item => {
-                if (item.dataset.name.includes(filterValue)) {
-                    item.style.display = '';
-                } else {
-                    item.style.display = 'none';
-                }
+            fetch(`${embyServerAddress}/emby/LiveTV/Channels?api_key=${apiKey}`)
+                .then(response => response.json())
+                .then(data => {
+                    filteredChannels = data.Items.filter(channel =>
+                        channel.Name.toLowerCase().includes(filterValue)
+                    );
+                    currentPage = 0; // Reset to first page
+                    displayChannels();
+                })
+                .catch(error => console.error('Error filtering channels:', error));
+        }
+
+        function displayChannels() {
+            const channelList = document.getElementById('channel-list');
+            channelList.innerHTML = '';
+            const start = currentPage * itemsPerPage;
+            const end = start + itemsPerPage;
+            const currentItems = filteredChannels.slice(start, end);
+
+            currentItems.forEach(channel => {
+                const listItem = document.createElement('li');
+                const logoUrl = `${embyServerAddress}/emby/Items/${channel.Id}/Images/Primary?api_key=${apiKey}`;
+                listItem.innerHTML = `<span>${channel.Name}</span>`;
+                listItem.dataset.name = channel.Name.toLowerCase();
+                listItem.dataset.channelName = channel.Name;
+                listItem.onclick = () => startPlayback(channel.Id, channel.Name);
+                channelList.appendChild(listItem);
             });
+
+            // Hide pagination buttons if there are no more pages
+            document.querySelector('.pagination-buttons').style.display = filteredChannels.length > itemsPerPage ? 'flex' : 'none';
+        }
+
+        function nextPage() {
+            if ((currentPage + 1) * itemsPerPage < filteredChannels.length) {
+                currentPage++;
+                displayChannels();
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 0) {
+                currentPage--;
+                displayChannels();
+            }
         }
 
         function startPlayback(channelId, channelName) {
@@ -113,9 +290,7 @@
 
         function updateCurrentChannel(channelId, channelName) {
             const currentChannelElement = document.getElementById('current-channel');
-            currentChannelElement.innerHTML = `<img src="${embyServerAddress}/emby/Items/${channelId}/Images/Primary?api_key=${apiKey}" alt="${channelName} logo" style="width: auto; height: 50px; margin-right: 10px;"> Now Playing: ${channelName}`;
-            document.getElementById('channel-list-container').classList.add('hidden');
-            document.getElementById('filter-input').value = '';
+            currentChannelElement.innerHTML = `<img src="${embyServerAddress}/emby/Items/${channelId}/Images/Primary?api_key=${apiKey}" alt="" style="width: auto; height: 50px; margin-right: 10px;"> Now Playing: ${channelName}`;
         }
 
         function stopCurrentPlayback() {
@@ -233,6 +408,17 @@
                 }
                 return (c === 'x' ? r : (r&0x3|0x8)).toString(16);
             });
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+            sidebar.classList.toggle('expanded');
+            mainContent.classList.toggle('expanded');
+        }
+
+        function navigateTo(section) {
+            alert('Navigate to ' + section);
         }
     </script>
 </body>
