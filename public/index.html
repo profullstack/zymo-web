@@ -15,6 +15,11 @@
         h1 {
             text-align: center;
         }
+
+        .hidden {
+            display: none;
+        }
+        
         #sidebar {
             height: 100vh;
             width: 60px;
@@ -79,7 +84,7 @@
         }
         #channel-list-container {
             max-height: 300px;
-            overflow-y: hidden;
+            overflow-y: auto;
             border: 1px solid #ccc;
             margin-bottom: 20px;
             width: 100%;
@@ -119,16 +124,6 @@
             width: 100%;
             max-width: 640px;
             height: auto;
-        }
-        .pagination-buttons {
-            display: flex;
-            justify-content: center;
-            margin-top: 10px;
-        }
-        .pagination-buttons button {
-            margin: 0 5px;
-            padding: 5px 10px;
-            cursor: pointer;
         }
         @media (max-width: 600px) {
             #sidebar {
@@ -191,10 +186,6 @@
         <div id="channel-list-container">
             <ul id="channel-list"></ul>
         </div>
-        <div class="pagination-buttons">
-            <button onclick="prevPage()">Previous</button>
-            <button onclick="nextPage()">Next</button>
-        </div>
         <h2 id="current-channel">Select a channel to play</h2>
         <video id="video" controls></video>
     </div>
@@ -206,8 +197,6 @@
         const deviceId = generateUUID();
         let currentChannelName = '';
         let currentPlaySessionId = '';
-        let currentPage = 0;
-        const itemsPerPage = 5;
         let filteredChannels = [];
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -221,58 +210,35 @@
                 .then(data => {
                     const channelList = document.getElementById('channel-list');
                     filteredChannels = data.Items;
-                    displayChannels();
+                    displayChannels(filteredChannels);
                 })
                 .catch(error => console.error('Error fetching channels:', error));
         }
 
         function filterChannels() {
             const filterValue = document.getElementById('filter-input').value.toLowerCase();
-            fetch(`${embyServerAddress}/emby/LiveTV/Channels?api_key=${apiKey}`)
-                .then(response => response.json())
-                .then(data => {
-                    filteredChannels = data.Items.filter(channel =>
-                        channel.Name.toLowerCase().includes(filterValue)
-                    );
-                    currentPage = 0; // Reset to first page
-                    displayChannels();
-                })
-                .catch(error => console.error('Error filtering channels:', error));
+            const filtered = filteredChannels.filter(channel =>
+                channel.Name.toLowerCase().includes(filterValue)
+            );
+            displayChannels(filtered);
         }
 
-        function displayChannels() {
+        function displayChannels(channels) {
             const channelList = document.getElementById('channel-list');
             channelList.innerHTML = '';
-            const start = currentPage * itemsPerPage;
-            const end = start + itemsPerPage;
-            const currentItems = filteredChannels.slice(start, end);
 
-            currentItems.forEach(channel => {
+            channels.forEach(channel => {
                 const listItem = document.createElement('li');
                 const logoUrl = `${embyServerAddress}/emby/Items/${channel.Id}/Images/Primary?api_key=${apiKey}`;
                 listItem.innerHTML = `<span>${channel.Name}</span>`;
                 listItem.dataset.name = channel.Name.toLowerCase();
                 listItem.dataset.channelName = channel.Name;
-                listItem.onclick = () => startPlayback(channel.Id, channel.Name);
+                listItem.onclick = () => {
+                    startPlayback(channel.Id, channel.Name);
+                    document.getElementById('channel-list-container').classList.add('hidden'); // Close the dropdown
+                };
                 channelList.appendChild(listItem);
             });
-
-            // Hide pagination buttons if there are no more pages
-            document.querySelector('.pagination-buttons').style.display = filteredChannels.length > itemsPerPage ? 'flex' : 'none';
-        }
-
-        function nextPage() {
-            if ((currentPage + 1) * itemsPerPage < filteredChannels.length) {
-                currentPage++;
-                displayChannels();
-            }
-        }
-
-        function prevPage() {
-            if (currentPage > 0) {
-                currentPage--;
-                displayChannels();
-            }
         }
 
         function startPlayback(channelId, channelName) {
