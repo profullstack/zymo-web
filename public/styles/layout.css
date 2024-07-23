@@ -71,3 +71,7 @@ h1 {
 p {
 	margin-bottom: 1.6rem;
 }
+
+.hidden {
+	display: none;
+}

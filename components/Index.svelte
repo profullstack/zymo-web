@@ -13,16 +13,11 @@
 	let currentChannelName = '';
 	let currentPlaySessionId = '';
 	let filteredChannels = [];
+	let allChannels = [];
 	let isChannelListExpanded = false;
 
 	onMount(async () => {
-		document.addEventListener('DOMContentLoaded', function () {
-			fetchChannels();
-			document.getElementById('filter-input').addEventListener('input', filterChannels);
-			document.getElementById('filter-input').addEventListener('focus', function () {
-				document.getElementById('channel-list-container').classList.remove('hidden');
-			});
-		});
+		fetchChannels();
 	});
 
 	function toggleSidebar(e) {
@@ -35,37 +30,17 @@
 		fetch(`${embyServerAddress}/emby/LiveTV/Channels?api_key=${apiKey}`)
 			.then((response) => response.json())
 			.then((data) => {
-				const channelList = document.getElementById('channel-list');
-				filteredChannels = data.Items;
-				displayChannels(filteredChannels);
+				allChannels = filteredChannels = data.Items;
 			})
 			.catch((error) => console.error('Error fetching channels:', error));
 	}
 
 	function filterChannels() {
 		const filterValue = document.getElementById('filter-input').value.toLowerCase();
-		const filtered = filteredChannels.filter((channel) =>
+
+		filteredChannels = allChannels.filter((channel) =>
 			channel.Name.toLowerCase().includes(filterValue)
 		);
-		displayChannels(filtered);
-	}
-
-	function displayChannels(channels) {
-		const channelList = document.getElementById('channel-list');
-		channelList.innerHTML = '';
-
-		channels.forEach((channel) => {
-			const listItem = document.createElement('li');
-			const logoUrl = `${embyServerAddress}/emby/Items/${channel.Id}/Images/Primary?api_key=${apiKey}`;
-			listItem.innerHTML = `<span>${channel.Name}</span>`;
-			listItem.dataset.name = channel.Name.toLowerCase();
-			listItem.dataset.channelName = channel.Name;
-			listItem.addEventListener('click', () => {
-				startPlayback(channel.Id, channel.Name);
-				document.getElementById('channel-list-container').classList.add('hidden'); // Close the dropdown
-			});
-			channelList.appendChild(listItem);
-		});
 	}
 
 	function startPlayback(channelId, channelName) {
@@ -204,9 +179,30 @@
 	}
 
 	function playStream(streamUrl) {
+		// streamUrl = streamUrl.replace('master.m3u8', 'live.m3u8');
+
 		const video = document.getElementById('video');
 		if (Hls.isSupported()) {
-			const hls = new Hls();
+			const hls = new Hls({
+				// Buffer settings
+				maxBufferLength: 120, // Allow buffering up to 120 seconds
+				maxMaxBufferLength: 180, // Maximum buffer length limit to 180 seconds
+				maxBufferSize: 100 * 1024 * 1024, // Increase buffer size to 100MB
+				maxBufferHole: 1, // Allow a larger buffer hole of 1 second
+
+				// Fragment loading settings
+				fragLoadingTimeOut: 30000, // Increase fragment loading timeout to 30 seconds
+				fragLoadingRetryDelay: 10000, // Wait 10 seconds before retrying
+				fragLoadingMaxRetry: 3, // Retry up to 3 times
+				fragLoadingMaxRetryTimeout: 60000, // Maximum retry timeout of 60 seconds
+
+				lowLatencyMode: true, // Enable low-latency mode
+
+				// Live stream settings
+				liveSyncDurationCount: 3, // Target number of fragments in buffer for live streams
+				liveMaxLatencyDurationCount: 5, // Maximum number of fragments in buffer for live streams
+				maxFragLookUpTolerance: 0.2 // Increase fragment lookup tolerance
+			});
 			hls.loadSource(streamUrl);
 			hls.attachMedia(video);
 			hls.on(Hls.Events.MANIFEST_PARSED, function () {
@@ -281,12 +277,20 @@
 <div id="main-content" class:expanded={$isExpanded}>
 	<div id="hamburger" on:click={toggleSidebar}>&#9776;</div>
 	<h1>Live TV on watch.theater</h1>
-	<input type="text" id="filter-input" placeholder="Type to filter channels..." />
-	<div id="channel-list-container" class:hidden={isChannelListExpanded}>
+	<input
+		type="text"
+		id="filter-input"
+		placeholder="Type to filter channels..."
+		on:input={filterChannels}
+		on:focus={() => {
+			isChannelListExpanded = true;
+		}}
+	/>
+	<div id="channel-list-container" class:hidden={!isChannelListExpanded}>
 		<ul id="channel-list">
-			{#each filterChannels as channel}
+			{#each filteredChannels as channel}
 				<li
-					on:click={(channel) => {
+					on:click|preventDefault={() => {
 						startPlayback(channel.Id, channel.Name);
 					}}
 				>
@@ -308,6 +312,10 @@
 </form>
 
 <style>
+	.hidden {
+		display: none;
+	}
+
 	#main-content {
 		margin-left: 60px;
 		padding: 20px;
