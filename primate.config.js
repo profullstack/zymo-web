@@ -42,6 +42,7 @@ export default {
 		// }
 	},
 	build: {
+		includes: ['modules'],
 		transform: {
 			paths: [
 				'pages/app.html',

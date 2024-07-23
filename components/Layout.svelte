@@ -1,20 +1,20 @@
 <script>
-	import GlobalNavBar from './GlobalNavBar.svelte';
-	import NavBar from './NavBar.svelte';
+	// import GlobalNavBar from './GlobalNavBar.svelte';
+	// import NavBar from './NavBar.svelte';
+	import Sidebar from './Sidebar.svelte';
 	import MetaTags from './MetaTags.svelte';
 
 	export let isLoggedIn, unverifiedUser;
 </script>
 
-<svelte:head>
-	<MetaTags />
-</svelte:head>
+<MetaTags />
 
 <main>
-	<GlobalNavBar {isLoggedIn} {unverifiedUser} />
+	<Sidebar />
+	<!-- <GlobalNavBar {isLoggedIn} {unverifiedUser} /> -->
 
-	{#if isLoggedIn}
+	<!-- {#if isLoggedIn}
 		<NavBar {isLoggedIn} />
-	{/if}
+	{/if} -->
 	<slot />
 </main>
