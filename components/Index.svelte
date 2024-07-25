@@ -36,7 +36,7 @@
 	}
 
 	const meta = {
-		title: 'APP_NAME - { APP_DESCRIPTION',
+		title: 'APP_NAME - APP_DESCRIPTION',
 		description: 'APP_DESCRIPTION'
 	};
 </script>
