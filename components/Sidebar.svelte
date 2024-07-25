@@ -1,51 +1,35 @@
 <script>
 	import { isExpanded } from '../modules/store.js';
-
-	function toggleSidebar(e) {
-		e.preventDefault();
-
-		isExpanded.update((value) => !value);
-	}
-
-	function navigateTo(section) {
-		alert('Navigate to ' + section);
-	}
 </script>
 
-<div id="sidebar" class:expanded={$isExpanded}>
-	<div class="menu-item" on:click={() => navigateTo('live-tv')}>
-		<span>Live TV</span>
-	</div>
-	<div class="menu-item" on:click={() => navigateTo('books')}>
-		<span>Books</span>
-	</div>
-	<div class="menu-item" on:click={() => navigateTo('music')}>
-		<span>Music</span>
-	</div>
-	<div class="menu-item" on:click={() => navigateTo('movies')}>
-		<span>Movies</span>
-	</div>
-	<div class="menu-item" on:click={() => navigateTo('podcasts')}>
-		<span>Podcasts</span>
-	</div>
-	<div class="menu-item" on:click={() => navigateTo('tv')}>
-		<span>TV</span>
-	</div>
-	<div class="toggle-btn" on:click={toggleSidebar}>&#9664;</div>
-</div>
+<nav id="sidebar" class:expanded={$isExpanded}>
+	<ul>
+		<li class="menu-item">
+			<a href="/live">Live TV</a>
+		</li>
+		<li class="menu-item">
+			<a href="/books">Books</a>
+		</li>
+		<li class="menu-item">
+			<a href="/music">Music</a>
+		</li>
+		<li class="menu-item">
+			<a href="/movies">Movies</a>
+		</li>
+		<li class="menu-item">
+			<a href="/podcasts">Podcasts</a>
+		</li>
+		<li class="menu-item">
+			<a href="/tv">TV</a>
+		</li>
+	</ul>
+</nav>
 
 <style>
-	.hidden {
-		display: none;
-	}
-
 	#sidebar {
-		height: 100vh;
+		height: calc(100vh - 43.75px);
 		width: 60px;
-		background-color: #7e7e7e;
-		position: fixed;
-		top: 0;
-		left: 0;
+		background-color: var(--nav-background-color);
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -57,7 +41,7 @@
 		width: 200px !important;
 	}
 
-	#sidebar .menu-item {
+	#sidebar .menu-item a {
 		color: #fff;
 		text-align: center;
 		padding: 20px 0;
@@ -67,11 +51,11 @@
 		justify-content: center;
 		cursor: pointer;
 	}
-	#sidebar .menu-item span {
+	#sidebar .menu-item a {
 		display: none;
 		margin-left: 10px;
 	}
-	#sidebar.expanded .menu-item span {
+	#sidebar.expanded .menu-item a {
 		display: inline;
 	}
 	#sidebar .menu-item:hover {

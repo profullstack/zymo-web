@@ -1,0 +1,17 @@
+[Unit]
+Description=watchtheater-web
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=ubuntu
+WorkingDirectory=/home/ubuntu/www/watch.theater/watchtheater-web/
+ExecStart=/home/ubuntu/www/watch.theater/watchtheater-web/bin/start.sh
+StandardOutput=append:/var/log/watchtheater-web.log
+StandardError=append:/var/log/watchtheater-web.error.log
+
+[Install]
+WantedBy=multi-user.target

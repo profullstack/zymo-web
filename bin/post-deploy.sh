@@ -26,14 +26,14 @@ if [ -d "$HOME/www/${name}/${project}" ]; then
     #pnpm cache verify
     pnpm i
 		# curl --proto '=https' --tlsv1.2 -sSf https://install.surrealdb.com | sh -s -- --nightl
-    #sudo systemctl stop ${META_SERVICE}
-    #sudo systemctl stop surrealdb
+    sudo systemctl stop ${META_SERVICE}
+    sudo systemctl stop surrealdb
     # surreal upgrade --nightly
-    #surreal upgrade
+    surreal upgrade
     sudo /etc/init.d/nginx reload
-    #sudo systemctl daemon-reload
-    #sudo systemctl start ${META_SERVICE}
-    #sudo systemctl start surrealdb
+    sudo systemctl daemon-reload
+    sudo systemctl start ${META_SERVICE}
+    sudo systemctl start surrealdb
     # run migrations
     ./migrations/users.sh
     # ./migrations/comments.sh

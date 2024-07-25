@@ -1,18 +1,21 @@
 * {
- box-sizing: border-box;   
+	box-sizing: border-box;
 }
 
 html,
 body {
 	min-height: 100vh;
 	max-width: 100%;
+	margin: 0;
+	padding: 0;
 }
 
 html {
-    font-size: 62.5%;
-    scroll-behavior: smooth;
+	font-size: 62.5%;
+	scroll-behavior: smooth;
 }
 
 body {
-    font-size: 1.6rem;
+	font-size: 1.6rem;
 }
+
