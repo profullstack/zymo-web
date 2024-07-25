@@ -43,9 +43,9 @@
 
 <MetaTags {...meta} />
 
-<h1>Welcome to {APP_NAME}!</h1>
+<h1>Welcome to APP_NAME!</h1>
 
-<p>{APP_DESCRIPTION}</p>
+<p>APP_DESCRIPTION</p>
 
 <h3>Join our waitlist</h3>
 
