@@ -1,4 +1,4 @@
-import {view} from "primate";
+import { view } from "primate";
 
 export default {
 	async get(request) {
@@ -6,14 +6,26 @@ export default {
 		const {
 			link: { Link },
 			apikeys: { Apikey },
+			User,
 		} = store;
 
-	const userId = session.get('user').id
-    const links = await Link.getAllByUserId(userId);
-	const apikeys = await Apikey.getAllByUserId(userId)
+		const user = session.get('user');
+		const userId = user.id;
+		const links = await Link.getAllByUserId(userId);
+		const apikeys = await Apikey.getAllByUserId(userId)
 
-    console.log('links2:', links, apikeys);
-    
-    return view("Dashboard.svelte", { links, apikeys });
-  },
+		var phoneUnverified = false;
+
+		if (user.phone) {
+			try {
+				const verification = await User.getPhoneVerificationCode(userId);
+				phoneUnverified = verification.verify?.phone.status !== "verified";
+
+			} catch (e) { }
+		}
+
+		console.log('links2:', links, apikeys);
+
+		return view("Dashboard.svelte", { links, apikeys, phoneUnverified });
+	},
 };
