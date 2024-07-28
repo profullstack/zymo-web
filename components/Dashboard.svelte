@@ -1,6 +1,7 @@
 <script>
 	export let links = [];
 	export let apikeys = [];
+	export let phoneUnverified;
 
 	let status = {};
 
@@ -153,6 +154,10 @@
 		</li>
 	{/each}
 </ol>
+
+{#if phoneUnverified}
+	<a href="/verify/phone">Verify your phone number</a>
+{/if}
 
 <style>
 	li {
