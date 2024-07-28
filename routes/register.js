@@ -23,7 +23,7 @@ export default {
 
 		const {
 			register: { Form },
-			external: { Mailgun },
+			external: { Mailgun, Twilio },
 			User, Referral, ReferralCode
 		} = store;
 		try {
@@ -53,7 +53,14 @@ export default {
 					await Mailgun.sendVerifyEmail({ to: me.email, code: evCode });
 				}
 				if (me.phone && me.phonePrefix) {
-					await User.generatePhoneVerifyCode(me.id);
+					const pvcResult = await User.generatePhoneVerifyCode(me.id);
+					const pvCode = pvcResult.verify.phone.code
+
+					const phone = me.phonePrefix + me.phone;
+
+					if (pvCode) {
+						await Twilio.sendPhoneVerificationCode({ to: phone, code: pvCode })
+					}
 				}
 			} catch (err) {
 				console.error(err);
