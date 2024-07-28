@@ -75,10 +75,10 @@ export const actions = ({ connection: db }) => {
 			}
 		},
 		async generatePasswordResetToken(id) {
-			try{
+			try {
 				const token = this.generateToken();
 				const expiration = new Date(Date.now() + 2 * (60 * 60 * 1000));
-	
+
 				const [[result]] = await db.query(
 					"UPDATE $id SET passwordReset.token = $_token, passwordReset.expiration = $expiration",
 					{
@@ -88,20 +88,20 @@ export const actions = ({ connection: db }) => {
 					}
 				);
 				return result;
-			}catch(e){
+			} catch (e) {
 				console.error(e)
 			}
 		},
 		generateToken(length = 30) {
-            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-            let token = '';
+			const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+			let token = '';
 
-            for (let i = 0; i < length; i++) {
-                const randomIndex = Math.floor(Math.random() * characters.length);
-                token += characters[randomIndex];
-            }
-            return token;
-        },
+			for (let i = 0; i < length; i++) {
+				const randomIndex = Math.floor(Math.random() * characters.length);
+				token += characters[randomIndex];
+			}
+			return token;
+		},
 		async getByPasswordResetToken(token) {
 			const query = `SELECT * FROM user WHERE passwordReset.token = $_token`;
 			try {
@@ -115,7 +115,7 @@ export const actions = ({ connection: db }) => {
 			}
 		},
 		async deletePasswordResetToken(id) {
-			try{
+			try {
 				const [[result]] = await db.query(
 					"UPDATE $id SET passwordReset = {}",
 					{
@@ -123,12 +123,12 @@ export const actions = ({ connection: db }) => {
 					}
 				);
 				return result;
-			}catch(e){
+			} catch (e) {
 				console.error(e)
 			}
 		},
 		async updatePassword(id, password) {
-			try{
+			try {
 				const [[result]] = await db.query(
 					"UPDATE $id SET password = crypto::argon2::generate($password)",
 					{
@@ -137,7 +137,7 @@ export const actions = ({ connection: db }) => {
 					}
 				);
 				return result;
-			}catch(e){
+			} catch (e) {
 				console.error(e)
 			}
 		},
@@ -204,7 +204,34 @@ export const actions = ({ connection: db }) => {
 
 			return result;
 		},
+		async getPhoneVerificationCode(id) {
+			try {
+				const query = `
+					SELECT verify.phone FROM user
+					WHERE id = $id
+				`;
 
+				const [[result]] = await db.query(query, { id });
+
+				return result;
+			} catch (error) {
+				console.error(error);
+			}
+		},
+		async verifyPhone(id) {
+			try {
+
+				const query = `
+					UPDATE $id SET verify.phone.status = 'verified'
+				`;
+
+				const [[result]] = await db.query(query, { id });
+
+				return result;
+			} catch (error) {
+				console.error(error);
+			}
+		},
 		async create(user) {
 			console.log('create:', user);
 			let { email, username, firstName, lastName, phone, phonePrefix, password, password2 } =
