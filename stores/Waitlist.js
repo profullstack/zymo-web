@@ -16,6 +16,17 @@ export const actions = ({ connection: db }) => {
             }
 
         },
+        async getAll() {
+			try {
+                const query = `SELECT * FROM waitlist`;
+
+                const waitlist = await db.query(query);
+
+                return waitlist.pop();
+            } catch (e) {
+                console.error(e)
+            }
+		}
     }
 }
 

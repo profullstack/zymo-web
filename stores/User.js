@@ -355,6 +355,17 @@ export const actions = ({ connection: db }) => {
 			await session.create({ token, user: me, loggedIn: Boolean(token) });
 
 			return session.get('loggedIn');
+		},
+		async getAll() {
+			try {
+				const query = `SELECT * FROM user`;
+
+				const users = await db.query(query);
+
+				return users.pop();
+			} catch (e) {
+				console.error(e)
+			}
 		}
 	};
 };
