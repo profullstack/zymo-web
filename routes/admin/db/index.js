@@ -4,6 +4,6 @@ export default {
 
   async get(request) {
 
-    return view('admin/data/Index.svelte');
+    return view('admin/db/Index.svelte');
   },
 }
