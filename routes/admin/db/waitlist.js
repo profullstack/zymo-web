@@ -7,6 +7,6 @@ export default {
     const { Waitlist } = store;
 
     const waitlist = await Waitlist.getAll();
-    return view('admin/data/Waitlist.svelte', { waitlist });
+    return view('admin/db/Waitlist.svelte', { waitlist });
   },
 }
