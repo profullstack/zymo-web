@@ -1,21 +1,21 @@
 <script>
-	export let links = [];
 	export let apikeys = [];
+	export let m3us = [];
 
 	let status = {};
 
-	async function deleteLink(e, link) {
+	async function deleteM3u(e, m3u) {
 		e.preventDefault();
 		try {
-			const res = await fetch(`/links/${link.id}`, {
+			const res = await fetch(`/m3u/${m3u.id}`, {
 				method: 'DELETE'
 			});
 
 			const result = await res.json();
-			status[link.id] = result;
+			status[m3u.id] = result;
 			e.target.closest('li').remove();
 		} catch (err) {
-			status[link.id] = err;
+			status[m3u.id] = err;
 		}
 	}
 
@@ -110,30 +110,6 @@
 	}
 </script>
 
-<h2>Links</h2>
-
-<ol>
-	{#each links as link}
-		<li>
-			<a href={link.url} target="_new">{link.url}</a>
-			<nav>
-				<a href="/links/{link.id}">edit</a>
-				{#if link.alias}<a href="/a/{link.alias}" on:click={(e) => track(e, link)}
-						>{link.alias}</a
-					>{/if}
-				<a href="/l/{link.id}" on:click={(e) => track(e, link)}>{link.id}</a>
-				<a
-					href="#"
-					on:click={(e) => {
-						deleteLink(e, link);
-					}}>delete</a
-				>
-				{#if status[link.id]?.status}{status[link.id].status}{/if}
-			</nav>
-		</li>
-	{/each}
-</ol>
-
 <h2>API keys</h2>
 
 <ol>
@@ -149,6 +125,25 @@
 					}}>delete</a
 				>
 				{#if status[apikey.id]?.status}{status[apikey.id].status}{/if}
+			</nav>
+		</li>
+	{/each}
+</ol>
+
+<h2>M3U channel links</h2>
+<ol>
+	{#each m3us as m3u}
+		<li>
+			{m3u.name} - {m3u.id}
+			<nav>
+				<a href="/m3u/{m3u.id}">edit</a>
+				<a
+					href="#"
+					on:click={(e) => {
+						deleteM3u(e, m3u);
+					}}>delete</a
+				>
+				{#if status[m3u.id]?.status}{status[m3u.id].status}{/if}
 			</nav>
 		</li>
 	{/each}

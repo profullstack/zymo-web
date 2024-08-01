@@ -5,7 +5,7 @@
 <nav id="sidebar" class:expanded={$isExpanded}>
 	<ul>
 		<li class="menu-item">
-			<a href="/live">Live TV</a>
+			<a href="/m3u">Live TV</a>
 		</li>
 		<li class="menu-item">
 			<a href="/books">Books</a>

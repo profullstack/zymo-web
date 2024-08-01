@@ -33,7 +33,7 @@
 	</div>
 
 	<a href="/" id="logo"><img src="/static/logo.svg" alt="" /></a>
-	<a href="/products">Products</a>
+	<!-- <a href="/products">Products</a> -->
 	{#if isLoggedIn || unverifiedUser}
 		<a href="#" on:click={logout}>Logout</a>
 	{:else}

@@ -2,18 +2,18 @@ import {view} from "primate";
 
 export default {
 	async get(request) {
-		const { session, path, store } = request;
+		const { session, store } = request;
 		const {
-			link: { Link },
 			apikeys: { Apikey },
+			m3u: { M3U }
 		} = store;
 
 	const userId = session.get('user').id
-    const links = await Link.getAllByUserId(userId);
+    const m3us = await M3U.getAllByUserId(userId);
 	const apikeys = await Apikey.getAllByUserId(userId)
 
-    console.log('links2:', links, apikeys);
+    console.log('m3us:', m3us, apikeys);
     
-    return view("Dashboard.svelte", { links, apikeys });
+    return view("Dashboard.svelte", { m3us, apikeys });
   },
 };
