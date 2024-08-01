@@ -1,0 +1,65 @@
+<script>
+	export let users = [];
+
+	function exportAsCSV() {
+		const headers = [
+			'#',
+			'First Name',
+			'Last Name',
+			'Email Address',
+			'Phone Number',
+			'Created At'
+		];
+		const rows = users.map((user, index) => [
+			index + 1,
+			user.firstName,
+			user.lastName,
+			user.email,
+			user.phonePrefix + user.phone,
+			user.createdAt
+		]);
+		const csvContent = [headers, ...rows].map((e) => e.join(',')).join('\n');
+
+		const blob = new Blob([csvContent], { type: 'text/csv' });
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = 'users.csv';
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	}
+</script>
+
+<div>
+	<h2>Users</h2>
+	<button on:click={exportAsCSV}>Export as CSV</button>
+	<table>
+		<tr>
+			<th>#</th>
+			<th>First Name</th>
+			<th>Last Name</th>
+			<th>Email Address</th>
+			<th>Phone</th>
+			<th>Created At</th>
+		</tr>
+		{#each users as user, index}
+			<tr>
+				<td>{index + 1}</td>
+				<td>{user.firstName}</td>
+				<td>{user.lastName}</td>
+				<td>{user.email}</td>
+				<td>{user.phonePrefix + user.phone}</td>
+				<td>{user.createdAt}</td>
+			</tr>
+		{/each}
+	</table>
+</div>
+
+<style>
+	table {
+		width: 100%;
+		text-align: center;
+	}
+</style>
