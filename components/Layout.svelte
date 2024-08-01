@@ -1,6 +1,6 @@
 <script>
 	import GlobalNavBar from './GlobalNavBar.svelte';
-	// import NavBar from './NavBar.svelte';
+	import NavBar from './NavBar.svelte';
 	import Sidebar from './Sidebar.svelte';
 	import MetaTags from './MetaTags.svelte';
 
@@ -13,6 +13,9 @@
 <main>
 	<Sidebar />
 	<div class="content">
+		{#if isLoggedIn}
+			<NavBar {isLoggedIn} {unverifiedUser} />
+		{/if}
 		<slot />
 	</div>
 </main>

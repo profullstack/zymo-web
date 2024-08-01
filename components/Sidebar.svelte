@@ -56,7 +56,7 @@
 		margin-left: 10px;
 	}
 	#sidebar.expanded .menu-item a {
-		display: inline;
+		display: flex;
 	}
 	#sidebar .menu-item:hover {
 		background-color: #575757;

@@ -1,5 +1,5 @@
 <script>
-	export let isLoggedIn;
+	export let isLoggedIn, unverifiedUser;
 </script>
 
 <nav>

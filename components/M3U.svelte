@@ -1,11 +1,13 @@
 <script>
 	import { onMount } from 'svelte';
 	import Hls from 'hls.js';
-	// import { FFmpeg } from '@ffmpeg/ffmpeg';
-	// import { fetchFile } from '@ffmpeg/util';
 
 	export let m3us = [];
-	// const ffmpeg = new FFmpeg();
+
+	let FFmpeg;
+	let fetchFile;
+	let toBlobURL;
+	let ffmpeg;
 	let channels = [];
 	let filteredChannels = [];
 	let selectedChannel = '';
@@ -13,39 +15,56 @@
 	let selectedProvider = {};
 	let isChannelListExpanded = false;
 
-	// async function convertFormat(inputUrl, targetFormat) {
-	// 	console.log('converting:', inputUrl, targetFormat);
-	// 	try {
-	// 		await ffmpeg.load();
+	onMount(async () => {
+		fetchFile = (await import('//cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js'))
+			.fetchFile;
+		toBlobURL = (await import('//cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js'))
+			.toBlobURL;
+		FFmpeg = (await import('//cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js'))
+			.FFmpeg;
+		ffmpeg = new FFmpeg({ log: true });
+	});
 
-	// 		// Extract the file extension and name from the URL
-	// 		const inputFileName = inputUrl.split('/').pop();
-	// 		const outputFileExt = targetFormat.startsWith('.')
-	// 			? targetFormat.slice(1)
-	// 			: targetFormat;
-	// 		const outputFileName = inputFileName.replace(/\.\w+$/, `.${outputFileExt}`);
+	async function convertFormat(inputUrl, targetFormat) {
+		console.log('converting:', inputUrl, targetFormat);
+		const baseURL = '//cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/';
+		try {
+			await ffmpeg.load({
+				// coreURL: await toBlobURL(`${baseURL}/core-mt.mjs`, 'text/javascript'),
+				// wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+				workerURL: await toBlobURL(
+					`//cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm//worker.js`,
+					'text/javascript'
+				)
+			});
+			// Extract the file extension and name from the URL
+			const inputFileName = inputUrl.split('/').pop();
+			const outputFileExt = targetFormat.startsWith('.')
+				? targetFormat.slice(1)
+				: targetFormat;
+			const outputFileName = inputFileName.replace(/\.\w+$/, `.${outputFileExt}`);
 
-	// 		// Fetch the file from the URL and write it to the ffmpeg virtual file system
-	// 		// ffmpeg.FS('writeFile', inputFileName, await fetchFile(inputUrl));
+			// Fetch the file from the URL and write it to the ffmpeg virtual file system
+			ffmpeg.FS('writeFile', inputFileName, await fetchFile(inputUrl));
 
-	// 		// Execute the ffmpeg command to convert the file
-	// 		await ffmpeg.run('-i', inputFileName, '-c:v', 'libx264', '-c:a', 'aac', outputFileName);
+			// Execute the ffmpeg command to convert the file
+			await ffmpeg.run('-i', inputFileName, '-c:v', 'libx264', '-c:a', 'aac', outputFileName);
 
-	// 		// Read the converted file from the ffmpeg file system
-	// 		const data = ffmpeg.FS('readFile', outputFileName);
+			// Read the converted file from the ffmpeg file system
+			const data = ffmpeg.FS('readFile', outputFileName);
 
-	// 		// Create a URL for the converted video
-	// 		const videoURL = URL.createObjectURL(
-	// 			new Blob([data.buffer], { type: `video/${outputFileExt}` })
-	// 		);
+			// Create a URL for the converted video
+			const videoURL = URL.createObjectURL(
+				new Blob([data.buffer], { type: `video/${outputFileExt}` })
+			);
 
-	// 		console.log(videoUrl);
-	// 		return videoURL;
-	// 	} catch (error) {
-	// 		console.error('Error converting video:', error);
-	// 		return null;
-	// 	}
-	// }
+			console.log(videoUrl);
+			return videoURL;
+		} catch (error) {
+			console.error('Error converting video:', error);
+			return null;
+		}
+	}
 
 	function filterChannels() {
 		const filterValue = document.getElementById('filter-input').value.toLowerCase();
@@ -105,10 +124,12 @@
 		if (url.indexOf('neczmabfa') > 0) {
 			// Usage example:
 			console.log('check redirect for:', url);
-			let res = await fetch(url, { redirect: 'follow' });
-			console.log('redirect at:', url);
-			url = res.url;
-			// url = await convertFormat(url, '.mp4');
+			// let res = await fetch(url, { redirect: 'follow' });
+			// console.log('redirect at:', url);
+			// url = res.url;
+			if (url.indexOf('mp4') > 0 || url.indexOf('mkv') > 0) {
+				url = await convertFormat(url, '.mp4');
+			}
 		}
 
 		console.log('play:', url);
