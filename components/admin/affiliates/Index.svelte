@@ -21,9 +21,9 @@
 		{#each affiliates as affiliate, index}
 			<tr>
 				<td>{index + 1}</td>
-				<td>{affiliate.userInfo.email}</td>
+				<td>{affiliate?.userInfo?.email}</td>
 				<td>{currencyFormatter.format(affiliate.balance)}</td>
-				<td>{affiliate.payoutMethods.length}</td>
+				<td>{affiliate?.payoutMethods?.length}</td>
 				<td>
 					<a href="/admin/affiliates/payout/{affiliate.id}">Payout</a>
 				</td>

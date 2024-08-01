@@ -27,26 +27,17 @@ if [ -d "$HOME/www/${name}/${project}" ]; then
     pnpm i
 		# curl --proto '=https' --tlsv1.2 -sSf https://install.surrealdb.com | sh -s -- --nightl
     sudo systemctl stop ${META_SERVICE}
-    sudo systemctl stop surrealdb
+    # sudo systemctl stop surrealdb
     # surreal upgrade --nightly
-    surreal upgrade
+    # surreal upgrade
     sudo /etc/init.d/nginx reload
     sudo systemctl daemon-reload
     sudo systemctl start ${META_SERVICE}
-    sudo systemctl start surrealdb
-    # run migrations
-    ./migrations/users.sh
-    # ./migrations/comments.sh
-    ./migrations/links.sh
-    ./migrations/apikeys.sh
-    ./migrations/products.sh
-    # ./migrations/send_email.sh
-    ./migrations/nostrusers.sh
-    ./migrations/affiliates.sh
-    ./migrations/appointments.sh
-    ./migrations/payouts.sh
-    ./migrations/waitlist.sh
+    # sudo systemctl start surrealdb
 
+    # run migrations
+    chmod 755 ./migrations/*.sh;
+    for f in ./migrations/*.sh; do ./$f; done;
   else
     echo "One or both directories do not exist"
 fi

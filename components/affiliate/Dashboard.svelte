@@ -3,7 +3,7 @@
 	export let APP_DOMAIN, AFFILIATE_COMMISSION_PERCENT;
 
 	
-	let payoutMethods = affiliate.payoutMethods || [];
+	let payoutMethods = affiliate?.payoutMethods || [];
 
 	async function deleteReferralCode(code) {
 		try {

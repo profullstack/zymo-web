@@ -7,7 +7,7 @@ export default (request) => {
 		session
 	} = request;
 
-	if(pathname.startsWith("/verify/email/")) {
+	if (pathname.startsWith("/verify/email/")) {
 		return true;
 	}
 
