@@ -1,14 +1,51 @@
 <script>
 	import { onMount } from 'svelte';
 	import Hls from 'hls.js';
+	// import { FFmpeg } from '@ffmpeg/ffmpeg';
+	// import { fetchFile } from '@ffmpeg/util';
 
 	export let m3us = [];
+	// const ffmpeg = new FFmpeg();
 	let channels = [];
 	let filteredChannels = [];
 	let selectedChannel = '';
 	let streamUrl = '';
 	let selectedProvider = {};
 	let isChannelListExpanded = false;
+
+	// async function convertFormat(inputUrl, targetFormat) {
+	// 	console.log('converting:', inputUrl, targetFormat);
+	// 	try {
+	// 		await ffmpeg.load();
+
+	// 		// Extract the file extension and name from the URL
+	// 		const inputFileName = inputUrl.split('/').pop();
+	// 		const outputFileExt = targetFormat.startsWith('.')
+	// 			? targetFormat.slice(1)
+	// 			: targetFormat;
+	// 		const outputFileName = inputFileName.replace(/\.\w+$/, `.${outputFileExt}`);
+
+	// 		// Fetch the file from the URL and write it to the ffmpeg virtual file system
+	// 		// ffmpeg.FS('writeFile', inputFileName, await fetchFile(inputUrl));
+
+	// 		// Execute the ffmpeg command to convert the file
+	// 		await ffmpeg.run('-i', inputFileName, '-c:v', 'libx264', '-c:a', 'aac', outputFileName);
+
+	// 		// Read the converted file from the ffmpeg file system
+	// 		const data = ffmpeg.FS('readFile', outputFileName);
+
+	// 		// Create a URL for the converted video
+	// 		const videoURL = URL.createObjectURL(
+	// 			new Blob([data.buffer], { type: `video/${outputFileExt}` })
+	// 		);
+
+	// 		console.log(videoUrl);
+	// 		return videoURL;
+	// 	} catch (error) {
+	// 		console.error('Error converting video:', error);
+	// 		return null;
+	// 	}
+	// }
 
 	function filterChannels() {
 		const filterValue = document.getElementById('filter-input').value.toLowerCase();
@@ -47,7 +84,7 @@
 			}
 		});
 
-		console.log(channelList);
+		// console.log(channelList);
 		filteredChannels = channelList;
 
 		return channelList;
@@ -63,13 +100,15 @@
 
 	async function playStream(url) {
 		console.log('original play:', url);
-		url = url.indexOf('m3u8') || url.indexOf('mp4') > 0 ? url : `${url}.m3u8`;
-		if (url.indexOf('neczmabfa') > 0) {
-			console.log('check redirect for:', url);
-			const res = await fetch(url, { redirect: 'follow' });
-			console.log(res);
+		url = url.indexOf('m3u8') > 0 || url.indexOf('mp4') > 0 ? url : `${url}.m3u8`;
 
+		if (url.indexOf('neczmabfa') > 0) {
+			// Usage example:
+			console.log('check redirect for:', url);
+			let res = await fetch(url, { redirect: 'follow' });
+			console.log('redirect at:', url);
 			url = res.url;
+			// url = await convertFormat(url, '.mp4');
 		}
 
 		console.log('play:', url);
