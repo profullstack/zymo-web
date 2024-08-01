@@ -1,9 +1,10 @@
 <script>
+	export let tag;
 	export let posts = [];
 </script>
 
 <div>
-	<h2>Blog</h2>
+	<h2>Posts relating to "{tag}"</h2>
 	<div class="blog-list">
 		{#each posts as post}
 			<div class="blog-post">
@@ -29,7 +30,7 @@
 		{/each}
 	</div>
 	{#if !posts.length}
-		<h3 style="color:gray">No posts yet</h3>
+		<h3 style="color:gray">No posts found</h3>
 	{/if}
 </div>
 
