@@ -30,7 +30,7 @@ export default {
 
 			try {
 				const m3u = await M3U.update(id, data);
-				console.log('m3u:', m3u);
+				console.log('m3u updated:', m3u);
 				return { status: 'M3U updated' };
 			} catch (err) {
 				return { status: err.message };

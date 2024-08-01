@@ -121,7 +121,7 @@
 		}
 
 		#sidebar.expanded {
-			width: 200px;
+			width: 7rem;
 		}
 	}
 </style>

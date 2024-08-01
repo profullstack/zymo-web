@@ -108,15 +108,14 @@ export const actions = ({ connection: db }) => {
 		},
 		async update(id, data) {
 			console.log('update:', data);
-			let { name } = data;
 
 			try {
 				const m3u = await db.merge(id, {
-					name,
+					...data,
 					updatedAt: new Date().toISOString()
 				});
 
-				console.log('m3u: ', m3u);
+				console.log('m3u updated: ', m3u);
 				return m3u;
 			} catch (err) {
 				console.error(err);

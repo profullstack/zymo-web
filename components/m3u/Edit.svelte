@@ -3,6 +3,8 @@
 
 	async function submit(e) {
 		e.preventDefault();
+
+		console.log(m3u);
 		const res = await fetch(`/m3u/${m3u.id}`, {
 			method: 'PUT',
 			body: JSON.stringify(m3u),
