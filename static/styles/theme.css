@@ -1,6 +1,8 @@
 :root {
 	--link-color: #fff;
+	--sidebar-nav-color-hover: #fff;
 	--nav-background-color: #141414;
+	--global-nav-link-color: #fff;
 	--button-background-color: #06c;
 	--button-color: #fff;
 	--form-field-border-color: #303030;

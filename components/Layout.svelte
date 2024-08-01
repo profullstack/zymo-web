@@ -19,3 +19,9 @@
 		<slot />
 	</div>
 </main>
+
+<style>
+	.content {
+		padding: 1.2rem 2.4rem;
+	}
+</style>

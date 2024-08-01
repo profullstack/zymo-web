@@ -1,78 +1,125 @@
 <script>
 	import { isExpanded } from '../modules/store.js';
+	const navItems = [
+		{
+			route: '/m3u',
+			name: 'Live TV',
+			icon: 'livetv.svg'
+		},
+		{
+			route: '/books',
+			name: 'Books',
+			icon: 'books.svg'
+		},
+		{
+			route: '/music',
+			name: 'Music',
+			icon: 'music.svg'
+		},
+		{
+			route: '/movies',
+			name: 'Movies',
+			icon: 'movies.svg'
+		},
+		{
+			route: '/podcasts',
+			name: 'Podcasts',
+			icon: 'podcasts.svg'
+		},
+		{
+			route: '/tv',
+			name: 'TV',
+			icon: 'tv.svg'
+		}
+	];
 </script>
 
 <nav id="sidebar" class:expanded={$isExpanded}>
 	<ul>
-		<li class="menu-item">
-			<a href="/m3u">Live TV</a>
-		</li>
-		<li class="menu-item">
-			<a href="/books">Books</a>
-		</li>
-		<li class="menu-item">
-			<a href="/music">Music</a>
-		</li>
-		<li class="menu-item">
-			<a href="/movies">Movies</a>
-		</li>
-		<li class="menu-item">
-			<a href="/podcasts">Podcasts</a>
-		</li>
-		<li class="menu-item">
-			<a href="/tv">TV</a>
-		</li>
+		{#each navItems as item}
+			<li>
+				<a href={item.route}
+					><img src="/static/icons/{item.icon}" alt="" border="0" />
+					<strong>{item.name}</strong></a
+				>
+			</li>
+		{/each}
 	</ul>
 </nav>
 
 <style>
 	#sidebar {
-		height: calc(100vh - 43.75px);
-		width: 60px;
+		height: 100vh;
+		width: 7rem;
 		background-color: var(--nav-background-color);
-		display: flex;
-		flex-direction: column;
-		align-items: center;
 		transition: width 0.3s;
 		overflow: hidden;
 	}
 
-	#sidebar.expanded {
-		width: 200px !important;
+	#sidebar ul {
+		display: block;
+		width: 100%;
+		padding: 0;
+		margin: 0;
+		list-style: none;
 	}
 
-	#sidebar .menu-item a {
+	#sidebar li {
+		display: block;
+		width: 100%;
+	}
+
+	#sidebar.expanded {
+		width: 18rem;
+	}
+
+	#sidebar a {
 		color: #fff;
 		text-align: center;
-		padding: 20px 0;
+		padding: 0.8rem 1em;
+		margin: 0;
 		width: 100%;
 		display: flex;
 		align-items: center;
-		justify-content: center;
+		justify-content: flex-start;
 		cursor: pointer;
+		text-decoration: none;
+		font-weight: 400;
+		font-size: 1.6rem;
+		opacity: 0.7;
+		text-align: left;
+		box-sizing: border-box;
 	}
-	#sidebar .menu-item a {
+
+	#sidebar a strong {
 		display: none;
-		margin-left: 10px;
 	}
-	#sidebar.expanded .menu-item a {
-		display: flex;
+
+	#sidebar img {
+		display: block;
+		width: 3rem;
+		height: auto;
+		padding: 0;
+		margin: 0;
+		flex-shrink: 0;
+		transition: margin-left 0.3s; /* Transition effect for smooth expansion */
 	}
-	#sidebar .menu-item:hover {
-		background-color: #575757;
+
+	#sidebar.expanded a strong {
+		display: block;
+		text-wrap: nowrap;
+		margin-left: 1.2rem;
 	}
-	#sidebar .toggle-btn {
-		margin-top: auto;
-		margin-bottom: 20px;
-		cursor: pointer;
-		color: #fff;
+
+	#sidebar a:hover {
+		opacity: 1;
 	}
 
 	@media (max-width: 600px) {
 		#sidebar {
 			width: 0;
-			overflow: hidden;
 		}
+
 		#sidebar.expanded {
 			width: 200px;
 		}

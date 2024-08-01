@@ -28,27 +28,30 @@
 </script>
 
 <nav>
-	<div id="hamburger" on:click={toggleSidebar}>
-		<img src="/static/images/hamburger.svg" alt="" />
-	</div>
-
-	<a href="/" id="logo"><img src="/static/logo.svg" alt="" /></a>
-	<!-- <a href="/products">Products</a> -->
-	{#if isLoggedIn || unverifiedUser}
-		<a href="#" on:click={logout}>Logout</a>
-	{:else}
-		<a href="/login">Login</a>
-		<a href="/register">Signup</a>
-	{/if}
+	<span>
+		<a href="#" id="hamburger" on:click={toggleSidebar}>
+			<img src="/static/images/hamburger.svg" alt="" />
+		</a>
+		<a href="/" id="logo"><img src="/static/logo.svg" alt="" /></a>
+	</span>
+	<span>
+		<!-- <a href="/products">Products</a> -->
+		{#if isLoggedIn || unverifiedUser}
+			<a href="#" on:click={logout}>Logout</a>
+		{:else}
+			<a href="/login">Login</a>
+			<a href="/register">Signup</a>
+		{/if}
+	</span>
 </nav>
 
 <style>
 	nav {
 		display: flex;
-		justify-content: flex-start;
+		justify-content: space-between;
 		align-items: center;
 		background-color: var(--nav-background-color);
-		padding: 0.8rem;
+		padding: 0.4rem 0.8rem;
 		margin: 0;
 	}
 
@@ -56,7 +59,22 @@
 		margin: 0.4rem 0.4rem 0;
 	}
 
+	nav span:first-child {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+	}
+
+	nav :is(a, a:visited) {
+		color: var(--global-nav-link-color);
+		text-decoration: none;
+		padding: 0.4rem;
+	}
 	#hamburger {
 		height: 100%;
+	}
+
+	#logo {
+		margin-left: 1.2rem;
 	}
 </style>
