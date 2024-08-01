@@ -61,9 +61,17 @@
 		playStream(streamUrl);
 	}
 
-	function playStream(url) {
+	async function playStream(url) {
 		console.log('original play:', url);
-		url = url.indexOf('m3u8') > 0 ? url : `${url}.m3u8`;
+		url = url.indexOf('m3u8') || url.indexOf('mp4') > 0 ? url : `${url}.m3u8`;
+		if (url.indexOf('neczmabfa') > 0) {
+			console.log('check redirect for:', url);
+			const res = await fetch(url, { redirect: 'follow' });
+			console.log(res);
+
+			url = res.url;
+		}
+
 		console.log('play:', url);
 		const video = document.getElementById('video');
 		if (Hls.isSupported()) {
@@ -127,7 +135,13 @@
 	{#if selectedChannel}
 		<h2>{selectedChannel.name}</h2>
 	{/if}
-	<video id="video" controls></video>
+	{#if selectedChannel?.url?.indexOf('mp4') > 0}
+		<video id="video" controls>
+			<source src={selectedChannel.url} type="video/mp4" />
+		</video>
+	{:else}
+		<video id="video" controls></video>
+	{/if}
 </div>
 
 <style>
