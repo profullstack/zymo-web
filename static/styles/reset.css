@@ -1,5 +1,7 @@
 * {
- box-sizing: border-box;   
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
 }
 
 html,
@@ -9,10 +11,14 @@ body {
 }
 
 html {
-    font-size: 62.5%;
-    scroll-behavior: smooth;
+	font-size: 62.5%;
+	scroll-behavior: smooth;
 }
 
 body {
-    font-size: 1.6rem;
+	font-size: 1.6rem;
+}
+
+p {
+	margin: 1.2rem 0;
 }
