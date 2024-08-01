@@ -8,6 +8,6 @@ export default {
 
     const posts = await Blog.getAllPosts();
 
-    return view('blog/Index.svelte', { posts });
+    return view('admin/blog/Index.svelte', { posts });
   },
 }
