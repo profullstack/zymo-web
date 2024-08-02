@@ -1,6 +1,6 @@
 <footer>
 	<small>
-		<a href="mailto:EMAIL">EMAIL</a>
+		<a href="mailto:EMAIL?subject=APP_NAME">EMAIL</a>
 		<a href="/terms">Terms</a>
 		<a href="/privacy">Privacy</a> © 2023-2024
 		<a href="https://APP_DOMAIN">APP_NAME</a>
