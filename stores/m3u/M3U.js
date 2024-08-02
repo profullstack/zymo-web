@@ -1,5 +1,16 @@
 import env from 'rcompat/env';
 import { primary } from '@primate/types';
+import { createClient } from '@redis/client';
+
+const client = createClient();
+
+client.on('error', (err) => {
+	console.error('Redis error:', err);
+});
+
+await client.connect();
+
+const CACHE_EXPIRATION = 300; // 5 minutes in seconds
 
 export const actions = ({ connection: db }) => {
 	return {
@@ -79,11 +90,25 @@ export const actions = ({ connection: db }) => {
 
 			console.log('id m3u:', m3u);
 
+			const cacheKey = id;
+			const cachedData = await client.get(cacheKey);
+
+			if (cachedData) {
+				console.log('got cache: ', cacheKey);
+				return cachedData;
+			}
+
 			try {
 				const res = await fetch(m3u.pop().url);
 
 				if (res.ok) {
-					return await res.text();
+					const data = await res.text();
+					console.log('set cache:', cacheKey);
+					await client.set(cacheKey, data, {
+						EX: CACHE_EXPIRATION
+					});
+
+					return data;
 				}
 			} catch (err) {
 				console.error(err);
