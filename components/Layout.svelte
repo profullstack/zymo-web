@@ -3,7 +3,7 @@
 	import NavBar from './NavBar.svelte';
 	import MetaTags from './MetaTags.svelte';
 
-	export let isLoggedIn, unverifiedUser;
+	export let isLoggedIn, unverifiedUser, isAdmin;
 </script>
 
 <svelte:head>
@@ -14,7 +14,7 @@
 	<GlobalNavBar {isLoggedIn} {unverifiedUser} />
 
 	{#if isLoggedIn}
-		<NavBar {isLoggedIn} />
+		<NavBar {isLoggedIn} {isAdmin} />
 	{/if}
 	<slot />
 </main>
