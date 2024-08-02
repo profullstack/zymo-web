@@ -21,7 +21,9 @@ const {
 	GOOGLE_ADS_ID,
 	APP_NAME,
 	APP_SHORT_NAME,
-	APP_DESCRIPTION
+	APP_DESCRIPTION,
+	PHONE,
+	EMAIL
 } = process.env;
 
 console.log(host, db_port);
@@ -47,7 +49,8 @@ export default {
 				'pages/app.html',
 				'static/manifest.json',
 				'components/MetaTags.svelte',
-				'components/Index.svelte'
+				'components/Index.svelte',
+				'components/Footer.svelte'
 			],
 			mapper: (contents) =>
 				contents
@@ -57,6 +60,8 @@ export default {
 					.replaceAll('APP_NAME', APP_NAME)
 					.replaceAll('APP_SHORT_NAME', APP_SHORT_NAME)
 					.replaceAll('APP_DESCRIPTION', APP_DESCRIPTION)
+					.replaceAll('PHONE', PHONE)
+					.replaceAll('EMAIL', EMAIL)
 		},
 		minify: false,
 		excludes: ['woff', 'ttf', 'png', 'jpg', 'jpeg', 'mp4', 'mp3', 'svg'].map(

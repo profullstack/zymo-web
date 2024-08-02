@@ -1,9 +1,9 @@
 <footer>
 	<small>
-		<a href="mailto:hello@globalthreat.info">hello@globalthreat.info</a>
+		<a href="mailto:EMAIL">EMAIL</a>
 		<a href="/terms">Terms</a>
 		<a href="/privacy">Privacy</a> © 2023-2024
-		<a href="https://profullstack.com">Profullstack, Inc.</a>
+		<a href="https://APP_DOMAIN">APP_NAME</a>
 	</small>
 </footer>
 
