@@ -1,12 +1,19 @@
 <script>
 	export let movie = {};
+	export let proxy = false;
 
-	const { user, pass } = movie;
-	const proxy = false;
-	const url = proxy
-		? `/proxy?user=${user}&pass=${pass}&url=${encodeURIComponent(movie.url)}`
-		: movie.url;
-	const type = movie.file.split('.').pop();
+	const { user, pass, file } = movie;
+	const type = file.split('.').pop();
+
+	let url = movie.url;
+
+	if (proxy) {
+		if (user && pass) {
+			url = `/proxy?user=${user}&pass=${pass}&url=${encodeURIComponent(movie.url)}`;
+		} else {
+			url = `/proxy?url=${encodeURIComponent(movie.url)}`;
+		}
+	}
 </script>
 
 {#if url}
