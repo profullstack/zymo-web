@@ -8,26 +8,26 @@
 	const type = file.split('.').pop();
 
 	let url = movie.url;
+	let videoRef;
 
-	if (user && pass) {
-		if (proxy) {
-			url = `/proxy?user=${user}&pass=${pass}&url=${encodeURIComponent(movie.url)}`;
+	function proxifyUrl() {
+		if (user && pass) {
+			if (proxy) {
+				url = `/proxy?user=${user}&pass=${pass}&url=${encodeURIComponent(movie.url)}`;
+			} else {
+				url = movie.url.replace(/(https?):\/\//, `$1://${user}:${pass}@`);
+			}
+		} else if (proxy) {
+			url = `/proxy?url=${encodeURIComponent(movie.url)}`;
 		} else {
-			url = movie.url.replace(/(https?):\/\//, `$1://${user}:${pass}@`);
+			url = movie.url;
 		}
-	} else if (proxy) {
-		url = `/proxy?url=${encodeURIComponent(movie.url)}`;
 	}
 
 	// Function to handle checkbox change
 	function handleCheckboxChange(event) {
-		if (event.target.checked) {
-			// Reload the page with ?proxy=1
-			window.location.search = '?proxy=1';
-		} else {
-			// Reload the page without ?proxy=1
-			window.location.search = '';
-		}
+		proxy = event.target.checked;
+		proxifyUrl();
 	}
 
 	// Set the initial state of the checkbox based on the proxy variable
@@ -36,7 +36,16 @@
 		if (proxy) {
 			checkbox.checked = true;
 		}
+		proxifyUrl();
 	});
+
+	$: proxifyUrl();
+
+	$: if (url && videoRef) {
+		const source = videoRef.querySelector('source');
+		source.src = url;
+		videoRef.load();
+	}
 </script>
 
 {#if url}
@@ -44,11 +53,16 @@
 		<h1><a href={movie.url}>{movie.title}</a></h1>
 		<div class="field">
 			<label>
-				<input type="checkbox" id="proxy-checkbox" on:change={handleCheckboxChange} />
+				<input
+					type="checkbox"
+					id="proxy-checkbox"
+					on:change={handleCheckboxChange}
+					bind:checked={proxy}
+				/>
 				Enable proxy
 			</label>
 		</div>
-		<video controls autoplay playsinline>
+		<video controls autoplay playsinline bind:this={videoRef}>
 			<source src={url} type="video/{type}" />
 		</video>
 	</section>

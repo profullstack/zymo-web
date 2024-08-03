@@ -105,12 +105,9 @@
 
 	// Function to handle checkbox change
 	function handleCheckboxChange(event) {
-		if (event.target.checked) {
-			// Reload the page with ?proxy=1
-			window.location.search = '?proxy=1';
-		} else {
-			// Reload the page without ?proxy=1
-			window.location.search = '';
+		proxy = event.target.checked;
+		if (selectedChannel) {
+			playStream(selectedChannel.url);
 		}
 	}
 
@@ -205,8 +202,6 @@
 		<video id="video" controls></video>
 	{/if}
 </div>
-
-console.log('filteredChannels:', filteredChanenls)
 
 <style>
 	.hidden {
