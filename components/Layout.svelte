@@ -3,21 +3,21 @@
 	import NavBar from './NavBar.svelte';
 	import Sidebar from './Sidebar.svelte';
 	import MetaTags from './MetaTags.svelte';
+	import Footer from './Footer.svelte';
 
-	export let isLoggedIn, unverifiedUser;
+	export let isLoggedIn, unverifiedUser, isAdmin;
 </script>
 
 <MetaTags />
 
 <GlobalNavBar {isLoggedIn} {unverifiedUser} />
 <main>
-	<Sidebar />
-	<div class="content">
-		{#if isLoggedIn}
-			<NavBar {isLoggedIn} {unverifiedUser} />
-		{/if}
-		<slot />
-	</div>
+	<GlobalNavBar {isLoggedIn} {unverifiedUser} />
+
+	{#if isLoggedIn}
+		<NavBar {isLoggedIn} {isAdmin} />
+	{/if}
+	<slot />
 </main>
 
 <style>

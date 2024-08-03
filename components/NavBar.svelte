@@ -1,5 +1,5 @@
 <script>
-	export let isLoggedIn, unverifiedUser;
+	export let isLoggedIn, unverifiedUser, isAdmin;
 </script>
 
 <nav>
@@ -11,4 +11,7 @@
 	<a href="/payment/history">Payment & Subscriptions</a>
 	<a href="/appointment">Appointment</a>
 	<a href="/affiliate">Affiliate Dashboard</a>
+	{#if isAdmin}
+		<a href="/admin">Admin</a>
+	{/if}
 </nav>

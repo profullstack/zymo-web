@@ -20,3 +20,7 @@ html {
 body {
 	font-size: 1.6rem;
 }
+
+p {
+	margin: 1.2rem 0;
+}
