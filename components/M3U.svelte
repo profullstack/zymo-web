@@ -5,6 +5,7 @@
 
 	export let m3us = [];
 	export let proxy = false;
+	let mp4 = false;
 
 	console.log('proxy: ', proxy);
 
@@ -15,6 +16,8 @@
 	let selectedProvider = {};
 	let isChannelListExpanded = false;
 	let isLoading = false; // New state variable
+
+	function filterByType(e) {}
 
 	function filterChannels() {
 		const filterValue = document.getElementById('filter-input').value.toLowerCase();
@@ -30,10 +33,20 @@
 			const response = await fetch(`/api/m3u/${provider}`);
 			const m3u8Text = await response.text();
 			channels = filteredChannels = parseM3U8(m3u8Text);
+
+			if (mp4) {
+				console.log('channels', filteredChannels);
+				channels = filteredChannels = filteredChannels.filter((channel) => {
+					return channel.url.endsWith('.mp4');
+				});
+
+				console.log('mp4 channels: ', channels);
+			}
 		} catch (error) {
 			console.error('Error fetching channels:', error);
+		} finally {
+			isLoading = false; // End loading
 		}
-		isLoading = false; // End loading
 	}
 
 	function parseM3U8(m3u8Text) {
@@ -46,7 +59,7 @@
 				const name = line.split(',')[1];
 				channel = { name: name.trim() };
 			} else if (line.startsWith('http')) {
-				channel.url = line;
+				channel.url = line.trim();
 				channelList.push(channel);
 			}
 		});
@@ -63,7 +76,13 @@
 	}
 
 	async function playStream(url) {
-		url = url.indexOf('m3u8') > 0 || url.indexOf('mp4') > 0 ? url : `${url}.m3u8`;
+		url =
+			url.indexOf('m3u8') > -1 ||
+			url.indexOf('mp4') > -1 ||
+			url.indexOf('mov') > -1 ||
+			url.indexOf('mkv') > 1
+				? url
+				: `${url}.m3u8`;
 
 		if (proxy) {
 			url = `/proxy?url=${encodeURIComponent(url)}`;
@@ -111,8 +130,6 @@
 			checkbox.checked = true;
 		}
 	});
-
-	$: proxy;
 </script>
 
 <div id="main-content">
@@ -126,6 +143,13 @@
 			{/each}
 		</select>
 		<Spinner {isLoading} />
+	</div>
+
+	<div class="field">
+		<label>
+			<input type="checkbox" id="mp4" on:change={filterByType} bind:checked={mp4} />
+			mp4
+		</label>
 	</div>
 
 	<h4>Select a Channel</h4>

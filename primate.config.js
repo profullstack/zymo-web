@@ -65,9 +65,21 @@ export default {
 					.replaceAll('EMAIL', EMAIL)
 		},
 		minify: false,
-		excludes: ['woff', 'ttf', 'png', 'jpg', 'jpeg', 'mp4', 'mp3', 'svg'].map(
-			(ext) => `*.${ext}`
-		)
+		excludes: [
+			'woff',
+			'ttf',
+			'png',
+			'jpg',
+			'jpeg',
+			'mp4',
+			'mkv',
+			'mov',
+			'webm',
+			'mp3',
+			'ogg',
+			'wav',
+			'svg'
+		].map((ext) => `*.${ext}`)
 	},
 	modules: [
 		handlebars(),
