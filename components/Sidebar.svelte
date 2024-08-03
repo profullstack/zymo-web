@@ -53,7 +53,6 @@
 		width: 7rem;
 		background-color: var(--nav-background-color);
 		transition: width 0.3s;
-		overflow: hidden;
 	}
 
 	#sidebar ul {
@@ -118,10 +117,6 @@
 	@media (max-width: 600px) {
 		#sidebar {
 			width: 0;
-		}
-
-		#sidebar.expanded {
-			width: 7rem;
 		}
 	}
 </style>

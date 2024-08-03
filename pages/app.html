@@ -1,31 +1,51 @@
 <!doctype html>
 <html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" type="text/css" href="/static/styles/main.css" />
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="icon" href="/static/icons/favicon-128x128.png" />
-  <link rel="apple-touch-icon" sizes="128x128" href="/static/icons/favicon-128x128.png" />
-  <link rel="manifest" href="/static/manifest.json" crossorigin="use-credentials" />
-  <link rel="shortcut icon" type="image/png" href="/static/icons/favicon-196x196.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/static/icons/favicon-32x32.png" />
-  <link rel="stylesheet" type="text/css" href="/static/styles/main.css">
-  <meta name="msapplication-TileColor" content="#ffffff" />
-  <meta name="theme-color" content="#ffffff" />
-  %head%
-</head>
+		<link rel="apple-touch-icon" sizes="180x180" href="/static/icons/apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/static/icons/favicon-32x32.png" />
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="194x194"
+			href="/static/icons/favicon-194x194.png"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="192x192"
+			href="/static/icons/android-chrome-192x192.png"
+		/>
+		<link rel="icon" type="image/png" sizes="16x16" href="/static/icons/favicon-16x16.png" />
+		<link rel="manifest" href="/static/manifest.json" crossorigin="use-credentials" />
+		<link rel="mask-icon" href="/static/icons/safari-pinned-tab.svg" color="#000000" />
+		<link rel="shortcut icon" href="/static/icons/favicon.ico" />
+		<meta name="msapplication-TileColor" content="#000000" />
+		<meta name="msapplication-TileImage" content="/static/icons/mstile-144x144.png" />
+		<meta name="msapplication-config" content="/static/icons/browserconfig.xml" />
+		<meta name="theme-color" content="#000000" />
 
-<body>
-  %body%
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=GOOGLE_ANALYTICS_ID"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
+		%head%
+	</head>
 
-    gtag('config', 'GOOGLE_ANALYTICS_ID');
-  </script>
-</body>
+	<body>
+		%body%
+		<!-- Google tag (gtag.js) -->
+		<script
+			async
+			src="https://www.googletagmanager.com/gtag/js?id=GOOGLE_ANALYTICS_ID"
+		></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag('js', new Date());
 
+			gtag('config', 'GOOGLE_ANALYTICS_ID');
+		</script>
+	</body>
 </html>

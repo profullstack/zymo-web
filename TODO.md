@@ -1,5 +1,6 @@
 # todo
 
+- add spinner
 -   namespace emby stuff to account for more providers later
 -   document api for end users (see markdown stuff)
 -   password reset link

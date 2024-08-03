@@ -158,7 +158,6 @@
 </script>
 
 <div id="main-content">
-	<h1>Select a Channel Provider</h1>
 	<select on:change={handleProviderChange}>
 		<option>-- Select Provider --</option>
 		{#each m3us as provider}
@@ -168,7 +167,7 @@
 		{/each}
 	</select>
 
-	<h1>Select a Channel</h1>
+	<h4>Select a Channel</h4>
 
 	<input
 		type="text"
