@@ -12,12 +12,14 @@
 
 <GlobalNavBar {isLoggedIn} {unverifiedUser} />
 <main>
-	<GlobalNavBar {isLoggedIn} {unverifiedUser} />
+	<Sidebar {isLoggedIn} {unverifiedUser} />
 
 	{#if isLoggedIn}
 		<NavBar {isLoggedIn} {isAdmin} />
 	{/if}
-	<slot />
+	<div class="content">
+		<slot />
+	</div>
 </main>
 
 <style>

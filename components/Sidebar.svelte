@@ -70,6 +70,7 @@
 
 	#sidebar.expanded {
 		width: 18rem;
+		overflow: initial;
 	}
 
 	#sidebar a {
@@ -117,6 +118,7 @@
 	@media (max-width: 600px) {
 		#sidebar {
 			width: 0;
+			overflow: hidden;
 		}
 	}
 </style>
