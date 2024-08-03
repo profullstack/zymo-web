@@ -131,6 +131,14 @@
 </script>
 
 <div id="main-content">
+	<div class="field">
+		<strong>Filter:</strong>
+		<label>
+			<input type="checkbox" id="mp4" on:change={filterByType} bind:checked={mp4} />
+			TV Shows and Movies only
+		</label>
+	</div>
+
 	<div style="display: flex; align-items: center;">
 		<select on:change={handleProviderChange}>
 			<option>-- Select Provider --</option>
@@ -141,13 +149,6 @@
 			{/each}
 		</select>
 		<Spinner {isLoading} />
-	</div>
-
-	<div class="field">
-		<label>
-			<input type="checkbox" id="mp4" on:change={filterByType} bind:checked={mp4} />
-			mp4
-		</label>
 	</div>
 
 	<h4>Select a Channel</h4>
