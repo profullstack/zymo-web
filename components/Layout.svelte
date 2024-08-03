@@ -14,10 +14,10 @@
 <main>
 	<Sidebar {isLoggedIn} {unverifiedUser} />
 
-	{#if isLoggedIn}
-		<NavBar {isLoggedIn} {isAdmin} />
-	{/if}
 	<div class="content">
+		{#if isLoggedIn}
+			<NavBar {isLoggedIn} {isAdmin} />
+		{/if}
 		<slot />
 	</div>
 </main>

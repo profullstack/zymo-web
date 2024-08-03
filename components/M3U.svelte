@@ -1,6 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import Hls from 'hls.js';
+	import Spinner from './Spinner.svelte'; // Import Spinner component
 
 	export let m3us = [];
 
@@ -14,6 +15,7 @@
 	let streamUrl = '';
 	let selectedProvider = {};
 	let isChannelListExpanded = false;
+	let isLoading = false; // New state variable
 
 	onMount(async () => {
 		fetchFile = (await import('//cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js'))
@@ -30,30 +32,21 @@
 		const baseURL = '//cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/';
 		try {
 			await ffmpeg.load({
-				// coreURL: await toBlobURL(`${baseURL}/core-mt.mjs`, 'text/javascript'),
-				// wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
 				workerURL: await toBlobURL(
 					`//cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm//worker.js`,
 					'text/javascript'
 				)
 			});
-			// Extract the file extension and name from the URL
 			const inputFileName = inputUrl.split('/').pop();
 			const outputFileExt = targetFormat.startsWith('.')
 				? targetFormat.slice(1)
 				: targetFormat;
 			const outputFileName = inputFileName.replace(/\.\w+$/, `.${outputFileExt}`);
 
-			// Fetch the file from the URL and write it to the ffmpeg virtual file system
 			ffmpeg.FS('writeFile', inputFileName, await fetchFile(inputUrl));
-
-			// Execute the ffmpeg command to convert the file
 			await ffmpeg.run('-i', inputFileName, '-c:v', 'libx264', '-c:a', 'aac', outputFileName);
-
-			// Read the converted file from the ffmpeg file system
 			const data = ffmpeg.FS('readFile', outputFileName);
 
-			// Create a URL for the converted video
 			const videoURL = URL.createObjectURL(
 				new Blob([data.buffer], { type: `video/${outputFileExt}` })
 			);
@@ -68,14 +61,14 @@
 
 	function filterChannels() {
 		const filterValue = document.getElementById('filter-input').value.toLowerCase();
-
 		filteredChannels = channels.filter((channel) =>
 			channel.name.toLowerCase().includes(filterValue)
 		);
 	}
-	async function fetchChannels(provider) {
-		channels = filteredChannels = [];
 
+	async function fetchChannels(provider) {
+		isLoading = true; // Start loading
+		channels = filteredChannels = [];
 		try {
 			const response = await fetch(`/api/m3u/${provider}`);
 			const m3u8Text = await response.text();
@@ -83,6 +76,7 @@
 		} catch (error) {
 			console.error('Error fetching channels:', error);
 		}
+		isLoading = false; // End loading
 	}
 
 	function parseM3U8(m3u8Text) {
@@ -91,48 +85,35 @@
 		let channel = {};
 
 		lines.forEach((line) => {
-			console.log(line);
 			if (line.startsWith('#EXTINF')) {
 				const name = line.split(',')[1];
-				console.log('name:', name);
 				channel = { name: name.trim() };
 			} else if (line.startsWith('http')) {
-				console.log('url:', line);
 				channel.url = line;
 				channelList.push(channel);
 			}
 		});
 
-		// console.log(channelList);
 		filteredChannels = channelList;
-
 		return channelList;
 	}
 
 	function selectChannel(channel) {
 		isChannelListExpanded = false;
-
 		selectedChannel = channel;
 		streamUrl = channel.url;
 		playStream(streamUrl);
 	}
 
 	async function playStream(url) {
-		console.log('original play:', url);
 		url = url.indexOf('m3u8') > 0 || url.indexOf('mp4') > 0 ? url : `${url}.m3u8`;
 
 		if (url.indexOf('neczmabfa') > 0) {
-			// Usage example:
-			console.log('check redirect for:', url);
-			// let res = await fetch(url, { redirect: 'follow' });
-			// console.log('redirect at:', url);
-			// url = res.url;
 			if (url.indexOf('mp4') > 0 || url.indexOf('mkv') > 0) {
 				url = await convertFormat(url, '.mp4');
 			}
 		}
 
-		console.log('play:', url);
 		const video = document.getElementById('video');
 		if (Hls.isSupported()) {
 			const hls = new Hls();
@@ -158,14 +139,17 @@
 </script>
 
 <div id="main-content">
-	<select on:change={handleProviderChange}>
-		<option>-- Select Provider --</option>
-		{#each m3us as provider}
-			<option value={provider.id} selected={selectedProvider.id === provider.id}
-				>{provider.name}</option
-			>
-		{/each}
-	</select>
+	<div style="display: flex; align-items: center;">
+		<select on:change={handleProviderChange}>
+			<option>-- Select Provider --</option>
+			{#each m3us as provider}
+				<option value={provider.id} selected={selectedProvider.id === provider.id}
+					>{provider.name}</option
+				>
+			{/each}
+		</select>
+		<Spinner {isLoading} />
+	</div>
 
 	<h4>Select a Channel</h4>
 
