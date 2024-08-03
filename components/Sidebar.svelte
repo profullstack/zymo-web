@@ -2,7 +2,12 @@
 	import { isExpanded } from '../modules/store.js';
 	const navItems = [
 		{
-			route: '/m3u',
+			route: '/',
+			name: 'Home',
+			icon: 'home.svg'
+		},
+		{
+			route: '/live',
 			name: 'Live TV',
 			icon: 'livetv.svg'
 		},
@@ -53,6 +58,7 @@
 		width: 7rem;
 		background-color: var(--nav-background-color);
 		transition: width 0.3s;
+		border-right: 1px solid var(--sidebar-border-color);
 	}
 
 	#sidebar ul {

@@ -5,6 +5,7 @@
 <nav>
 	<a href="/dashboard">Dashboard</a>
 	<a href="/m3u/new">Create M3U channel</a>
+	<a href="/library/new">Create Library</a>
 	<a href="/apikeys">Create API key</a>
 </nav>
 <nav>

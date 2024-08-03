@@ -4,12 +4,12 @@ export default {
 	async get(request) {
 		const { store, session } = request;
 		const {
-			m3u: { Form, M3U }
+			library: { Form, Library }
 		} = store;
 
 		const userId = session.get('user').id;
-		const m3us = await M3U.getAllByUserId(userId);
+		const libraries = await Library.getAllByUserId(userId);
 
-		return view('M3U.svelte', { m3us });
+		return view('Library.svelte', { libraries });
 	}
 };

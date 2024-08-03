@@ -1,10 +1,15 @@
 :root {
+	--body-background-color: #141414;
+	--body-color: #fff;
 	--link-color: #fff;
 	--sidebar-nav-color-hover: #fff;
 	--nav-background-color: #141414;
+	--nav-border-color: #2f2f2f;
+	--sidebar-border-color: #2f2f2f;
 	--global-nav-link-color: #fff;
-	--button-background-color: #06c;
+	--button-background-color: #672ad6;
 	--button-color: #fff;
+	--button-border-color: #672ad6;
 	--form-field-border-color: #303030;
 	--form-field-color: #000;
 	--form-field-placeholder-color: #888;

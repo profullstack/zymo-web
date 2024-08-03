@@ -6,7 +6,7 @@ button {
 	background-color: var(--button-background-color);
 	color: var(--button-color);
 	padding: 0.8rem 1.2rem;
-	border: 1px solid var(--button-color);
+	border: 1px solid var(--button-border-color);
 	font-weight: 700;
 }
 
@@ -47,7 +47,7 @@ form input:focus {
 	border-width: 1px;
 	outline-color: var(--form-field-active-border-color);
 	outline-width: 1px;
-    outline-style: solid;
+	outline-style: solid;
 }
 
 form footer {

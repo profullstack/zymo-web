@@ -28,6 +28,7 @@
 		"@rcompat/fs": "^0.1.1",
 		"@redis/client": "^1.6.0",
 		"btoa": "^1.2.1",
+		"cheerio": "1.0.0-rc.12",
 		"commander": "^12.1.0",
 		"csv-parser": "^3.0.0",
 		"csv-writer": "^1.6.0",

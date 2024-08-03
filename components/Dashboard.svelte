@@ -2,7 +2,9 @@
 	export let apikeys = [];
 	export let phoneUnverified;
 	export let m3us = [];
+	export let libraries = [];
 
+	let scans = {};
 	let status = {};
 
 	async function deleteM3u(e, m3u) {
@@ -17,6 +19,35 @@
 			e.target.closest('li').remove();
 		} catch (err) {
 			status[m3u.id] = err;
+		}
+	}
+
+	async function scan(e, library) {
+		e.preventDefault();
+		try {
+			const url =
+				`/api/parsers/html?url=${library.url}` +
+				(library.user && library.pass ? `&user=${library.user}&pass=${library.pass}` : '');
+			const res = await fetch(url);
+			const result = await res.json();
+			scans[library.id] = result;
+		} catch (err) {
+			status[library.id] = err;
+		}
+	}
+
+	async function deleteLibrary(e, library) {
+		e.preventDefault();
+		try {
+			const res = await fetch(`/library/${library.id}`, {
+				method: 'DELETE'
+			});
+
+			const result = await res.json();
+			status[library.id] = result;
+			e.target.closest('li').remove();
+		} catch (err) {
+			status[library.id] = err;
 		}
 	}
 
@@ -146,6 +177,38 @@
 				>
 				{#if status[m3u.id]?.status}{status[m3u.id].status}{/if}
 			</nav>
+		</li>
+	{/each}
+</ol>
+
+<h2>Libraries</h2>
+<ol>
+	{#each libraries as library}
+		<li>
+			{library.name} - {library.id} - {library.url}
+			<nav>
+				<a href="/library/{library.id}">edit</a>
+				<a
+					href="#"
+					on:click={(e) => {
+						deleteLibrary(e, library);
+					}}>delete</a
+				>
+				<a
+					href="#"
+					on:click={(e) => {
+						scan(e, library);
+					}}>scan</a
+				>
+				{#if status[library.id]?.status}{status[library.id].status}{/if}
+			</nav>
+
+			{#if scans[library.id]}
+				<h4>Found</h4>
+				{#each scans[library.id] as file}
+					<div>{file.name}</div>
+				{/each}
+			{/if}
 		</li>
 	{/each}
 </ol>

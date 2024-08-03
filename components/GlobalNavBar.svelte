@@ -52,6 +52,9 @@
 		align-items: center;
 		background-color: var(--nav-background-color);
 		padding: 0.4rem 0.8rem;
+		border-width: 0 0 1px 0;
+		border-style: solid;
+		border-color: var(--nav-border-color);
 		margin: 0;
 	}
 
