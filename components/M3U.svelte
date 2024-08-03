@@ -7,8 +7,6 @@
 	export let proxy = false;
 	let mp4 = false;
 
-	console.log('proxy: ', proxy);
-
 	let channels = [];
 	let filteredChannels = [];
 	let selectedChannel = '';
@@ -16,14 +14,16 @@
 	let selectedProvider = {};
 	let isChannelListExpanded = false;
 	let isLoading = false; // New state variable
+	let filterValue = ''; // To store the filter input value
 
-	function filterByType(e) {}
-
-	function filterChannels() {
-		const filterValue = document.getElementById('filter-input').value.toLowerCase();
+	function handleFilterInput() {
+		const lowerCaseFilter = filterValue.toLowerCase();
+		console.log('lowerCaseFilter:', lowerCaseFilter);
 		filteredChannels = channels.filter((channel) =>
-			channel.name.toLowerCase().includes(filterValue)
+			channel.name.toLowerCase().includes(lowerCaseFilter)
 		);
+
+		console.log('filteredChannels:', filteredChannels);
 	}
 
 	async function fetchChannels(provider) {
@@ -33,15 +33,7 @@
 			const response = await fetch(`/api/m3u/${provider}`);
 			const m3u8Text = await response.text();
 			channels = filteredChannels = parseM3U8(m3u8Text);
-
-			if (mp4) {
-				console.log('channels', filteredChannels);
-				channels = filteredChannels = filteredChannels.filter((channel) => {
-					return channel.url.endsWith('.mp4');
-				});
-
-				console.log('mp4 channels: ', channels);
-			}
+			filterByType();
 		} catch (error) {
 			console.error('Error fetching channels:', error);
 		} finally {
@@ -122,6 +114,15 @@
 		}
 	}
 
+	// Function to filter channels by type
+	function filterByType() {
+		if (mp4) {
+			filteredChannels = channels.filter((channel) => channel.url.endsWith('.mp4'));
+		} else {
+			filteredChannels = channels;
+		}
+	}
+
 	// Set the initial state of the checkbox based on the proxy variable
 	onMount(() => {
 		const checkbox = document.querySelector('#proxy-checkbox');
@@ -158,15 +159,21 @@
 		type="text"
 		id="filter-input"
 		placeholder="Type to filter channels..."
-		on:input={filterChannels}
+		bind:value={filterValue}
+		on:input={handleFilterInput}
 		on:focus={() => {
 			isChannelListExpanded = true;
 		}}
 	/>
-	<div id="channel-list-container" class:hidden={!isChannelListExpanded}>
+	<div
+		id="channel-list-container"
+		class:hidden={!isChannelListExpanded}
+		style="max-height: 300px; overflow-y: auto;"
+	>
 		<ul id="channel-list">
-			{#each filteredChannels as channel}
+			{#each filteredChannels as channel (channel.name)}
 				<li
+					class="channel-item"
 					on:click|preventDefault={() => {
 						selectChannel(channel);
 					}}
@@ -190,7 +197,7 @@
 			</label>
 		</div>
 	{/if}
-	{#if selectedChannel?.url?.indexOf('mp4') > 0}
+	{#if selectedChannel?.url?.indexOf('mp4') > -1}
 		<video id="video" controls>
 			<source src={selectedChannel.url} type="video/mp4" />
 		</video>
@@ -199,13 +206,14 @@
 	{/if}
 </div>
 
+console.log('filteredChannels:', filteredChanenls)
+
 <style>
 	.hidden {
 		display: none;
 	}
 
 	#channel-list-container {
-		max-height: 300px;
 		overflow-y: auto;
 		border: 1px solid #ccc;
 		margin-bottom: 20px;

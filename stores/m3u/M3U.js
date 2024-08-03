@@ -10,7 +10,7 @@ client.on('error', (err) => {
 
 await client.connect();
 
-const CACHE_EXPIRATION = 300; // 5 minutes in seconds
+const CACHE_EXPIRATION = 60 * 15; // in seconds
 
 export const actions = ({ connection: db }) => {
 	return {
