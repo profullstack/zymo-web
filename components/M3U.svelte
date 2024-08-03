@@ -1,14 +1,9 @@
 <script>
-	import { onMount } from 'svelte';
 	import Hls from 'hls.js';
 	import Spinner from './Spinner.svelte'; // Import Spinner component
 
 	export let m3us = [];
 
-	let FFmpeg;
-	let fetchFile;
-	let toBlobURL;
-	let ffmpeg;
 	let channels = [];
 	let filteredChannels = [];
 	let selectedChannel = '';
@@ -16,48 +11,6 @@
 	let selectedProvider = {};
 	let isChannelListExpanded = false;
 	let isLoading = false; // New state variable
-
-	onMount(async () => {
-		fetchFile = (await import('//cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js'))
-			.fetchFile;
-		toBlobURL = (await import('//cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js'))
-			.toBlobURL;
-		FFmpeg = (await import('//cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js'))
-			.FFmpeg;
-		ffmpeg = new FFmpeg({ log: true });
-	});
-
-	async function convertFormat(inputUrl, targetFormat) {
-		console.log('converting:', inputUrl, targetFormat);
-		const baseURL = '//cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/';
-		try {
-			await ffmpeg.load({
-				workerURL: await toBlobURL(
-					`//cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm//worker.js`,
-					'text/javascript'
-				)
-			});
-			const inputFileName = inputUrl.split('/').pop();
-			const outputFileExt = targetFormat.startsWith('.')
-				? targetFormat.slice(1)
-				: targetFormat;
-			const outputFileName = inputFileName.replace(/\.\w+$/, `.${outputFileExt}`);
-
-			ffmpeg.FS('writeFile', inputFileName, await fetchFile(inputUrl));
-			await ffmpeg.run('-i', inputFileName, '-c:v', 'libx264', '-c:a', 'aac', outputFileName);
-			const data = ffmpeg.FS('readFile', outputFileName);
-
-			const videoURL = URL.createObjectURL(
-				new Blob([data.buffer], { type: `video/${outputFileExt}` })
-			);
-
-			console.log(videoUrl);
-			return videoURL;
-		} catch (error) {
-			console.error('Error converting video:', error);
-			return null;
-		}
-	}
 
 	function filterChannels() {
 		const filterValue = document.getElementById('filter-input').value.toLowerCase();
@@ -107,12 +60,6 @@
 
 	async function playStream(url) {
 		url = url.indexOf('m3u8') > 0 || url.indexOf('mp4') > 0 ? url : `${url}.m3u8`;
-
-		if (url.indexOf('neczmabfa') > 0) {
-			if (url.indexOf('mp4') > 0 || url.indexOf('mkv') > 0) {
-				url = await convertFormat(url, '.mp4');
-			}
-		}
 
 		const video = document.getElementById('video');
 		if (Hls.isSupported()) {
