@@ -16,28 +16,26 @@ export default {
 			const encodedCredentials = Buffer.from(`${user}:${pass}`).toString('base64');
 			headers['Authorization'] = `Basic ${encodedCredentials}`;
 		}
-		const res = await fetch(url, { method: 'HEAD', headers });
-		const clonedResponse = res.clone();
-		const clonedHeaders = new Headers(clonedResponse.headers);
-		console.log('cloned headers:', clonedHeaders);
-		// headers.set('content-type', clonedHeaders['content-type']);
 
-		const response = await fetch(url, { headers, redirect: 'follow' });
-		const clonedResponse2 = response.clone();
-		// Create a new response with the modified headers
-		const modifiedResponse = new Response(clonedResponse2.body, {
-			status: clonedResponse2.status,
-			statusText: clonedResponse2.statusText,
-			headers: clonedHeaders
-		});
+		try {
+			if (url.indexOf('m3u') > -1) {
+				let baseURL = new URL(url);
+				const res = await fetch(url, { headers, redirect: 'follow' });
+				let data = await res.text();
 
-		return await modifiedResponse;
-		// try {
-		// 	return (await fetch(url, { headers, redirect: 'follow' })).body;
-		// } catch (err) {
-		// 	console.log(err);
-		// 	return error('Error fetching URL', { status: Status.INTERNAL_SERVER_ERROR, ...err });
-		// }
+				console.log('before:', data);
+				baseURL = baseURL.origin;
+				data = data.replace(/^(\/.*)$/gm, `/proxy?url=${baseURL}$1`);
+				console.log('after:', data);
+
+				return data;
+			}
+
+			return fetch(url, { headers, redirect: 'follow' });
+		} catch (err) {
+			console.log(err);
+			return error('Error fetching URL', { status: Status.INTERNAL_SERVER_ERROR, ...err });
+		}
 	},
 	async head(request) {
 		const { store, query } = request;
@@ -56,22 +54,7 @@ export default {
 		}
 
 		try {
-			const res = await fetch(url, { method: 'HEAD', headers });
-			const clonedResponse = res.clone();
-			const clonedHeaders = new Headers(clonedResponse.headers);
-			console.log('cloned headers:', clonedHeaders);
-			// headers.set('content-type', clonedHeaders['content-type']);
-
-			const response = await fetch(url, { method: 'HEAD', headers, redirect: 'follow' });
-			const clonedResponse2 = response.clone();
-			// Create a new response with the modified headers
-			const modifiedResponse = new Response(clonedResponse2.body, {
-				status: clonedResponse2.status,
-				statusText: clonedResponse2.statusText,
-				headers: clonedHeaders
-			});
-
-			return await modifiedResponse;
+			return fetch(url, { method: 'HEAD', headers, redirect: 'follow' });
 		} catch (err) {
 			console.log(err);
 			return error('Error fetching URL', { status: Status.INTERNAL_SERVER_ERROR, ...err });

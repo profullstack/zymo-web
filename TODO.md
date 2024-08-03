@@ -1,6 +1,7 @@
 # todo
 
 -   add library Id to files collections
+-   add favorites for each type of media
 
 -   namespace emby stuff to account for more providers later
 -   document api for end users (see markdown stuff)

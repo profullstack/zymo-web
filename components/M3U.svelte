@@ -1,8 +1,12 @@
 <script>
 	import Hls from 'hls.js';
+	import { onMount } from 'svelte';
 	import Spinner from './Spinner.svelte'; // Import Spinner component
 
 	export let m3us = [];
+	export let proxy = false;
+
+	console.log('proxy: ', proxy);
 
 	let channels = [];
 	let filteredChannels = [];
@@ -61,6 +65,10 @@
 	async function playStream(url) {
 		url = url.indexOf('m3u8') > 0 || url.indexOf('mp4') > 0 ? url : `${url}.m3u8`;
 
+		if (proxy) {
+			url = `/proxy?url=${encodeURIComponent(url)}`;
+		}
+
 		const video = document.getElementById('video');
 		if (Hls.isSupported()) {
 			const hls = new Hls();
@@ -83,6 +91,28 @@
 		selectedProvider = event.target.value;
 		fetchChannels(selectedProvider);
 	}
+
+	// Function to handle checkbox change
+	function handleCheckboxChange(event) {
+		if (event.target.checked) {
+			// Reload the page with ?proxy=1
+			window.location.search = '?proxy=1';
+		} else {
+			// Reload the page without ?proxy=1
+			window.location.search = '';
+		}
+	}
+
+	// Set the initial state of the checkbox based on the proxy variable
+	onMount(() => {
+		const checkbox = document.querySelector('#proxy-checkbox');
+
+		if (proxy && checkbox) {
+			checkbox.checked = true;
+		}
+	});
+
+	$: proxy;
 </script>
 
 <div id="main-content">
@@ -124,6 +154,17 @@
 	</div>
 	{#if selectedChannel}
 		<h2>{selectedChannel.name}</h2>
+		<div class="field">
+			<label>
+				<input
+					type="checkbox"
+					id="proxy-checkbox"
+					on:change={handleCheckboxChange}
+					bind:checked={proxy}
+				/>
+				Enable proxy
+			</label>
+		</div>
 	{/if}
 	{#if selectedChannel?.url?.indexOf('mp4') > 0}
 		<video id="video" controls>
