@@ -35,6 +35,11 @@
 			route: '/tv',
 			name: 'TV',
 			icon: 'tv.svg'
+		},
+		{
+			route: '/torrents',
+			name: 'Torrents',
+			icon: 'torrent.svg'
 		}
 	];
 </script>

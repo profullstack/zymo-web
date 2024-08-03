@@ -64,7 +64,7 @@ export const actions = ({ connection: db }) => {
 			console.log('me: ', me);
 			return me;
 		},
-		async parseIndexPage(url, user = null, pass = null) {
+		async parseIndexPage(libraryId, url, user = null, pass = null, save = 0) {
 			try {
 				// Ensure the URL ends with a trailing slash
 				if (!url.endsWith('/')) {
@@ -101,22 +101,36 @@ export const actions = ({ connection: db }) => {
 						} else if (supportedExtensions.some((ext) => href.endsWith(ext))) {
 							const directoryPath = path.dirname(resolvedPath);
 							const fileName = path.basename(resolvedPath);
-							console.log('found file:', resolvedUrl);
-							files.push({
-								name: $(element).text(),
+
+							const fileObject = {
+								name: fileName,
 								title: sanitizeFile(fileName),
 								file: fileName,
 								url: resolvedUrl,
-								path: directoryPath
-							});
+								path: directoryPath,
+								libraryId
+							};
+
+							if (user && pass) {
+								fileObject.user = user;
+								fileObject.pass = pass;
+							}
+
+							console.log('found file:', fileObject);
+							files.push(fileObject);
 						}
 					}
 				});
 
 				for (const link of links) {
 					console.log('parsing sub-directories:', link);
-					const subFiles = await this.parseIndexPage(link, user, pass);
+					const subFiles = await this.parseIndexPage(libraryId, link, user, pass);
 					files.push(...subFiles);
+				}
+
+				// save them if flag is set to 1
+				if (save && files.length) {
+					await this.save(files);
 				}
 
 				return files;
@@ -124,6 +138,19 @@ export const actions = ({ connection: db }) => {
 				console.error('Error fetching or parsing the index page:', error);
 				return [];
 			}
+		},
+
+		async save(files) {
+			const { id } = await this.me();
+			for (let file of files) {
+				file.createdAt = new Date();
+				file.updatedAt = new Date();
+				file.createdBy = id;
+
+				await db.create('files', file);
+			}
+
+			console.log('Saved files to db');
 		}
 	};
 };

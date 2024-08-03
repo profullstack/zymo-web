@@ -1,23 +1,22 @@
 import { view, redirect } from 'primate';
-// const form = (params = {}) => view('links/Form.svelte', { ...params });
 
 export default {
 	async get(request) {
-		const { session, path, store } = request;
+		const { path, store } = request;
 		const {
-			library: { Library }
+			torrent: { Torrent }
 		} = store;
 		const id = path.get('id');
-		const library = await Library.getById(id);
-		console.log('id:', library);
+		const res = await Torrent.getById(id);
+		console.log('id:', res);
 
-		return view('library/Edit.svelte', { library, method: 'put' });
+		return view('torrent/Edit.svelte', { client: res, method: 'put' });
 	},
 
 	async put(request) {
-		const { session, path, store } = request;
+		const { path, store } = request;
 		const {
-			library: { Form, Library }
+			torrent: { Form, Torrent }
 		} = store;
 
 		const id = path.get('id');
@@ -29,7 +28,7 @@ export default {
 			await Form.validate(data);
 
 			try {
-				const result = await Library.update(id, data);
+				const result = await Torrent.update(id, data);
 				console.log('updated:', result);
 				return { status: 'Updated' };
 			} catch (err) {
@@ -43,7 +42,7 @@ export default {
 	async delete(request) {
 		const { path, store } = request;
 		const {
-			library: { Form, Library }
+			torrent: { Torrent }
 		} = store;
 
 		const id = path.get('id');
@@ -52,7 +51,7 @@ export default {
 			console.log('delete:', id);
 
 			try {
-				const res = await Library.delete(id);
+				const res = await Torrent.delete(id);
 				console.log('delete:', res);
 				return { status: 'Deleted' };
 			} catch (err) {

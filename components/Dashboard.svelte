@@ -3,9 +3,25 @@
 	export let phoneUnverified;
 	export let m3us = [];
 	export let libraries = [];
+	export let clients = [];
 
 	let scans = {};
 	let status = {};
+
+	async function deleteTorrentClient(e, client) {
+		e.preventDefault();
+		try {
+			const res = await fetch(`/torrent/${client.id}`, {
+				method: 'DELETE'
+			});
+
+			const result = await res.json();
+			status[client.id] = result;
+			e.target.closest('li').remove();
+		} catch (err) {
+			status[client.id] = err;
+		}
+	}
 
 	async function deleteM3u(e, m3u) {
 		e.preventDefault();
@@ -22,12 +38,13 @@
 		}
 	}
 
-	async function scan(e, library) {
+	async function scan(e, library, save = 0) {
 		e.preventDefault();
 		try {
 			const url =
-				`/api/parsers/html?url=${library.url}` +
-				(library.user && library.pass ? `&user=${library.user}&pass=${library.pass}` : '');
+				`/api/parsers/html?url=${library.url}&id=${library.id}` +
+				(library.user && library.pass ? `&user=${library.user}&pass=${library.pass}` : '') +
+				(save ? `&save=1` : '');
 			const res = await fetch(url);
 			const result = await res.json();
 			scans[library.id] = result;
@@ -205,10 +222,37 @@
 
 			{#if scans[library.id]}
 				<h4>Found</h4>
+				<nav>
+					<a
+						href="#"
+						on:click={(e) => {
+							scan(e, library, 1);
+						}}>save</a
+					>
+				</nav>
 				{#each scans[library.id] as file}
 					<div>{file.name}</div>
 				{/each}
 			{/if}
+		</li>
+	{/each}
+</ol>
+
+<h2>Torrent Clients</h2>
+<ol>
+	{#each clients as item}
+		<li>
+			{item.name} - {item.id} - {item.url}
+			<nav>
+				<a href="/torrent/{item.id}">edit</a>
+				<a
+					href="#"
+					on:click={(e) => {
+						deleteTorrentClient(e, item);
+					}}>delete</a
+				>
+				{#if status[item.id]?.status}{status[item.id].status}{/if}
+			</nav>
 		</li>
 	{/each}
 </ol>

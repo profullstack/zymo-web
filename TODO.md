@@ -1,5 +1,7 @@
 # todo
 
+-   add library Id to files collections
+
 -   namespace emby stuff to account for more providers later
 -   document api for end users (see markdown stuff)
 -   password reset link

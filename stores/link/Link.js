@@ -62,13 +62,13 @@ export const actions = ({ connection: db }) => {
 
 			console.log(query);
 			try {
-				const link = await db.query(query, {
+				const [link] = await db.query(query, {
 					id
 				});
 
 				console.log('id link:', link);
 
-				return link.pop().pop();
+				return link.pop();
 			} catch (err) {
 				console.error(err);
 				throw err;
