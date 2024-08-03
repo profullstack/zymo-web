@@ -5,8 +5,10 @@
 {#if movies.length}
 	<section>
 		{#each movies as movie}
-			<h1>{movie.title}</h1>
-			<a href="/movies/{movie.id}">watch</a>
+			<div class="movie">
+				<a href="/movies/{movie.id}">watch</a>
+				<a href={movie.url}>{movie.title}</a>
+			</div>
 		{/each}
 	</section>
 {/if}
