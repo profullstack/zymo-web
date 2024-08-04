@@ -18,23 +18,29 @@ export default {
 
     async post(request) {
         const { path, store, body, session } = request;
-        const { Blog } = store;
-
-        const { title, thumbnail, markdown, html, excerpt, tags } = body;
+        const { Blog, utils: { File } } = store;
+        const { title, thumbnail, markdown, excerpt, tags } = body;
 
         const id = path.get("id");
         const user = session.get("user");
         const authorName = `${user.firstName} ${user.lastName}`;
 
+        let thumbnailUrl = thumbnail;
+
+        if (thumbnail && typeof (thumbnail) == 'object') {
+            try {
+                const thumbnailInfo = await File.upload(thumbnail, true, user.id);
+                thumbnailUrl = thumbnailInfo?.publicUrl;
+            } catch (e) { console.error(e) }
+        }
 
         const blogPost = await Blog.updatePost(id, {
             title,
-            thumbnail,
+            thumbnail: thumbnailUrl,
             authorName,
-            html,
             markdown,
             excerpt,
-            tags,
+            tags: JSON.parse(tags),
             userId: user.id
         });
 

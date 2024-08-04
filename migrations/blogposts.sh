@@ -14,7 +14,6 @@ DEFINE FIELD slug ON blogposts TYPE option<string>;
 DEFINE FIELD tags ON blogposts TYPE option<array>;
 DEFINE FIELD views ON blogposts TYPE option<number> DEFAULT 0;
 DEFINE FIELD authorName ON blogposts TYPE option<string>;
-DEFINE FIELD html ON blogposts TYPE option<string>;
 DEFINE FIELD markdown ON blogposts TYPE option<string>;
 DEFINE INDEX idx_userId ON affiliates COLUMNS userId UNIQUE;
 "
