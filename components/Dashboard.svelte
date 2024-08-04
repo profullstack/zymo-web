@@ -1,4 +1,5 @@
 <script>
+	import Spinner from './Spinner.svelte';
 	export let apikeys = [];
 	export let phoneUnverified;
 	export let m3us = [];
@@ -7,6 +8,7 @@
 
 	let scans = {};
 	let status = {};
+	let isScanning = {};
 
 	async function deleteTorrentClient(e, client) {
 		e.preventDefault();
@@ -39,6 +41,7 @@
 	}
 
 	async function scan(e, library, save = 0) {
+		isScanning[library.id] = true;
 		e.preventDefault();
 		try {
 			const url =
@@ -50,6 +53,8 @@
 			scans[library.id] = result;
 		} catch (err) {
 			status[library.id] = err;
+		} finally {
+			isScanning[library.id] = false;
 		}
 	}
 
@@ -203,7 +208,7 @@
 	{#each libraries as library}
 		<li>
 			{library.name} - {library.id} - {library.url}
-			<nav>
+			<nav class="library-nav">
 				<a href="/library/{library.id}">edit</a>
 				<a
 					href="#"
@@ -217,6 +222,7 @@
 						scan(e, library);
 					}}>scan</a
 				>
+				{#if isScanning[library.id]}<Spinner isLoading={isScanning} />{/if}
 				{#if status[library.id]?.status}{status[library.id].status}{/if}
 			</nav>
 
@@ -264,5 +270,15 @@
 <style>
 	li {
 		margin-bottom: 1.2rem;
+	}
+
+	.library-nav {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+	}
+
+	.library-nav a:is(a, a:visited) {
+		margin-right: 1.2rem;
 	}
 </style>

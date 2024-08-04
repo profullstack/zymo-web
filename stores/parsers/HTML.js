@@ -66,7 +66,7 @@ export const actions = ({ connection: db }) => {
 		},
 		async parseIndexPage(libraryId, url, user = null, pass = null, save = 0) {
 			try {
-				// Ensure the URL ends with a trailing slash
+				// url will only be for directories, we don't fetch individual files so this is fine to end with /
 				if (!url.endsWith('/')) {
 					url += '/';
 				}
@@ -101,6 +101,7 @@ export const actions = ({ connection: db }) => {
 						} else if (supportedExtensions.some((ext) => href.endsWith(ext))) {
 							const directoryPath = path.dirname(resolvedPath);
 							const fileName = path.basename(resolvedPath);
+							const fileExt = path.extname(resolvedPath).slice(1);
 
 							const fileObject = {
 								name: fileName,
@@ -108,7 +109,8 @@ export const actions = ({ connection: db }) => {
 								file: fileName,
 								url: resolvedUrl,
 								path: directoryPath,
-								libraryId
+								libraryId,
+								fileExt
 							};
 
 							if (user && pass) {
@@ -130,7 +132,7 @@ export const actions = ({ connection: db }) => {
 
 				// save them if flag is set to 1
 				if (save && files.length) {
-					await this.save(files);
+					await this.save(files, libraryId);
 				}
 
 				return files;
@@ -140,14 +142,46 @@ export const actions = ({ connection: db }) => {
 			}
 		},
 
-		async save(files) {
+		async save(files, libraryId) {
 			const { id } = await this.me();
 			for (let file of files) {
 				file.createdAt = new Date();
 				file.updatedAt = new Date();
 				file.createdBy = id;
 
-				await db.create('files', file);
+				try {
+					await db.create('files', file);
+				} catch (err) {
+					console.error(err);
+
+					/*
+
+					INSERT INTO city (id, population, at_year) VALUES ("Calgary", 1665000, 2024)
+ON DUPLICATE KEY UPDATE
+	population = $input.population,
+	at_year = $input.at_year;
+	*/
+					try {
+						const { url } = file;
+						const [oldFile] = (
+							await db.query(
+								`SELECT * FROM files WHERE url = $url AND libraryId = $libraryId`,
+								{
+									url,
+									libraryId
+								}
+							)
+						).pop();
+
+						console.log('trying to update ', oldFile.id);
+						if (oldFile.id) {
+							await db.merge(oldFile.id, file);
+							console.log('updated old file with new file data:', oldFile.id);
+						}
+					} catch (err) {
+						console.error(err);
+					}
+				}
 			}
 
 			console.log('Saved files to db');

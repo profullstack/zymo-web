@@ -8,7 +8,5 @@ export const strict = true;
 
 export default {
 	url: string,
-	name: string,
-	user: string,
-	pass: string
+	name: string
 };

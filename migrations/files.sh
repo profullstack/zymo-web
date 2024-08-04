@@ -9,7 +9,7 @@ DATA="DEFINE TABLE files SCHEMALESS
     FOR create WHERE \$scope = \"allusers\",
 	FOR update WHERE createdBy = \$auth.id,
 	FOR delete WHERE createdBy = \$auth.id;
-	DEFINE INDEX idx_url ON files COLUMNS url UNIQUE;
+	DEFINE INDEX idx_url_library ON files COLUMNS url, libraryId UNIQUE;
 
 "
 # 	-- FOR select WHERE \$scope = \"allusers\" -- limit to only users in db
