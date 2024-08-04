@@ -1,3 +1,4 @@
+import { config } from 'dotenv-flow';
 import express from 'express';
 import {
 	startCrawling,
@@ -8,17 +9,24 @@ import {
 	stopAllCrawling
 } from './crawler.js';
 
+config();
+
+const { env } = process;
 const app = express();
-const PORT = 3000;
+const PORT = env.CRAWLER_PORT;
 
 app.use(express.json());
 
 app.post('/start-crawl', async (req, res) => {
-	const { sessionId, url } = req.body;
-	if (!url) {
-		return res.status(400).send({ error: 'URL is required' });
+	console.log(req.body);
+	const { sessionId, libraryId } = req.body;
+
+	console.log(sessionId, libraryId);
+
+	if (!sessionId && !libraryId) {
+		return res.status(400).send({ error: 'Session or Library id is required' });
 	}
-	const session = await startCrawling(url, sessionId);
+	const session = await startCrawling(libraryId, sessionId);
 	res.send({ message: 'Crawling started', session });
 });
 

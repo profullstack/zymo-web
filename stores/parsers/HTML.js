@@ -2,6 +2,7 @@ import { primary } from '@primate/types';
 import cheerio from 'cheerio';
 import path from 'path';
 
+const { env } = process;
 const supportedExtensions = ['.mp3', '.mp4', '.wav', '.ogg', '.pdf', '.epub', '.mkv'];
 
 function sanitizeFile(filename) {
@@ -185,6 +186,31 @@ ON DUPLICATE KEY UPDATE
 			}
 
 			console.log('Saved files to db');
+		},
+
+		async startCrawler(libraryId, sessionId) {
+			const { CRAWLER_PORT } = env;
+
+			const crawlerApi = `http://localhost:${CRAWLER_PORT}`;
+			const startUrl = `${crawlerApi}/start-crawl`;
+
+			try {
+				const res = await fetch(startUrl, {
+					method: 'POST',
+					headers: {
+						'content-type': 'application/json'
+					},
+					body: JSON.stringify({
+						libraryId,
+						sessionId
+					})
+				});
+
+				return await res.json();
+			} catch (err) {
+				console.error(err);
+				throw err;
+			}
 		}
 	};
 };
