@@ -10,3 +10,4 @@ pnpm-lock.yaml
 data/
 history.txt
 service_account_key.json
+/uploads
