@@ -10,3 +10,5 @@ data/
 history.txt
 *.mp4
 .env.prod
+service_account_key.json
+/uploads

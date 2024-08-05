@@ -1,6 +1,18 @@
 <script>
+	import { marked } from 'marked';
+
 	export let post;
+	export let isAdmin = false;
+	let html = '';
+
+	try {
+		html = marked.parse(post.markdown);
+	} catch (e) {}
 </script>
+
+<svelte:head>
+	<title>{post.title}</title>
+</svelte:head>
 
 <div>
 	<h1>{post.title}</h1>
@@ -14,9 +26,12 @@
 	<p>author: <b>{post.authorName}</b></p>
 
 	<small>{post.views} {post.views !== 1 ? 'Views' : 'View'}</small>
+	{#if isAdmin}
+		<a href="/admin/blog/{post.id}">Edit post</a>
+	{/if}
 	<hr />
 	<div>
-		{@html post.html}
+		{@html html}
 	</div>
 	<hr />
 	<div class="tags">
