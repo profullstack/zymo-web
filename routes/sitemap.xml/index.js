@@ -1,4 +1,4 @@
-import { view } from 'primate';
+import view from 'primate/handler/view';
 import fs from 'fs';
 import path from 'path';
 

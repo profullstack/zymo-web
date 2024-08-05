@@ -1,9 +1,4 @@
-import { view } from "primate";
-import env from 'rcompat/env';
-import Stripe from 'stripe'
-
-
-
+import view from "primate/handler/view";
 
 export default {
 

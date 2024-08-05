@@ -1,90 +1,78 @@
-import { view, Response, Status, redirect } from "primate";
-import env from 'rcompat/env';
+import { OK, INTERNAL_SERVER_ERROR } from '@rcompat/http/status';
 import { google } from 'googleapis';
 
-
-const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, APP_DOMAIN,
-  GOOGLE_CALENDAR_ID,
-} = env;
+const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, APP_DOMAIN, GOOGLE_CALENDAR_ID } = process.env;
 
 const getOAuth2Client = () => {
-
-  return new google.auth.OAuth2(
-    GOOGLE_CLIENT_ID,
-    GOOGLE_CLIENT_SECRET,
-    `http://${APP_DOMAIN}`
-  );
-
-}
+	return new google.auth.OAuth2(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, `http://${APP_DOMAIN}`);
+};
 
 const getMainCalendar = async () => {
+	const auth = new google.auth.GoogleAuth({
+		keyFile: 'service_account_key.json',
+		scopes: ['https://www.googleapis.com/auth/calendar']
+	});
 
-  const auth = new google.auth.GoogleAuth({
-    keyFile: 'service_account_key.json',
-    scopes: ['https://www.googleapis.com/auth/calendar']
-  });
+	const calendar = google.calendar({ version: 'v3', auth });
 
-
-  const calendar = google.calendar({ version: 'v3', auth });
-
-  return calendar;
-
-}
+	return calendar;
+};
 
 const getUserCalendar = async (refresh_token) => {
+	let oAuth2Client = getOAuth2Client();
 
-  let oAuth2Client = getOAuth2Client();
+	oAuth2Client.setCredentials({ refresh_token });
 
-  oAuth2Client.setCredentials({ refresh_token })
+	const calendar = google.calendar({ version: 'v3', auth: oAuth2Client });
 
-  const calendar = google.calendar({ version: 'v3', auth: oAuth2Client });
-
-  return calendar;
-
-}
+	return calendar;
+};
 
 export default {
+	async post(request) {
+		const { store, session } = request;
+		const { Appointment } = store;
+		const user = session.get('user');
 
-  async post(request) {
+		const refreshToken = user.googleRefreshToken;
+		const authorized = refreshToken ? true : false;
 
-    const { store, session } = request;
-    const { Appointment } = store;
-    const user = session.get("user");
+		if (!authorized) {
+			return new Response(INTERNAL_SERVER_ERROR);
+		}
 
-    const refreshToken = user.googleRefreshToken;
-    const authorized = refreshToken ? true : false;
+		try {
+			const dbAppointment = await Appointment.getByUserId(user.id);
 
-    if (!authorized) {
-      return new Response(Status.ERROR)
-    }
+			if (dbAppointment) {
+				const mainCalendar = await getMainCalendar();
+				const userCalendar = await getUserCalendar(refreshToken);
 
-    try {
+				try {
+					await mainCalendar.events.delete({
+						calendarId: GOOGLE_CALENDAR_ID,
+						eventId: dbAppointment.mainCalendarEventId
+					});
+				} catch (e) {
+					console.error(e);
+				}
 
-      const dbAppointment = await Appointment.getByUserId(user.id);
+				try {
+					await userCalendar.events.delete({
+						calendarId: 'primary',
+						eventId: dbAppointment.userCalendarEventId
+					});
+				} catch (e) {
+					console.error(e);
+				}
 
-      if (dbAppointment) {
-        const mainCalendar = await getMainCalendar();
-        const userCalendar = await getUserCalendar(refreshToken)
+				await Appointment.delete(dbAppointment.id);
+			}
+		} catch (e) {
+			console.error(e);
+			return new Response(INTERNAL_SERVER_ERROR);
+		}
 
-        try {
-          await mainCalendar.events.delete({ calendarId: GOOGLE_CALENDAR_ID, eventId: dbAppointment.mainCalendarEventId })
-        } catch (e) { console.error(e) }
-
-        try {
-          await userCalendar.events.delete({ calendarId: 'primary', eventId: dbAppointment.userCalendarEventId })
-        } catch (e) { console.error(e) }
-
-        await Appointment.delete(dbAppointment.id)
-
-      }
-
-    } catch (e) {
-      console.error(e);
-      return new Response(Status.ERROR)
-    }
-
-    return new Response(Status.OK)
-
-  }
-
-}
+		return new Response(OK);
+	}
+};

@@ -1,5 +1,4 @@
 import twilio from 'twilio';
-const { APP_NAME, TWILIO_PHONE_NUMBER, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } = process.env;
 
 export const ambiguous = true;
 export const actions = () => {

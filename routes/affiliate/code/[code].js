@@ -1,45 +1,45 @@
-import { Response, Status, redirect, view } from 'primate';
+import view from 'primate/handler/view';
+import redirect from 'primate/handler/redirect';
 
 export default {
-    async get(request) {
-        const { path, store, session } = request;
-        const { Affiliate, ReferralCode } = store;
+	async get(request) {
+		const { path, store, session } = request;
+		const { Affiliate, ReferralCode } = store;
 
-        const userId = session.get("user").id;
+		const userId = session.get('user').id;
 
-        const code = path.get("code");
+		const code = path.get('code');
 
-        const referralCode = await ReferralCode.getByCode(code);
+		const referralCode = await ReferralCode.getByCode(code);
 
-        if (!referralCode || referralCode.userId !== userId) {
-            redirect("/affiliate")
-        }
+		if (!referralCode || referralCode.userId !== userId) {
+			redirect('/affiliate');
+		}
 
-        return view("affiliate/code/Rename.svelte", { name: referralCode.name });
-    },
+		return view('affiliate/code/Rename.svelte', { name: referralCode.name });
+	},
 
-    async post(request) {
-        const { path, store, session, body } = request;
-        const { Affiliate, ReferralCode } = store;
-        const userId = session.get("user").id;
+	async post(request) {
+		const { path, store, session, body } = request;
+		const { Affiliate, ReferralCode } = store;
+		const userId = session.get('user').id;
 
-        const code = path.get("code");
+		const code = path.get('code');
 
-        const referralCode = await ReferralCode.getByCode(code);
+		const referralCode = await ReferralCode.getByCode(code);
 
-        if (!body.name) {
-            return view("affiliate/code/Rename.svelte", { error: "No name provided" });
-        }
+		if (!body.name) {
+			return view('affiliate/code/Rename.svelte', { error: 'No name provided' });
+		}
 
-        if (referralCode && referralCode.userId == userId) {
-            try {
-                await ReferralCode.updateName(body.name, code);
-            } catch (err) {
-                console.error(err)
-            }
-        }
+		if (referralCode && referralCode.userId == userId) {
+			try {
+				await ReferralCode.updateName(body.name, code);
+			} catch (err) {
+				console.error(err);
+			}
+		}
 
-        return redirect("/affiliate");
-    },
-
+		return redirect('/affiliate');
+	}
 };
