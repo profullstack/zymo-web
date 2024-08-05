@@ -4,17 +4,20 @@ export default {
     async get(request) {
         const { path, store, session } = request;
         const { Blog } = store;
-
         const slug = path.get("slug");
 
         let post = await Blog.getPostBySlug(slug);
 
-        if (!post) {
-            return redirect("/blog");
+        if (post) {
+            let isAdmin = false;
+            post = await Blog.updatePostViews(post.id);
+            try {
+                isAdmin = session.get("user").isAdmin;
+            } catch (e) { }
+            return view("blog/ViewPost.svelte", { post, isAdmin });
         }
 
-        post = await Blog.updatePostViews(post.id);
 
-        return view("blog/ViewPost.svelte", { post });
+        return redirect("/blog");
     },
 }
