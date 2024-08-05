@@ -1,5 +1,6 @@
 import Stripe from 'stripe';
-import env from 'rcompat/env';
+
+const { env } = process;
 
 export default {
     async post(request) {

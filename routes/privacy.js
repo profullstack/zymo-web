@@ -1,10 +1,6 @@
-import { view } from 'primate';
-
+import view from 'primate/handler/view';
 export default {
 	async get() {
-        const { env } = process;
-		const { APP_NAME, EMAIL, PHONE } = env;
-
-		return view('Privacy.svelte', { APP_NAME, EMAIL, PHONE });
+		return view('Privacy.svelte');
 	}
 };

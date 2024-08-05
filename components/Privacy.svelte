@@ -1,5 +1,4 @@
 <script>
-	export let APP_NAME, EMAIL, PHONE;
 </script>
 
 <svelte:head>
@@ -7,13 +6,13 @@
 </svelte:head>
 
 <section>
-	<h1>Privacy Policy for {APP_NAME}</h1>
+	<h1>Privacy Policy for APP_NAME</h1>
 
 	<p>Last updated: [Date]</p>
 
 	<h2>Introduction</h2>
 	<p>
-		Welcome to {APP_NAME}. This Privacy Policy explains how we collect, use, disclose, and
+		Welcome to APP_NAME. This Privacy Policy explains how we collect, use, disclose, and
 		safeguard your information when you use our mobile application. Please read this Privacy
 		Policy carefully. If you disagree with the terms of this privacy policy, please do not
 		access the application.
@@ -23,7 +22,7 @@
 
 	<h3>Personal Data</h3>
 	<p>
-		While using {APP_NAME}, we may ask you to provide us with certain personal data that can be
+		While using APP_NAME, we may ask you to provide us with certain personal data that can be
 		used to contact or identify you. Personal data may include, but is not limited to:
 	</p>
 	<ul>
@@ -41,7 +40,7 @@
 	</p>
 
 	<h2>Use of Data</h2>
-	<p>{APP_NAME} uses the collected data for various purposes:</p>
+	<p>APP_NAME uses the collected data for various purposes:</p>
 	<ul>
 		<li>To provide and maintain our Service</li>
 		<li>To notify you about changes to our Service</li>
@@ -58,7 +57,7 @@
 	</p>
 	<ul>
 		<li>Comply with a legal obligation</li>
-		<li>Protect and defend the rights or property of {APP_NAME}</li>
+		<li>Protect and defend the rights or property of APP_NAME</li>
 		<li>Prevent or investigate possible wrongdoing in connection with the Service</li>
 		<li>Protect the personal safety of users of the Service or the public</li>
 	</ul>
@@ -81,8 +80,8 @@
 	<h2>Contact Us</h2>
 	<p>If you have any questions about this Privacy Policy, please contact us:</p>
 	<ul>
-		<li>By email: {EMAIL}</li>
-		<li>By phone: {PHONE}</li>
+		<li>By email: EMAIL</li>
+		<li>By phone: PHONE</li>
 	</ul>
 </section>
 

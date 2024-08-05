@@ -1,6 +1,6 @@
 <script>
 	export let affiliate, referralCodes = [];
-	export let APP_DOMAIN, AFFILIATE_COMMISSION_PERCENT;
+	// export let APP_DOMAIN, AFFILIATE_COMMISSION_PERCENT;
 
 	
 	let payoutMethods = affiliate?.payoutMethods || [];

@@ -1,10 +1,10 @@
-import { svelte, handlebars } from '@primate/frontend';
+import svelte from '@primate/svelte';
+import handlebars from '@primate/handlebars';
 import store from '@primate/store';
-import { surrealdb } from '@primate/store';
-import types from '@primate/types';
+import surrealdb from '@primate/surrealdb';
+// import types from '@primate/types';
 import session from '@primate/session';
 import { config } from 'dotenv-flow';
-import { Logger } from 'primate';
 
 config();
 
@@ -23,17 +23,13 @@ const {
 	APP_SHORT_NAME,
 	APP_DESCRIPTION,
 	PHONE,
-	EMAIL
+	EMAIL,
+	AFFILIATE_COMMISSION_PERCENT
 } = process.env;
 
 console.log(host, db_port);
 
 export default {
-	logger: {
-		// show all logs
-		level: Logger.Info,
-		trace: true
-	},
 	http: {
 		port
 		// csp: {
@@ -44,24 +40,16 @@ export default {
 		// }
 	},
 	build: {
-		transform: {
-			paths: [
-				'pages/app.html',
-				'static/manifest.json',
-				'components/MetaTags.svelte',
-				'components/Index.svelte',
-				'components/Footer.svelte'
-			],
-			mapper: (contents) =>
-				contents
-					.replaceAll('APP_DOMAIN', APP_DOMAIN)
-					.replaceAll('GOOGLE_ANALYTICS_ID', GOOGLE_ANALYTICS_ID)
-					.replaceAll('GOOGLE_ADS_ID', GOOGLE_ADS_ID)
-					.replaceAll('APP_NAME', APP_NAME)
-					.replaceAll('APP_SHORT_NAME', APP_SHORT_NAME)
-					.replaceAll('APP_DESCRIPTION', APP_DESCRIPTION)
-					.replaceAll('PHONE', PHONE)
-					.replaceAll('EMAIL', EMAIL)
+		define: {
+			APP_DOMAIN: `${APP_DOMAIN}`,
+			GOOGLE_ANALYTICS_ID: `${GOOGLE_ANALYTICS_ID}`,
+			GOOGLE_ADS_ID: `${GOOGLE_ADS_ID}`,
+			APP_NAME: `${APP_NAME}`,
+			APP_SHORT_NAME: `${APP_SHORT_NAME}`,
+			APP_DESCRIPTION: `${APP_DESCRIPTION}`,
+			PHONE: `${PHONE}`,
+			EMAIL: `${EMAIL}`,
+			AFFILIATE_COMMISSION_PERCENT: `${AFFILIATE_COMMISSION_PERCENT}`
 		},
 		minify: false,
 		excludes: ['woff', 'ttf', 'png', 'jpg', 'jpeg', 'mp4', 'mp3', 'svg'].map(
@@ -83,7 +71,7 @@ export default {
 				password
 			})
 		}),
-		types(),
+		// types(),
 		session(),
 		{
 			name: 'stripe-webhook-intercept',

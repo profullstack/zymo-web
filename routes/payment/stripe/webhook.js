@@ -1,172 +1,180 @@
-import { Response, Status } from "primate";
+import { OK, INTERNAL_SERVER_ERROR } from '@rcompat/http/status';
 import env from 'rcompat/env';
 import Stripe from 'stripe';
 
-
 export default {
+	async post(request) {
+		const { store } = request;
+		const originalBody = request.body;
+		const body = JSON.parse(request.body);
 
-    async post(request) {
-        const { store } = request;
-        const originalBody = request.body;
-        const body = JSON.parse(request.body)
+		const { STRIPE_WEBHOOK_SECRET } = process.env;
 
-        const { STRIPE_WEBHOOK_SECRET } = process.env;
+		const stripe = new Stripe(env.STRIPE_SK);
 
-        const stripe = new Stripe(env.STRIPE_SK);
+		const { User, Payment, Product, Referral, Affiliate, ReferralCode } = store;
 
-        const { User, Payment, Product, Referral, Affiliate, ReferralCode } = store;
+		let event;
 
-        let event;
+		const listen_events = [
+			'customer.subscription.updated',
+			'payment_intent.succeeded',
+			'customer.subscription.deleted',
+			'charge.succeeded',
+			'charge.refunded',
+			'charge.refund.updated'
+		];
 
-        const listen_events = ['customer.subscription.updated', 'payment_intent.succeeded',
-            'customer.subscription.deleted', 'charge.succeeded', 'charge.refunded', 'charge.refund.updated']
+		if (!listen_events.includes(body.type)) return new Response(OK);
 
-        if (!listen_events.includes(body.type)) return new Response(Status.OK)
+		try {
+			event = stripe.webhooks.constructEvent(
+				originalBody,
+				request.headers.get('stripe-signature'),
+				STRIPE_WEBHOOK_SECRET
+			);
+		} catch (err) {
+			console.error('Webhook Error:', err);
+			return new Response(`Webhook Error: ${err.message}`, INTERNAL_SERVER_ERROR);
+		}
 
-        try {
-            event = stripe.webhooks.constructEvent(originalBody, request.headers.get('stripe-signature'), STRIPE_WEBHOOK_SECRET);
-        }
-        catch (err) {
-            console.error("Webhook Error:", err)
-            return new Response(`Webhook Error: ${err.message}`, Status.ERROR)
-        }
+		const session = body.data.object;
 
-        const session = body.data.object;
+		const handlePaymentOrSubUpdate = async (session) => {
+			const user = await User.getUserByStripeCustumerId(session.customer);
 
-        const handlePaymentOrSubUpdate = async (session) => {
-            const user = await User.getUserByStripeCustumerId(session.customer);
-            
-            var subscriptionRefunded = false;
+			var subscriptionRefunded = false;
 
-            if(session.object ==  "subscription") {
-                var subscription = await Payment.getBySubscriptionId(session.id);
-                if(subscription){
-                    subscriptionRefunded = subscription.refunded && (session.cancel_at_period_end == true);
-                }
-            }
-            
-            try {
-                Payment.updateOrCreate(
-                    session.object == "subscription"
-                        ? {
-                            userId: user.id,
-                            status: session.status,
-                            amount: (session.plan.amount / 100),
-                            subscriptionInterval: session.plan.interval,
-                            stripeSubscriptionId: session.id,
-                            stripePaymentIntent: session.payment_intent,
-                            refunded: subscriptionRefunded,
-                            renewalDate: session.current_period_end,
-                            productId: session.plan.product,
-                            cancelAtPeriodEnd: session.cancel_at_period_end,
-                        }
-                        : {
-                            userId: user.id,
-                            status: session.refunded || "active",
-                            amount: (session.amount / 100),
-                            subscriptionInterval: "",
-                            stripeSubscriptionId: "",
-                            stripePaymentIntent: session.id,
-                            refunded: false,
-                            renewalDate: 0,
-                            productId: session.metadata.productId,
-                            cancelAtPeriodEnd: false,
-                        }
-                )
-            } catch (e) {
-                console.error(e)
-            }
-        }
+			if (session.object == 'subscription') {
+				var subscription = await Payment.getBySubscriptionId(session.id);
+				if (subscription) {
+					subscriptionRefunded =
+						subscription.refunded && session.cancel_at_period_end == true;
+				}
+			}
 
-        const addAffiliateCommission = async (session) => {
-            try {
-                const user = await User.getUserByStripeCustumerId(session.customer);
-                const referral = await Referral.getReferralByUserId(user.id);
+			try {
+				Payment.updateOrCreate(
+					session.object == 'subscription'
+						? {
+								userId: user.id,
+								status: session.status,
+								amount: session.plan.amount / 100,
+								subscriptionInterval: session.plan.interval,
+								stripeSubscriptionId: session.id,
+								stripePaymentIntent: session.payment_intent,
+								refunded: subscriptionRefunded,
+								renewalDate: session.current_period_end,
+								productId: session.plan.product,
+								cancelAtPeriodEnd: session.cancel_at_period_end
+							}
+						: {
+								userId: user.id,
+								status: session.refunded || 'active',
+								amount: session.amount / 100,
+								subscriptionInterval: '',
+								stripeSubscriptionId: '',
+								stripePaymentIntent: session.id,
+								refunded: false,
+								renewalDate: 0,
+								productId: session.metadata.productId,
+								cancelAtPeriodEnd: false
+							}
+				);
+			} catch (e) {
+				console.error(e);
+			}
+		};
 
-                if (referral) {
-                    const referralCode = await ReferralCode.getByCode(referral.referralCode);
+		const addAffiliateCommission = async (session) => {
+			try {
+				const user = await User.getUserByStripeCustumerId(session.customer);
+				const referral = await Referral.getReferralByUserId(user.id);
 
-                    if (referralCode) {
-                        const originalAmount = session.amount / (100 - env.AFFILIATE_DISCOUNT_PERCENT);
-                        const commission = Math.round(originalAmount * (env.AFFILIATE_COMMISSION_PERCENT / 100));
+				if (referral) {
+					const referralCode = await ReferralCode.getByCode(referral.referralCode);
 
-                        await Affiliate.updateBalance(referralCode.affiliateId, commission)
-                        await ReferralCode.updateCommissions(referral.referralCode, commission);
-                    }
-                }
-            } catch (err) {
-                console.error(err)
-            }
-        }
+					if (referralCode) {
+						const originalAmount =
+							session.amount / (100 - env.AFFILIATE_DISCOUNT_PERCENT);
+						const commission = Math.round(
+							originalAmount * (env.AFFILIATE_COMMISSION_PERCENT / 100)
+						);
 
-        const getPaymentIntentFromSubscription = async (subscriptionId) => {
-            try {
-                const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-                const latestInvoiceId = subscription.latest_invoice;
+						await Affiliate.updateBalance(referralCode.affiliateId, commission);
+						await ReferralCode.updateCommissions(referral.referralCode, commission);
+					}
+				}
+			} catch (err) {
+				console.error(err);
+			}
+		};
 
-                if (!latestInvoiceId) {
-                    throw new Error('No invoice found for this subscription.');
-                }
-                const invoice = await stripe.invoices.retrieve(latestInvoiceId);
+		const getPaymentIntentFromSubscription = async (subscriptionId) => {
+			try {
+				const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+				const latestInvoiceId = subscription.latest_invoice;
 
-                const paymentIntentId = invoice.payment_intent;
+				if (!latestInvoiceId) {
+					throw new Error('No invoice found for this subscription.');
+				}
+				const invoice = await stripe.invoices.retrieve(latestInvoiceId);
 
-                if (!paymentIntentId) {
-                    throw new Error('No payment intent found for this invoice.');
-                }
+				const paymentIntentId = invoice.payment_intent;
 
-                const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+				if (!paymentIntentId) {
+					throw new Error('No payment intent found for this invoice.');
+				}
 
-                return paymentIntent;
-            } catch (error) {
-                console.error('Error retrieving payment intent from subscription:', error);
-                throw error;
-            }
-        };
+				const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
 
-        switch (event.type) {
-            case "charge.succeeded":
-                await addAffiliateCommission(session);
-                break;
-            case "customer.subscription.updated":
-                const payment_intent = await getPaymentIntentFromSubscription(session.id);
-                session.payment_intent = payment_intent.id;
+				return paymentIntent;
+			} catch (error) {
+				console.error('Error retrieving payment intent from subscription:', error);
+				throw error;
+			}
+		};
 
-                await handlePaymentOrSubUpdate(session);
-                break;
-            case "payment_intent.succeeded":
-                if (!session.metadata || !session.metadata.productId) break;
-                await handlePaymentOrSubUpdate(session);
-                break;
-            case "customer.subscription.deleted":
-                await handlePaymentOrSubUpdate(session);
-                break;
-            case "charge.refunded":
-            case "charge.refund.updated":
-                try {
-                    await Payment.updatePaymentRefund(session.payment_intent, session.status);
-                } catch (err) {
-                    console.error(err)
-                }
+		switch (event.type) {
+			case 'charge.succeeded':
+				await addAffiliateCommission(session);
+				break;
+			case 'customer.subscription.updated':
+				const payment_intent = await getPaymentIntentFromSubscription(session.id);
+				session.payment_intent = payment_intent.id;
 
-                break;
-            case "invoice.payment_succeeded":
+				await handlePaymentOrSubUpdate(session);
+				break;
+			case 'payment_intent.succeeded':
+				if (!session.metadata || !session.metadata.productId) break;
+				await handlePaymentOrSubUpdate(session);
+				break;
+			case 'customer.subscription.deleted':
+				await handlePaymentOrSubUpdate(session);
+				break;
+			case 'charge.refunded':
+			case 'charge.refund.updated':
+				try {
+					await Payment.updatePaymentRefund(session.payment_intent, session.status);
+				} catch (err) {
+					console.error(err);
+				}
 
-                if (session["billing_reason"] == "subscription_create") {
-                    const subscription_id = session["subscription"];
-                    const payment_intent_id = session["payment_intent"];
+				break;
+			case 'invoice.payment_succeeded':
+				if (session['billing_reason'] == 'subscription_create') {
+					const subscription_id = session['subscription'];
+					const payment_intent_id = session['payment_intent'];
 
-                    const payment_intent = await stripe.paymentIntents.retrieve(
-                        payment_intent_id
-                    );
+					const payment_intent = await stripe.paymentIntents.retrieve(payment_intent_id);
 
-                    await stripe.subscriptions.update(subscription_id, {
-                        default_payment_method: payment_intent.payment_method,
-                    });
-                }
-                break;
-        }
+					await stripe.subscriptions.update(subscription_id, {
+						default_payment_method: payment_intent.payment_method
+					});
+				}
+				break;
+		}
 
-        return new Response(Status.OK)
-    }
-}
+		return new Response(OK);
+	}
+};

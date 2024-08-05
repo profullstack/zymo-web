@@ -1,6 +1,6 @@
-import { view, redirect } from "primate";
-
-const form = (params = {}) => view("reset/Form.svelte", { ...params });
+import view from 'primate/handler/view';
+import redirect from 'primate/handler/redirect';
+const form = (params = {}) => view('reset/Form.svelte', { ...params });
 
 export default {
 	get(request) {
@@ -24,21 +24,28 @@ export default {
 			const user = await User.getByEmail(email);
 
 			if (!user) {
-				return view("reset/Form.svelte", { status: "No user found with that email address" })
+				return view('reset/Form.svelte', {
+					status: 'No user found with that email address'
+				});
 			}
 
 			const result = await User.generatePasswordResetToken(user.id);
 
 			if (result) {
-				const response = await Mailgun.sendPasswordResetEmail({ token: result.passwordReset.token, to: email });
+				const response = await Mailgun.sendPasswordResetEmail({
+					token: result.passwordReset.token,
+					to: email
+				});
 				if (response.ok) {
-					return view("reset/Form.svelte", { status: "Click the link sent to your email to reset your password" })
+					return view('reset/Form.svelte', {
+						status: 'Click the link sent to your email to reset your password'
+					});
 				}
 			}
 
-			return view("reset/Form.svelte", { status: "An error occured" });
+			return view('reset/Form.svelte', { status: 'An error occured' });
 		} catch ({ errors }) {
 			return form({ errors });
 		}
-	},
+	}
 };

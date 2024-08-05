@@ -1,103 +1,113 @@
-import { Response, Status, redirect, view } from 'primate';
+import view from 'primate/handler/view';
+import redirect from 'primate/handler/redirect';
 
 export default {
-    async get(request) {
-        const { path, store, session } = request;
-        const { Affiliate } = store;
+	async get(request) {
+		const { path, store, session } = request;
+		const { Affiliate } = store;
 
-        const userId = session.get("user").id;
-        const id = path.get("id");
+		const userId = session.get('user').id;
+		const id = path.get('id');
 
-        const affiliate = await Affiliate.getByUserId(userId);
+		const affiliate = await Affiliate.getByUserId(userId);
 
-        if (!affiliate) {
-            redirect("/affiliate")
-        }
+		if (!affiliate) {
+			redirect('/affiliate');
+		}
 
-        const payoutMethod = affiliate.payoutMethods.find((method) => method.id == id);
+		const payoutMethod = affiliate.payoutMethods.find((method) => method.id == id);
 
-        if (!payoutMethod) {
-            redirect("/affiliate")
-        }
+		if (!payoutMethod) {
+			redirect('/affiliate');
+		}
 
-        return view("affiliate/payouts/method/Edit.svelte", { payoutMethod });
-    },
+		return view('affiliate/payouts/method/Edit.svelte', { payoutMethod });
+	},
 
-    async post(request) {
+	async post(request) {
+		const { store, session, body, path } = request;
+		const { Affiliate, Payout } = store;
 
-        const { store, session, body, path } = request;
-        const { Affiliate, Payout } = store;
+		const userId = session.get('user').id;
+		const id = path.get('id');
 
-        const userId = session.get("user").id;
-        const id = path.get("id");
+		const affiliate = await Affiliate.getByUserId(userId);
 
-        const affiliate = await Affiliate.getByUserId(userId);
+		if (!affiliate) {
+			redirect('/affiliate');
+		}
 
-        if (!affiliate) {
-            redirect("/affiliate")
-        }
+		const payoutMethod = affiliate.payoutMethods.find((method) => method.id == id);
 
-        const payoutMethod = affiliate.payoutMethods.find((method) => method.id == id);
+		if (!payoutMethod) {
+			redirect('/affiliate');
+		}
 
-        if (!payoutMethod) {
-            redirect("/affiliate")
-        }
+		const availableMethods = ['bank', 'cryptocurrency'];
 
-        const availableMethods = ["bank", "cryptocurrency"];
+		if (!availableMethods.includes(payoutMethod.method)) {
+			return view('affiliate/payouts/method/Edit.svelte', {
+				error: 'Invalid payout method'
+			});
+		}
 
-        if (!availableMethods.includes(payoutMethod.method)) {
-            return view('affiliate/payouts/method/Edit.svelte', {
-                error: "Invalid payout method"
-            });
-        }
+		let details;
+		const method = payoutMethod.method;
 
-        let details;
-        const method = payoutMethod.method;
+		switch (method) {
+			case 'bank':
+				const { accountCategory, accountType, routingNumber, accountNumber, accountName } =
+					body;
 
-        switch (method) {
-            case "bank":
-                const { accountCategory, accountType, routingNumber, accountNumber, accountName } = body;
+				if (
+					!accountCategory ||
+					!accountType ||
+					!routingNumber ||
+					!accountNumber ||
+					!accountName
+				) {
+					return view('affiliate/payouts/method/Edit.svelte', {
+						error: 'Invalid payout details'
+					});
+				}
 
-                if (!accountCategory || !accountType || !routingNumber || !accountNumber || !accountName) {
-                    return view('affiliate/payouts/method/Edit.svelte', {
-                        error: "Invalid payout details"
-                    });
-                }
+				details = {
+					accountCategory,
+					accountType,
+					routingNumber,
+					accountNumber,
+					accountName
+				};
 
-                details = { accountCategory, accountType, routingNumber, accountNumber, accountName }
+				await Affiliate.updatePayoutMethod(userId, {
+					id: payoutMethod.id,
+					method,
+					details
+				});
+				break;
+			case 'cryptocurrency':
+				const { coin, address } = body;
 
-                await Affiliate.updatePayoutMethod(userId, {
-                    id: payoutMethod.id,
-                    method,
-                    details
-                });
-                break;
-            case "cryptocurrency":
-                const { coin, address } = body;
+				if (!coin || !address) {
+					return view('affiliate/payouts/method/Edit.svelte', {
+						error: 'Invalid payout details'
+					});
+				}
 
-                if (!coin || !address) {
-                    return view('affiliate/payouts/method/Edit.svelte', {
-                        error: "Invalid payout details"
-                    });
-                }
+				details = { coin, address };
 
-                details = { coin, address };
+				await Affiliate.updatePayoutMethod(userId, {
+					id: payoutMethod.id,
+					method,
+					details
+				});
+				break;
+			default:
+				return view('affiliate/payouts/method/Edit.svelte', {
+					error: 'Invalid payout method'
+				});
+		}
 
-                await Affiliate.updatePayoutMethod(userId, {
-                    id: payoutMethod.id,
-                    method,
-                    details
-                });
-                break;
-            default:
-                return view('affiliate/payouts/method/Edit.svelte', {
-                    error: "Invalid payout method"
-                });
-
-        }
-
-        return redirect("/affiliate");
-
-    }
-
+		return redirect('/affiliate');
+	}
 };
