@@ -11,6 +11,24 @@
 	let videoRef;
 	let transcode = false;
 
+	// if (!movie.url.endsWith('.mp4')) {
+	// 	transcode = true;
+	// 	transcodeMedia();
+	// }
+
+	try {
+		movie.humanTitle = decodeURIComponent(movie.title);
+	} catch (err) {
+		console.error(err, movie.title);
+		movie.humanTitle = movie.title;
+	}
+
+	try {
+		movie.humanPath = decodeURIComponent(movie.path);
+	} catch (err) {
+		movie.humanPath = movie.path;
+	}
+
 	function proxifyUrl() {
 		if (user && pass) {
 			if (proxy) {
@@ -76,7 +94,7 @@
 
 {#if url}
 	<section>
-		<h1><a href={movie.url}>{movie.title}</a></h1>
+		<h1><a href={movie.url}>{movie.humanTitle}</a></h1>
 		<div class="field">
 			<label>
 				<input
