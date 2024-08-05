@@ -19,23 +19,30 @@ export default {
   },
   async post(request) {
     const { store, body, session } = request;
-    const { Blog } = store;
-    const { title, thumbnail, markdown, html, excerpt, tags } = body;
+    const { Blog, utils: { File } } = store;
+    const { title, thumbnail, markdown, excerpt, tags } = body;
 
     const user = session.get("user");
     const slug = titleToSlug(title);
     const authorName = `${user.firstName} ${user.lastName}`;
 
+    let thumbnailUrl = '';
+
+    if (thumbnail) {
+      try {
+        const thumbnailInfo = await File.upload(thumbnail, true, user.id);
+        thumbnailUrl = thumbnailInfo?.publicUrl;
+      } catch (e) { }
+    }
 
     const blogPost = await Blog.createPost({
       title,
-      thumbnail,
+      thumbnail: thumbnailUrl,
       slug,
       authorName,
-      html,
       markdown,
       excerpt,
-      tags,
+      tags: JSON.parse(tags),
       userId: user.id
     });
 

@@ -3,18 +3,18 @@ import { primary } from '@primate/types';
 
 export const actions = ({ connection: db }) => {
     return {
-        async createPost({ title, thumbnail, slug, authorName, html, markdown, excerpt, tags, userId }) {
+        async createPost({ title, thumbnail, slug, authorName, markdown, excerpt, tags, userId }) {
 
             try {
                 const createdAt = Date.now();
                 const updatedAt = createdAt;
 
-                const blogPosts = await db.create("blogposts",
+                const blogPost = await db.create("blogposts",
                     {
-                        title, thumbnail, slug, authorName, html, markdown, excerpt, tags, userId, createdAt, updatedAt
+                        title, thumbnail, slug, authorName, markdown, excerpt, tags, userId, createdAt, updatedAt
 
                     });
-                return blogPosts.pop();
+                return blogPost.pop();
 
             } catch (e) {
                 console.error(e)
