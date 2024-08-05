@@ -45,7 +45,7 @@ export const actions = ({ connection: db }) => {
 				const command = 'ffmpeg';
 				const input = '-i pipe:0';
 				const flags =
-					'-threads 4 -acodec aac -vcodec libx264 -movflags frag_keyframe+empty_moov';
+					'-threads 4 -acodec aac -vcodec libx264 -movflags frag_keyframe+empty_moov -maxrate 2M -bufsize 1M';
 				const output = '-f mp4 pipe:1';
 				const fullCommand = `${command} ${input} ${flags} ${output}`;
 
@@ -53,7 +53,7 @@ export const actions = ({ connection: db }) => {
 				const { stdout, stdin } = spawn(fullCommand);
 
 				try {
-					await videoStream.pipeTo(stdin);
+					videoStream.pipeTo(stdin);
 				} catch {
 					console.log('cancelling stream:', url);
 					await videoStream.cancel();

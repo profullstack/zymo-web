@@ -5,7 +5,7 @@ export const actions = ({ connection: db }) => {
 	return {
 		async getById(id) {
 			try {
-				const query = `SELECT * FROM files WHERE id = $id`;
+				const query = `SELECT * FROM media_files WHERE id = $id`;
 
 				try {
 					const [res] = await db.query(query, { id });
@@ -21,7 +21,7 @@ export const actions = ({ connection: db }) => {
 			}
 		},
 		async getAllByUserId(createdBy) {
-			const query = `SELECT * FROM files WHERE createdBy = $createdBy`;
+			const query = `SELECT * FROM media_files WHERE createdBy = $createdBy`;
 
 			console.log(query, createdBy);
 			try {

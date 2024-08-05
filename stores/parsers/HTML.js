@@ -151,7 +151,7 @@ export const actions = ({ connection: db }) => {
 				file.createdBy = id;
 
 				try {
-					await db.create('files', file);
+					await db.create('media_files', file);
 				} catch (err) {
 					console.error(err);
 
@@ -166,7 +166,7 @@ ON DUPLICATE KEY UPDATE
 						const { url } = file;
 						const [oldFile] = (
 							await db.query(
-								`SELECT * FROM files WHERE url = $url AND libraryId = $libraryId`,
+								`SELECT * FROM media_files WHERE url = $url AND libraryId = $libraryId`,
 								{
 									url,
 									libraryId

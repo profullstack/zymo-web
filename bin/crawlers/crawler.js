@@ -206,7 +206,7 @@ async function save(files, libraryId) {
 		file.createdBy = createdBy;
 
 		try {
-			await db.create('files', file);
+			await db.create('media_files', file);
 		} catch (err) {
 			console.error('Could not created file in db: ', file);
 
@@ -214,7 +214,7 @@ async function save(files, libraryId) {
 				const { url } = file;
 				const [oldFile] = (
 					await db.query(
-						`SELECT * FROM files WHERE url = $url AND libraryId = $libraryId`,
+						`SELECT * FROM media_files WHERE url = $url AND libraryId = $libraryId`,
 						{
 							url,
 							libraryId
@@ -244,7 +244,7 @@ export async function startCrawling(libraryId, sessionId = null) {
 			await db.query('SELECT * FROM library WHERE id = $libraryId', { libraryId })
 		).pop();
 
-		startUrl = res.url;
+		startUrl = res.url.endsWith('/') ? res.url : `${res.url}/`;
 		library = res;
 	}
 
@@ -279,7 +279,7 @@ export async function startCrawling(libraryId, sessionId = null) {
 
 		library = res;
 		sessionId = session.id;
-		startUrl = library.url;
+		startUrl = library.url.endsWith('/') ? library.url : `${library.url}/`;
 	}
 
 	crawlingSessions[sessionId] = { isCrawling: true, foundUrls: [], urlCount: 0 };
