@@ -2,6 +2,7 @@
 
 -   add library Id to files collections
 -   add favorites for each type of media
+-   add scan status page
 
 -   namespace emby stuff to account for more providers later
 -   document api for end users (see markdown stuff)

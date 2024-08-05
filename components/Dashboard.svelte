@@ -227,17 +227,9 @@
 			</nav>
 
 			{#if scans[library.id]}
-				<h4>Found</h4>
-				<nav>
-					<a
-						href="#"
-						on:click={(e) => {
-							scan(e, library, 1);
-						}}>save</a
-					>
-				</nav>
-				{#each scans[library.id] as file}
-					<div>{file.name}</div>
+				<h4>Found ${scans[library.id].foundFiles.length} files</h4>
+				{#each scans[library.id].foundFiles as file}
+					<div>{file.title}</div>
 				{/each}
 			{/if}
 		</li>

@@ -163,7 +163,7 @@ async function crawl(sessionId, libraryId, url, user = null, pass = null, delay 
 			crawlingSessions[sessionId].urlCount += 1;
 
 			if (crawlingSessions[sessionId].urlCount % 10 === 0) {
-				await db.update(`crawl_status:${sessionId}`, {
+				await db.merge(sessionId, {
 					foundUrls: crawlingSessions[sessionId].foundUrls,
 					urlCount: crawlingSessions[sessionId].urlCount
 				});
@@ -174,12 +174,12 @@ async function crawl(sessionId, libraryId, url, user = null, pass = null, delay 
 		crawlingSessions[sessionId].urlCount += files.length;
 
 		if (files.length) {
-			await db.update(`crawl_status:${sessionId}`, { foundFiles: files });
+			await db.merge(sessionId, { foundFiles: files });
 			await save(files, libraryId);
 		}
 	} catch (error) {
 		console.error(`Error crawling ${url}: ${error.message}`);
-		await db.update(`crawl_status:${sessionId}`, { status: 'failed', error: error.message });
+		await db.merge(sessionId, { status: 'failed', error: error.message });
 	}
 }
 
@@ -197,7 +197,7 @@ async function save(files, libraryId) {
 		try {
 			await db.create('files', file);
 		} catch (err) {
-			console.error(err);
+			console.error('Could not created file in db: ', file);
 
 			try {
 				const { url } = file;
@@ -221,7 +221,7 @@ async function save(files, libraryId) {
 		}
 	}
 
-	console.log('Saved files to db');
+	console.log(`Saved ${files.length} files to db`);
 }
 
 export async function startCrawling(libraryId, sessionId = null) {
@@ -238,18 +238,20 @@ export async function startCrawling(libraryId, sessionId = null) {
 	}
 
 	if (!sessionId && library) {
-		sessionId = uuidv4();
-		await db.create('crawl_status', {
-			id: sessionId,
-			libraryId: library.id,
+		const { libraryId } = library;
+
+		const [session] = await db.create('crawl_status', {
+			libraryId,
 			currentUrl: startUrl,
 			status: 'running',
 			foundUrls: [],
 			urlCount: 0,
 			error: null
 		});
+
+		sessionId = session.id;
 	} else {
-		await db.update(`crawl_status:${sessionId}`, {
+		await db.merge(sessionId, {
 			status: 'running',
 			error: null
 		});
@@ -275,7 +277,7 @@ export async function startCrawling(libraryId, sessionId = null) {
 
 	crawl(sessionId, library.id, startUrl, user, pass).then(async () => {
 		crawlingSessions[sessionId].isCrawling = false;
-		await db.update(`crawl_status:${sessionId}`, {
+		await db.merge(sessionId, {
 			status: 'completed',
 			currentUrl: null,
 			foundUrls: crawlingSessions[sessionId].foundUrls,
@@ -291,12 +293,12 @@ export async function startCrawling(libraryId, sessionId = null) {
 export async function stopCrawling(sessionId) {
 	if (crawlingSessions[sessionId]) {
 		crawlingSessions[sessionId].isCrawling = false;
-		await db.update(`crawl_status:${sessionId}`, { status: 'stopped', currentUrl: null });
+		await db.merge(sessionId, { status: 'stopped', currentUrl: null });
 	}
 }
 
 export async function getCrawlStatus(sessionId) {
-	const status = await db.select(`crawl_status:${sessionId}`);
+	const status = await db.select(sessionId);
 	return status;
 }
 
