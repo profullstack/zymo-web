@@ -11,6 +11,6 @@ export default {
 		const res = await Torrent.addTorrent(client, body.url);
 		console.log('id:', res);
 
-		return view('torrent/Edit.svelte', { client: res, method: 'put' });
+		return view('torrents/Edit.svelte', { client: res, method: 'put' });
 	}
 };

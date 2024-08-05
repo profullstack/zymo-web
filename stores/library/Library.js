@@ -108,6 +108,8 @@ export const actions = ({ connection: db }) => {
 
 			try {
 				const res = await db.delete(id);
+				const res2 = await db.query(`DELETE FROM files WHERE libraryId = $id`, { id });
+				console.log('deleted library files:', res2);
 
 				console.log('res: ', res);
 				return res;

@@ -1,6 +1,7 @@
 import env from 'rcompat/env';
 import { primary } from '@primate/types';
 import FormData from 'form-data';
+import Torrent from 'torrent-search-api-for-barbaroussa';
 
 export const actions = ({ connection: db }) => {
 	return {
@@ -208,6 +209,19 @@ export const actions = ({ connection: db }) => {
 					response.statusText
 				);
 			}
+		},
+
+		async search(q) {
+			Torrent.enablePublicProviders();
+			const torrents = await Torrent.search('1080', 'Movies', 20);
+
+			for (let torrent of torrents) {
+				torrent.magnet = await Torrent.getMagnet(torrent);
+			}
+
+			console.log(torrents);
+
+			return torrents;
 		}
 	};
 };

@@ -1,4 +1,4 @@
-import { view, redirect } from 'primate';
+import { view } from 'primate';
 
 export default {
 	async get(request) {
@@ -7,10 +7,10 @@ export default {
 			torrent: { Torrent }
 		} = store;
 		const id = path.get('id');
-		const res = await Torrent.getById(id);
-		console.log('id:', res);
+		const client = await Torrent.getClientById(id);
+		console.log('id:', client);
 
-		return view('torrent/Edit.svelte', { client: res, method: 'put' });
+		return view('torrents/Edit.svelte', { client, method: 'put' });
 	},
 
 	async put(request) {

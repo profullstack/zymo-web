@@ -5,10 +5,11 @@
 	export let proxy = false;
 
 	const { user, pass, file } = movie;
-	const type = file.split('.').pop();
+	let type = file.split('.').pop();
 
 	let url = movie.url;
 	let videoRef;
+	let transcode = false;
 
 	function proxifyUrl() {
 		if (user && pass) {
@@ -24,10 +25,33 @@
 		}
 	}
 
+	function transcodeMedia() {
+		if (user && pass) {
+			if (transcode) {
+				url = `/api/transcode?user=${user}&pass=${pass}&url=${encodeURIComponent(movie.url)}`;
+			} else {
+				url = movie.url.replace(/(https?):\/\//, `$1://${user}:${pass}@`);
+			}
+		} else if (transcode) {
+			url = `/api/transcode?url=${encodeURIComponent(movie.url)}`;
+		} else {
+			url = movie.url;
+		}
+
+		type = 'mp4';
+		console.log(url);
+	}
 	// Function to handle checkbox change
 	function handleCheckboxChange(event) {
 		proxy = event.target.checked;
 		proxifyUrl();
+	}
+
+	// Function to handle checkbox change
+	function handleTranscodeCheckboxChange(event) {
+		transcode = event.target.checked;
+		console.log('transcoding:', transcode);
+		transcodeMedia();
 	}
 
 	// Set the initial state of the checkbox based on the proxy variable
@@ -36,10 +60,12 @@
 		if (proxy) {
 			checkbox.checked = true;
 		}
+
 		proxifyUrl();
 	});
 
 	$: proxifyUrl();
+	$: transcodeMedia();
 
 	$: if (url && videoRef) {
 		const source = videoRef.querySelector('source');
@@ -60,6 +86,15 @@
 					bind:checked={proxy}
 				/>
 				Enable proxy
+			</label>
+			<label>
+				<input
+					type="checkbox"
+					id="transcode-checkbox"
+					on:change={handleTranscodeCheckboxChange}
+					bind:checked={transcode}
+				/>
+				Enable transcoding
 			</label>
 		</div>
 		<video controls autoplay playsinline bind:this={videoRef}>

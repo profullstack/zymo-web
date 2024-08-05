@@ -13,7 +13,7 @@
 	async function deleteTorrentClient(e, client) {
 		e.preventDefault();
 		try {
-			const res = await fetch(`/torrent/${client.id}`, {
+			const res = await fetch(`/torrents/${client.id}`, {
 				method: 'DELETE'
 			});
 
@@ -227,7 +227,7 @@
 			</nav>
 
 			{#if scans[library.id]}
-				<h4>Found ${scans[library.id].foundFiles.length} files</h4>
+				<h4>Found ${scans[library.id].foundFiles?.length} files</h4>
 				{#each scans[library.id].foundFiles as file}
 					<div>{file.title}</div>
 				{/each}
@@ -242,7 +242,7 @@
 		<li>
 			{item.name} - {item.id} - {item.url}
 			<nav>
-				<a href="/torrent/{item.id}">edit</a>
+				<a href="/torrents/{item.id}">edit</a>
 				<a
 					href="#"
 					on:click={(e) => {

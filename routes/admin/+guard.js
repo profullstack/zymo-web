@@ -2,12 +2,11 @@ import { redirect } from 'primate';
 
 export default (request) => {
 	const {
-		url: { pathname },
+		url: { pathname, search },
 		session
 	} = request;
 
 	if (session.get('loggedIn')) {
-
 		const user = session.get('user');
 		const { isAdmin } = user;
 
@@ -18,6 +17,5 @@ export default (request) => {
 		}
 	}
 
-
-	return redirect(`/login?next=${pathname}`);
+	return redirect(`/login?next=${encodeURIComponent(pathname + search)}`);
 };

@@ -2,7 +2,7 @@ import { redirect } from 'primate';
 
 export default (request) => {
 	const {
-		url: { pathname }
+		url: { pathname, search }
 	} = request;
 
 	const allow = ['/payment/stripe/webhook'];
@@ -17,5 +17,5 @@ export default (request) => {
 		return true;
 	}
 
-	return redirect(`/login?next=${pathname}`);
+	return redirect(`/login?next=${encodeURIComponent(pathname + search)}`);
 };

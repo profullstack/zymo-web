@@ -43,7 +43,7 @@ export default {
 	async delete(request) {
 		const { path, store } = request;
 		const {
-			library: { Form, Library }
+			library: { Library }
 		} = store;
 
 		const id = path.get('id');
@@ -54,7 +54,7 @@ export default {
 			try {
 				const res = await Library.delete(id);
 				console.log('delete:', res);
-				return { status: 'Deleted' };
+				return { status: 'Deleted libray and its files' };
 			} catch (err) {
 				return { status: err.message };
 			}

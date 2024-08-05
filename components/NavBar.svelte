@@ -6,7 +6,7 @@
 	<a href="/dashboard">Dashboard</a>
 	<a href="/live/new">Create Live TV provider</a>
 	<a href="/library/new">Create Library</a>
-	<a href="/torrent/new">Create Torrent Client</a>
+	<a href="/torrents/new">Create Torrent Client</a>
 	<a href="/apikeys">Create API key</a>
 </nav>
 <nav>

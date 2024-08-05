@@ -33,6 +33,7 @@ if [ -d "$HOME/www/${name}/${project}" ]; then
     sudo /etc/init.d/nginx reload
     sudo systemctl daemon-reload
     sudo systemctl start ${META_SERVICE}
+    sudo systemctl restart ${META_CRAWLER_SERVICE}
     # sudo systemctl start surrealdb
 
     # run migrations

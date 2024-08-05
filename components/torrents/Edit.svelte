@@ -5,7 +5,7 @@
 		e.preventDefault();
 
 		console.log(client);
-		const res = await fetch(`/torrent/${client.id}`, {
+		const res = await fetch(`/torrents/${client.id}`, {
 			method: 'PUT',
 			body: JSON.stringify(client),
 			headers: {

@@ -2,12 +2,12 @@ import { redirect } from 'primate';
 
 export default (request) => {
 	const {
-		url: { pathname },
+		url: { pathname, search },
 		query,
 		session
 	} = request;
 
-	if (pathname.startsWith("/verify/email/")) {
+	if (pathname.startsWith('/verify/email/')) {
 		return true;
 	}
 
@@ -17,10 +17,10 @@ export default (request) => {
 	}
 
 	try {
-		if (user.verify.email.status == "verified") {
+		if (user.verify.email.status == 'verified') {
 			return redirect('/dashboard');
 		}
-	} catch (e) { }
+	} catch (e) {}
 
 	return true;
 };

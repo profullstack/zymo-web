@@ -2,7 +2,7 @@ import { redirect } from 'primate';
 
 export default async (request) => {
 	const {
-		url: { pathname },
+		url: { pathname, search },
 		session,
 		store
 	} = request;
@@ -10,9 +10,9 @@ export default async (request) => {
 
 	console.log('loggedIn:', session.get('loggedIn'));
 
-	if (session.get('loggedIn') || await User.tryApiLogin(request)) {
+	if (session.get('loggedIn') || (await User.tryApiLogin(request))) {
 		return true;
 	}
 
-	return redirect(`/login?next=${pathname}`);
+	return redirect(`/login?next=${encodeURIComponent(pathname + search)}`);
 };

@@ -5,7 +5,7 @@ import { config } from 'dotenv-flow';
 import cheerio from 'cheerio';
 import path from 'path';
 
-const supportedExtensions = ['.mp3', '.mp4', '.wav', '.ogg', '.pdf', '.epub', '.mkv'];
+const supportedExtensions = ['.mp3', '.mp4', '.wav', '.ogg', '.pdf', '.epub', '.mkv', '.m4a'];
 
 config();
 
@@ -103,19 +103,30 @@ function parseHtmlForUrls(html, baseUrl, libraryId, user = null, pass = null) {
 	const $ = cheerio.load(html);
 	const files = [];
 	const links = [];
+	const visited = new Set();
+
+	const baseHost = new URL(baseUrl).hostname;
 
 	$('a').each((index, element) => {
 		let href = $(element).attr('href');
-		if (href && !href.startsWith('..')) {
-			if (!href.startsWith('http') && !href.startsWith('/')) {
-				href = `${baseUrl}/${href}`;
-			} else if (href.startsWith('/')) {
-				href = new URL(href, baseUrl).href;
+		if (href && !href.startsWith('..') && !href.startsWith('/') && !href.startsWith('?')) {
+			href = new URL(href, baseUrl).href;
+			const hrefHost = new URL(href).hostname;
+
+			// Skip offsite links
+			if (hrefHost !== baseHost) {
+				console.log('Skipping offsite link:', href);
+				return;
 			}
 
 			if (href.endsWith('/')) {
-				console.log('Addling link:', href);
-				links.push(href);
+				if (visited.has(href)) {
+					console.log('href already seen:', href);
+				} else {
+					console.log('Adding directory:', href);
+					visited.add(href);
+					links.push(href);
+				}
 			} else if (supportedExtensions.some((ext) => href.endsWith(ext))) {
 				const resolvedPath = new URL(href, baseUrl).pathname;
 				const directoryPath = path.dirname(resolvedPath);

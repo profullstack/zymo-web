@@ -1,5 +1,5 @@
 import { view, redirect } from 'primate';
-const form = (params = {}) => view('torrent/Form.svelte', { ...params });
+const form = (params = {}) => view('torrents/Form.svelte', { ...params });
 
 export default {
 	get(request) {
