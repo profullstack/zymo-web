@@ -1,5 +1,5 @@
 import { OK, INTERNAL_SERVER_ERROR } from '@rcompat/http/status';
-import env from 'rcompat/env';
+import env from '@rcompat/env';
 import Stripe from 'stripe';
 
 export default {

@@ -1,4 +1,4 @@
-import {string} from "@primate/types";
+import string from "@primate/types/string";
 
 export const readonly = true;
 

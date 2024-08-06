@@ -1,4 +1,3 @@
-// import { Response, Status, redirect, view } from 'primate';
 import view from 'primate/handler/view';
 import redirect from 'primate/handler/redirect';
 

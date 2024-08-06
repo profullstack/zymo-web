@@ -1,4 +1,4 @@
-import {email} from "@primate/types";
+import email from "@primate/types/email";
 
 export const readonly = true;
 

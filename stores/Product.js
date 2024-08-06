@@ -1,5 +1,5 @@
-import env from 'rcompat/env';
-import { primary } from '@primate/types';
+import env from '@rcompat/env';
+import primary from '@primate/types/primary';
 
 export const actions = ({ connection: db }) => {
     return {
@@ -10,9 +10,9 @@ export const actions = ({ connection: db }) => {
                 const query = `SELECT * FROM products ORDER BY createdAt`;
 
                 try {
-    
+
                     const product = await db.query(query);
-    
+
                     return product.pop();
                 } catch (e) {
                     console.error(e)

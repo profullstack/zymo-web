@@ -1,8 +1,6 @@
 import view from 'primate/handler/view';
 import redirect from 'primate/handler/redirect';
 
-const { APP_DOMAIN, AFFILIATE_COMMISSION_PERCENT } = process.env;
-
 export default {
 	async get(request) {
 		const { store, session } = request;

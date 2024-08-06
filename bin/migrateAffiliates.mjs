@@ -1,5 +1,5 @@
 import { Surreal } from 'surrealdb.js';
-import env from 'rcompat/env';
+import env from '@rcompat/env';
 import { config } from 'dotenv-flow';
 
 config();

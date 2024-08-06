@@ -1,5 +1,5 @@
-import env from 'rcompat/env';
-import { primary } from '@primate/types';
+import env from '@rcompat/env';
+import primary from '@primate/types/primary';
 import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs';
 import path from 'path';
