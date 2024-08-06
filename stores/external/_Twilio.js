@@ -1,18 +1,19 @@
 import twilio from 'twilio';
+import primary from '@primate/types/primary';
 
 const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
 const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
-const sms = twilio(twilioAccountSid, twilioAuthToken);
+//const sms = twilio(twilioAccountSid, twilioAuthToken);
 const { DOMAIN, TOLL_FREE, MAILGUN_DOMAIN, APP_NAME, MAILGUN_KEY, DO_NOT_REPLY } = process.env;
 
-export default class Base {
+export const actions = () => ({
 	async getSessionData(ctx) {
 		const session = await ctx.session();
 
 		console.log('session: ', session);
 
 		return session;
-	}
+	},
 
 	async sendVerifyEmail(cfg) {
 		const { to, code } = cfg;
@@ -25,13 +26,13 @@ export default class Base {
 					-------------------------
 
 					Please click here to verify your email address:
-					
+
 					https://${DOMAIN}/verify/email/${code}
 
 					-------------------------
 
 					(Do not reply to this email, nobody receives replies at this email address).
-					
+
 					`,
 			html: ``
 		};
@@ -51,7 +52,7 @@ export default class Base {
 		} catch (err) {
 			console.error(err);
 		}
-	}
+	},
 
 	async sendVerifyPhone(cfg) {
 		const { to, code } = cfg;
@@ -64,6 +65,9 @@ export default class Base {
 			});
 
 		console.log(res, '<----- twilio sms');
-	}
-}
+	},
+});
 
+export default {
+    id: primary
+};

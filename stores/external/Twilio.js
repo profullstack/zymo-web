@@ -1,4 +1,5 @@
 import twilio from 'twilio';
+import primary from '@primate/types/primary';
 
 export const ambiguous = true;
 export const actions = () => {
@@ -18,4 +19,8 @@ export const actions = () => {
             return res;
         }
     };
+};
+
+export default {
+    id: primary
 };

@@ -1,5 +1,5 @@
-import env from 'rcompat/env';
-import { primary } from '@primate/types';
+import env from '@rcompat/env';
+import primary from '@primate/types/primary';
 
 export const actions = ({ connection: db }) => {
     return {
@@ -8,7 +8,7 @@ export const actions = ({ connection: db }) => {
             try {
 
                 const now = new Date().toISOString();
-                
+
                 data.createdAt = now;
                 data.updatedAt = now;
 
@@ -97,7 +97,7 @@ export const actions = ({ connection: db }) => {
             try {
                 const payment = await this.getByStripePaymentIntent(stripePaymentIntent);
                 if(payment) {
-                    let refunded = status == "succeeded";  
+                    let refunded = status == "succeeded";
                     await this.update(payment.id, { refunded })
                 }
             } catch (e) {

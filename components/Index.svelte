@@ -35,17 +35,19 @@
 		} catch (e) {}
 	}
 
+	const appName = REPLACE_APP_NAME;
+	const appDescription = REPLACE_APP_DESCRIPTION;
 	const meta = {
-		title: 'APP_NAME - APP_DESCRIPTION',
-		description: 'APP_DESCRIPTION'
+		title: `${appName }- ${appDescription}`,
+		description: appDescription,
 	};
 </script>
 
 <MetaTags {...meta} />
 
-<h1>Welcome to APP_NAME!</h1>
+<h1>Welcome to {appName}!</h1>
 
-<p>APP_DESCRIPTION</p>
+<p>{appDescription}</p>
 
 <h3>Join our waitlist</h3>
 
