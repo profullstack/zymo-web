@@ -1,50 +1,55 @@
-import { view, redirect } from 'primate';
+import view from 'primate/handler/view';
+import redirect from 'primate/handler/redirect';
 
 export default {
-    async get(request) {
-        const { path, store, session } = request;
-        const { Blog } = store;
+	async get(request) {
+		const { path, store, session } = request;
+		const { Blog } = store;
 
-        const id = path.get("id");
+		const id = path.get('id');
 
-        const post = await Blog.getPostById(id);
+		const post = await Blog.getPostById(id);
 
-        if (!post) {
-            return redirect("/admin/blog");
-        }
+		if (!post) {
+			return redirect('/admin/blog');
+		}
 
-        return view("admin/blog/EditPost.svelte", { post });
-    },
+		return view('admin/blog/EditPost.svelte', { post });
+	},
 
-    async post(request) {
-        const { path, store, body, session } = request;
-        const { Blog, utils: { File } } = store;
-        const { title, thumbnail, markdown, excerpt, tags } = body;
+	async post(request) {
+		const { path, store, body, session } = request;
+		const {
+			Blog,
+			utils: { File }
+		} = store;
+		const { title, thumbnail, markdown, excerpt, tags } = body;
 
-        const id = path.get("id");
-        const user = session.get("user");
-        const authorName = `${user.firstName} ${user.lastName}`;
+		const id = path.get('id');
+		const user = session.get('user');
+		const authorName = `${user.firstName} ${user.lastName}`;
 
-        let thumbnailUrl = thumbnail;
+		let thumbnailUrl = thumbnail;
 
-        if (thumbnail && typeof (thumbnail) == 'object') {
-            try {
-                const thumbnailInfo = await File.upload(thumbnail, true, user.id);
-                thumbnailUrl = thumbnailInfo?.publicUrl;
-            } catch (e) { console.error(e) }
-        }
+		if (thumbnail && typeof thumbnail == 'object') {
+			try {
+				const thumbnailInfo = await File.upload(thumbnail, true, user.id);
+				thumbnailUrl = thumbnailInfo?.publicUrl;
+			} catch (e) {
+				console.error(e);
+			}
+		}
 
-        const blogPost = await Blog.updatePost(id, {
-            title,
-            thumbnail: thumbnailUrl,
-            authorName,
-            markdown,
-            excerpt,
-            tags: JSON.parse(tags),
-            userId: user.id
-        });
+		const blogPost = await Blog.updatePost(id, {
+			title,
+			thumbnail: thumbnailUrl,
+			authorName,
+			markdown,
+			excerpt,
+			tags: JSON.parse(tags),
+			userId: user.id
+		});
 
-        return redirect(`/blog/${blogPost.slug}`);
-
-    }
-}
+		return redirect(`/blog/${blogPost.slug}`);
+	}
+};

@@ -1,6 +1,7 @@
-import env from 'rcompat/env';
-import { Base64 } from 'rcompat/string';
-import { MediaType } from 'rcompat/http';
+import env from '@rcompat/env';
+import Base64 from '@rcompat/string/base64';
+import { form } from '@rcompat/http/mime';
+import primary from '@primate/types/primary';
 
 const { APP_DOMAIN, TOLL_FREE, MAILGUN_DOMAIN, APP_NAME, MAILGUN_API_KEY, DO_NOT_REPLY, FROM_EMAIL } = process.env;
 
@@ -10,7 +11,7 @@ const resource = `https://api.mailgun.net/v3/${MAILGUN_DOMAIN}/messages`;
 const options = {
 	method: 'POST',
 	headers: {
-		'Content-Type': MediaType.APPLICATION_FORM_URLENCODED,
+		'Content-Type': form,
 		Authorization: `Basic ${Base64.encode(`api:${MAILGUN_API_KEY}`)}`
 	}
 };
@@ -53,7 +54,7 @@ https://${APP_DOMAIN}/verify/email/${code}
 				const res = await fetch(`https://api.mailgun.net/v3/${MAILGUN_DOMAIN}/messages`, {
 					method: 'POST',
 					headers: {
-						'Content-Type': MediaType.APPLICATION_FORM_URLENCODED,
+						'Content-Type': form,
 						Authorization: `Basic ${Base64.encode(`api:${MAILGUN_API_KEY}`)}`
 					},
 					body: `from=${FROM_EMAIL}&to=${encodeURIComponent(opts.to)}&subject=${opts.subject}&text=${opts.text}`
@@ -87,7 +88,7 @@ https://${APP_DOMAIN}/reset/${token}
 				const res = await fetch(`https://api.mailgun.net/v3/${MAILGUN_DOMAIN}/messages`, {
 					method: 'POST',
 					headers: {
-						'Content-Type': MediaType.APPLICATION_FORM_URLENCODED,
+						'Content-Type': form,
 						Authorization: `Basic ${Base64.encode(`api:${MAILGUN_API_KEY}`)}`
 					},
 					body: `from=${FROM_EMAIL}&to=${encodeURIComponent(opts.to)}&subject=${opts.subject}&text=${opts.text}`
@@ -99,4 +100,8 @@ https://${APP_DOMAIN}/reset/${token}
 		}
 
 	};
+};
+
+export default {
+    id: primary
 };

@@ -1,8 +1,7 @@
 <script>
 	export let affiliate, referralCodes = [];
-	export let APP_DOMAIN, AFFILIATE_COMMISSION_PERCENT;
 
-	
+
 	let payoutMethods = affiliate?.payoutMethods || [];
 
 	async function deleteReferralCode(code) {
@@ -30,6 +29,9 @@
 			window.location.reload();
 		} catch (e) {}
 	}
+
+	const appDomain = REPLACE_APP_DOMAIN;
+	const affiliateCommissionPercent = REPLACE_AFFILIATE_COMMISSION_PERCENT;
 </script>
 
 <div class="grid-container">
@@ -56,7 +58,7 @@
 						0
 					)}
 				</h4>
-				<h4>Commission Percentage: {AFFILIATE_COMMISSION_PERCENT} %</h4>
+				<h4>Commission Percentage: {affiliateCommisionPercent} %</h4>
 			</div>
 			<div style="padding: 10px;border: 1px solid;border-radius: 10px; margin: 10px 0;">
 				<h4>Referral Links</h4>
@@ -74,7 +76,7 @@
 						<tr>
 							<td>{referralCode.name}</td>
 							<td>{referralCode.code}</td>
-							<td>http://{APP_DOMAIN}/r/{referralCode.code}</td>
+							<td>http://{appDomain}/r/{referralCode.code}</td>
 							<td>{referralCode.clicks}</td>
 							<td>{referralCode.conversions}</td>
 							<td>$ {referralCode.commissions}</td>
@@ -155,27 +157,30 @@
 				<p>Here's some promo text you can use to promote our affiliate program:</p>
 				<textarea class="promo-text"
 					>{`🚀 Maximize Your Earnings with FastestEngineer!
-									
+
 					Join the FastestEngineer affiliate
 					program and unlock the potential to earn up to $4K/month recurring per sale! Boost
 					your monthly income by promoting our comprehensive SaaS tools, and offer your
 					subscribers a special 10% discount. It’s an excellent opportunity for sustainable
-					and significant earnings. Get started now: http://${APP_DOMAIN}/r/${referralCodes[0].code}`}</textarea
+					and significant earnings. Get started now:
+					http://${appDomain}/r/${referralCodes[0].code}`}</textarea
 				>
 				<p>Here's some text you can use to promote FastestEngineer:</p>
 				<textarea class="promo-text"
 					>{`Launch Your SaaS Faster with FastestEngineer! 🚀
-					
+
 					Ready to transform your SaaS vision into reality? With FastestEngineer's fully featured boilerplate, you can build and launch your app in record time—days, not months! Our pre-built solution saves you weeks of development, allowing you to focus on perfecting the features that truly matter. Accelerate your path to market and stay ahead of the competition.
-					
+
 					🌟 Why Choose FastestEngineer?
-					
+
 						Speed: Launch your app faster than ever.
 						Efficiency: Focus more on product and less on process.
 						Scalability: Grow your SaaS with a robust foundation.
-					
-					Ready to start building? Use this link to get started and take advantage of all that FastestEngineer has to offer: http://${APP_DOMAIN}/r/${referralCodes[0].code}
-					
+
+					Ready to start building? Use this link to get started and
+					take advantage of all that FastestEngineer has to offer:
+					http://${appDomain}/r/${referralCodes[0].code}
+
 					Build smart, launch fast, grow your SaaS with FastestEngineer!`}</textarea
 				>
 			{/if}

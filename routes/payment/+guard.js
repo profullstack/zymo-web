@@ -1,4 +1,4 @@
-import { redirect } from 'primate';
+import redirect from 'primate/handler/redirect';
 
 export default (request) => {
 	const {

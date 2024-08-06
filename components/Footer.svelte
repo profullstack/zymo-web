@@ -1,9 +1,14 @@
+<script>
+	let appName = REPLACE_APP_NAME;
+	let email = REPLACE_EMAIL;
+	let appDomain = REPLACE_APP_DOMAIN;
+</script>
 <footer>
 	<small>
-		<a href="mailto:EMAIL?subject=APP_NAME">EMAIL</a>
+		<a href="mailto:{email}?subject={appName}">{email}</a>
 		<a href="/terms">Terms</a>
 		<a href="/privacy">Privacy</a> © 2023-2024
-		<a href="https://APP_DOMAIN">APP_NAME</a>
+		<a href="https://{appDomain}">{appName}</a>
 	</small>
 </footer>
 

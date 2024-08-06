@@ -35,9 +35,11 @@
 		} catch (e) {}
 	}
 
+	const appName = REPLACE_APP_NAME;
+	const appDescription = REPLACE_APP_DESCRIPTION;
 	const meta = {
-		title: 'APP_NAME - APP_DESCRIPTION',
-		description: 'APP_DESCRIPTION'
+		title: `${appName }- ${appDescription}`,
+		description: appDescription,
 	};
 </script>
 

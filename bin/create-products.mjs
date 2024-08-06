@@ -2,7 +2,7 @@ import { Command } from 'commander';
 import fs from 'fs';
 import Stripe from 'stripe';
 import { Surreal } from 'surrealdb.js';
-import env from 'rcompat/env';
+import env from '@rcompat/env';
 import { config } from 'dotenv-flow';
 
 config();
@@ -88,7 +88,7 @@ async function createProducts(jsonFile) {
     const products = JSON.parse(fs.readFileSync(jsonFile, 'utf-8'));
 
     const newProducts = [];
-    
+
     for (const product of products) {
         const dbProducts = await getDBProducts();
         const index = dbProducts.findIndex((p) => p.stripeProductId === product.id);
@@ -247,7 +247,7 @@ async function saveProducts() {
             subscriptionOptions: product.subscriptionOptions
         };
     });
-    
+
     fs.writeFileSync('./bin/products.json', JSON.stringify(formattedProducts, null, 2));
     console.log('Products saved to ./bin/products.json');
 }

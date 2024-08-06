@@ -1,4 +1,4 @@
-import { view } from "primate";
+import view from "primate/handler/view";
 
 export const recursive = false;
 

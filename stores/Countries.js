@@ -1,8 +1,10 @@
-import { join } from 'rcompat/fs';
+import join from '@rcompat/fs/join';
+import primary from '@primate/types/primary';
 
 const countries = await join(
 	import.meta.dirname,
 	'..',
+	'server',
 	'static',
 	'country.json'
 ).json();
@@ -15,4 +17,8 @@ export const actions = () => {
 			return countries;
 		}
 	};
+};
+
+export default {
+    id: primary
 };

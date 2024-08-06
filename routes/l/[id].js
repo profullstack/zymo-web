@@ -1,11 +1,12 @@
-import { view, redirect } from 'primate';
+import view from 'primate/handler/view';
+import redirect from 'primate/handler/redirect';
 
 export default {
 	async get(request) {
 		const { session, path, store, headers } = request;
 		const {
 			link: { Link },
-			Track,
+			Track
 		} = store;
 		const id = path.get('id');
 		const link = await Link.getById(id);

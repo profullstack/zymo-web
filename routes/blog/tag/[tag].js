@@ -1,14 +1,15 @@
-import { view, redirect } from 'primate';
+import view from 'primate/handler/view';
+import redirect from 'primate/handler/redirect';
 
 export default {
-    async get(request) {
-        const { path, store, session } = request;
-        const { Blog } = store;
+	async get(request) {
+		const { path, store, session } = request;
+		const { Blog } = store;
 
-        const tag = path.get("tag");
+		const tag = path.get('tag');
 
-        let posts = await Blog.getPostsByTag(tag);
+		let posts = await Blog.getPostsByTag(tag);
 
-        return view("blog/Tag.svelte", { tag, posts });
-    },
-}
+		return view('blog/Tag.svelte', { tag, posts });
+	}
+};
