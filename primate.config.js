@@ -26,7 +26,7 @@ const {
 	AFFILIATE_COMMISSION_PERCENT
 } = process.env;
 
-console.log(host, db_port);
+console.log(host, port, db_port);
 
 export default {
 	http: {
