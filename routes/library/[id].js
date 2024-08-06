@@ -1,5 +1,4 @@
-import { view, redirect } from 'primate';
-// const form = (params = {}) => view('links/Form.svelte', { ...params });
+import view from 'primate/handler/view';
 
 export default {
 	async get(request) {

@@ -51,6 +51,7 @@ export default {
 			REPLACE_AFFILIATE_COMMISSION_PERCENT: `'${AFFILIATE_COMMISSION_PERCENT}'`
 		},
 		minify: false,
+		includes: ['./modules'],
 		excludes: [
 			'woff',
 			'ttf',

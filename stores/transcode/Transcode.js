@@ -1,4 +1,4 @@
-import { primary } from '@primate/types';
+import primary from '@primate/types/primary';
 import file from '@rcompat/fs/file';
 import { mp4 } from '@rcompat/http/mime';
 import spawn from '@rcompat/stdio/spawn';

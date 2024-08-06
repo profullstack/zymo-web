@@ -1,4 +1,5 @@
-import { view, redirect } from 'primate';
+import view from 'primate/handler/view';
+import redirect from 'primate/handler/redirect';
 const form = (params = {}) => view('library/Form.svelte', { ...params });
 
 export default {

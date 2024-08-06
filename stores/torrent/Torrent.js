@@ -1,5 +1,5 @@
 import env from 'rcompat/env';
-import { primary } from '@primate/types';
+import primary from '@primate/types/primary';
 import FormData from 'form-data';
 import Torrent from 'torrent-search-api-for-barbaroussa';
 

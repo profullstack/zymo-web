@@ -1,5 +1,5 @@
 import env from 'rcompat/env';
-import { primary } from '@primate/types';
+import primary from '@primate/types/primary';
 
 export const actions = ({ connection: db }) => {
 	return {
@@ -108,7 +108,9 @@ export const actions = ({ connection: db }) => {
 
 			try {
 				const res = await db.delete(id);
-				const res2 = await db.query(`DELETE FROM media_files WHERE libraryId = $id`, { id });
+				const res2 = await db.query(`DELETE FROM media_files WHERE libraryId = $id`, {
+					id
+				});
 				console.log('deleted library files:', res2);
 
 				console.log('res: ', res);

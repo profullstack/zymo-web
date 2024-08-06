@@ -1,5 +1,5 @@
 import env from 'rcompat/env';
-import { primary } from '@primate/types';
+import primary from '@primate/types/primary';
 import { createClient } from '@redis/client';
 
 const client = createClient();

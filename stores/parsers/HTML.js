@@ -1,4 +1,4 @@
-import { primary } from '@primate/types';
+import primary from '@primate/types/primary';
 import cheerio from 'cheerio';
 import path from 'path';
 

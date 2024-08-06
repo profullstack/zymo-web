@@ -1,4 +1,5 @@
-import { Status, error } from 'primate';
+import error from 'primate/handler/error';
+import { OK, INTERNAL_SERVER_ERROR } from '@rcompat/http/status';
 
 export default {
 	async get(request) {
@@ -34,7 +35,7 @@ export default {
 			return fetch(url, { headers, redirect: 'follow' });
 		} catch (err) {
 			console.log(err);
-			return error('Error fetching URL', { status: Status.INTERNAL_SERVER_ERROR, ...err });
+			return error('Error fetching URL', { status: INTERNAL_SERVER_ERROR, ...err });
 		}
 	},
 	async head(request) {
@@ -57,7 +58,7 @@ export default {
 			return fetch(url, { method: 'HEAD', headers, redirect: 'follow' });
 		} catch (err) {
 			console.log(err);
-			return error('Error fetching URL', { status: Status.INTERNAL_SERVER_ERROR, ...err });
+			return error('Error fetching URL', { status: INTERNAL_SERVER_ERROR, ...err });
 		}
 	}
 };
