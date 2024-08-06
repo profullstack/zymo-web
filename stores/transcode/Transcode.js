@@ -52,12 +52,10 @@ export const actions = ({ connection: db }) => {
 				console.log(fullCommand);
 				const { stdout, stdin } = spawn(fullCommand);
 
-				try {
-					videoStream.pipeTo(stdin);
-				} catch {
-					console.log('cancelling stream:', url);
-					await videoStream.cancel();
-				}
+				videoStream.pipeTo(stdin).catch(() => {
+					console.log('Cancelling stream');
+					videoStream.cancel();
+				});
 
 				return new Response(stdout, { headers: { 'context-type': mp4 } });
 			} catch (err) {
