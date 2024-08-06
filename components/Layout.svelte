@@ -6,11 +6,7 @@
 
 	export let isLoggedIn, unverifiedUser, isAdmin;
 </script>
-
-<svelte:head>
-	<MetaTags />
-</svelte:head>
-
+<MetaTags />
 <main>
 	<GlobalNavBar {isLoggedIn} {unverifiedUser} />
 
