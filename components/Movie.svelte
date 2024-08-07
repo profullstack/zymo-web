@@ -1,5 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
+	import { parseMediaInfo } from '../modules/parsers/mediainfo.js';
 
 	export let movie = {};
 	export let proxy = false;
@@ -74,6 +75,7 @@
 
 	// Set the initial state of the checkbox based on the proxy variable
 	onMount(() => {
+		movie.mediaInfo = parseMediaInfo(movie.file);
 		const checkbox = document.querySelector('#proxy-checkbox');
 		if (proxy) {
 			checkbox.checked = true;
@@ -118,6 +120,8 @@
 		<video controls autoplay playsinline bind:this={videoRef}>
 			<source src={url} type="video/{type}" />
 		</video>
+
+		<pre>{JSON.stringify(movie.mediaInfo, null, 2)}</pre>
 	</section>
 {/if}
 
