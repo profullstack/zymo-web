@@ -26,6 +26,7 @@ const {
 	AFFILIATE_COMMISSION_PERCENT
 } = process.env;
 
+const useSpa = true;
 console.log(host, port, db_port);
 
 export default {
@@ -71,8 +72,7 @@ export default {
 	},
 	modules: [
 		handlebars(),
-		svelte({ spa: false }),
-		// liveview(),
+		svelte({ spa: useSpa }),
 		store({
 			strict: true,
 			driver: surrealdb({

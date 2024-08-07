@@ -1,7 +1,8 @@
 <script>
 	import { isExpanded } from '../modules/store.js';
 
-	export let isLoggedIn, unverifiedUser;
+	export let isLoggedIn, unverifiedUser, isAdmin;
+
 	const home = '/';
 
 	function toggleSidebar(e) {
@@ -38,6 +39,9 @@
 		<!-- <a href="/products">Products</a> -->
 		{#if isLoggedIn || unverifiedUser}
 			<a href="/dashboard">Dashboard</a>
+			{#if isAdmin}
+				<a href="/admin">Admin</a>
+			{/if}
 			<a href="#" on:click={logout}>Logout</a>
 		{:else}
 			<a href="/login">Login</a>

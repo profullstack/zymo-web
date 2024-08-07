@@ -5,6 +5,7 @@ import { config } from 'dotenv-flow';
 import cheerio from 'cheerio';
 import path from 'path';
 import { parseMediaUrl } from '../../modules/parsers/mediainfo.js';
+import { getArtistAndAlbumInfo } from '../../modules/parsers/providers.js';
 
 const supportedExtensions = ['.mp3', '.mp4', '.wav', '.ogg', '.pdf', '.epub', '.mkv', '.m4a'];
 
@@ -207,6 +208,12 @@ async function save(files, libraryId) {
 		file.createdBy = createdBy;
 		file.mediaInfo = parseMediaUrl(file.url);
 
+		// if ((file.mediaInfo.type = 'music')) {
+		// 	const musicInfo = await getArtistAndAlbumInfo(file.mediaInfo.artist);
+		// 	console.log(musicInfo);
+		// 	file.musicInfo = musicInfo;
+		// }
+
 		try {
 			await db.create('media_files', file);
 		} catch (err) {
@@ -242,6 +249,9 @@ export async function startCrawling(libraryId, sessionId = null) {
 	let library;
 
 	if (libraryId) {
+		//rescan so old files are removed...we delete them first.
+		await db.query('DELETE FROM media_files WHERE libraryId = $libraryId', { libraryId });
+
 		const [res] = (
 			await db.query('SELECT * FROM library WHERE id = $libraryId', { libraryId })
 		).pop();

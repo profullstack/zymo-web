@@ -1,232 +1,208 @@
 <script>
-	import Hls from 'hls.js';
-	import { onMount } from 'svelte';
-	import Spinner from './Spinner.svelte';
+	export let music = [];
 
-	export let m3us = [];
-	export let proxy = false;
-	let mp4 = false;
+	// Function to group and sort music files by artist and album
+	function groupAndSortMusic(music) {
+		const grouped = {};
 
-	let channels = [];
-	let filteredChannels = [];
-	let selectedChannel = '';
-	let streamUrl = '';
-	let selectedProvider = {};
-	let isLoading = false;
-	let filterValue = '';
-	let isChannelListOpen = false;
+		for (const file of music) {
+			const { mediaInfo } = file;
+			const { url } = file;
+			const { artist, album, songname } = mediaInfo;
 
-	$: filterChannels();
-
-	function filterChannels() {
-		if (filterValue !== '') {
-			filteredChannels = channels.filter((channel) =>
-				channel.name.toLowerCase().includes(filterValue.toLowerCase())
-			);
-		} else {
-			filteredChannels = channels;
-		}
-	}
-
-	async function fetchChannels(provider) {
-		isLoading = true;
-		channels = [];
-		filteredChannels = [];
-		try {
-			const response = await fetch(`/api/m3u/${provider}`);
-			const m3u8Text = await response.text();
-			channels = parseM3U8(m3u8Text);
-			filterByType();
-		} catch (error) {
-			console.error('Error fetching channels:', error);
-		} finally {
-			isLoading = false;
-		}
-	}
-
-	function parseM3U8(m3u8Text) {
-		const lines = m3u8Text.split('\n');
-		const channelList = [];
-		let channel = {};
-
-		lines.forEach((line) => {
-			if (line.startsWith('#EXTINF')) {
-				const name = line.split(',')[1];
-				channel = { name: name.trim() };
-			} else if (line.startsWith('http')) {
-				channel.url = line.trim();
-				channelList.push(channel);
+			if (!grouped[artist]) {
+				grouped[artist] = {};
 			}
-		});
-
-		return channelList;
-	}
-
-	function selectChannel(channel) {
-		isChannelListOpen = false;
-		selectedChannel = channel;
-		streamUrl = channel.url;
-		playStream(streamUrl);
-	}
-
-	async function playStream(url) {
-		url =
-			url.indexOf('m3u8') > -1 ||
-			url.indexOf('mp4') > -1 ||
-			url.indexOf('mov') > -1 ||
-			url.indexOf('mkv') > -1
-				? url
-				: `${url}.m3u8`;
-
-		if (proxy) {
-			url = `/proxy?url=${encodeURIComponent(url)}`;
+			if (!grouped[artist][album]) {
+				grouped[artist][album] = [];
+			}
+			grouped[artist][album].push({ songname, url, id: url, playing: false, audio: null });
 		}
 
-		const video = document.getElementById('video');
-		video.muted = false; // Ensure the video is not muted
-		video.volume = 1.0; // Ensure the volume is set to maximum
+		// Sort artists, albums, and songs
+		const sortedGrouped = {};
+		const sortedArtists = Object.keys(grouped).sort((a, b) => a.localeCompare(b));
 
-		if (Hls.isSupported()) {
-			const hls = new Hls();
-			hls.loadSource(url);
-			hls.attachMedia(video);
-			hls.on(Hls.Events.MANIFEST_PARSED, () => {
-				video.play();
-			});
-		} else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-			video.src = url;
-			video.addEventListener('loadedmetadata', () => {
-				video.play();
-			});
+		for (const artist of sortedArtists) {
+			sortedGrouped[artist] = {};
+			const sortedAlbums = Object.keys(grouped[artist]).sort((a, b) => a.localeCompare(b));
+
+			for (const album of sortedAlbums) {
+				sortedGrouped[artist][album] = grouped[artist][album].sort((a, b) =>
+					a.songname.localeCompare(b.songname)
+				);
+			}
+		}
+
+		return sortedGrouped;
+	}
+
+	let groupedMusic = groupAndSortMusic(music);
+
+	let currentlyPlaying = null;
+	let visibleArtists = new Set();
+	let visibleAlbums = new Set();
+
+	function toggleVisibility(set, key) {
+		if (set.has(key)) {
+			set.delete(key);
 		} else {
-			console.error('This device does not support HLS.');
+			set.add(key);
 		}
+		// Force reactivity
+		visibleArtists = new Set(visibleArtists);
+		visibleAlbums = new Set(visibleAlbums);
 	}
 
-	function handleProviderChange(event) {
-		selectedProvider = event.target.value;
-		fetchChannels(selectedProvider);
-	}
-
-	function handleCheckboxChange(event) {
-		proxy = event.target.checked;
-		if (selectedChannel) {
-			playStream(selectedChannel.url);
+	function playSong(song) {
+		if (currentlyPlaying && currentlyPlaying !== song) {
+			currentlyPlaying.audio.pause();
+			currentlyPlaying.playing = false;
+			// Force reactivity
+			currentlyPlaying = { ...currentlyPlaying };
 		}
-	}
-
-	function filterByType() {
-		if (mp4) {
-			filteredChannels = channels.filter((channel) => channel.url.endsWith('.mp4'));
+		song.playing = !song.playing;
+		if (song.playing) {
+			if (!song.audio) {
+				song.audio = new Audio(song.url);
+				song.audio.addEventListener('ended', () => {
+					song.playing = false;
+					currentlyPlaying = null;
+					song.audio = null; // Cleanup the audio object
+					// Force reactivity
+					groupedMusic = { ...groupedMusic };
+				});
+			}
+			song.audio.play();
+			currentlyPlaying = song;
 		} else {
-			filteredChannels = channels;
+			song.audio.pause();
+			currentlyPlaying = null;
 		}
+		// Force reactivity
+		groupedMusic = { ...groupedMusic };
 	}
 
-	onMount(() => {
-		const checkbox = document.querySelector('#proxy-checkbox');
-		if (proxy && checkbox) {
-			checkbox.checked = true;
+	function playAllSongs(songs) {
+		let currentIndex = 0;
+
+		function playNextSong() {
+			if (currentIndex < songs.length) {
+				const song = songs[currentIndex];
+				playSong(song);
+				currentIndex++;
+				if (song.audio) {
+					song.audio.addEventListener('ended', playNextSong, { once: true });
+				}
+			}
 		}
-	});
+
+		playNextSong();
+	}
+
+	function randomizeAndPlaySongs(songs) {
+		const shuffledSongs = songs.slice().sort(() => Math.random() - 0.5);
+		playAllSongs(shuffledSongs);
+	}
 </script>
 
-<div id="main-content">
-	<div class="field">
-		<strong>Filter:</strong>
-		<label>
-			<input type="checkbox" id="mp4" on:change={filterByType} bind:checked={mp4} />
-			TV Shows and Movies only
-		</label>
-	</div>
-
-	<div style="display: flex; align-items: center;">
-		<select on:change={handleProviderChange}>
-			<option>-- Select Provider --</option>
-			{#each m3us as provider}
-				<option value={provider.id} selected={selectedProvider.id === provider.id}>
-					{provider.name}
-				</option>
-			{/each}
-		</select>
-		<Spinner {isLoading} />
-	</div>
-
-	<h4>Select a Channel</h4>
-
-	<input
-		type="text"
-		id="filter-input"
-		placeholder="Type to filter channels..."
-		bind:value={filterValue}
-		on:focus={() => (isChannelListOpen = true)}
-		on:input={() => {
-			isChannelListOpen = true;
-			filterChannels();
-		}}
-	/>
-
-	{#if isChannelListOpen}
-		<ul id="channel-list">
-			{#each filteredChannels as channel (channel.name)}
-				<li class="channel-item" on:click|preventDefault={() => selectChannel(channel)}>
-					{channel.name}
-				</li>
-			{/each}
-		</ul>
-	{/if}
-
-	{#if selectedChannel}
-		<h2>{selectedChannel.name}</h2>
-		<div class="field">
-			<label>
-				<input
-					type="checkbox"
-					id="proxy-checkbox"
-					on:change={handleCheckboxChange}
-					bind:checked={proxy}
-				/>
-				Enable proxy
-			</label>
-		</div>
-	{/if}
-
-	{#if selectedChannel?.url?.indexOf('mp4') > -1}
-		<video id="video" controls>
-			<source src={selectedChannel.url} type="video/mp4" />
-		</video>
-	{:else}
-		<button on:click={() => playStream(streamUrl)}>Play</button>
-		<video id="video" controls></video>
-	{/if}
-</div>
+{#if Object.keys(groupedMusic).length}
+	<section>
+		{#each Object.entries(groupedMusic) as [artist, albums]}
+			<div class="collapsible" on:click={() => toggleVisibility(visibleArtists, artist)}>
+				{artist}
+				<button
+					class="play-button"
+					on:click={(e) => {
+						e.stopPropagation();
+						playAllSongs(Object.values(albums).flat());
+					}}>▶</button
+				>
+				<button
+					class="random-button"
+					on:click={(e) => {
+						e.stopPropagation();
+						randomizeAndPlaySongs(Object.values(albums).flat());
+					}}>🔀</button
+				>
+			</div>
+			{#if visibleArtists.has(artist)}
+				<div class="content">
+					{#each Object.entries(albums) as [album, songs]}
+						<div
+							class="collapsible"
+							on:click={() => toggleVisibility(visibleAlbums, `${artist}-${album}`)}
+						>
+							{album}
+							<button
+								class="play-button"
+								on:click={(e) => {
+									e.stopPropagation();
+									playAllSongs(songs);
+								}}>▶</button
+							>
+							<button
+								class="random-button"
+								on:click={(e) => {
+									e.stopPropagation();
+									randomizeAndPlaySongs(songs);
+								}}>🔀</button
+							>
+						</div>
+						{#if visibleAlbums.has(`${artist}-${album}`)}
+							<div class="content">
+								{#each songs as song (song.id)}
+									<div class="song">
+										<a href={song.url}>{song.songname}</a>
+										<button class="play-button" on:click={() => playSong(song)}>
+											{song.playing ? '❚❚' : '▶'}
+										</button>
+									</div>
+								{/each}
+							</div>
+						{/if}
+					{/each}
+				</div>
+			{/if}
+		{/each}
+	</section>
+{/if}
 
 <style>
-	#channel-list {
-		list-style-type: none;
-		padding: 0;
-		margin: 0;
-		max-height: 30rem;
-		overflow-y: auto;
-	}
-
-	#channel-list li {
+	.collapsible {
+		cursor: pointer;
+		font-weight: bold;
 		display: flex;
 		align-items: center;
-		padding: 8px;
+		justify-content: space-between;
+	}
+
+	.content {
+		padding-left: 1em;
+	}
+
+	.song {
+		padding-left: 1em;
+		display: flex;
+		align-items: center;
+	}
+
+	.song a {
+		margin-right: 1em;
+	}
+
+	.play-button,
+	.random-button {
+		background: none;
+		border: none;
+		font-size: 1em;
 		cursor: pointer;
+		margin-left: 0.5em;
+		vertical-align: middle;
 	}
-	#channel-list li:hover {
-		background-color: #f0f0f0;
-	}
-	#filter-input {
-		margin-bottom: 10px;
-		padding: 5px;
-		width: 100%;
-		box-sizing: border-box;
-	}
-	video {
-		width: 100%;
-		height: auto;
+
+	.play-button:focus,
+	.random-button:focus {
+		outline: none;
 	}
 </style>
