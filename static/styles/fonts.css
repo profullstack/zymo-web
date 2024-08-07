@@ -1,6 +1,6 @@
 @font-face {
 	font-family: 'RobotoMono-BoldItalic';
-	src: url('/static/fonts//static/fonts/RobotoMono-BoldItalic.ttf') format('truetype');
+	src: url('/static/fonts/RobotoMono-BoldItalic.ttf') format('truetype');
 	font-weight: bold;
 	font-style: italic;
 }
@@ -42,7 +42,7 @@
 
 @font-face {
 	font-family: 'RobotoMono-Light';
-	src: url('/static/fonts//static/fonts/RobotoMono-Light.ttf') format('truetype');
+	src: url('/static/fonts/RobotoMono-Light.ttf') format('truetype');
 	font-weight: 300;
 	font-style: normal;
 }

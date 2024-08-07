@@ -1,13 +1,20 @@
 <script>
+	import {
+		playlist,
+		isPlaying,
+		currentSongIndex,
+		currentSongMetadata
+	} from '../modules/store.js';
+	import { get } from 'svelte/store';
+
 	export let music = [];
 
-	// Function to group and sort music files by artist and album
 	function groupAndSortMusic(music) {
 		const grouped = {};
 
 		for (const file of music) {
 			const { mediaInfo } = file;
-			const { url } = file;
+			const { url, user, pass, id } = file;
 			const { artist, album, songname } = mediaInfo;
 
 			if (!grouped[artist]) {
@@ -16,10 +23,18 @@
 			if (!grouped[artist][album]) {
 				grouped[artist][album] = [];
 			}
-			grouped[artist][album].push({ songname, url, id: url, playing: false, audio: null });
+			grouped[artist][album].push({
+				songname,
+				url,
+				user,
+				pass,
+				id,
+				playing: false,
+				artist,
+				album
+			});
 		}
 
-		// Sort artists, albums, and songs
 		const sortedGrouped = {};
 		const sortedArtists = Object.keys(grouped).sort((a, b) => a.localeCompare(b));
 
@@ -39,7 +54,6 @@
 
 	let groupedMusic = groupAndSortMusic(music);
 
-	let currentlyPlaying = null;
 	let visibleArtists = new Set();
 	let visibleAlbums = new Set();
 
@@ -49,60 +63,50 @@
 		} else {
 			set.add(key);
 		}
-		// Force reactivity
 		visibleArtists = new Set(visibleArtists);
 		visibleAlbums = new Set(visibleAlbums);
 	}
 
 	function playSong(song) {
-		if (currentlyPlaying && currentlyPlaying !== song) {
-			currentlyPlaying.audio.pause();
-			currentlyPlaying.playing = false;
-			// Force reactivity
-			currentlyPlaying = { ...currentlyPlaying };
-		}
-		song.playing = !song.playing;
-		if (song.playing) {
-			if (!song.audio) {
-				song.audio = new Audio(song.url);
-				song.audio.addEventListener('ended', () => {
-					song.playing = false;
-					currentlyPlaying = null;
-					song.audio = null; // Cleanup the audio object
-					// Force reactivity
-					groupedMusic = { ...groupedMusic };
-				});
-			}
-			song.audio.play();
-			currentlyPlaying = song;
-		} else {
-			song.audio.pause();
-			currentlyPlaying = null;
-		}
-		// Force reactivity
-		groupedMusic = { ...groupedMusic };
+		playlist.set([song]);
+		currentSongIndex.set(0);
+		currentSongMetadata.set({
+			artist: song.artist,
+			album: song.album,
+			songname: song.songname
+		});
+		isPlaying.set(true);
 	}
 
 	function playAllSongs(songs) {
-		let currentIndex = 0;
-
-		function playNextSong() {
-			if (currentIndex < songs.length) {
-				const song = songs[currentIndex];
-				playSong(song);
-				currentIndex++;
-				if (song.audio) {
-					song.audio.addEventListener('ended', playNextSong, { once: true });
-				}
-			}
+		playlist.set(songs);
+		currentSongIndex.set(0);
+		if (songs.length > 0) {
+			const song = songs[0];
+			currentSongMetadata.set({
+				artist: song.artist,
+				album: song.album,
+				songname: song.songname
+			});
 		}
-
-		playNextSong();
+		isPlaying.set(true);
 	}
 
 	function randomizeAndPlaySongs(songs) {
 		const shuffledSongs = songs.slice().sort(() => Math.random() - 0.5);
 		playAllSongs(shuffledSongs);
+	}
+
+	$: {
+		const allSongs = Object.values(groupedMusic).flat(2);
+		const currentPlaylist = get(playlist);
+		const index = get(currentSongIndex);
+		allSongs.forEach((song) => {
+			song.playing =
+				currentPlaylist.includes(song) &&
+				currentPlaylist.indexOf(song) === index &&
+				get(isPlaying);
+		});
 	}
 </script>
 
