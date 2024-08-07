@@ -1,9 +1,10 @@
 import view from 'primate/handler/view';
 import redirect from 'primate/handler/redirect';
+
 const form = (params = {}) => view('torrents/Form.svelte', { ...params });
 
 export default {
-	get(request) {
+	get() {
 		return form();
 	},
 	async post(request) {

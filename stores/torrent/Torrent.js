@@ -213,7 +213,7 @@ export const actions = ({ connection: db }) => {
 
 		async search(q) {
 			Torrent.enablePublicProviders();
-			const torrents = await Torrent.search('1080', 'Movies', 20);
+			const torrents = await Torrent.search(q, 'Movies', 20);
 
 			for (let torrent of torrents) {
 				torrent.magnet = await Torrent.getMagnet(torrent);
