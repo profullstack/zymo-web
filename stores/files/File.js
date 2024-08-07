@@ -19,14 +19,35 @@ export const actions = ({ connection: db }) => {
 				throw e;
 			}
 		},
-		async getAllByUserId(createdBy) {
-			const query = `SELECT * FROM media_files WHERE createdBy = $createdBy`;
+		async getAllByUserId(createdBy, type = null, videoType = null) {
+			let where = '';
 
-			console.log(query, createdBy);
+			if (type) {
+				where = ` mediaInfo.type = $type AND `;
+			}
+
+			if (videoType) {
+				where += ` mediaInfo.videoType = $videoType AND `;
+			}
+
+			const query = `SELECT * FROM media_files WHERE ${where} createdBy = $createdBy`;
+
+			console.log(query, type, videoType, createdBy);
+
 			try {
-				const results = await db.query(query, {
+				const data = {
 					createdBy
-				});
+				};
+
+				if (type) {
+					data.type = type;
+				}
+
+				if (videoType) {
+					data.videoType = videoType;
+				}
+
+				const results = await db.query(query, data);
 
 				console.log('all:', results);
 

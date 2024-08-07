@@ -1,8 +1,3 @@
-/**
- * Pattern should contain either none or two capturing groups.
- * In case of two groups - 1st is raw, 2nd is clean.
- * https://github.com/jzjzjzj/parse-torrent-name/blob/master/parts/common.js
- */
 const patterns = {
 	season: /([Ss]?([0-9]{1,2}))[Eex]/,
 	episode: /([Eex]([0-9]{2})(?:[^0-9]|$))/,
@@ -35,9 +30,8 @@ const types = {
 	widescreen: 'boolean'
 };
 
-let mediaInfo = {};
-
-export function parseMediaInfo(filename) {
+function parseMediaInfo(filename) {
+	let mediaInfo = {};
 	let key,
 		match,
 		index,
@@ -129,6 +123,80 @@ export function parseMediaInfo(filename) {
 	}
 
 	mediaInfo.filename = filename;
+
+	return mediaInfo;
+}
+
+function decodeURIComponentSafe(encoded) {
+	try {
+		return decodeURIComponent(encoded);
+	} catch (e) {
+		return encoded.replace(/%[0-9A-F]{2}/gi, (match) => {
+			try {
+				return String.fromCharCode(parseInt(match.slice(1), 16));
+			} catch {
+				return match;
+			}
+		});
+	}
+}
+
+function parseMusicUrl(pathname) {
+	const parts = pathname.split('/').filter(Boolean).map(decodeURIComponentSafe);
+	const file = parts.pop();
+	const songname = file.replace(/\.(mp3|m4a|wav)$/, '');
+	const album = parts.pop();
+	const artist = parts.pop();
+	const unparsed = parts.pop() || 'unparsed';
+
+	return {
+		type: 'music',
+		artist: artist || '',
+		album: album || '',
+		songname: songname,
+		filename: file,
+		unparsed: unparsed
+	};
+}
+
+function parseVideoUrl(pathname) {
+	const filename = pathname.substring(pathname.lastIndexOf('/') + 1);
+	const mediaInfo = parseMediaInfo(filename);
+	const parts = pathname.split('/').filter(Boolean).map(decodeURIComponentSafe);
+
+	let videoType = 'movie';
+	if (mediaInfo.season !== undefined && mediaInfo.episode !== undefined) {
+		videoType = 'tv show';
+	}
+
+	return {
+		type: 'video',
+		videoType: videoType,
+		...mediaInfo,
+		parts
+	};
+}
+
+export function parseMediaUrl(url) {
+	const urlObj = new URL(url);
+	const pathname = urlObj.pathname;
+	const filename = pathname.substring(pathname.lastIndexOf('/') + 1);
+
+	let mediaInfo = parseMediaInfo(filename);
+
+	if (filename.match(/\.(mp3|m4a|wav)$/i)) {
+		mediaInfo = {
+			...mediaInfo,
+			...parseMusicUrl(pathname)
+		};
+	} else if (filename.match(/\.(mov|mp4|mkv)$/i)) {
+		mediaInfo = {
+			...mediaInfo,
+			...parseVideoUrl(pathname)
+		};
+	} else {
+		return null; // Unsupported file type
+	}
 
 	return mediaInfo;
 }

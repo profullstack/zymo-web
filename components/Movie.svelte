@@ -1,6 +1,5 @@
 <script>
 	import { onMount } from 'svelte';
-	import { parseMediaInfo } from '../modules/parsers/mediainfo.js';
 
 	export let movie = {};
 	export let proxy = false;
@@ -18,9 +17,9 @@
 	// }
 
 	try {
-		movie.humanTitle = decodeURIComponent(movie.title);
+		movie.humanTitle = movie.mediaInfo ? movie.mediaInfo.name : decodeURIComponent(movie.title);
 	} catch (err) {
-		console.error(err, movie.title);
+		console.error(err, movie.mediaInfo.name);
 		movie.humanTitle = movie.title;
 	}
 
@@ -75,7 +74,7 @@
 
 	// Set the initial state of the checkbox based on the proxy variable
 	onMount(() => {
-		movie.mediaInfo = parseMediaInfo(movie.file);
+		// movie.mediaInfo = parseMediaInfo(movie.file);
 		const checkbox = document.querySelector('#proxy-checkbox');
 		if (proxy) {
 			checkbox.checked = true;
@@ -114,7 +113,7 @@
 					on:change={handleTranscodeCheckboxChange}
 					bind:checked={transcode}
 				/>
-				Enable transcoding
+				Transcode
 			</label>
 		</div>
 		<video controls autoplay playsinline bind:this={videoRef}>
@@ -127,7 +126,7 @@
 
 <style>
 	video {
-		width: 100%;
+		width: 50%;
 		max-width: 80vw;
 		height: auto;
 	}

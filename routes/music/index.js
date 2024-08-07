@@ -7,9 +7,8 @@ export default {
 			files: { File }
 		} = store;
 		const { id } = session.get('user');
-		// todo: after fetching metadata, filter by mediaType (ie: book, movie, music)
-		const movies = await File.getAllByUserId(id, 'video', 'movie');
+		const music = await File.getAllByUserId(id, 'music');
 
-		return view('Movies.svelte', { movies });
+		return view('Music.svelte', { music });
 	}
 };

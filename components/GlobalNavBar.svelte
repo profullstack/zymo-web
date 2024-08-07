@@ -37,6 +37,7 @@
 	<span>
 		<!-- <a href="/products">Products</a> -->
 		{#if isLoggedIn || unverifiedUser}
+			<a href="/dashboard">Dashboard</a>
 			<a href="#" on:click={logout}>Logout</a>
 		{:else}
 			<a href="/login">Login</a>

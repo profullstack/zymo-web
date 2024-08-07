@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { config } from 'dotenv-flow';
 import cheerio from 'cheerio';
 import path from 'path';
+import { parseMediaUrl } from '../../modules/parsers/mediainfo.js';
 
 const supportedExtensions = ['.mp3', '.mp4', '.wav', '.ogg', '.pdf', '.epub', '.mkv', '.m4a'];
 
@@ -204,6 +205,7 @@ async function save(files, libraryId) {
 		file.createdAt = new Date();
 		file.updatedAt = new Date();
 		file.createdBy = createdBy;
+		file.mediaInfo = parseMediaUrl(file.url);
 
 		try {
 			await db.create('media_files', file);
