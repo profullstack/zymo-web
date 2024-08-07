@@ -84,14 +84,14 @@
 
 	#logo {
 		display: block;
-		height: 7rem;
-		width: auto;
 		margin-left: 1.2rem;
 	}
 
 	#logo img {
-		width: 100%;
-		height: auto;
+		display: block;
+		height: 5rem;
+		width: auto;
+		margin-left: 1.2rem;
 		display: block;
 		border: none;
 	}
