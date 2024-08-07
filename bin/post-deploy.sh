@@ -30,6 +30,7 @@ if [ -d "$HOME/www/${name}/${project}" ]; then
     # sudo systemctl stop surrealdb
     # surreal upgrade --nightly
     # surreal upgrade
+    pnpm run build
     sudo /etc/init.d/nginx reload
     sudo systemctl daemon-reload
     sudo systemctl start ${META_SERVICE}

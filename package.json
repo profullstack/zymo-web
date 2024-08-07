@@ -3,7 +3,8 @@
 	"private": true,
 	"scripts": {
 		"dev": "pnpm run env:dev && npx primate",
-		"start": "pnpm run env:prod && npx primate build && npx primate serve",
+		"start": "pnpm run env:prod && npx primate serve",
+		"build": "pnpm run env:prod && npx primate build",
 		"clean": "rm -rf node_modules pnpm-lock.yaml && pnpm i",
 		"db:start": ". ./.env && . ./.env.local && SURREAL_INSECURE_FORWARD_SCOPE_INTERNAL_SERVER_ERRORS=true surreal start --log trace -A --auth --user root --pass root --bind 0.0.0.0:$DB_PORT file:///${HOME}/data/db",
 		"db:console": ". ./.env && . ./.env.local && surreal sql --conn http://localhost:$DB_PORT --user root --pass root --ns $DB_NS --db $DB_DB --pretty",
