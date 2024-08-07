@@ -1,7 +1,7 @@
 <script>
 	import Hls from 'hls.js';
 	import { onMount } from 'svelte';
-	import Spinner from './Spinner.svelte'; // Import Spinner component
+	import Spinner from './Spinner.svelte';
 
 	export let m3us = [];
 	export let proxy = false;
@@ -12,32 +12,35 @@
 	let selectedChannel = '';
 	let streamUrl = '';
 	let selectedProvider = {};
-	let isChannelListExpanded = false;
-	let isLoading = false; // New state variable
-	let filterValue = ''; // To store the filter input value
+	let isLoading = false;
+	let filterValue = '';
+	let isChannelListOpen = false;
 
-	function handleFilterInput() {
-		const lowerCaseFilter = filterValue.toLowerCase();
-		console.log('lowerCaseFilter:', lowerCaseFilter);
-		filteredChannels = channels.filter((channel) =>
-			channel.name.toLowerCase().includes(lowerCaseFilter)
-		);
+	$: filterChannels();
 
-		console.log('filteredChannels:', filteredChannels);
+	function filterChannels() {
+		if (filterValue !== '') {
+			filteredChannels = channels.filter((channel) =>
+				channel.name.toLowerCase().includes(filterValue.toLowerCase())
+			);
+		} else {
+			filteredChannels = channels;
+		}
 	}
 
 	async function fetchChannels(provider) {
-		isLoading = true; // Start loading
-		channels = filteredChannels = [];
+		isLoading = true;
+		channels = [];
+		filteredChannels = [];
 		try {
 			const response = await fetch(`/api/m3u/${provider}`);
 			const m3u8Text = await response.text();
-			channels = filteredChannels = parseM3U8(m3u8Text);
+			channels = parseM3U8(m3u8Text);
 			filterByType();
 		} catch (error) {
 			console.error('Error fetching channels:', error);
 		} finally {
-			isLoading = false; // End loading
+			isLoading = false;
 		}
 	}
 
@@ -56,12 +59,11 @@
 			}
 		});
 
-		filteredChannels = channelList;
 		return channelList;
 	}
 
 	function selectChannel(channel) {
-		isChannelListExpanded = false;
+		isChannelListOpen = false;
 		selectedChannel = channel;
 		streamUrl = channel.url;
 		playStream(streamUrl);
@@ -72,7 +74,7 @@
 			url.indexOf('m3u8') > -1 ||
 			url.indexOf('mp4') > -1 ||
 			url.indexOf('mov') > -1 ||
-			url.indexOf('mkv') > 1
+			url.indexOf('mkv') > -1
 				? url
 				: `${url}.m3u8`;
 
@@ -103,7 +105,6 @@
 		fetchChannels(selectedProvider);
 	}
 
-	// Function to handle checkbox change
 	function handleCheckboxChange(event) {
 		proxy = event.target.checked;
 		if (selectedChannel) {
@@ -111,7 +112,6 @@
 		}
 	}
 
-	// Function to filter channels by type
 	function filterByType() {
 		if (mp4) {
 			filteredChannels = channels.filter((channel) => channel.url.endsWith('.mp4'));
@@ -120,10 +120,8 @@
 		}
 	}
 
-	// Set the initial state of the checkbox based on the proxy variable
 	onMount(() => {
 		const checkbox = document.querySelector('#proxy-checkbox');
-
 		if (proxy && checkbox) {
 			checkbox.checked = true;
 		}
@@ -143,9 +141,9 @@
 		<select on:change={handleProviderChange}>
 			<option>-- Select Provider --</option>
 			{#each m3us as provider}
-				<option value={provider.id} selected={selectedProvider.id === provider.id}
-					>{provider.name}</option
-				>
+				<option value={provider.id} selected={selectedProvider.id === provider.id}>
+					{provider.name}
+				</option>
 			{/each}
 		</select>
 		<Spinner {isLoading} />
@@ -158,29 +156,23 @@
 		id="filter-input"
 		placeholder="Type to filter channels..."
 		bind:value={filterValue}
-		on:input={handleFilterInput}
-		on:focus={() => {
-			isChannelListExpanded = true;
+		on:focus={() => (isChannelListOpen = true)}
+		on:input={() => {
+			isChannelListOpen = true;
+			filterChannels();
 		}}
 	/>
-	<div
-		id="channel-list-container"
-		class:hidden={!isChannelListExpanded}
-		style="max-height: 300px; overflow-y: auto;"
-	>
+
+	{#if isChannelListOpen}
 		<ul id="channel-list">
 			{#each filteredChannels as channel (channel.name)}
-				<li
-					class="channel-item"
-					on:click|preventDefault={() => {
-						selectChannel(channel);
-					}}
-				>
+				<li class="channel-item" on:click|preventDefault={() => selectChannel(channel)}>
 					{channel.name}
 				</li>
 			{/each}
 		</ul>
-	</div>
+	{/if}
+
 	{#if selectedChannel}
 		<h2>{selectedChannel.name}</h2>
 		<div class="field">
@@ -195,6 +187,7 @@
 			</label>
 		</div>
 	{/if}
+
 	{#if selectedChannel?.url?.indexOf('mp4') > -1}
 		<video id="video" controls>
 			<source src={selectedChannel.url} type="video/mp4" />
@@ -205,29 +198,20 @@
 </div>
 
 <style>
-	.hidden {
-		display: none;
-	}
-
-	#channel-list-container {
-		overflow-y: auto;
-		border: 1px solid #ccc;
-		margin-bottom: 20px;
-		width: 100%;
-		max-width: 600px;
-	}
 	#channel-list {
 		list-style-type: none;
 		padding: 0;
 		margin: 0;
+		max-height: 30rem;
+		overflow-y: auto;
 	}
+
 	#channel-list li {
 		display: flex;
 		align-items: center;
 		padding: 8px;
 		cursor: pointer;
 	}
-
 	#channel-list li:hover {
 		background-color: #f0f0f0;
 	}
@@ -235,26 +219,10 @@
 		margin-bottom: 10px;
 		padding: 5px;
 		width: 100%;
-		max-width: 600px;
 		box-sizing: border-box;
-	}
-	#current-channel {
-		margin-top: 20px;
-		text-align: center;
 	}
 	video {
 		width: 100%;
-		max-width: 640px;
 		height: auto;
-	}
-	@media (max-width: 600px) {
-		#channel-list-container {
-			max-height: 200px;
-		}
-
-		video {
-			width: 100%;
-			height: auto;
-		}
 	}
 </style>
