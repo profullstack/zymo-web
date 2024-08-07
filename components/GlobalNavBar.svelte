@@ -33,7 +33,7 @@
 		<a href="#" id="hamburger" on:click={toggleSidebar}>
 			<img src="/static/images/hamburger.svg" alt="" />
 		</a>
-		<a href="/" id="logo"><img src="/static/logo.png" alt="" /></a>
+		<a href="/" id="logo"><img src="/static/logo.svg" alt="" /></a>
 	</span>
 	<span>
 		<!-- <a href="/products">Products</a> -->
@@ -83,6 +83,16 @@
 	}
 
 	#logo {
+		display: block;
+		height: 7rem;
+		width: auto;
 		margin-left: 1.2rem;
+	}
+
+	#logo img {
+		width: 100%;
+		height: auto;
+		display: block;
+		border: none;
 	}
 </style>
