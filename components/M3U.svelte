@@ -83,6 +83,9 @@
 		}
 
 		const video = document.getElementById('video');
+		video.muted = false; // Ensure the video is not muted
+		video.volume = 1.0; // Ensure the volume is set to maximum
+
 		if (Hls.isSupported()) {
 			const hls = new Hls();
 			hls.loadSource(url);
@@ -193,6 +196,7 @@
 			<source src={selectedChannel.url} type="video/mp4" />
 		</video>
 	{:else}
+		<button on:click={() => playStream(streamUrl)}>Play</button>
 		<video id="video" controls></video>
 	{/if}
 </div>
