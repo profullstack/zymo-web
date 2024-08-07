@@ -27,6 +27,7 @@ if [ "$result" == "exists" ]; then
     do
       echo ""
       date
+      ssh -t ${user}@${host} \$HOME/www/${name}/${project}/bin/pre-deploy.sh
       echo "---------------------"
       echo "syncing ${host}"
       echo "---------------------"
