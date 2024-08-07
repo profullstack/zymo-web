@@ -40,8 +40,9 @@
 			localAudioElement = new Audio(getProxyUrl(song));
 			audioElement.set(localAudioElement);
 
-			localAudioElement.play();
-			isPlaying.set(true);
+			if (playing) {
+				localAudioElement.play();
+			}
 			currentSongIndex.set(index);
 			currentSongMetadata.set({
 				artist: song.artist,
@@ -120,11 +121,22 @@
 		}
 		isPlaying.set(!playing);
 	}
+
+	function stopPlayback() {
+		localAudioElement.pause();
+		localAudioElement.src = '';
+		localAudioElement.load();
+		isPlaying.set(false);
+		playlist.set([]);
+		currentSongIndex.set(0);
+		currentSongMetadata.set({ artist: '', album: '', songname: '' });
+	}
 </script>
 
 <div class="player-bar">
 	<span>{playing ? 'Playing' : 'Paused'}</span>
 	<button on:click={togglePlay}>{playing ? 'Pause' : 'Play'}</button>
+	<button on:click={stopPlayback}>Stop</button>
 	{#if songMetadata.artist && songMetadata.album && songMetadata.songname}
 		<div class="song-info">
 			<span>{songMetadata.artist} - {songMetadata.album} - {songMetadata.songname}</span>
