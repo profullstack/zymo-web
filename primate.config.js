@@ -39,6 +39,7 @@ export default {
 		// }
 	},
 	build: {
+		includes: ['modules'],
 		define: {
 			REPLACE_APP_DOMAIN: `'${APP_DOMAIN}'`,
 			REPLACE_GOOGLE_ANALYTICS_ID: `'${GOOGLE_ANALYTICS_ID}'`,
