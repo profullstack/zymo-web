@@ -27,7 +27,9 @@ if [ "$result" == "exists" ]; then
     do
       echo ""
       date
+      rsync ${dry[@]} ${args[@]} ./bin ${user}@${host}:www/${name}/${project}/bin
       ssh -t ${user}@${host} \$HOME/www/${name}/${project}/bin/pre-deploy.sh
+
       echo "---------------------"
       echo "syncing ${host}"
       echo "---------------------"
