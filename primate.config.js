@@ -3,6 +3,7 @@ import handlebars from '@primate/handlebars';
 import store from '@primate/store';
 import surrealdb from '@primate/surrealdb';
 import session from '@primate/session';
+import native from '@primate/native';
 import { config } from 'dotenv-flow';
 
 config();
@@ -58,6 +59,7 @@ export default {
 	},
 	modules: [
 		handlebars(),
+		native(),
 		svelte({ spa: false }),
 		// liveview(),
 		store({
