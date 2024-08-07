@@ -8,7 +8,7 @@
 
 	export let isLoggedIn, unverifiedUser, isAdmin;
 	let hasServiceWorker = false;
-	let audioUrl = 'https://files.h4kr.com/music/AC%E2%A7%B8DC/%2774%20Jailbreak/086-Jailbreak.mp3';
+	let audioUrl = '/086-Jailbreak.mp3';
 
 	function playAudio() {
 		console.log('play clicked');
@@ -48,14 +48,16 @@
 					console.error('Service Worker ready failed:', error);
 				});
 
-			navigator.serviceWorker.ready.then(function (registration) {
-				console.log('Service Worker is ready:', registration.active);
-				if (navigator.serviceWorker.controller) {
-					console.log('A service worker is controlling this page.');
-				} else {
-					console.log('No service worker is controlling this page.');
-				}
-			}).catch(console.error);
+			navigator.serviceWorker.ready
+				.then(function (registration) {
+					console.log('Service Worker is ready:', registration.active);
+					if (navigator.serviceWorker.controller) {
+						console.log('A service worker is controlling this page.');
+					} else {
+						console.log('No service worker is controlling this page.');
+					}
+				})
+				.catch(console.error);
 		}
 	});
 </script>
