@@ -5,6 +5,7 @@ import surrealdb from '@primate/surrealdb';
 import session from '@primate/session';
 import native from '@primate/native';
 import { config } from 'dotenv-flow';
+import native from '@primate/native';
 
 config();
 
@@ -59,9 +60,8 @@ export default {
 	},
 	modules: [
 		handlebars(),
-		native(),
-		svelte({ spa: false }),
-		// liveview(),
+		svelte({ spa: true }),
+		native({ debug: true }),
 		store({
 			strict: true,
 			driver: surrealdb({
