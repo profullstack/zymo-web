@@ -12,7 +12,7 @@
 		isChannelListOpen,
 		mp4,
 		filteredChannels
-	} from '../modules/store';
+	} from '../modules/store.js';
 	import { get } from 'svelte/store';
 
 	export let m3us = [];
@@ -94,8 +94,10 @@
 
 	function handleProviderChange(event) {
 		const provider = event.target.value;
-		selectedProvider.set(provider);
-		fetchChannels(provider);
+		if (provider !== '-- Select Provider --') {
+			selectedProvider.set(provider);
+			fetchChannels(provider);
+		}
 	}
 
 	function handleCheckboxChange(event) {
@@ -138,7 +140,7 @@
 				</option>
 			{/each}
 		</select>
-		<Spinner {isLoading} />
+		<Spinner isLoading={$isLoading} />
 	</div>
 
 	<h4>Select a Channel</h4>
