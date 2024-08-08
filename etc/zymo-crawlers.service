@@ -1,0 +1,17 @@
+[Unit]
+Description=zymo-crawlers
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=ubuntu
+WorkingDirectory=/home/ubuntu/www/zymo.tv/zymo-web/
+ExecStart=/home/ubuntu/www/zymo.tv/zymo-web/bin/crawlers/run.sh
+StandardOutput=append:/var/log/zymo-crawlers.log
+StandardError=append:/var/log/zymo-crawlers.error.log
+
+[Install]
+WantedBy=multi-user.target
