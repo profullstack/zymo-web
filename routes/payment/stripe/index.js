@@ -1,6 +1,7 @@
 import redirect from 'primate/handler/redirect';
-import env from '@rcompat/env';
 import Stripe from 'stripe';
+
+const { env } = process;
 
 const stripe = new Stripe(env.STRIPE_SK);
 
