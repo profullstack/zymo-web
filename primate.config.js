@@ -5,7 +5,6 @@ import surrealdb from '@primate/surrealdb';
 import session from '@primate/session';
 import native from '@primate/native';
 import { config } from 'dotenv-flow';
-import native from '@primate/native';
 
 config();
 
