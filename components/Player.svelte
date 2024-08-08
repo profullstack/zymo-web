@@ -6,7 +6,9 @@
 		isPlaying,
 		playlist,
 		currentSongIndex,
-		currentSongMetadata
+		currentSongMetadata,
+		isMuted,
+		volumeLevel // Import the volumeLevel store
 	} from '../modules/store.js';
 	import { get } from 'svelte/store';
 
@@ -18,6 +20,10 @@
 	let songs = get(playlist);
 	let songIndex = get(currentSongIndex);
 	let songMetadata = get(currentSongMetadata);
+	let currentTime = 0;
+	let duration = 0;
+	let muted = get(isMuted);
+	let volume = get(volumeLevel);
 
 	function getProxyUrl(song) {
 		if (song.user && song.pass) {
@@ -51,6 +57,13 @@
 			});
 
 			localAudioElement.addEventListener('ended', handleSongEnd);
+			localAudioElement.addEventListener('timeupdate', updateProgress);
+			localAudioElement.addEventListener('loadedmetadata', () => {
+				duration = localAudioElement.duration;
+			});
+			// Set initial volume and mute state
+			localAudioElement.volume = volume;
+			localAudioElement.muted = muted;
 		}
 	}
 
@@ -60,6 +73,10 @@
 		} else {
 			isPlaying.set(false);
 		}
+	}
+
+	function updateProgress() {
+		currentTime = localAudioElement.currentTime;
 	}
 
 	onMount(() => {
@@ -75,10 +92,12 @@
 			track.connect(gainNode).connect(localAudioContext.destination);
 
 			localAudioElement.addEventListener('ended', handleSongEnd);
+			localAudioElement.addEventListener('timeupdate', updateProgress);
 		} else {
 			localAudioContext = get(audioContext);
 			localAudioElement = get(audioElement);
 			localAudioElement.addEventListener('ended', handleSongEnd);
+			localAudioElement.addEventListener('timeupdate', updateProgress);
 		}
 
 		playlist.subscribe((value) => {
@@ -106,6 +125,20 @@
 			}
 		});
 
+		isMuted.subscribe((value) => {
+			muted = value;
+			if (localAudioElement) {
+				localAudioElement.muted = muted;
+			}
+		});
+
+		volumeLevel.subscribe((value) => {
+			volume = value;
+			if (localAudioElement) {
+				localAudioElement.volume = volume;
+			}
+		});
+
 		currentSongMetadata.subscribe((value) => {
 			songMetadata = value;
 		});
@@ -124,12 +157,26 @@
 
 	function stopPlayback() {
 		localAudioElement.pause();
-		localAudioElement.src = '';
-		localAudioElement.load();
+		localAudioElement.src = ''; // Clear the source to stop the audio completely
 		isPlaying.set(false);
 		playlist.set([]);
 		currentSongIndex.set(0);
 		currentSongMetadata.set({ artist: '', album: '', songname: '' });
+		currentTime = 0;
+		duration = 0;
+	}
+
+	function toggleMute() {
+		isMuted.set(!muted);
+	}
+
+	function setVolume(event) {
+		volumeLevel.set(event.target.value);
+	}
+
+	function handleSeek(event) {
+		const seekTime = (event.target.value / 100) * duration;
+		localAudioElement.currentTime = seekTime;
 	}
 </script>
 
@@ -142,6 +189,29 @@
 			<span>{songMetadata.artist} - {songMetadata.album} - {songMetadata.songname}</span>
 		</div>
 	{/if}
+	<div class="controls">
+		<div class="progress-bar">
+			<input
+				type="range"
+				min="0"
+				max="100"
+				value={(currentTime / duration) * 100}
+				on:input={handleSeek}
+			/>
+		</div>
+		<button on:click={toggleMute}>{muted ? 'Unmute' : 'Mute'}</button>
+		<div class="volume-container">
+			<input
+				type="range"
+				min="0"
+				max="1"
+				step="0.01"
+				value={volume}
+				on:input={setVolume}
+				class="volume-slider"
+			/>
+		</div>
+	</div>
 </div>
 
 <style>
@@ -153,11 +223,18 @@
 		color: white;
 		padding: 10px;
 		display: flex;
-		justify-content: space-between;
+		flex-direction: column;
+		justify-content: center;
 		align-items: center;
 	}
+	.controls {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+	}
 	button {
-		margin-left: 10px;
+		margin: 10px;
 		padding: 5px 10px;
 		background: #555;
 		color: white;
@@ -165,7 +242,25 @@
 		cursor: pointer;
 	}
 	.song-info {
-		flex-grow: 1;
 		text-align: center;
+		margin: 10px;
+	}
+	.progress-bar {
+		flex-grow: 1;
+		margin: 0 10px;
+	}
+	input[type='range'] {
+		width: 100%;
+	}
+	.volume-container {
+		display: flex;
+		align-items: center;
+		height: 100px;
+	}
+	.volume-slider {
+		transform: rotate(-90deg);
+		width: 100px;
+		height: 10px;
+		margin-left: 20px;
 	}
 </style>
