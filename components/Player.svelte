@@ -259,9 +259,10 @@
 	.progress-bar {
 		width: 100%;
 		margin-bottom: 5px;
+		text-align: center;
 	}
 	input[type='range'] {
-		width: 100%;
+		width: 50%;
 	}
 	.volume-button-container {
 		position: relative;
