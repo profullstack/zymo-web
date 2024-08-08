@@ -1,5 +1,5 @@
 <script>
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import {
 		audioContext,
 		audioElement,
@@ -8,12 +8,12 @@
 		currentSongIndex,
 		currentSongMetadata,
 		isMuted,
-		volumeLevel // Import the volumeLevel store
+		volumeLevel
 	} from '../modules/store.js';
 	import { get } from 'svelte/store';
 
-	let localAudioContext;
-	let localAudioElement;
+	let localAudioContext = get(audioContext);
+	let localAudioElement = get(audioElement);
 	let track;
 	let gainNode;
 	let playing = get(isPlaying);
@@ -24,7 +24,7 @@
 	let duration = 0;
 	let muted = get(isMuted);
 	let volume = get(volumeLevel);
-	let showVolume = false; // State to manage volume bar visibility
+	let showVolume = false;
 
 	function getProxyUrl(song) {
 		if (song.user && song.pass) {
@@ -37,19 +37,12 @@
 		if (index >= 0 && index < songs.length) {
 			const song = songs[index];
 
-			// Pause and reset the current audio element before creating a new one
-			if (localAudioElement) {
-				localAudioElement.pause();
-				localAudioElement.src = '';
-				localAudioElement.load();
-			}
-
-			localAudioElement = new Audio(getProxyUrl(song));
-			audioElement.set(localAudioElement);
+			localAudioElement.src = getProxyUrl(song);
 
 			if (playing) {
 				localAudioElement.play();
 			}
+
 			currentSongIndex.set(index);
 			currentSongMetadata.set({
 				artist: song.artist,
@@ -62,7 +55,7 @@
 			localAudioElement.addEventListener('loadedmetadata', () => {
 				duration = localAudioElement.duration;
 			});
-			// Set initial volume and mute state
+
 			localAudioElement.volume = volume;
 			localAudioElement.muted = muted;
 		}
@@ -81,25 +74,19 @@
 	}
 
 	onMount(() => {
-		if (!get(audioContext)) {
+		if (!localAudioContext) {
 			localAudioContext = new (window.AudioContext || window.webkitAudioContext)();
 			audioContext.set(localAudioContext);
+		}
 
+		if (!localAudioElement) {
 			localAudioElement = new Audio();
 			audioElement.set(localAudioElement);
-
-			track = localAudioContext.createMediaElementSource(localAudioElement);
-			gainNode = localAudioContext.createGain();
-			track.connect(gainNode).connect(localAudioContext.destination);
-
-			localAudioElement.addEventListener('ended', handleSongEnd);
-			localAudioElement.addEventListener('timeupdate', updateProgress);
-		} else {
-			localAudioContext = get(audioContext);
-			localAudioElement = get(audioElement);
-			localAudioElement.addEventListener('ended', handleSongEnd);
-			localAudioElement.addEventListener('timeupdate', updateProgress);
 		}
+
+		track = localAudioContext.createMediaElementSource(localAudioElement);
+		gainNode = localAudioContext.createGain();
+		track.connect(gainNode).connect(localAudioContext.destination);
 
 		playlist.subscribe((value) => {
 			songs = value;
@@ -145,6 +132,14 @@
 		});
 	});
 
+	onDestroy(() => {
+		if (localAudioElement) {
+			localAudioElement.pause();
+			localAudioElement.src = '';
+			localAudioElement.load();
+		}
+	});
+
 	function togglePlay() {
 		if (playing) {
 			localAudioElement.pause();
@@ -158,7 +153,7 @@
 
 	function stopPlayback() {
 		localAudioElement.pause();
-		localAudioElement.src = ''; // Clear the source to stop the audio completely
+		localAudioElement.src = '';
 		isPlaying.set(false);
 		playlist.set([]);
 		currentSongIndex.set(0);
