@@ -256,6 +256,7 @@ export async function startCrawling(libraryId, sessionId = null) {
 			await db.query('SELECT * FROM library WHERE id = $libraryId', { libraryId })
 		).pop();
 
+		
 		startUrl = res.url.endsWith('/') ? res.url : `${res.url}/`;
 		library = res;
 	}

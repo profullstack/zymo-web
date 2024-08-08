@@ -24,6 +24,7 @@
 	let duration = 0;
 	let muted = get(isMuted);
 	let volume = get(volumeLevel);
+	let showVolume = false; // State to manage volume bar visibility
 
 	function getProxyUrl(song) {
 		if (song.user && song.pass) {
@@ -178,39 +179,48 @@
 		const seekTime = (event.target.value / 100) * duration;
 		localAudioElement.currentTime = seekTime;
 	}
+
+	function toggleVolume() {
+		showVolume = !showVolume;
+	}
 </script>
 
 <div class="player-bar">
-	<span>{playing ? 'Playing' : 'Paused'}</span>
-	<button on:click={togglePlay}>{playing ? 'Pause' : 'Play'}</button>
-	<button on:click={stopPlayback}>Stop</button>
+	<div class="controls">
+		<span>{playing ? 'Playing' : 'Paused'}</span>
+		<button on:click={togglePlay}>{playing ? 'Pause' : 'Play'}</button>
+		<button on:click={stopPlayback}>Stop</button>
+		<button on:click={toggleMute}>{muted ? 'Unmute' : 'Mute'}</button>
+		<div class="volume-button-container">
+			<button on:click={toggleVolume}>Volume</button>
+			{#if showVolume}
+				<div class="volume-container">
+					<input
+						type="range"
+						min="0"
+						max="1"
+						step="0.01"
+						value={volume}
+						on:input={setVolume}
+						class="volume-slider"
+					/>
+				</div>
+			{/if}
+		</div>
+	</div>
 	{#if songMetadata.artist && songMetadata.album && songMetadata.songname}
 		<div class="song-info">
 			<span>{songMetadata.artist} - {songMetadata.album} - {songMetadata.songname}</span>
 		</div>
 	{/if}
-	<div class="controls">
-		<div class="progress-bar">
-			<input
-				type="range"
-				min="0"
-				max="100"
-				value={(currentTime / duration) * 100}
-				on:input={handleSeek}
-			/>
-		</div>
-		<button on:click={toggleMute}>{muted ? 'Unmute' : 'Mute'}</button>
-		<div class="volume-container">
-			<input
-				type="range"
-				min="0"
-				max="1"
-				step="0.01"
-				value={volume}
-				on:input={setVolume}
-				class="volume-slider"
-			/>
-		</div>
+	<div class="progress-bar">
+		<input
+			type="range"
+			min="0"
+			max="100"
+			value={(currentTime / duration) * 100}
+			on:input={handleSeek}
+		/>
 	</div>
 </div>
 
@@ -224,17 +234,18 @@
 		padding: 10px;
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
 		align-items: center;
 	}
 	.controls {
 		display: flex;
-		justify-content: space-between;
+		justify-content: center;
 		align-items: center;
 		width: 100%;
+		margin-bottom: 5px;
+		position: relative;
 	}
 	button {
-		margin: 10px;
+		margin: 0 5px;
 		padding: 5px 10px;
 		background: #555;
 		color: white;
@@ -243,24 +254,40 @@
 	}
 	.song-info {
 		text-align: center;
-		margin: 10px;
+		margin-bottom: 5px;
 	}
 	.progress-bar {
-		flex-grow: 1;
-		margin: 0 10px;
+		width: 100%;
+		margin-bottom: 5px;
 	}
 	input[type='range'] {
 		width: 100%;
 	}
-	.volume-container {
-		display: flex;
-		align-items: center;
-		height: 100px;
+	.volume-button-container {
+		position: relative;
 	}
+	.volume-container {
+		position: absolute;
+		bottom: 50px; /* Adjust as needed to position above the player bar */
+		left: 50%;
+		transform: translateX(-50%);
+		background: #333;
+		padding: 5px;
+		border-radius: 5px;
+		width: 40px; /* Set the width of the container */
+		height: max-content; /* Set the height of the container */
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.volume-container input[type='range'] {
+		width: 100px;
+	}
+
 	.volume-slider {
 		transform: rotate(-90deg);
-		width: 100px;
-		height: 10px;
-		margin-left: 20px;
+		width: 100px; /* Set the width to match the height */
+		height: 100px; /* Set the height of the slider */
 	}
 </style>

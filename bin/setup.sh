@@ -16,7 +16,7 @@ PROJECT_NAME="$2"
 TARGET_PATH="~/www/$DOMAIN_NAME/$PROJECT_NAME"
 NGINX_CONF="$TARGET_PATH/etc/$DOMAIN_NAME.conf"
 SYSTEMD_SERVICE="$TARGET_PATH/etc/$PROJECT_NAME.service"
-NGINX_SYMLINK="/etc/nginx/sites-available/$DOMAIN_NAME.com.conf"
+NGINX_SYMLINK="/etc/nginx/sites-available/$DOMAIN_NAME.conf"
 SYSTEMD_SYMLINK="/etc/systemd/system/$PROJECT_NAME.service"
 user=$HOST_USER
 
