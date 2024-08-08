@@ -8,7 +8,6 @@
 	import Player from './Player.svelte';
 
 	export let isLoggedIn, unverifiedUser, isAdmin;
-	let audioUrl = 'https://files.h4kr.com/music/AC%E2%A7%B8DC/%2774%20Jailbreak/086-Jailbreak.mp3';
 </script>
 
 <MetaTags />
