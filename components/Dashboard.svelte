@@ -242,7 +242,7 @@
 		<li>
 			{item.name} - {item.id} - {item.url}
 			<nav>
-				<a href="/torrents/{item.id}">edit</a>
+				<a href="/torrents/clients/{item.id}">edit</a>
 				<a
 					href="#"
 					on:click={(e) => {

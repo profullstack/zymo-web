@@ -10,6 +10,8 @@
 	<div>{errors?.url ?? ''}</div>
 	<div><input name="name" placeholder="Enter name" required /></div>
 	<div>{errors?.name ?? ''}</div>
+	<div><input name="path" placeholder="ie: /home/ubuntu/seedbox/done" /></div>
+	<div>{errors?.path ?? ''}</div>
 	<h4>For basic auth (optional):</h4>
 	<div><input name="user" placeholder="Enter username" /></div>
 	<div>{errors?.user ?? ''}</div>

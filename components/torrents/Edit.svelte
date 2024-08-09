@@ -5,7 +5,7 @@
 		e.preventDefault();
 
 		console.log(client);
-		const res = await fetch(`/torrents/${client.id}`, {
+		const res = await fetch(`/torrents/clients/${client.id}`, {
 			method: 'PUT',
 			body: JSON.stringify(client),
 			headers: {
@@ -30,6 +30,14 @@
 		<div>{errors?.url ?? ''}</div>
 		<div><input name="name" placeholder="Enter name" required bind:value={client.name} /></div>
 		<div>{errors?.name ?? ''}</div>
+		<div>
+			<input
+				name="path"
+				placeholder="Download path - ie: /home/ubuntu/seedbox/done"
+				bind:value={client.path}
+			/>
+		</div>
+		<div>{errors?.path ?? ''}</div>
 		<h4>For basic auth (optional):</h4>
 		<div><input name="user" placeholder="Enter username" bind:value={client.user} /></div>
 		<div>{errors?.user ?? ''}</div>

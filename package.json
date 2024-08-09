@@ -3,6 +3,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "pnpm run env:dev && npx primate",
+		"crawler": "./bin/crawlers/run.sh",
 		"start": "pnpm run env:prod && npx primate serve",
 		"build": "pnpm run env:prod && npx primate build",
 		"build:desktop": "bun --bun x primate build desktop",

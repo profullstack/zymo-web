@@ -1,14 +1,15 @@
 export default {
-	async get(request) {
-		const { store, query } = request;
+	async post(request) {
+		const { store, body } = request;
 		const {
 			torrent: { Torrent }
 		} = store;
 
-		const magnet = query.get('magnet');
-		const user = query.get('user');
-		const pass = query.get('pass');
+		console.log('post:', body);
+		const { magnet, path } = body;
+		const result = await Torrent.download(magnet, path);
+		console.log(result);
 
-		return Torrent.start(url, user, pass);
+		return { result };
 	}
 };

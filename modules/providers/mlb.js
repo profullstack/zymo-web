@@ -1,5 +1,3 @@
-import express from 'express';
-import fetch from 'node-fetch';
 import moment from 'moment-timezone';
 import { CookieJar } from 'tough-cookie';
 import { wrapper } from 'axios-cookiejar-support';
@@ -331,35 +329,15 @@ class MLB {
 	}
 }
 
-const app = express();
 const mlb = new MLB();
 
-app.get('/live-games', async (req, res) => {
-	try {
-		const streams = await mlb.getLiveStreams();
-		res.json(streams);
-	} catch (err) {
-		res.status(500).send('Error fetching live games');
-	}
-});
+export async function getLiveStreams() {
+	return await mlb.getLiveStreams();
+}
 
-app.get('/play/:contentId', async (req, res) => {
-	const contentId = req.params.contentId;
+export async function playStream(contentId) {
+	const streams = await mlb.getLiveStreams();
+	const stream = streams.find((s) => s.contentId === contentId);
 
-	try {
-		const streams = await mlb.getLiveStreams();
-		const stream = streams.find((s) => s.contentId === contentId);
-
-		if (stream) {
-			res.json({ url: stream.url });
-		} else {
-			res.status(404).send('Stream not found');
-		}
-	} catch (err) {
-		res.status(500).send('Error fetching stream');
-	}
-});
-
-app.listen(3000, () => {
-	console.log('Server is running on port 3000');
-});
+	return stream.url;
+}

@@ -40,6 +40,11 @@
 			route: '/torrents',
 			name: 'Torrents',
 			icon: 'torrent.svg'
+		},
+		{
+			route: '/stream',
+			name: 'Stream',
+			icon: 'stream.svg'
 		}
 	];
 </script>
