@@ -1,9 +1,16 @@
-import env from '@rcompat/env';
-import Base64 from '@rcompat/string/base64';
+import Base64 from '@rcompat/string/Base64';
 import { form } from '@rcompat/http/mime';
 import primary from '@primate/types/primary';
 
-const { APP_DOMAIN, TOLL_FREE, MAILGUN_DOMAIN, APP_NAME, MAILGUN_API_KEY, DO_NOT_REPLY, FROM_EMAIL } = process.env;
+const {
+	APP_DOMAIN,
+	TOLL_FREE,
+	MAILGUN_DOMAIN,
+	APP_NAME,
+	MAILGUN_API_KEY,
+	DO_NOT_REPLY,
+	FROM_EMAIL
+} = process.env;
 
 export const ambiguous = true;
 
@@ -22,7 +29,7 @@ export const actions = () => {
 	return {
 		async send(mail) {
 			try {
-				console.log({ ...options, body: body(mail) })
+				console.log({ ...options, body: body(mail) });
 				const res = await fetch(resource, { ...options, body: body(mail) });
 				console.log(`sent email to ${mail.to}`, await res.text());
 				return res;
@@ -98,10 +105,9 @@ https://${APP_DOMAIN}/reset/${token}
 				console.error(err);
 			}
 		}
-
 	};
 };
 
 export default {
-    id: primary
+	id: primary
 };
