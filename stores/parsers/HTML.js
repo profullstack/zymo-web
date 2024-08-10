@@ -1,5 +1,5 @@
 import primary from '@primate/types/primary';
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import path from 'path';
 
 const { env } = process;

@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 import { Surreal } from 'surrealdb.js';
 import { v4 as uuidv4 } from 'uuid';
 import { config } from 'dotenv-flow';
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import path from 'path';
 import { parseMediaUrl } from '../../modules/parsers/mediainfo.js';
 import { getArtistAndAlbumInfo } from '../../modules/parsers/providers.js';
@@ -256,7 +256,6 @@ export async function startCrawling(libraryId, sessionId = null) {
 			await db.query('SELECT * FROM library WHERE id = $libraryId', { libraryId })
 		).pop();
 
-		
 		startUrl = res.url.endsWith('/') ? res.url : `${res.url}/`;
 		library = res;
 	}

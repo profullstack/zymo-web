@@ -114,21 +114,21 @@
 	<section>
 		{#each Object.entries(groupedMusic) as [artist, albums]}
 			<div class="collapsible" on:click={() => toggleVisibility(visibleArtists, artist)}>
-				{artist}
 				<button
 					class="play-button"
 					on:click={(e) => {
 						e.stopPropagation();
 						playAllSongs(Object.values(albums).flat());
-					}}><img src="/static/icons/play.svg" alt="" /></button
+					}}><img src="/static/icons/play.svg" alt="" style="width: 3rem;" /></button
 				>
 				<button
 					class="random-button"
 					on:click={(e) => {
 						e.stopPropagation();
 						randomizeAndPlaySongs(Object.values(albums).flat());
-					}}><img src="/static/icons/shuffle.svg" alt="" /></button
+					}}><img src="/static/icons/shuffle.svg" alt="" style="width: 3rem;" /></button
 				>
+				{artist}
 			</div>
 			{#if visibleArtists.has(artist)}
 				<div class="content">
@@ -137,7 +137,6 @@
 							class="collapsible"
 							on:click={() => toggleVisibility(visibleAlbums, `${artist}-${album}`)}
 						>
-							{album}
 							<button
 								class="play-button"
 								on:click={(e) => {
@@ -152,12 +151,12 @@
 									randomizeAndPlaySongs(songs);
 								}}><img src="/static/icons/shuffle.svg" alt="" /></button
 							>
+							{album}
 						</div>
 						{#if visibleAlbums.has(`${artist}-${album}`)}
 							<div class="content">
 								{#each songs as song (song.id)}
 									<div class="song">
-										<a href={song.url}>{song.songname}</a>
 										<button class="play-button" on:click={() => playSong(song)}>
 											{#if song.playing}
 												{'❚❚'}
@@ -165,6 +164,7 @@
 												<img src="/static/icons/play.svg" alt="" />
 											{/if}
 										</button>
+										<a href={song.url}>{song.songname}</a>
 									</div>
 								{/each}
 							</div>
@@ -182,7 +182,7 @@
 		font-weight: bold;
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
+		justify-content: flex-start;
 	}
 
 	.content {
@@ -205,12 +205,14 @@
 		border: none;
 		font-size: 1em;
 		cursor: pointer;
-		margin-left: 0.5em;
 		vertical-align: middle;
+		padding: 0.2rem;
+		margin: 0.2rem;
 	}
 
 	.play-button img,
 	.random-button img {
+		display: block;
 		width: 2rem;
 		height: auto;
 	}
