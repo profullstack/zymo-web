@@ -1,24 +1,19 @@
 [
 	{
-		"name": "FastestEngineer - Solopreneur",
-		"price": 279,
-		"mode": "payment"
-	},
-	{
-		"name": "FastestEngineer - Serialpreneur",
-		"price": 479,
-		"mode": "payment"
-	},
-	{
-		"name": "FastestEngineer - MVP",
-		"price": 5000,
+		"name": "Zymo - Starter",
+		"price": 5,
 		"mode": "subscription",
-		"subscriptionOptions": [{ "type": "month" }, { "type": "year", "price": 50000 }]
+		"subscriptionOptions": [{ "type": "month" }, { "type": "year", "price": 50 }]
 	},
 	{
-		"name": "FastestEngineer - Enterprise",
-		"price": 20000,
+		"name": "Zymo - MVP",
+		"price": 20,
 		"mode": "subscription",
-		"subscriptionOptions": [{ "type": "month" }, { "type": "year", "price": 200000 }]
+		"subscriptionOptions": [{ "type": "month" }, { "type": "year", "price": 200 }]
+	},
+	{
+		"name": "Zymo - Lifetime",
+		"price": 300,
+		"mode": "payment"
 	}
 ]
