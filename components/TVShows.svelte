@@ -11,6 +11,8 @@
 			const season = videoType === 'tv show' ? show.mediaInfo?.season || 0 : null;
 			const id = show.id;
 
+			console.log(show, '<<<< show');
+
 			if (!grouped[showName]) {
 				grouped[showName] = {};
 			}
@@ -87,6 +89,9 @@
 								<div class="content">
 									{#each episodes as show}
 										<div class="show">
+											{#if show.omdb}
+												<img class="poster" src={show.omdb.Poster} alt="" />
+											{/if}
 											<a href="/tv/{show.id}">watch</a>
 											<a href={show.url}>
 												{show.mediaInfo?.name || 'Unknown Name'}
@@ -100,6 +105,10 @@
 						{:else}
 							{#each episodes as show}
 								<div class="show">
+									<pre>{JSON.stringify(show, null, 2)}</pre>
+									{#if show.omdb}
+										<img class="poster" src={show.omdb.Poster} alt="" />
+									{/if}
 									<a href="/tv/{show.id}">watch</a>
 									<a href={show.url}>
 										{show.mediaInfo?.name ||
@@ -128,10 +137,20 @@
 	}
 
 	.show {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
 		padding-left: 1em;
+		margin: 2rem 0;
 	}
 
 	.show a {
-		margin-right: 1em;
+		margin-left: 1em;
+	}
+
+	.poster {
+		width: 6rem;
+		height: auto;
+		border: 1px solid var(--button-border-color);
 	}
 </style>

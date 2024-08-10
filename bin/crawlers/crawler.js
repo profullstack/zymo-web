@@ -208,6 +208,27 @@ async function save(files, libraryId) {
 		file.createdBy = createdBy;
 		file.mediaInfo = parseMediaUrl(file.url);
 
+		// http://www.omdbapi.com/?i=tt3896198&apikey=c3bd0283
+		// https://www.omdbapi.com/?t=cheers&apikey=c3bd0283
+		// https://www.omdbapi.com/?t=top+gun&y=2022&apiKey=c3bd0283
+		// https://thetvdb.github.io/v4-api/#/Login/post_login
+
+		console.log(file.mediaInfo.videoType);
+
+		if (file.mediaInfo.videoType === 'movie' || file.mediaInfo.videoType === 'tv show') {
+			try {
+				const url = `https://www.omdbapi.com/?t=${file.mediaInfo.name}&apikey=${env.OMDB_API_KEY}`;
+				console.log('fetching metadata:', url);
+				const res = await fetch(url);
+
+				if (res.ok) {
+					file.omdb = await res.json();
+				}
+			} catch (err) {
+				console.error(err);
+			}
+		}
+
 		// if ((file.mediaInfo.type = 'music')) {
 		// 	const musicInfo = await getArtistAndAlbumInfo(file.mediaInfo.artist);
 		// 	console.log(musicInfo);

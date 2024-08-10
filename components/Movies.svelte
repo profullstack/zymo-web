@@ -87,6 +87,13 @@
 								<div class="content">
 									{#each episodes as movie}
 										<div class="movie">
+											{#if movie.omdb?.Poster}
+												<img
+													class="poster"
+													src={movie.omdb.Poster}
+													alt=""
+												/>
+											{/if}
 											<a href="/movies/{movie.id}">watch</a>
 											<a href={movie.url}>
 												{movie.mediaInfo?.name || 'Unknown Name'} - ({movie.fileExt})
@@ -98,6 +105,9 @@
 						{:else}
 							{#each episodes as movie}
 								<div class="movie">
+									{#if movie.omdb?.Poster}
+										<img class="poster" src={movie.omdb.Poster} alt="" />
+									{/if}
 									<a href="/movies/{movie.id}">watch</a>
 									<a href={movie.url}>
 										{movie.mediaInfo?.name || 'Unknown Name'} - ({movie.fileExt})
@@ -123,10 +133,20 @@
 	}
 
 	.movie {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
 		padding-left: 1em;
+		margin: 2rem 0;
 	}
 
 	.movie a {
-		margin-right: 1em;
+		margin-left: 1em;
+	}
+
+	.poster {
+		width: 6rem;
+		height: auto;
+		border: 1px solid var(--button-border-color);
 	}
 </style>
