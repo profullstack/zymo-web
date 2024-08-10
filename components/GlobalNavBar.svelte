@@ -36,7 +36,7 @@
 		<a href="/" id="logo"><img src="/static/logo.svg" alt="" /></a>
 	</span>
 	<span>
-		<!-- <a href="/products">Products</a> -->
+		<a href="/pricing">Pricing</a>
 		{#if isLoggedIn || unverifiedUser}
 			<a href="/dashboard">Dashboard</a>
 			{#if isAdmin}
