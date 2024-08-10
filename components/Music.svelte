@@ -143,6 +143,12 @@
 							<!-- <pre>{JSON.stringify(songs, null, 2)}</pre> -->
 							{#if songs[0] && songs[0].musicbrainz && songs[0].musicbrainz.coverArt}
 								<img src={songs[0].musicbrainz.coverArt} alt="" class="poster" />
+							{:else}
+								<img
+									class="poster"
+									src="/static/icons/placeholder.music.svg"
+									alt=""
+								/>
 							{/if}
 							<button
 								class="play-button"

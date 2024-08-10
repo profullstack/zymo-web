@@ -93,6 +93,12 @@
 													src={movie.omdb.Poster}
 													alt=""
 												/>
+											{:else}
+												<img
+													class="poster"
+													src="/static/icons/placeholder.movie.svg"
+													alt=""
+												/>
 											{/if}
 											<a href="/movies/{movie.id}">watch</a>
 											<a href={movie.url}>
@@ -107,6 +113,12 @@
 								<div class="movie">
 									{#if movie.omdb?.Poster}
 										<img class="poster" src={movie.omdb.Poster} alt="" />
+									{:else}
+										<img
+											class="poster"
+											src="/static/icons/placeholder.movie.svg"
+											alt=""
+										/>
 									{/if}
 									<a href="/movies/{movie.id}">watch</a>
 									<a href={movie.url}>

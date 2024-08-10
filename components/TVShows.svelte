@@ -91,6 +91,12 @@
 										<div class="show">
 											{#if show.omdb}
 												<img class="poster" src={show.omdb.Poster} alt="" />
+											{:else}
+												<img
+													class="poster"
+													src="/static/icons/placeholder.movie.svg"
+													alt=""
+												/>
 											{/if}
 											<a href="/tv/{show.id}">watch</a>
 											<a href={show.url}>
@@ -108,6 +114,12 @@
 									<pre>{JSON.stringify(show, null, 2)}</pre>
 									{#if show.omdb}
 										<img class="poster" src={show.omdb.Poster} alt="" />
+									{:else}
+										<img
+											class="poster"
+											src="/static/icons/placeholder.movie.svg"
+											alt=""
+										/>
 									{/if}
 									<a href="/tv/{show.id}">watch</a>
 									<a href={show.url}>
