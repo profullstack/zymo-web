@@ -205,7 +205,7 @@
 	</div>
 	{#if songMetadata.artist && songMetadata.album && songMetadata.songname}
 		<div class="song-info">
-			<span>{songMetadata.artist} - {songMetadata.album} - {songMetadata.songname}</span>
+			<small>{songMetadata.artist} - {songMetadata.album} - {songMetadata.songname}</small>
 		</div>
 	{/if}
 	<div class="progress-bar">
