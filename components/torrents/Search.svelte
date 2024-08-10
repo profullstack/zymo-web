@@ -4,11 +4,14 @@
 	let q = '';
 	let isLoading = false;
 	let path;
+	let mediaType;
 
 	async function searchTorrents() {
 		isLoading = true;
 		try {
-			const res = await fetch('/api/torrent/search?q=' + encodeURIComponent(q));
+			const res = await fetch(
+				'/api/torrent/search?q=' + encodeURIComponent(q) + '&mediaType=' + mediaType
+			);
 
 			if (!res.ok) {
 				throw new Error(`HTTP error! status: ${res.status}`);
@@ -54,6 +57,15 @@
 <form on:submit|preventDefault={searchTorrents}>
 	<label for="q">Search:</label>
 	<input type="text" bind:value={q} placeholder="ie: 1080" id="q" />
+	<div class="field">
+		<label
+			><input type="radio" name="mediaType" value="Movies" bind:group={mediaType} /> Movies</label
+		>
+		<label
+			><input type="radio" name="mediaType" value="Music" bind:group={mediaType} /> Music</label
+		>
+	</div>
+
 	<button>Search</button>
 	<Spinner {isLoading} />
 </form>
