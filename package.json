@@ -28,7 +28,6 @@
 		"@primate/frontend": "^0.16.1",
 		"@primate/handlebars": "^0.1.2",
 		"@primate/native": "^0.1.4",
-		"@primate/liveview": "^0.11.0",
 		"@primate/session": "^0.20.0",
 		"@primate/store": "^0.25.1",
 		"@primate/surrealdb": "^0.3.2",
