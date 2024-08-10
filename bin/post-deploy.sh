@@ -8,6 +8,7 @@ cd "$(dirname "$0")/.."
 host=$HOST_DOMAIN
 name=$HOST_PATH
 project=$HOST_PROJECT
+crawler=$1
 
 echo "current name: $name"
 
@@ -34,7 +35,15 @@ if [ -d "$HOME/www/${name}/${project}" ]; then
     sudo /etc/init.d/nginx reload
     sudo systemctl daemon-reload
     sudo systemctl start ${META_SERVICE}
-    sudo systemctl restart ${META_CRAWLER_SERVICE}
+
+    if [ -n "$crawler" ] && [ "$migrate" == "crawlers" ]; then
+      # The variable is defined and its value is 'migrate'
+      echo "Restarting crawler..."
+      sudo systemctl restart ${META_CRAWLER_SERVICE}
+    else
+        echo "Crawler not required or variable not set to 'crawler'."
+    fi
+
     # sudo systemctl start surrealdb
 
     # run migrations

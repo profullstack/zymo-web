@@ -10,6 +10,7 @@ dry=() #add --dry-run to enable testing
 user=$HOST_USER
 name=$HOST_PATH
 project=$HOST_PROJECT
+crawler=$1
 
 
 if [ -z "$name" ] || [ -z "$project" ]; then
@@ -34,7 +35,7 @@ if [ "$result" == "exists" ]; then
       echo "syncing ${host}"
       echo "---------------------"
       rsync ${dry[@]} ${args[@]} ./ ${user}@${host}:www/${name}/${project}
-      ssh -t ${user}@${host} \$HOME/www/${name}/${project}/bin/post-deploy.sh
+      ssh -t ${user}@${host} \$HOME/www/${name}/${project}/bin/post-deploy.sh $crawler
     done
 
 else
