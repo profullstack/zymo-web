@@ -162,7 +162,7 @@
 
 	{#if $isChannelListOpen}
 		<ul id="channel-list">
-			{#each $filteredChannels as channel (channel.name)}
+			{#each $filteredChannels as channel (channel.name +  Math.random().toString())}
 				<li class="channel-item" on:click|preventDefault={() => selectChannel(channel)}>
 					{channel.name}
 				</li>
