@@ -10,8 +10,8 @@
 		isLoading = true;
 		try {
 			const res = await fetch(
-				// '/api/torrent/search?q=' + encodeURIComponent(q) + '&mediaType=' + mediaType
-				'/api/torrent/search?q=' + encodeURIComponent(q)
+				'/api/torrent/search?q=' + encodeURIComponent(q) + '&mediaType=' + mediaType
+				// '/api/torrent/search?q=' + encodeURIComponent(q)
 			);
 
 			if (!res.ok) {
@@ -69,8 +69,13 @@
 		<label
 			><input type="radio" name="mediaType" value="Apps" bind:group={mediaType} /> Apps</label
 		>
-		<label
+		<!-- <label
 			><input type="radio" name="mediaType" value="Books" bind:group={mediaType} /> Books</label
+		> -->
+		<label><input type="radio" name="mediaType" value="XXX" bind:group={mediaType} /> XXX</label
+		>
+		<label
+			><input type="radio" name="mediaType" value="Other" bind:group={mediaType} /> Other</label
 		>
 	</div>
 
@@ -88,7 +93,7 @@
 <ul>
 	{#each results as torrent}
 		<li>
-			{torrent.title}
+			{torrent.title} seeders: {torrent.seeds} leechers: {torrent.peers}
 			<a
 				href="#"
 				on:click|preventDefault={() => {
@@ -109,5 +114,6 @@
 
 	form label {
 		text-wrap: nowrap;
+		margin: 0 0.4rem;
 	}
 </style>

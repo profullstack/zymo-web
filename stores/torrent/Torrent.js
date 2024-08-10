@@ -255,7 +255,7 @@ export const actions = ({ connection: db }) => {
 			}
 		},
 
-		async download(magnet, path) {
+		async download(magnet, path = '') {
 			console.log('download:', magnet, path);
 
 			const me = await this.me();
@@ -281,11 +281,25 @@ export const actions = ({ connection: db }) => {
 		},
 
 		async search(q, mediaType = '') {
-			Torrent.enablePublicProviders();
-			const torrents = await Torrent.search(q, mediaType, 20);
+			let torrents = [];
 
-			for (let torrent of torrents) {
-				torrent.magnet = await Torrent.getMagnet(torrent);
+			Torrent.enablePublicProviders();
+
+			try {
+				torrents = await Torrent.search(q, mediaType, 20);
+
+				for (let torrent of torrents) {
+					try {
+						const magnet = await Torrent.getMagnet(torrent);
+						console.log('magnet:', magnet);
+						torrent.magnet = magnet;
+					} catch (err) {
+						console.error(err);
+						continue;
+					}
+				}
+			} catch (err) {
+				console.error(err);
 			}
 
 			console.log(torrents);

@@ -11,6 +11,6 @@ export default {
 		const mediaType = query.get('mediaType') || '';
 		const results = await Torrent.search(q, mediaType);
 
-		return { results };
+		return results;
 	}
 };
