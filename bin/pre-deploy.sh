@@ -8,6 +8,7 @@ cd "$(dirname "$0")/.."
 host=$HOST_DOMAIN
 name=$HOST_PATH
 project=$HOST_PROJECT
+crawler=$1
 
 echo "current name: $name"
 

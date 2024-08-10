@@ -12,18 +12,21 @@
 			const id = movie.id;
 
 			if (!grouped[showName]) {
-				grouped[showName] = {};
+				grouped[showName] = {
+					poster: movie.omdb?.Poster || '/static/icons/placeholder.movie.svg',
+					seasons: {}
+				};
 			}
 			if (season !== null) {
-				if (!grouped[showName][season]) {
-					grouped[showName][season] = [];
+				if (!grouped[showName].seasons[season]) {
+					grouped[showName].seasons[season] = [];
 				}
-				grouped[showName][season].push({ ...movie });
+				grouped[showName].seasons[season].push({ ...movie });
 			} else {
-				if (!grouped[showName][0]) {
-					grouped[showName][0] = [];
+				if (!grouped[showName].seasons[0]) {
+					grouped[showName].seasons[0] = [];
 				}
-				grouped[showName][0].push({ ...movie });
+				grouped[showName].seasons[0].push({ ...movie });
 			}
 		}
 
@@ -32,13 +35,13 @@
 		const sortedShows = Object.keys(grouped).sort((a, b) => a.localeCompare(b));
 
 		for (const show of sortedShows) {
-			sortedGrouped[show] = {};
-			const sortedSeasons = Object.keys(grouped[show])
+			sortedGrouped[show] = grouped[show];
+			const sortedSeasons = Object.keys(grouped[show].seasons)
 				.map(Number)
 				.sort((a, b) => a - b);
 
 			for (const season of sortedSeasons) {
-				sortedGrouped[show][season] = grouped[show][season].sort((a, b) => {
+				sortedGrouped[show].seasons[season] = grouped[show].seasons[season].sort((a, b) => {
 					const nameA = a.mediaInfo?.name || '';
 					const nameB = b.mediaInfo?.name || '';
 					return nameA.localeCompare(nameB);
@@ -68,8 +71,9 @@
 
 {#if Object.keys(groupedMovies).length}
 	<section>
-		{#each Object.entries(groupedMovies) as [showName, seasons]}
+		{#each Object.entries(groupedMovies) as [showName, { poster, seasons }]}
 			<div class="collapsible" on:click={() => toggleVisibility(visibleShows, showName)}>
+				<img src={poster} alt={showName} class="poster" />
 				{showName}
 			</div>
 			{#if visibleShows.has(showName)}
@@ -87,19 +91,6 @@
 								<div class="content">
 									{#each episodes as movie}
 										<div class="movie">
-											{#if movie.omdb?.Poster}
-												<img
-													class="poster"
-													src={movie.omdb.Poster}
-													alt=""
-												/>
-											{:else}
-												<img
-													class="poster"
-													src="/static/icons/placeholder.movie.svg"
-													alt=""
-												/>
-											{/if}
 											<a href="/movies/{movie.id}">watch</a>
 											<a href={movie.url}>
 												{movie.mediaInfo?.name || 'Unknown Name'} - ({movie.fileExt})
@@ -111,15 +102,6 @@
 						{:else}
 							{#each episodes as movie}
 								<div class="movie">
-									{#if movie.omdb?.Poster}
-										<img class="poster" src={movie.omdb.Poster} alt="" />
-									{:else}
-										<img
-											class="poster"
-											src="/static/icons/placeholder.movie.svg"
-											alt=""
-										/>
-									{/if}
 									<a href="/movies/{movie.id}">watch</a>
 									<a href={movie.url}>
 										{movie.mediaInfo?.name || 'Unknown Name'} - ({movie.fileExt})
@@ -138,6 +120,14 @@
 	.collapsible {
 		cursor: pointer;
 		font-weight: bold;
+		display: flex;
+		align-items: center;
+	}
+
+	.show-poster {
+		width: 3rem;
+		height: auto;
+		margin-right: 1rem;
 	}
 
 	.content {
@@ -160,5 +150,6 @@
 		width: 6rem;
 		height: auto;
 		border: 1px solid var(--cover-art-border-color);
+		margin: 2rem 1rem 0;
 	}
 </style>

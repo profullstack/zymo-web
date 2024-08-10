@@ -9,41 +9,41 @@
 			const showName = show.mediaInfo?.name || 'Unknown Show';
 			const videoType = show.mediaInfo?.videoType || 'tv show';
 			const season = videoType === 'tv show' ? show.mediaInfo?.season || 0 : null;
-			const id = show.id;
-
-			console.log(show, '<<<< show');
+			const episode = show.mediaInfo?.episode || 0;
 
 			if (!grouped[showName]) {
-				grouped[showName] = {};
+				grouped[showName] = {
+					poster: show.omdb?.Poster || '/static/icons/placeholder.movie.svg',
+					seasons: {}
+				};
 			}
 			if (season !== null) {
-				if (!grouped[showName][season]) {
-					grouped[showName][season] = [];
+				if (!grouped[showName].seasons[season]) {
+					grouped[showName].seasons[season] = [];
 				}
-				grouped[showName][season].push({ ...show });
+				grouped[showName].seasons[season].push({ ...show, episode });
 			} else {
-				if (!grouped[showName][0]) {
-					grouped[showName][0] = [];
+				if (!grouped[showName].seasons[0]) {
+					grouped[showName].seasons[0] = [];
 				}
-				grouped[showName][0].push({ ...show });
+				grouped[showName].seasons[0].push({ ...show, episode });
 			}
 		}
 
-		// Sort shows and seasons
+		// Sort shows, seasons, and episodes
 		const sortedGrouped = {};
 		const sortedShows = Object.keys(grouped).sort((a, b) => a.localeCompare(b));
 
 		for (const show of sortedShows) {
-			sortedGrouped[show] = {};
-			const sortedSeasons = Object.keys(grouped[show])
+			sortedGrouped[show] = grouped[show];
+			const sortedSeasons = Object.keys(grouped[show].seasons)
 				.map(Number)
 				.sort((a, b) => a - b);
 
 			for (const season of sortedSeasons) {
-				sortedGrouped[show][season] = grouped[show][season].sort((a, b) => {
-					const nameA = a.mediaInfo?.name || '';
-					const nameB = b.mediaInfo?.name || '';
-					return nameA.localeCompare(nameB);
+				sortedGrouped[show].seasons[season] = grouped[show].seasons[season].sort((a, b) => {
+					// Sort by episode number
+					return (a.episode || 0) - (b.episode || 0);
 				});
 			}
 		}
@@ -70,8 +70,9 @@
 
 {#if Object.keys(groupedshows).length}
 	<section>
-		{#each Object.entries(groupedshows) as [showName, seasons]}
+		{#each Object.entries(groupedshows) as [showName, { poster, seasons }]}
 			<div class="collapsible" on:click={() => toggleVisibility(visibleShows, showName)}>
+				<img src={poster} alt={showName} class="poster" />
 				{showName}
 			</div>
 			{#if visibleShows.has(showName)}
@@ -89,15 +90,6 @@
 								<div class="content">
 									{#each episodes as show}
 										<div class="show">
-											{#if show.omdb}
-												<img class="poster" src={show.omdb.Poster} alt="" />
-											{:else}
-												<img
-													class="poster"
-													src="/static/icons/placeholder.movie.svg"
-													alt=""
-												/>
-											{/if}
 											<a href="/tv/{show.id}">watch</a>
 											<a href={show.url}>
 												{show.mediaInfo?.name || 'Unknown Name'}
@@ -111,16 +103,6 @@
 						{:else}
 							{#each episodes as show}
 								<div class="show">
-									<pre>{JSON.stringify(show, null, 2)}</pre>
-									{#if show.omdb}
-										<img class="poster" src={show.omdb.Poster} alt="" />
-									{:else}
-										<img
-											class="poster"
-											src="/static/icons/placeholder.movie.svg"
-											alt=""
-										/>
-									{/if}
 									<a href="/tv/{show.id}">watch</a>
 									<a href={show.url}>
 										{show.mediaInfo?.name ||
@@ -142,6 +124,14 @@
 	.collapsible {
 		cursor: pointer;
 		font-weight: bold;
+		display: flex;
+		align-items: center;
+	}
+
+	.show-poster {
+		width: 3rem;
+		height: auto;
+		margin-right: 1rem;
 	}
 
 	.content {
@@ -164,5 +154,6 @@
 		width: 6rem;
 		height: auto;
 		border: 1px solid var(--cover-art-border-color);
+		margin: 2rem 1rem 0;
 	}
 </style>
