@@ -18,6 +18,8 @@
 	export let m3us = [];
 	export let proxy = false;
 
+	let isChannelSearchHovered = false;
+
 	// Function to fetch the channels from the selected provider
 	async function fetchChannels(provider) {
 		isLoading.set(true);
@@ -121,6 +123,13 @@
 		}
 		isLoading.set(false); // Ensure spinner is not showing by default
 	});
+
+	function closeChannelList() {
+		isChannelSearchHovered = false;
+		setTimeout(() => {
+			if (!isChannelSearchHovered) isChannelListOpen.set(false);
+		}, 1000);
+	}
 </script>
 
 <div id="main-content">
@@ -151,24 +160,32 @@
 
 	<h4>Select a Channel</h4>
 
-	<input
-		type="text"
-		id="filter-input"
-		placeholder="Type to filter channels..."
-		bind:value={$filterValue}
-		on:focus={() => isChannelListOpen.set(true)}
-		on:input={() => isChannelListOpen.set(true)}
-	/>
+	<div
+		on:mouseover={() => (isChannelSearchHovered = true)}
+		on:mouseleave={() => closeChannelList()}
+	>
+		<input
+			type="text"
+			id="filter-input"
+			placeholder="Type to filter channels..."
+			bind:value={$filterValue}
+			on:mouseover={(e) => {
+				e.target == document.activeElement ? isChannelListOpen.set(true) : null;
+			}}
+			on:click={() => isChannelListOpen.set(true)}
+			on:input={() => isChannelListOpen.set(true)}
+		/>
 
-	{#if $isChannelListOpen}
-		<ul id="channel-list">
-			{#each $filteredChannels as channel, index (index)}
-				<li class="channel-item" on:click|preventDefault={() => selectChannel(channel)}>
-					{channel.name}
-				</li>
-			{/each}
-		</ul>
-	{/if}
+		{#if $isChannelListOpen}
+			<ul id="channel-list">
+				{#each $filteredChannels as channel, index (index)}
+					<li class="channel-item" on:click|preventDefault={() => selectChannel(channel)}>
+						{channel.name}
+					</li>
+				{/each}
+			</ul>
+		{/if}
+	</div>
 
 	{#if $selectedChannel}
 		<h2>{$selectedChannel.name}</h2>

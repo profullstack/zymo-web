@@ -37,6 +37,10 @@ export const filteredChannels = derived(
 		if ($mp4) {
 			filtered = filtered.filter((channel) => channel.url.endsWith('.mp4'));
 		}
+
+		// sort channels alphabetically by name
+		filtered = filtered.sort((a, b) => a.name.localeCompare(b.name));
+
 		return filtered;
 	}
 );
