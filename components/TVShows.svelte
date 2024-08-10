@@ -163,6 +163,6 @@
 	.poster {
 		width: 6rem;
 		height: auto;
-		border: 1px solid var(--button-border-color);
+		border: 1px solid var(--cover-art-border-color);
 	}
 </style>
