@@ -44,3 +44,32 @@ export const filteredChannels = derived(
 		return filtered;
 	}
 );
+
+// EPG
+export const epgStore = writable({
+	isLoading: true,
+	error: null,
+	channels: [],
+	epgData: {},
+	timeBlocks: []
+});
+
+export function setEPGData({ channels, epgData, timeBlocks }) {
+	epgStore.set({
+		isLoading: false,
+		error: null,
+		channels,
+		epgData,
+		timeBlocks
+	});
+}
+
+export function setEPGError(error) {
+	epgStore.set({
+		isLoading: false,
+		error,
+		channels: [],
+		epgData: {},
+		timeBlocks: []
+	});
+}

@@ -10,5 +10,7 @@
 	<div>{errors?.url ?? ''}</div>
 	<div><input name="name" placeholder="Enter name" /></div>
 	<div>{errors?.name ?? ''}</div>
+	<div><input type="epg" placeholder="EPG url" /></div>
+	<div>{errors?.epg ?? ''}</div>
 	<div><button type="submit"> Create </button></div>
 </form>

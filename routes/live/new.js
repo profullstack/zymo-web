@@ -3,8 +3,7 @@ import redirect from 'primate/handler/redirect';
 const form = (params = {}) => view('m3u/Form.svelte', { ...params });
 
 export default {
-	get(request) {
-		const { session } = request;
+	get() {
 		return form();
 	},
 	async post(request) {

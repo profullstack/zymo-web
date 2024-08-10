@@ -24,7 +24,7 @@ export const actions = ({ connection: db }) => {
 			// const { User } = store;
 
 			console.log('create:', data);
-			let { url, name } = data;
+			let { url, name, epg } = data;
 			const { DB_NS, DB_DB } = env;
 			const me = await this.me();
 			console.log('db:', DB_NS, DB_DB);
@@ -33,6 +33,7 @@ export const actions = ({ connection: db }) => {
 				const m3u = await db.create('m3u', {
 					url,
 					name,
+					epg,
 					createdBy: me.id,
 					createdAt: new Date().toISOString(),
 					updatedAt: new Date().toISOString()

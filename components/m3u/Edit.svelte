@@ -29,5 +29,7 @@
 	<div>{errors?.url ?? ''}</div>
 	<div><input name="name" placeholder="Enter name" bind:value={m3u.name} /></div>
 	<div>{errors?.m3u ?? ''}</div>
+	<div><input name="epg" placeholder="Enter EPG url" bind:value={m3u.epg} /></div>
+	<div>{errors?.epg ?? ''}</div>
 	<div><button type="submit"> Update </button></div>
 </form>
