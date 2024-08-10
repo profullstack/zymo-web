@@ -1,62 +1,48 @@
 <script>
-	import { isExpanded } from '../modules/store.js';
+	import { isExpanded, currentPath } from '../modules/store.js';
+
 	const navItems = [
-		{
-			route: '/',
-			name: 'Home',
-			icon: 'home.svg'
-		},
-		{
-			route: '/live',
-			name: 'Live TV',
-			icon: 'livetv.svg'
-		},
-		{
-			route: '/books',
-			name: 'Books',
-			icon: 'books.svg'
-		},
-		{
-			route: '/music',
-			name: 'Music',
-			icon: 'music.svg'
-		},
-		{
-			route: '/movies',
-			name: 'Movies',
-			icon: 'movies.svg'
-		},
-		{
-			route: '/podcasts',
-			name: 'Podcasts',
-			icon: 'podcasts.svg'
-		},
-		{
-			route: '/tv',
-			name: 'TV',
-			icon: 'tv.svg'
-		},
-		{
-			route: '/torrents',
-			name: 'Torrents',
-			icon: 'torrent.svg'
-		},
-		{
-			route: '/stream',
-			name: 'Stream',
-			icon: 'stream.svg'
-		}
+		{ route: '/', name: 'Home', icon: 'home.svg' },
+		{ route: '/live', name: 'Live TV', icon: 'livetv.svg' },
+		{ route: '/books', name: 'Books', icon: 'books.svg' },
+		{ route: '/music', name: 'Music', icon: 'music.svg' },
+		{ route: '/movies', name: 'Movies', icon: 'movies.svg' },
+		{ route: '/podcasts', name: 'Podcasts', icon: 'podcasts.svg' },
+		{ route: '/tv', name: 'TV', icon: 'tv.svg' },
+		{ route: '/torrents', name: 'Torrents', icon: 'torrent.svg' },
+		{ route: '/streaming', name: 'Streaming', icon: 'streaming.svg' }
 	];
+
+	function handleLinkClick(event) {
+		event.preventDefault(); // Prevent default anchor behavior
+		const url = event.currentTarget.getAttribute('href');
+		// Update the store with the new path
+		currentPath.set(url);
+
+		isExpanded.set(false); // Close the sidebar
+	}
+
+	// Function to check if the link is active
+	$: activeLink = (route) => {
+		if (route === '/') {
+			return $currentPath === '/';
+		}
+		return $currentPath.startsWith(route) && $currentPath !== '/';
+	};
 </script>
 
 <nav id="sidebar" class:expanded={$isExpanded}>
 	<ul>
 		{#each navItems as item}
 			<li>
-				<a href={item.route}
-					><img src="/static/icons/{item.icon}" alt="" border="0" />
-					<strong>{item.name}</strong></a
+				<a
+					href={item.route}
+					on:click={handleLinkClick}
+					class:active={activeLink(item.route)}
 				>
+					<img src="/static/icons/{item.icon}" alt="" border="0" />
+					<strong>{item.name}</strong>
+				</a>
 			</li>
 		{/each}
 	</ul>
@@ -129,6 +115,11 @@
 
 	#sidebar a:hover {
 		opacity: 1;
+	}
+
+	#sidebar a.active {
+		opacity: 1;
+		background-color: var(--active-background-color); /* Custom active style */
 	}
 
 	@media (max-width: 600px) {

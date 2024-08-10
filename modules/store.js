@@ -2,6 +2,7 @@ import { writable, derived } from 'svelte/store';
 
 // filter dropdown for /live
 export const isExpanded = writable(false);
+export const currentPath = writable('/');
 
 // music store and player
 export const audioContext = writable(null);
@@ -13,7 +14,6 @@ export const currentSongMetadata = writable({});
 export const isMuted = writable(false);
 export const volumeLevel = writable(1);
 export const seekPosition = writable(0); // Add this line
-
 
 // /live store
 export const channels = writable([]);
