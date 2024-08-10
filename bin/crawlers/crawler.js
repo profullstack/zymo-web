@@ -168,31 +168,42 @@ async function crawl(sessionId, libraryId, url, user = null, pass = null, delay 
 		const { files, links } = parseHtmlForUrls(html, url, libraryId, user, pass);
 
 		for (const nextUrl of links) {
-			if (!crawlingSessions[sessionId]?.isCrawling) break;
+			if (!crawlingSessions[sessionId]?.isCrawling) return; // Early exit
+
 			await new Promise((resolve) => setTimeout(resolve, delay)); // Rate limiting
 			await crawl(sessionId, libraryId, nextUrl, user, pass, delay);
 
-			crawlingSessions[sessionId].foundUrls.push(nextUrl);
-			crawlingSessions[sessionId].urlCount += 1;
+			// Update the session status only if it hasn't been stopped
+			if (crawlingSessions[sessionId]?.isCrawling) {
+				crawlingSessions[sessionId].libraryId = libraryId;
+				crawlingSessions[sessionId].foundUrls.push(nextUrl);
+				crawlingSessions[sessionId].urlCount += 1;
 
-			if (crawlingSessions[sessionId].urlCount % 10 === 0) {
-				await db.merge(sessionId, {
-					foundUrls: crawlingSessions[sessionId].foundUrls,
-					urlCount: crawlingSessions[sessionId].urlCount
-				});
+				if (crawlingSessions[sessionId].urlCount % 10 === 0) {
+					await db.merge(sessionId, {
+						foundUrls: crawlingSessions[sessionId].foundUrls,
+						urlCount: crawlingSessions[sessionId].urlCount,
+						libraryId: crawlingSessions[sessionId].libraryId // Ensure libraryId is preserved
+					});
+				}
 			}
 		}
 
-		crawlingSessions[sessionId].foundUrls.push(...files.map((file) => file.url));
-		crawlingSessions[sessionId].urlCount += files.length;
+		if (crawlingSessions[sessionId]?.isCrawling) {
+			crawlingSessions[sessionId].foundUrls.push(...files.map((file) => file.url));
+			crawlingSessions[sessionId].urlCount += files.length;
 
-		if (files.length) {
-			await db.merge(sessionId, { foundFiles: files });
-			await save(files, libraryId);
+			if (files.length) {
+				await db.merge(sessionId, {
+					foundFiles: files,
+					libraryId // Ensure libraryId is preserved
+				});
+				await save(files, libraryId);
+			}
 		}
 	} catch (error) {
 		console.error(`Error crawling ${url}: ${error.message}`);
-		await db.merge(sessionId, { status: 'failed', error: error.message });
+		await db.merge(sessionId, { status: 'failed', error: error.message, libraryId }); // Ensure libraryId is preserved
 	}
 }
 
@@ -207,13 +218,6 @@ async function save(files, libraryId) {
 		file.updatedAt = new Date();
 		file.createdBy = createdBy;
 		file.mediaInfo = parseMediaUrl(file.url);
-
-		// http://www.omdbapi.com/?i=tt3896198&apikey=c3bd0283
-		// https://www.omdbapi.com/?t=cheers&apikey=c3bd0283
-		// https://www.omdbapi.com/?t=top+gun&y=2022&apiKey=c3bd0283
-		// https://thetvdb.github.io/v4-api/#/Login/post_login
-
-		console.log(file.mediaInfo.videoType);
 
 		if (file.mediaInfo.videoType === 'movie' || file.mediaInfo.videoType === 'tv show') {
 			try {
@@ -231,7 +235,6 @@ async function save(files, libraryId) {
 
 		if (file.mediaInfo.type === 'music') {
 			const musicInfo = await getArtistAndAlbumInfo(file.mediaInfo.artist);
-			// console.log(musicInfo, '<<<< musicInfo');
 
 			const artist = musicInfo.artist;
 			const album = musicInfo.albums
@@ -250,7 +253,7 @@ async function save(files, libraryId) {
 		try {
 			await db.create('media_files', file);
 		} catch (err) {
-			console.error('Could not created file in db: ', file);
+			console.error('Could not create file in db: ', file);
 
 			try {
 				const { url } = file;
@@ -282,63 +285,72 @@ export async function startCrawling(libraryId, sessionId = null) {
 	let library;
 
 	if (libraryId) {
-		//rescan so old files are removed...we delete them first.
+		// Rescan so old files are removed...we delete them first.
 		await db.query('DELETE FROM media_files WHERE libraryId = $libraryId', { libraryId });
 
 		const [res] = (
 			await db.query('SELECT * FROM library WHERE id = $libraryId', { libraryId })
 		).pop();
 
+		if (!res) {
+			throw new Error(`Library with id ${libraryId} not found`);
+		}
+
 		startUrl = res.url.endsWith('/') ? res.url : `${res.url}/`;
 		library = res;
-	}
-
-	if (!sessionId && library) {
-		const { libraryId } = library;
-
-		const [session] = await db.create('crawl_status', {
-			libraryId,
-			currentUrl: startUrl,
-			status: 'running',
-			foundUrls: [],
-			urlCount: 0,
-			error: null
-		});
-
-		sessionId = session.id;
-	} else {
-		await db.merge(sessionId, {
-			status: 'running',
-			error: null
-		});
-
+	} else if (sessionId) {
+		// If we have a sessionId, fetch the associated libraryId and library details.
 		const [session] = (
 			await db.query('SELECT * FROM crawl_status WHERE id = $sessionId', { sessionId })
 		).pop();
 
-		const [res] = (
-			await db.query('SELECT * FROM library WHERE id = $libraryId', {
+		if (!session) {
+			throw new Error(`Session with id ${sessionId} not found`);
+		}
+
+		const [res] = await db
+			.query('SELECT * FROM library WHERE id = $libraryId', {
 				libraryId: session.libraryId
 			})
-		).pop();
+			.pop();
+
+		if (!res) {
+			throw new Error(`Library with id ${session.libraryId} not found`);
+		}
 
 		library = res;
-		sessionId = session.id;
 		startUrl = library.url.endsWith('/') ? library.url : `${library.url}/`;
 	}
+
+	if (!library) {
+		throw new Error(
+			`Could not start crawling. Library is undefined for libraryId ${libraryId} or sessionId ${sessionId}`
+		);
+	}
+
+	// Ensure session status is updated to 'running' before starting the crawl
+	await db.merge(sessionId, {
+		status: 'running',
+		libraryId, // Ensure libraryId is preserved
+		currentUrl: startUrl
+	});
 
 	crawlingSessions[sessionId] = { isCrawling: true, foundUrls: [], urlCount: 0 };
 
 	const { user, pass } = library;
 
 	crawl(sessionId, library.id, startUrl, user, pass).then(async () => {
-		crawlingSessions[sessionId].isCrawling = false;
-		await db.merge(sessionId, {
-			status: 'completed',
-			currentUrl: null,
-			foundUrls: crawlingSessions[sessionId].foundUrls,
-			urlCount: crawlingSessions[sessionId].urlCount
-		});
+		// Only set the status to "completed" if the session was not stopped
+		if (crawlingSessions[sessionId]?.isCrawling) {
+			crawlingSessions[sessionId].isCrawling = false;
+			await db.merge(sessionId, {
+				status: 'completed',
+				currentUrl: null,
+				foundUrls: crawlingSessions[sessionId].foundUrls,
+				urlCount: crawlingSessions[sessionId].urlCount,
+				libraryId // Ensure libraryId is preserved
+			});
+		}
 		delete crawlingSessions[sessionId];
 		console.log('Finished crawling:', sessionId, startUrl);
 	});
@@ -349,7 +361,11 @@ export async function startCrawling(libraryId, sessionId = null) {
 export async function stopCrawling(sessionId) {
 	if (crawlingSessions[sessionId]) {
 		crawlingSessions[sessionId].isCrawling = false;
-		await db.merge(sessionId, { status: 'stopped', currentUrl: null });
+		await db.merge(sessionId, {
+			status: 'stopped',
+			currentUrl: null,
+			libraryId: crawlingSessions[sessionId].libraryId // Ensure libraryId is preserved
+		});
 	}
 }
 
@@ -365,16 +381,18 @@ export async function listSessions() {
 
 export async function startAllCrawling() {
 	const sessions = await listSessions();
-	sessions.forEach((session) => {
-		if (session.status !== 'running') {
-			startCrawling(session.libraryId, session.id);
+	for (const session of sessions) {
+		console.log(session.id, 'checking status:', session.status);
+		if (session.status === 'stopped') {
+			await startCrawling(session.libraryId, session.id); // Ensure await to handle async properly
 		}
-	});
+	}
 }
 
 export async function stopAllCrawling() {
 	const sessions = await listSessions();
 	sessions.forEach((session) => {
+		console.log(session.id, 'stopping!', session.status);
 		if (session.status === 'running') {
 			stopCrawling(session.id);
 		}

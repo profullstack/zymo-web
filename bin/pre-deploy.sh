@@ -17,8 +17,19 @@ if [ -d "$HOME/www/${name}/${project}" ]; then
     echo "Both directories exist"
     cd $HOME/www/${name}/${project}
     sudo systemctl stop ${META_SERVICE}
-  else
+    
+    # Check if crawler is set to 'crawler'
+    if [ "$crawler" == "crawler" ]; then
+        # Determine the port to use, defaulting to 3001 if CRAWLER_PORT is not set
+        port=${CRAWLER_PORT:-3001}
+        
+        # Make the curl call to stop all
+        curl -X POST "http://localhost:${port}/stop-all"
+        echo "Called http://localhost:${port}/stop-all"
+
+        sleep 5;
+        sudo systemctl stop ${META_CRAWLER_SERVICE}
+    fi
+else
     echo "One or both directories do not exist"
 fi
-
-

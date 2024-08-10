@@ -22,35 +22,30 @@ if [ -d "$HOME/www/${name}/${project}" ]; then
     rm -f package-lock.json
     rm -f pnpm-lock.yaml
     rm -rf ./node_modules
-		npm i -g pnpm
-    #pnpm cache clean --force
-    #pnpm cache verify
+    npm i -g pnpm
     pnpm i
-		# curl --proto '=https' --tlsv1.2 -sSf https://install.surrealdb.com | sh -s -- --nightl
-    # sudo systemctl stop ${META_SERVICE}
-    # sudo systemctl stop surrealdb
-    # surreal upgrade --nightly
-    # surreal upgrade
     pnpm run build
     sudo /etc/init.d/nginx reload
     sudo systemctl daemon-reload
     sudo systemctl start ${META_SERVICE}
 
     if [ -n "$crawler" ] && [ "$crawler" == "crawler" ]; then
-      # The variable is defined and its value is 'migrate'
+      # The variable is defined and its value is 'crawler'
       echo "Restarting crawler..."
       sudo systemctl restart ${META_CRAWLER_SERVICE}
+      
+      sleep 5;
+      # Make the curl call to start all
+      port=${CRAWLER_PORT:-3001}
+      curl -X POST "http://localhost:${port}/start-all"
+      echo "Called http://localhost:${port}/start-all"
     else
         echo "Crawler not required or variable not set to 'crawler'."
     fi
 
-    # sudo systemctl start surrealdb
-
     # run migrations
-    chmod 755 ./migrations/*.sh;
-    for f in ./migrations/*.sh; do ./$f; done;
-  else
+    chmod 755 ./migrations/*.sh
+    for f in ./migrations/*.sh; do ./$f; done
+else
     echo "One or both directories do not exist"
 fi
-
-
