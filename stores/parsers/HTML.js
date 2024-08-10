@@ -190,6 +190,7 @@ ON DUPLICATE KEY UPDATE
 
 		async startCrawler(libraryId, sessionId) {
 			const { CRAWLER_PORT } = env;
+			console.log('libraryId:', libraryId, 'sessionId:', sessionId);
 
 			const crawlerApi = `http://localhost:${CRAWLER_PORT}`;
 			const startUrl = `${crawlerApi}/start-crawl`;
@@ -205,6 +206,10 @@ ON DUPLICATE KEY UPDATE
 						sessionId
 					})
 				});
+
+				if (!res.ok) {
+					throw await res.json();
+				}
 
 				return await res.json();
 			} catch (err) {

@@ -202,7 +202,7 @@ async function crawl(sessionId, libraryId, url, user = null, pass = null, delay 
 			}
 		}
 	} catch (error) {
-		console.error(`Error crawling ${url}: ${error.message}`);
+		console.error(`Error crawling ${url}: ${error.message} ${libraryId}, ${sessionId}`);
 		await db.merge(sessionId, { status: 'failed', error: error.message, libraryId }); // Ensure libraryId is preserved
 	}
 }
@@ -229,7 +229,7 @@ async function save(files, libraryId) {
 					file.omdb = await res.json();
 				}
 			} catch (err) {
-				console.error(err);
+				console.error(err, '<< while fetching:', url);
 			}
 		}
 
@@ -328,12 +328,27 @@ export async function startCrawling(libraryId, sessionId = null) {
 		);
 	}
 
-	// Ensure session status is updated to 'running' before starting the crawl
-	await db.merge(sessionId, {
-		status: 'running',
-		libraryId, // Ensure libraryId is preserved
-		currentUrl: startUrl
-	});
+	// If no sessionId is provided, create a new crawl session
+	if (!sessionId) {
+		const sessionData = {
+			libraryId,
+			currentUrl: startUrl,
+			status: 'running',
+			foundUrls: [],
+			urlCount: 0,
+			error: null
+		};
+
+		const [newSession] = await db.create('crawl_status', sessionData);
+		sessionId = newSession.id;
+	} else {
+		// Ensure session status is updated to 'running' before starting the crawl
+		await db.merge(sessionId, {
+			status: 'running',
+			libraryId, // Ensure libraryId is preserved
+			currentUrl: startUrl
+		});
+	}
 
 	crawlingSessions[sessionId] = { isCrawling: true, foundUrls: [], urlCount: 0 };
 
