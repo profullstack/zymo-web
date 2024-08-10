@@ -224,36 +224,41 @@
 		position: fixed;
 		bottom: 0;
 		width: 100%;
-		background: #333;
-		color: white;
-		padding: 10px;
+		background: var(--player-background-color);
+		color: var(--body-color);
+		padding: 0.8rem 0.8rem 0 0.8rem;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		opacity: 0.7;
 	}
+	.player-bar:hover {
+		opacity: 1;
+	}
+
 	.controls {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		width: 100%;
-		margin-bottom: 5px;
+		margin-bottom: 0.4rem;
 		position: relative;
 	}
 	button {
-		margin: 0 5px;
-		padding: 5px 10px;
-		background: #555;
-		color: white;
-		border: none;
+		margin: 0 0.4rem;
+		padding: 0.4rem 0.8rem;
+		background: var(--button-background-color);
+		color: var(--button-color);
+		border: 1px solid var(--button-border-color);
 		cursor: pointer;
 	}
 	.song-info {
 		text-align: center;
-		margin-bottom: 5px;
+		margin-bottom: 0.4rem;
 	}
 	.progress-bar {
 		width: 100%;
-		margin-bottom: 5px;
+		margin-bottom: 0.4rem;
 		text-align: center;
 	}
 	input[type='range'] {
@@ -264,13 +269,13 @@
 	}
 	.volume-container {
 		position: absolute;
-		bottom: 50px; /* Adjust as needed to position above the player bar */
+		bottom: 4rem; /* Adjust as needed to position above the player bar */
 		left: 50%;
 		transform: translateX(-50%);
 		background: #333;
-		padding: 5px;
+		padding: 0.4rem;
 		border-radius: 5px;
-		width: 40px; /* Set the width of the container */
+		width: 4rem; /* Set the width of the container */
 		height: max-content; /* Set the height of the container */
 		display: flex;
 		justify-content: center;
@@ -278,12 +283,12 @@
 	}
 
 	.volume-container input[type='range'] {
-		width: 100px;
+		width: 10rem;
 	}
 
 	.volume-slider {
 		transform: rotate(-90deg);
-		width: 100px; /* Set the width to match the height */
-		height: 100px; /* Set the height of the slider */
+		width: 10rem; /* Set the width to match the height */
+		height: 10rem; /* Set the height of the slider */
 	}
 </style>
