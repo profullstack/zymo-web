@@ -1,7 +1,7 @@
 <section>
 	<div class="pricing-box">
 		<div class="header">Starter</div>
-		<div class="price">$20<span>/mo<br />or $200 annually</span></div>
+		<div class="price">$5<span>/mo<br />or $50 annually</span></div>
 		<ul class="features">
 			<li>1 Account</li>
 			<li class="unavailable">Unlimited Groups</li>
@@ -12,7 +12,7 @@
 	</div>
 	<div class="pricing-box">
 		<div class="header">MVP</div>
-		<div class="price">$50<span>/mo<br />or $500 annually</span></div>
+		<div class="price">$20<span>/mo<br />or $200 annually</span></div>
 		<ul class="features">
 			<li>1 Group</li>
 			<li>5 Accounts</li>
@@ -25,7 +25,7 @@
 	<div class="pricing-box">
 		<div class="header">Lifetime</div>
 		<div class="price">
-			<div class="price">$400<span> once<br /></span></div>
+			<div class="price">$400<span>&nbsp;once<br /></span></div>
 		</div>
 		<ul class="features">
 			<li>Unlimited Groups</li>

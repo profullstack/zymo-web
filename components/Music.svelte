@@ -120,14 +120,14 @@
 					on:click={(e) => {
 						e.stopPropagation();
 						playAllSongs(Object.values(albums).flat());
-					}}>▶</button
+					}}><img src="/static/icons/play.svg" alt="" /></button
 				>
 				<button
 					class="random-button"
 					on:click={(e) => {
 						e.stopPropagation();
 						randomizeAndPlaySongs(Object.values(albums).flat());
-					}}>🔀</button
+					}}><img src="/static/icons/shuffle.svg" alt="" /></button
 				>
 			</div>
 			{#if visibleArtists.has(artist)}
@@ -143,14 +143,14 @@
 								on:click={(e) => {
 									e.stopPropagation();
 									playAllSongs(songs);
-								}}>▶</button
+								}}><img src="/static/icons/play.svg" alt="" /></button
 							>
 							<button
 								class="random-button"
 								on:click={(e) => {
 									e.stopPropagation();
 									randomizeAndPlaySongs(songs);
-								}}>🔀</button
+								}}><img src="/static/icons/shuffle.svg" alt="" /></button
 							>
 						</div>
 						{#if visibleAlbums.has(`${artist}-${album}`)}
@@ -159,7 +159,11 @@
 									<div class="song">
 										<a href={song.url}>{song.songname}</a>
 										<button class="play-button" on:click={() => playSong(song)}>
-											{song.playing ? '❚❚' : '▶'}
+											{#if song.playing}
+												{'❚❚'}
+											{:else}
+												<img src="/static/icons/play.svg" alt="" />
+											{/if}
 										</button>
 									</div>
 								{/each}
@@ -203,6 +207,12 @@
 		cursor: pointer;
 		margin-left: 0.5em;
 		vertical-align: middle;
+	}
+
+	.play-button img,
+	.random-button img {
+		width: 2rem;
+		height: auto;
 	}
 
 	.play-button:focus,
