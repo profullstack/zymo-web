@@ -13,7 +13,7 @@
 		const grouped = {};
 
 		for (const file of music) {
-			const { mediaInfo } = file;
+			const { mediaInfo, musicbrainz } = file;
 			const { url, user, pass, id } = file;
 			const { artist, album, songname } = mediaInfo;
 
@@ -31,7 +31,8 @@
 				id,
 				playing: false,
 				artist,
-				album
+				album,
+				musicbrainz
 			});
 		}
 
@@ -73,7 +74,8 @@
 		currentSongMetadata.set({
 			artist: song.artist,
 			album: song.album,
-			songname: song.songname
+			songname: song.songname,
+			coverArt: song.coverArt
 		});
 		isPlaying.set(true);
 	}
@@ -86,7 +88,8 @@
 			currentSongMetadata.set({
 				artist: song.artist,
 				album: song.album,
-				songname: song.songname
+				songname: song.songname,
+				coverArt: song.coverArt
 			});
 		}
 		isPlaying.set(true);
@@ -137,6 +140,10 @@
 							class="collapsible"
 							on:click={() => toggleVisibility(visibleAlbums, `${artist}-${album}`)}
 						>
+							<!-- <pre>{JSON.stringify(songs, null, 2)}</pre> -->
+							{#if songs[0] && songs[0].musicbrainz && songs[0].musicbrainz.coverArt}
+								<img src={songs[0].musicbrainz.coverArt} alt="" class="poster" />
+							{/if}
 							<button
 								class="play-button"
 								on:click={(e) => {
@@ -183,10 +190,16 @@
 		display: flex;
 		align-items: center;
 		justify-content: flex-start;
+		margin: 2rem 0;
 	}
 
 	.content {
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+		align-items: flex-start;
 		padding-left: 1em;
+		margin: 2rem 0;
 	}
 
 	.song {
@@ -196,7 +209,7 @@
 	}
 
 	.song a {
-		margin-right: 1em;
+		margin-left: 1em;
 	}
 
 	.play-button,
@@ -207,7 +220,7 @@
 		cursor: pointer;
 		vertical-align: middle;
 		padding: 0.2rem;
-		margin: 0.2rem;
+		margin: 0.2rem 0.2rem 0.2rem 1.2rem;
 	}
 
 	.play-button img,
@@ -220,5 +233,11 @@
 	.play-button:focus,
 	.random-button:focus {
 		outline: none;
+	}
+
+	.poster {
+		width: 6rem;
+		height: auto;
+		border: 1px solid var(--button-border-color);
 	}
 </style>

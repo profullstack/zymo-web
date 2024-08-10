@@ -229,11 +229,23 @@ async function save(files, libraryId) {
 			}
 		}
 
-		// if ((file.mediaInfo.type = 'music')) {
-		// 	const musicInfo = await getArtistAndAlbumInfo(file.mediaInfo.artist);
-		// 	console.log(musicInfo);
-		// 	file.musicInfo = musicInfo;
-		// }
+		if (file.mediaInfo.type === 'music') {
+			const musicInfo = await getArtistAndAlbumInfo(file.mediaInfo.artist);
+			// console.log(musicInfo, '<<<< musicInfo');
+
+			const artist = musicInfo.artist;
+			const album = musicInfo.albums
+				.filter((album) => {
+					if (file.mediaInfo.album && album.title) {
+						return file.mediaInfo.album
+							.toLowerCase()
+							.includes(album.title.toLowerCase());
+					}
+				})
+				.pop();
+			console.log(album, '<<<<album matches');
+			file.musicbrainz = { ...artist, ...album };
+		}
 
 		try {
 			await db.create('media_files', file);

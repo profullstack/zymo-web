@@ -96,11 +96,14 @@ export async function getArtistAndAlbumInfo(artistName) {
 
 	try {
 		// Fetch artist data
-		let response = await fetch(queryURL);
+		let response = await fetch(queryURL, {
+			headers: {
+				'user-agent': 'Zymo Crawler/1.0.0 ( http://zymo.tv )'
+			}
+		});
 		let artistData = await response.json();
 
-		console.log(artistData);
-		process.exit(1);
+		// console.log(artistData, '<<<< artistData');
 
 		if (artistData.artists.length === 0) {
 			throw new Error('Artist not found');
@@ -110,8 +113,14 @@ export async function getArtistAndAlbumInfo(artistName) {
 		let artistID = artist.id;
 
 		// Fetch artist's albums
-		response = await fetch(`${baseURL}/release-group?artist=${artistID}&type=album&fmt=json`);
+		response = await fetch(`${baseURL}/release-group?artist=${artistID}&type=album&fmt=json`, {
+			headers: {
+				'user-agent': 'Zymo Crawler/1.0.0 ( http://zymo.tv )'
+			}
+		});
 		let albumData = await response.json();
+
+		// console.log(albumData, '<<< albumData');
 
 		let albums = albumData['release-groups'];
 
@@ -119,7 +128,12 @@ export async function getArtistAndAlbumInfo(artistName) {
 		for (let album of albums) {
 			try {
 				let coverArtResponse = await fetch(
-					`https://coverartarchive.org/release-group/${album.id}`
+					`https://coverartarchive.org/release-group/${album.id}`,
+					{
+						headers: {
+							'user-agent': 'Zymo Crawler/1.0.0 ( http://zymo.tv )'
+						}
+					}
 				);
 				if (coverArtResponse.ok) {
 					let coverArtData = await coverArtResponse.json();
@@ -149,6 +163,3 @@ export async function getArtistAndAlbumInfo(artistName) {
 		return null;
 	}
 }
-
-// Example usage
-// getArtistAndAlbumInfo('Radiohead').then((info) => console.log(info));

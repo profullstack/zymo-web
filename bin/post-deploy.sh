@@ -36,7 +36,7 @@ if [ -d "$HOME/www/${name}/${project}" ]; then
     sudo systemctl daemon-reload
     sudo systemctl start ${META_SERVICE}
 
-    if [ -n "$crawler" ] && [ "$migrate" == "crawlers" ]; then
+    if [ -n "$crawler" ] && [ "$crawler" == "crawler" ]; then
       # The variable is defined and its value is 'migrate'
       echo "Restarting crawler..."
       sudo systemctl restart ${META_CRAWLER_SERVICE}
