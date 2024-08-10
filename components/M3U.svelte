@@ -161,6 +161,7 @@
 	<h4>Select a Channel</h4>
 
 	<div
+		class="filter-container"
 		on:mouseover={() => (isChannelSearchHovered = true)}
 		on:mouseleave={() => closeChannelList()}
 	>
@@ -213,12 +214,20 @@
 </div>
 
 <style>
+	.filter-container {
+		position: relative;
+		z-index: 2;
+	}
+
 	#channel-list {
 		list-style-type: none;
 		padding: 0;
 		margin: 0;
 		max-height: 30rem;
 		overflow-y: auto;
+		position: absolute;
+		margin-bottom: 0;
+		background-color: gray;
 	}
 
 	#channel-list li {
@@ -228,7 +237,7 @@
 		cursor: pointer;
 	}
 	#channel-list li:hover {
-		background-color: var(--list-hover-background-color);
+		background-color: #f0f0f0;
 	}
 	#filter-input {
 		margin-bottom: 10px;
