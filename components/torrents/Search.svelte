@@ -10,7 +10,8 @@
 		isLoading = true;
 		try {
 			const res = await fetch(
-				'/api/torrent/search?q=' + encodeURIComponent(q) + '&mediaType=' + mediaType
+				// '/api/torrent/search?q=' + encodeURIComponent(q) + '&mediaType=' + mediaType
+				'/api/torrent/search?q=' + encodeURIComponent(q)
 			);
 
 			if (!res.ok) {
@@ -63,6 +64,13 @@
 		>
 		<label
 			><input type="radio" name="mediaType" value="Music" bind:group={mediaType} /> Music</label
+		>
+		<label><input type="radio" name="mediaType" value="TV" bind:group={mediaType} /> TV</label>
+		<label
+			><input type="radio" name="mediaType" value="Apps" bind:group={mediaType} /> Apps</label
+		>
+		<label
+			><input type="radio" name="mediaType" value="Books" bind:group={mediaType} /> Books</label
 		>
 	</div>
 

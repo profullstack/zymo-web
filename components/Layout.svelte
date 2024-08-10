@@ -20,12 +20,12 @@
 	<div class="content">
 		{#if isLoggedIn}
 			<NavBar {isLoggedIn} {isAdmin} />
-			<Player />
 		{/if}
 
 		<slot />
 	</div>
 </main>
+
 {#if isLoggedIn}
 	<Player />
 {/if}

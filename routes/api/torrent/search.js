@@ -8,9 +8,9 @@ export default {
 		} = store;
 
 		const q = query.get('q') || '1080';
-		const mediaType = query.get('mediaType') || 'Movies';
+		const mediaType = query.get('mediaType') || '';
 		const results = await Torrent.search(q, mediaType);
 
-		return results;
+		return { results };
 	}
 };

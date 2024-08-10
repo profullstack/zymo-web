@@ -18,6 +18,7 @@
 	export let m3us = [];
 	export let proxy = false;
 
+	// Function to fetch the channels from the selected provider
 	async function fetchChannels(provider) {
 		isLoading.set(true);
 		channels.set([]);
@@ -33,6 +34,7 @@
 		}
 	}
 
+	// Function to parse M3U8 content and extract channels
 	function parseM3U8(m3u8Text) {
 		const lines = m3u8Text.split('\n');
 		const channelList = [];
@@ -51,6 +53,7 @@
 		return channelList;
 	}
 
+	// Function to select a channel from the dropdown
 	function selectChannel(channel) {
 		isChannelListOpen.set(false);
 		selectedChannel.set(channel);
@@ -58,12 +61,13 @@
 		playStream(channel.url);
 	}
 
+	// Function to play the selected stream
 	async function playStream(url) {
 		url =
-			url.indexOf('m3u8') > -1 ||
-			url.indexOf('mp4') > -1 ||
-			url.indexOf('mov') > -1 ||
-			url.indexOf('mkv') > -1
+			url.includes('m3u8') ||
+			url.includes('mp4') ||
+			url.includes('mov') ||
+			url.includes('mkv')
 				? url
 				: `${url}.m3u8`;
 
@@ -92,6 +96,7 @@
 		}
 	}
 
+	// Handle provider change event
 	function handleProviderChange(event) {
 		const provider = event.target.value;
 		if (provider !== '-- Select Provider --') {
@@ -100,6 +105,7 @@
 		}
 	}
 
+	// Handle proxy checkbox change event
 	function handleCheckboxChange(event) {
 		proxy = event.target.checked;
 		const channel = get(selectedChannel);
@@ -184,7 +190,7 @@
 			<source src={$selectedChannel.url} type="video/mp4" />
 		</video>
 	{:else}
-		<button on:click={() => playStream($streamUrl)}>Play</button>
+		<!-- <button on:click={() => playStream($streamUrl)}>Play</button> -->
 		<video id="video" controls></video>
 	{/if}
 </div>
@@ -214,7 +220,8 @@
 		box-sizing: border-box;
 	}
 	video {
-		width: 100%;
+		width: 50%;
+		max-width: 80vw;
 		height: auto;
 	}
 </style>

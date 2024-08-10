@@ -280,7 +280,7 @@ export const actions = ({ connection: db }) => {
 			return await this.addTorrent(client, magnet, path);
 		},
 
-		async search(q, mediaType) {
+		async search(q, mediaType = '') {
 			Torrent.enablePublicProviders();
 			const torrents = await Torrent.search(q, mediaType, 20);
 
