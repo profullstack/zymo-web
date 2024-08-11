@@ -1,62 +1,57 @@
 <script>
-	import { onMount, afterUpdate } from 'svelte';
+	import { onMount } from 'svelte';
 	import { epgStore, setEPGData, setEPGError } from '../../modules/store.js';
+
+	export let m3u = {};
 
 	let currentTime = new Date();
 	let endTime = new Date(currentTime);
 	endTime.setHours(currentTime.getHours() + 24);
 
 	let filterText = ''; // Reactive variable for filter input
+	let currentPage = 1; // Current page for pagination
+	const pageSize = 10; // Number of channels per page
+
+	let filteredChannels = []; // Initialize filteredChannels as an empty array
+	let paginatedChannels = []; // Initialize paginatedChannels as an empty array
 
 	function generateTimeBlocks() {
-		console.log('Generating time blocks...');
 		const blocks = [];
 		const tempTime = new Date(currentTime);
 		while (tempTime <= endTime) {
 			blocks.push(new Date(tempTime));
 			tempTime.setMinutes(tempTime.getMinutes() + 30);
 		}
-		console.log('Time blocks generated:', blocks);
 		return blocks;
 	}
 
 	function calculateSpan(start, stop) {
 		const duration = (stop - start) / (1000 * 60 * 30); // duration in 30-minute blocks
-		console.log(`Calculating span: Start - ${start}, Stop - ${stop}, Duration - ${duration}`);
 		return Math.ceil(duration);
 	}
 
 	async function fetchEPG() {
 		try {
-			console.log('Fetching EPG data...');
-			const response = await fetch(
-				'http://xtremity.tv:80/xmltv.php?username=a8nwVwmPu8&password=nKjvyCjMWc'
-			);
+			const response = await fetch(`/api/m3u/${m3u.id}/epg`);
 			if (!response.ok) {
 				throw new Error(`HTTP error! status: ${response.status}`);
 			}
 
 			const xmlText = await response.text();
-			console.log('Fetched XML:', xmlText.substring(0, 200), '...'); // Log the first 200 characters
 			const parser = new DOMParser();
 			const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
 
 			const programs = xmlDoc.querySelectorAll('programme');
 			const channelMap = {};
-			console.log('Parsing programs...');
 
-			Array.from(programs).forEach((program, index) => {
-				const channel = program.getAttribute('channel');
+			Array.from(programs).forEach((program) => {
+				const channel = program.getAttribute('channel').trim();
 				if (!channelMap[channel]) {
 					channelMap[channel] = [];
 				}
 				const title = program.querySelector('title').textContent;
 				const start = new Date(program.getAttribute('start'));
 				const stop = new Date(program.getAttribute('stop'));
-
-				console.log(
-					`Program ${index}: Channel - ${channel}, Title - ${title}, Start - ${start}, Stop - ${stop}`
-				);
 
 				channelMap[channel].push({
 					title,
@@ -68,39 +63,67 @@
 			const channels = Object.keys(channelMap);
 			const timeBlocks = generateTimeBlocks();
 
-			console.log('Channels:', channels);
-			console.log('EPG Data:', channelMap);
-			console.log('Time Blocks:', timeBlocks);
+			console.log('Fetched channels:', channels);
+			console.log('Fetched EPG data:', channelMap);
 
 			setEPGData({ channels, epgData: channelMap, timeBlocks });
-			console.log('EPG data set in store.');
+
+			console.log('epgStore after setEPGData:', $epgStore);
 		} catch (err) {
 			setEPGError(`Failed to fetch EPG data: ${err.message}`);
 			console.error('Error fetching EPG data:', err);
 		}
 	}
 
-	// Filter the channels based on the filter text
-	$: filteredChannels = $epgStore.channels.filter((channel) =>
-		channel.toLowerCase().includes(filterText.toLowerCase())
-	);
+	// Ensure $epgStore is defined and contains necessary data
+	$: channels = $epgStore.channels || [];
+	$: timeBlocks = $epgStore.timeBlocks || [];
 
-	// Filter the EPG data based on the filtered channels
+	// Filter the channels based on the filter text
+	$: filteredChannels =
+		channels.length > 0
+			? channels.filter((channel) => channel.toLowerCase().includes(filterText.toLowerCase()))
+			: [];
+
+	// Paginate the filtered channels
+	$: paginatedChannels =
+		filteredChannels.length > 0 ? paginate(filteredChannels, pageSize, currentPage) : [];
+
+	// Filter the EPG data based on the paginated channels
 	$: filteredEPGData = {};
-	if (filteredChannels.length > 0) {
-		for (const channel of filteredChannels) {
-			filteredEPGData[channel] = $epgStore.epgData[channel];
+	if (paginatedChannels.length > 0) {
+		for (const channel of paginatedChannels) {
+			const trimmedChannel = channel.trim();
+			if ($epgStore.epgData[trimmedChannel]) {
+				filteredEPGData[trimmedChannel] = $epgStore.epgData[trimmedChannel];
+				console.log(`Data for channel ${trimmedChannel}:`, filteredEPGData[trimmedChannel]);
+			} else {
+				console.log(`No data found for channel ${trimmedChannel}`);
+			}
+		}
+	}
+
+	function paginate(array, page_size, page_number) {
+		return array.slice((page_number - 1) * page_size, page_number * page_size);
+	}
+
+	function nextPage() {
+		if (
+			filteredChannels.length > 0 &&
+			currentPage < Math.ceil(filteredChannels.length / pageSize)
+		) {
+			currentPage++;
+		}
+	}
+
+	function prevPage() {
+		if (filteredChannels.length > 0 && currentPage > 1) {
+			currentPage--;
 		}
 	}
 
 	onMount(() => {
-		console.log('Component mounted, fetching EPG...');
 		fetchEPG();
-	});
-
-	afterUpdate(() => {
-		console.log('DOM has been updated');
-		// Perform any operations you need to do after the DOM is updated
 	});
 </script>
 
@@ -113,55 +136,72 @@
 {:else if filterText.length >= 2}
 	<!-- Only render when filter text has at least 2 characters -->
 	<div class="epg-container">
-		<div class="epg-channel-list">
-			{#each filteredChannels as channel, index}
-				<div class="epg-channel-name" key={index}>{channel}</div>
-			{/each}
-		</div>
-		<div class="epg-schedule">
-			{#each filteredChannels as channel, channelIndex}
-				<ul class="epg-channel-schedule" key={channelIndex}>
-					{#each $epgStore.timeBlocks as block, blockIndex}
-						{#if filteredEPGData[channel]}
-							{#each filteredEPGData[channel] as show, showIndex}
-								{#if block >= show.start && block < show.stop}
-									<li
+		{#each paginatedChannels as channel, index}
+			<div class="epg-row" key={index}>
+				<div class="epg-channel-name">{channel}</div>
+				<div class="epg-schedule">
+					{#if filteredEPGData[channel] && filteredEPGData[channel].length > 0}
+						{#each timeBlocks as block, blockIndex}
+							{#if filteredEPGData[channel].some((show) => block >= show.start && block < show.stop)}
+								{#each filteredEPGData[channel].filter((show) => block >= show.start && block < show.stop) as show}
+									<div
 										class="epg-show"
 										style="grid-column: span {calculateSpan(
 											show.start,
 											show.stop
 										)};"
-										key={showIndex}
 									>
 										{show.title}
-									</li>
-								{/if}
-							{/each}
-						{/if}
-					{/each}
-				</ul>
-			{/each}
-		</div>
+									</div>
+								{/each}
+							{:else}
+								<div class="epg-show-placeholder">No Show</div>
+							{/if}
+						{/each}
+					{:else}
+						<div class="epg-show-placeholder">No Data</div>
+					{/if}
+				</div>
+			</div>
+		{/each}
+	</div>
+
+	<!-- Pagination controls -->
+	<div class="pagination-controls">
+		<button on:click={prevPage} disabled={currentPage === 1}>&lt;&lt;</button>
+		<span>Page {currentPage} of {Math.ceil(filteredChannels.length / pageSize)}</span>
+		<button
+			on:click={nextPage}
+			disabled={currentPage === Math.ceil(filteredChannels.length / pageSize)}
+			>&gt;&gt;</button
+		>
 	</div>
 {:else}
 	<p>Please enter at least 2 characters to filter the channels.</p>
 {/if}
 
+<!-- Dump data for debugging -->
+{#if filteredChannels.length > 0}
+	<pre>{JSON.stringify(filteredEPGData, null, 2)}</pre>
+{/if}
+
 <style>
-	/* Same styles as before */
+	/* EPG Container */
 	.epg-container {
-		display: grid;
-		grid-template-columns: 150px 1fr;
+		display: flex;
+		flex-direction: column;
 		gap: 1rem;
 		overflow-x: auto;
 	}
 
-	.epg-channel-list {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
+	/* EPG Row */
+	.epg-row {
+		display: grid;
+		grid-template-columns: 150px 1fr;
+		gap: 1rem;
 	}
 
+	/* Channel Name */
 	.epg-channel-name {
 		font-weight: bold;
 		padding: 0.5rem;
@@ -171,12 +211,14 @@
 		text-align: center;
 	}
 
+	/* Schedule Grid */
 	.epg-schedule {
 		display: grid;
 		grid-template-columns: repeat(48, 1fr); /* 48 blocks for 30-min intervals */
 		gap: 0.5rem;
 	}
 
+	/* Show Block */
 	.epg-show {
 		background-color: #007bff;
 		color: white;
@@ -191,5 +233,34 @@
 	.epg-show-placeholder {
 		background-color: #e0e0e0;
 		height: 100%;
+		text-align: center;
+		line-height: 1.5rem;
+	}
+
+	/* Pagination Controls */
+	.pagination-controls {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-top: 1rem;
+	}
+
+	.pagination-controls button {
+		background-color: #333;
+		color: white;
+		padding: 0.5rem 1rem;
+		border: none;
+		border-radius: 5px;
+		margin: 0 0.5rem;
+		cursor: pointer;
+	}
+
+	.pagination-controls button:disabled {
+		background-color: #666;
+		cursor: not-allowed;
+	}
+
+	.pagination-controls span {
+		font-weight: bold;
 	}
 </style>

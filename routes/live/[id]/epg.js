@@ -7,10 +7,10 @@ export default {
 		const {
 			m3u: { M3U }
 		} = store;
-		// const id = path.get('id');
-		// const m3u = await M3U.getById(id);
-		// console.log('id m3u:', m3u);
+		const id = path.get('id');
+		const m3u = await M3U.getById(id);
+		console.log('id m3u:', m3u);
 
-		return view('m3u/EPG.svelte', {});
+		return view('m3u/EPG.svelte', { m3u });
 	}
 };

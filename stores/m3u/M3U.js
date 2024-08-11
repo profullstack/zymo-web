@@ -115,6 +115,39 @@ export const actions = ({ connection: db }) => {
 				console.error(err);
 			}
 		},
+		async fetchEPGById(id) {
+			console.log('id:', id);
+			const query = `SELECT * FROM m3u WHERE id = $id`;
+			const [m3u] = await db.query(query, {
+				id
+			});
+
+			console.log('id m3u:', m3u);
+
+			const cacheKey = `${id}/epg`;
+			const cachedData = await client.get(cacheKey);
+
+			if (cachedData) {
+				console.log('got cache: ', cacheKey);
+				return cachedData;
+			}
+
+			try {
+				const res = await fetch(m3u.pop().epg);
+
+				if (res.ok) {
+					const data = await res.text();
+					console.log('set cache:', cacheKey);
+					await client.set(cacheKey, data, {
+						EX: CACHE_EXPIRATION
+					});
+
+					return data;
+				}
+			} catch (err) {
+				console.error(err);
+			}
+		},
 		async getAllByUserId(createdBy) {
 			const query = `SELECT * FROM m3u WHERE createdBy = $createdBy`;
 
