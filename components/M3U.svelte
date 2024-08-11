@@ -158,6 +158,10 @@
 		<Spinner isLoading={$isLoading} />
 	</div>
 
+	{#if $selectedProvider}
+		<h4><a href="/live/{$selectedProvider}/epg">View EGP</a></h4>
+	{/if}
+
 	<h4>Select a Channel</h4>
 
 	<div
