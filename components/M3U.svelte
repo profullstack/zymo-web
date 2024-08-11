@@ -224,6 +224,8 @@
 	}
 
 	#channel-list {
+		width: 100%;
+		max-width: 60rem;
 		list-style-type: none;
 		padding: 0;
 		margin: 0;
@@ -231,7 +233,7 @@
 		overflow-y: auto;
 		position: absolute;
 		margin-bottom: 0;
-		background-color: var(--body-background-color);
+		background-color: var(--list-background-color);
 	}
 
 	#channel-list li {
@@ -247,6 +249,7 @@
 		margin-bottom: 10px;
 		padding: 5px;
 		width: 100%;
+		max-width: 60rem;
 		box-sizing: border-box;
 	}
 	video {
