@@ -30,6 +30,13 @@
 		return Math.ceil(duration);
 	}
 
+	function formatTime(time) {
+		return time.replace(
+			/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2}) ([+-]\d{2})(\d{2})/,
+			'$1-$2-$3T$4:$5:$6$7:$8'
+		);
+	}
+
 	async function fetchEPG() {
 		try {
 			const response = await fetch(`/api/m3u/${m3u.id}/epg`);
@@ -43,15 +50,14 @@
 
 			const programs = xmlDoc.querySelectorAll('programme');
 			const channelMap = {};
-
 			Array.from(programs).forEach((program) => {
 				const channel = program.getAttribute('channel').trim();
 				if (!channelMap[channel]) {
 					channelMap[channel] = [];
 				}
 				const title = program.querySelector('title').textContent;
-				const start = new Date(program.getAttribute('start'));
-				const stop = new Date(program.getAttribute('stop'));
+				const start = new Date(formatTime(program.getAttribute('start')));
+				const stop = new Date(formatTime(program.getAttribute('stop')));
 
 				channelMap[channel].push({
 					title,
@@ -91,14 +97,20 @@
 
 	// Filter the EPG data based on the paginated channels
 	$: filteredEPGData = {};
-	if (paginatedChannels.length > 0) {
-		for (const channel of paginatedChannels) {
-			const trimmedChannel = channel.trim();
-			if ($epgStore.epgData[trimmedChannel]) {
-				filteredEPGData[trimmedChannel] = $epgStore.epgData[trimmedChannel];
-				console.log(`Data for channel ${trimmedChannel}:`, filteredEPGData[trimmedChannel]);
-			} else {
-				console.log(`No data found for channel ${trimmedChannel}`);
+
+	function filterEPGData() {
+		if (paginatedChannels.length > 0) {
+			for (const channel of paginatedChannels) {
+				const trimmedChannel = channel.trim();
+				if ($epgStore.epgData[trimmedChannel]) {
+					filteredEPGData[trimmedChannel] = $epgStore.epgData[trimmedChannel];
+					console.log(
+						`Data for channel ${trimmedChannel}:`,
+						filteredEPGData[trimmedChannel]
+					);
+				} else {
+					console.log(`No data found for channel ${trimmedChannel}`);
+				}
 			}
 		}
 	}
@@ -127,7 +139,7 @@
 	});
 </script>
 
-<input type="text" bind:value={filterText} placeholder="Filter channels" />
+<input type="text" on:input={filterEPGData} bind:value={filterText} placeholder="Filter channels" />
 
 {#if $epgStore.isLoading}
 	<div>Loading EPG data...</div>
