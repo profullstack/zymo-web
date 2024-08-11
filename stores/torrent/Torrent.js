@@ -284,7 +284,8 @@ export const actions = ({ connection: db }) => {
 		async search(q, mediaType = '') {
 			let torrents = [];
 
-			Torrent.enablePublicProviders();
+			// Torrent.enablePublicProviders();
+			Torrent.enableProvider('1337x');
 
 			try {
 				torrents = await Torrent.search(q, mediaType, 20);

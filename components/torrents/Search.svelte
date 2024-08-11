@@ -26,8 +26,9 @@
 		}
 	}
 
-	async function download(magnet) {
-		console.log(magnet);
+	async function download(torrent) {
+		console.log(torrent);
+
 		try {
 			const res = await fetch('/api/torrent/download', {
 				method: 'POST',
@@ -35,7 +36,7 @@
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify({
-					magnet,
+					...torrent,
 					path
 				})
 			});
@@ -97,7 +98,7 @@
 			<a
 				href="#"
 				on:click|preventDefault={() => {
-					download(torrent.magnet);
+					download(torrent);
 				}}>download</a
 			>
 		</li>
