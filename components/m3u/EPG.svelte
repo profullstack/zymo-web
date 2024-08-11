@@ -26,7 +26,7 @@
 	}
 
 	function calculateSpan(start, stop) {
-		const duration = (stop - start) / (1000 * 60 * 30); // duration in 30-minute blocks
+		const duration = (stop - start) / (1000 * 60 * 10); // duration in 10-minute blocks
 		return Math.ceil(duration);
 	}
 
