@@ -1,22 +1,25 @@
 <script>
-	import { onMount } from "svelte";
+	import { onMount } from 'svelte';
 
 	export let title = REPLACE_APP_NAME;
 	export let description = REPLACE_APP_DESCRIPTION;
-	export let path = "";
-	export let imagePath = "/images/meta-banner.png";
+	export let path = '';
+	export let imagePath = '/images/hero.jpg';
 
 	const analyticsId = REPLACE_GOOGLE_ANALYTICS_ID;
 	const domain = REPLACE_APP_DOMAIN;
 
 	onMount(() => {
 		window.dataLayer = window.dataLayer || [];
-		function gtag() { dataLayer.push(arguments); }
+		function gtag() {
+			dataLayer.push(arguments);
+		}
 		gtag('js', new Date());
 
 		gtag('config', analyticsId);
 	});
 </script>
+
 <svelte:head>
 	<!-- standard tags -->
 	<title>{title || 'Home'}</title>
@@ -35,7 +38,7 @@
 	<meta property="twitter:card" content="summary_large_image" />
 	<meta property="twitter:title" content={title} />
 	<meta property="twitter:url" content="https://{domain}" />
-	<meta property="twitter:domain" content="{domain}" />
+	<meta property="twitter:domain" content={domain} />
 	<meta property="twitter:description" content={description} />
 	<meta property="twitter:image" content="https://{domain}{imagePath}" />
 	<!-- Google tag (gtag.js) -->

@@ -128,7 +128,7 @@
 		isChannelSearchHovered = false;
 		setTimeout(() => {
 			if (!isChannelSearchHovered) isChannelListOpen.set(false);
-		}, 500);
+		}, 100);
 	}
 </script>
 
@@ -231,7 +231,7 @@
 		overflow-y: auto;
 		position: absolute;
 		margin-bottom: 0;
-		background-color: gray;
+		background-color: var(--body-background-color);
 	}
 
 	#channel-list li {
@@ -241,7 +241,7 @@
 		cursor: pointer;
 	}
 	#channel-list li:hover {
-		background-color: #f0f0f0;
+		background-color: var(--list-hover-background-color);
 	}
 	#filter-input {
 		margin-bottom: 10px;
