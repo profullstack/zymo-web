@@ -13,7 +13,7 @@ export const actions = ({ connection: db }) => {
 		},
 		async create(data) {
 			console.log('create:', data);
-			let { url, name, user, pass, provider } = data;
+			let { url, name, user, pass, provider, path } = data;
 			const { DB_NS, DB_DB } = env;
 			const me = await this.me();
 			console.log('db:', DB_NS, DB_DB);
@@ -25,6 +25,7 @@ export const actions = ({ connection: db }) => {
 					user,
 					pass,
 					provider,
+					path,
 					createdBy: me.id,
 					createdAt: new Date().toISOString(),
 					updatedAt: new Date().toISOString()
