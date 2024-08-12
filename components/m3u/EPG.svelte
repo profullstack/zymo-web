@@ -162,6 +162,7 @@
 											show.start,
 											show.stop
 										)};"
+										title={show.title}
 									>
 										{show.title}
 									</div>
@@ -204,6 +205,8 @@
 		flex-direction: column;
 		gap: 1rem;
 		overflow-x: auto;
+		max-width: 94vw;
+		position: relative;
 	}
 
 	/* EPG Row */
@@ -221,6 +224,8 @@
 		color: white;
 		border-radius: 5px;
 		text-align: center;
+		position: fixed;
+		width: 20rem;
 	}
 
 	/* Schedule Grid */
@@ -228,11 +233,14 @@
 		display: grid;
 		grid-template-columns: repeat(48, 1fr); /* 48 blocks for 30-min intervals */
 		gap: 0.5rem;
+		grid-auto-flow: column;
+		margin-left: 20rem;
+		grid-auto-columns: min-content;
 	}
 
 	/* Show Block */
 	.epg-show {
-		background-color: #007bff;
+		background-color: var(--list-background-color);
 		color: white;
 		padding: 0.5rem;
 		border-radius: 5px;
@@ -240,6 +248,10 @@
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
+	}
+
+	.epg-show:hover {
+		background-color: var(--list-hover-background-color);
 	}
 
 	.epg-show-placeholder {
