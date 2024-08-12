@@ -1,3 +1,4 @@
+const UA = 'Zymo Crawler/1.0.0 ( http://zymo.tv )';
 
 export async function getArtistAndAlbumInfo(artistName) {
 	const baseURL = 'https://musicbrainz.org/ws/2';
@@ -7,7 +8,7 @@ export async function getArtistAndAlbumInfo(artistName) {
 		// Fetch artist data
 		let response = await fetch(queryURL, {
 			headers: {
-				'user-agent': 'Zymo Crawler/1.0.0 ( http://zymo.tv )'
+				'user-agent': UA
 			}
 		});
 		let artistData = await response.json();
@@ -24,7 +25,7 @@ export async function getArtistAndAlbumInfo(artistName) {
 		// Fetch artist's albums
 		response = await fetch(`${baseURL}/release-group?artist=${artistID}&type=album&fmt=json`, {
 			headers: {
-				'user-agent': 'Zymo Crawler/1.0.0 ( http://zymo.tv )'
+				'user-agent': UA
 			}
 		});
 		let albumData = await response.json();
@@ -40,7 +41,7 @@ export async function getArtistAndAlbumInfo(artistName) {
 					`https://coverartarchive.org/release-group/${album.id}`,
 					{
 						headers: {
-							'user-agent': 'Zymo Crawler/1.0.0 ( http://zymo.tv )'
+							'user-agent': UA
 						}
 					}
 				);

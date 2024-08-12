@@ -1,3 +1,5 @@
+const UA = 'Zymo Crawler/1.0.0 ( http://zymo.tv )';
+
 const patterns = {
 	season: /([Ss]?([0-9]{1,2}))[Eex]/,
 	episode: /([Eex]([0-9]{2})(?:[^0-9]|$))/,
@@ -225,11 +227,15 @@ export async function fetchBookMetadata(title) {
 	const originalTitle = decodeURIComponent(title).replace(/\sby\s/gi, ' ');
 
 	const url = `https://openlibrary.org/search.json?q=${encodeURIComponent(originalTitle)}&mode=everything`;
-				       //openlibrary.org/search.json?q=Mastering+Node+js+Web+Development+adam+freeman&mode=everything
+	//openlibrary.org/search.json?q=Mastering+Node+js+Web+Development+adam+freeman&mode=everything
 	https: console.log('fetch book metadata:', url);
 
 	try {
-		const res = await fetch(url);
+		const res = await fetch(url, {
+			headers: {
+				'user-agent': UA
+			}
+		});
 		if (res.ok) {
 			const data = await res.json();
 			if (data.docs && data.docs.length > 0) {
