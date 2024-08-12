@@ -5,7 +5,10 @@
 	export let m3u = {};
 
 	let currentTime = new Date();
-	let endTime = new Date(currentTime).setHours(currentTime.getHours() + 24);
+	currentTime.setMinutes(0, 0, 0);
+
+	let endTime = new Date(currentTime);
+	endTime.setHours(currentTime.getHours() + 24)
 
 	let filterText = ''; // Reactive variable for filter input
 	let currentPage = 1; // Current page for pagination
@@ -87,7 +90,7 @@
 					const start = new Date(formatTime(program.getAttribute('start')));
 					const stop = new Date(formatTime(program.getAttribute('stop')));
 
-					if (currentTime < stop && start < endTime) {
+					if (currentTime <= start && start <= endTime) {
 						channels[channelIndex].programs.push({
 							title,
 							start,
