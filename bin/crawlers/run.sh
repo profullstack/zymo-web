@@ -8,4 +8,6 @@ pwd
 . .env
 . .env.local
 
+port=${CRAWLER_PORT:-3001}
+
 node ./bin/crawlers/server.js

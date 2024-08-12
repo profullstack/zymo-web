@@ -4,6 +4,7 @@
 	"scripts": {
 		"dev": "pnpm run env:dev && npx primate",
 		"crawler": "./bin/crawlers/run.sh",
+		"crawler:restart_scans": "./bin/crawlers/restart_scans.sh",
 		"start": "pnpm run env:prod && npx primate serve",
 		"build": "pnpm run env:prod && npx primate build",
 		"build:desktop": "bun --bun x primate build desktop",
@@ -83,7 +84,7 @@
 		"surrealdb.js": "^0.11.1",
 		"svelte": "^4.2.18",
 		"torrent-browse": "^1.0.2",
-		"torrent-search-api-for-barbaroussa": "^1.0.4",
+		"torrent-search-api-for-barbaroussa": "^1.0.5",
 		"twilio": "^5.2.2",
 		"uuid": "^10.0.0",
 		"video.js": "^8.17.2"
