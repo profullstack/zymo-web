@@ -32,6 +32,7 @@
 
 <style>
 	.content {
+		width: 100%;
 		padding: 1.2rem 2.4rem;
 		margin-bottom: 7.2rem;
 	}

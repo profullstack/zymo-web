@@ -139,7 +139,13 @@
 	});
 </script>
 
-<input type="text" on:input={filterEPGData} bind:value={filterText} placeholder="Filter channels" />
+<input
+	type="text"
+	id="filter-input"
+	on:input={filterEPGData}
+	bind:value={filterText}
+	placeholder="Filter channels"
+/>
 
 {#if $epgStore.isLoading}
 	<div>Loading EPG data...</div>
@@ -199,12 +205,17 @@
 {/if}
 
 <style>
+	#filter-input {
+		width: 60rem;
+	}
+
 	/* EPG Container */
 	.epg-container {
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
 		overflow-x: auto;
+		height: auto;
 		max-width: 94vw;
 		position: relative;
 	}
