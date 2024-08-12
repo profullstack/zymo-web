@@ -8,6 +8,7 @@ button {
 	padding: 0.8rem 1.2rem;
 	border: 1px solid var(--button-border-color);
 	font-weight: 700;
+	font-size: 1.6rem;
 }
 
 form fieldset {
@@ -33,13 +34,20 @@ form .field.row {
 	flex-direction: row;
 }
 
-form input:not([type='checkbox'], [type='radio']) {
+input:not([type='checkbox'], [type='radio']),
+select,
+select option {
 	background-color: var(--form-field-background-color);
 	color: var(--form-field-color);
 	padding: 0.8rem 1.2rem;
 	border: 1px solid var(--form-field-border-color);
 	outline: none;
 	width: 100%;
+	font-size: 1.6rem;
+}
+
+select {
+	width: auto;
 }
 
 form input:focus {

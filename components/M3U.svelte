@@ -245,10 +245,9 @@
 	#channel-list li:hover {
 		background-color: var(--list-hover-background-color);
 	}
+
 	#filter-input {
-		margin-bottom: 10px;
-		padding: 5px;
-		width: 100%;
+		margin-bottom: 1rem;
 		max-width: 60rem;
 		box-sizing: border-box;
 	}
