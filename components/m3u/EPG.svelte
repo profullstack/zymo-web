@@ -150,7 +150,7 @@
 	<div class="epg-container">
 		{#each paginatedChannels as channel, index}
 			<div class="epg-row" key={index}>
-				<div class="epg-channel-name">{channel}</div>
+				<div class="epg-channel-name" title={channel}>{channel}</div>
 				<div class="epg-schedule">
 					{#if filteredEPGData[channel] && filteredEPGData[channel].length > 0}
 						{#each timeBlocks as block, blockIndex}
@@ -226,6 +226,8 @@
 		text-align: center;
 		position: fixed;
 		width: 20rem;
+		text-overflow: ellipsis;
+		overflow: hidden;
 	}
 
 	/* Schedule Grid */
