@@ -9,7 +9,8 @@ export default {
 
 		const q = query.get('q') || '1080';
 		const mediaType = query.get('mediaType') || '';
-		const results = await Torrent.search(q, mediaType);
+		const sort = query.get('sort') || 'seeds';
+		const results = await Torrent.search(q, mediaType, sort);
 
 		return results;
 	}

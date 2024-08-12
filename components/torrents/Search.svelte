@@ -5,13 +5,18 @@
 	let isLoading = false;
 	let path;
 	let mediaType;
+	let sort = 'seeds';
 
 	async function searchTorrents() {
 		isLoading = true;
 		try {
 			const res = await fetch(
-				'/api/torrent/search?q=' + encodeURIComponent(q) + '&mediaType=' + mediaType
-				// '/api/torrent/search?q=' + encodeURIComponent(q)
+				'/api/torrent/search?q=' +
+					encodeURIComponent(q) +
+					'&mediaType=' +
+					mediaType +
+					'&sort=' +
+					sort
 			);
 
 			if (!res.ok) {
@@ -79,22 +84,30 @@
 			><input type="radio" name="mediaType" value="Other" bind:group={mediaType} /> Other</label
 		>
 	</div>
+	<div class="field">
+		<label
+			>Sort by: <select id="sort" bind:value={sort}>
+				<option value="size">Size</option>
+				<option value="seeds">Seeders</option>
+				<option value="time">Time</option>
+			</select></label
+		>
+	</div>
 
 	<button>Search</button>
 	<Spinner {isLoading} />
 </form>
 
 <form>
-	<div class="field">
-		<label>Download path:</label>
-		<input type="text" name="path" bind:value={path} placeholder="ie: /movies" />
-	</div>
+	<label>Download path:</label>
+	<input type="text" name="path" bind:value={path} placeholder="ie: /movies" />
 </form>
 
 <ul>
 	{#each results as torrent}
 		<li>
-			{torrent.title} seeders: {torrent.seeds} leechers: {torrent.peers} provider: {torrent.provider}
+			{torrent.title} seeders: {torrent.seeds} leechers: {torrent.peers} time: {torrent.time} size:
+			{torrent.size} provider: {torrent.provider}
 			<a
 				href="#"
 				on:click|preventDefault={() => {
@@ -113,6 +126,13 @@
 		margin: 0.8rem 0;
 	}
 
+	.field {
+		margin-bottom: 0;
+	}
+
+	select {
+		margin-right: 0.8rem;
+	}
 	form label {
 		text-wrap: nowrap;
 		margin: 0 0.4rem;

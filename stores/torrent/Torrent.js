@@ -289,7 +289,7 @@ export const actions = ({ connection: db }) => {
 					batch.map(async (torrent) => {
 						try {
 							const magnet = await Torrent.getMagnet(torrent);
-							console.log('magnet:', magnet);
+							// console.log('magnet:', magnet);
 							if (magnet) {
 								torrent.magnet = magnet;
 							}
@@ -301,28 +301,28 @@ export const actions = ({ connection: db }) => {
 				index += batchSize;
 			}
 		},
-		async search(q, mediaType = '') {
+		async search(q, mediaType = '', sort = 'size') {
 			let torrents = [];
 
 			// Torrent.enablePublicProviders();
 			for (let provider of [
-				'1337x',
-				'Torrent9',
-				'Torrentz2',
-				'KickassTorrents',
-				'Rarbg',
-				'Yts',
-				'TorrentProject',
-				'Limetorrents',
-				'Eztv'
+				'1337x'
+				// 'Torrent9'
+				// 'Torrentz2',
+				// 'KickassTorrents',
+				// 'Rarbg'
+				// 'Yts'
+				// 'TorrentProject',
+				// 'Limetorrents'
+				// 'Eztv'
 			]) {
 				Torrent.enableProvider(provider);
 			}
 
 			try {
-				torrents = await Torrent.search(q, mediaType, 200);
+				torrents = await Torrent.search(q, mediaType, 200, sort);
 
-				await this.processTorrentsInBatches(torrents, 5);
+				await this.processTorrentsInBatches(torrents, 50);
 			} catch (err) {
 				console.error(err);
 			}
