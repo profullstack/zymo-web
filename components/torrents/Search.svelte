@@ -94,7 +94,7 @@
 <ul>
 	{#each results as torrent}
 		<li>
-			{torrent.title} seeders: {torrent.seeds} leechers: {torrent.peers}
+			{torrent.title} seeders: {torrent.seeds} leechers: {torrent.peers} provider: {torrent.provider}
 			<a
 				href="#"
 				on:click|preventDefault={() => {
