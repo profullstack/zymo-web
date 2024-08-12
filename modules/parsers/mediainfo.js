@@ -189,14 +189,64 @@ export function parseMediaUrl(url) {
 			...mediaInfo,
 			...parseMusicUrl(pathname)
 		};
-	} else if (filename.match(/\.(mov|mp4|mkv)$/i)) {
+	} else if (filename.match(/\.(mov|mp4|mkv|webm|avi)$/i)) {
 		mediaInfo = {
 			...mediaInfo,
 			...parseVideoUrl(pathname)
+		};
+	} else if (filename.match(/\.(pdf|epub)$/i)) {
+		mediaInfo = {
+			...mediaInfo,
+			...parseBookUrl(pathname)
 		};
 	} else {
 		return null; // Unsupported file type
 	}
 
 	return mediaInfo;
+}
+
+function parseBookUrl(pathname) {
+	const filename = pathname.substring(pathname.lastIndexOf('/') + 1);
+	const bookTitle = filename
+		.replace(/\.(pdf|epub)$/i, '')
+		.replace(/_/g, ' ')
+		.replace(/\./g, ' ');
+
+	return {
+		type: 'book',
+		title: bookTitle,
+		filename: filename
+	};
+}
+
+export async function fetchBookMetadata(title) {
+	//openlibrary.org doesn't like "by ${author}" but ${author} alone works fine
+	const originalTitle = decodeURIComponent(title).replace(/\sby\s/gi, ' ');
+
+	const url = `https://openlibrary.org/search.json?q=${encodeURIComponent(originalTitle)}&mode=everything`;
+				       //openlibrary.org/search.json?q=Mastering+Node+js+Web+Development+adam+freeman&mode=everything
+	https: console.log('fetch book metadata:', url);
+
+	try {
+		const res = await fetch(url);
+		if (res.ok) {
+			const data = await res.json();
+			if (data.docs && data.docs.length > 0) {
+				const book = data.docs[0]; // Take the first result
+				return {
+					title: book.title,
+					author: book.author_name?.join(', '),
+					publish_date: book.first_publish_year,
+					isbn: book.isbn?.[0],
+					cover: book.cover_i
+						? `https://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg`
+						: null
+				};
+			}
+		}
+	} catch (err) {
+		console.error('Error fetching book metadata:', err);
+	}
+	return null;
 }

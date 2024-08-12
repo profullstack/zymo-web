@@ -4,10 +4,21 @@ import { v4 as uuidv4 } from 'uuid';
 import { config } from 'dotenv-flow';
 import * as cheerio from 'cheerio';
 import path from 'path';
-import { parseMediaUrl } from '../../modules/parsers/mediainfo.js';
+import { parseMediaUrl, fetchBookMetadata } from '../../modules/parsers/mediainfo.js';
 import { getArtistAndAlbumInfo } from '../../modules/parsers/providers.js';
 
-const supportedExtensions = ['.mp3', '.mp4', '.wav', '.ogg', '.pdf', '.epub', '.mkv', '.m4a'];
+const supportedExtensions = [
+	'.mp3',
+	'.mp4',
+	'.wav',
+	'.ogg',
+	'.pdf',
+	'.epub',
+	'.mkv',
+	'.m4a',
+	'.webm',
+	'.avi'
+];
 
 config();
 
@@ -219,10 +230,12 @@ async function save(files, libraryId) {
 		file.createdBy = createdBy;
 		file.mediaInfo = parseMediaUrl(file.url);
 
+		console.log(`Processing file: ${file.file} with type: ${file.mediaInfo.type}`);
+
 		if (file.mediaInfo.videoType === 'movie' || file.mediaInfo.videoType === 'tv show') {
 			try {
 				const url = `https://www.omdbapi.com/?t=${file.mediaInfo.name}&apikey=${env.OMDB_API_KEY}`;
-				console.log('fetching metadata:', url);
+				console.log('Fetching movie/TV metadata:', url);
 				const res = await fetch(url);
 
 				if (res.ok) {
@@ -248,6 +261,21 @@ async function save(files, libraryId) {
 				.pop();
 			console.log(album, '<<<<album matches');
 			file.musicbrainz = { ...artist, ...album };
+		}
+
+		if (file.mediaInfo.type === 'book') {
+			console.log(`Fetching book metadata for: ${file.mediaInfo.title}`);
+			try {
+				const bookMetadata = await fetchBookMetadata(file.mediaInfo.title);
+				if (bookMetadata) {
+					file.bookMetadata = bookMetadata;
+					console.log(`Fetched book metadata: ${JSON.stringify(bookMetadata)}`);
+				} else {
+					console.log(`No metadata found for: ${file.mediaInfo.title}`);
+				}
+			} catch (err) {
+				console.error('Error fetching book metadata:', err);
+			}
 		}
 
 		try {

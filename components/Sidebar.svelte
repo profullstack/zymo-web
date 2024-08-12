@@ -4,11 +4,11 @@
 	const navItems = [
 		{ route: '/', name: 'Home', icon: 'home.svg' },
 		{ route: '/live', name: 'Live TV', icon: 'livetv.svg' },
-		// { route: '/books', name: 'Books', icon: 'books.svg' },
 		{ route: '/music', name: 'Music', icon: 'music.svg' },
 		{ route: '/movies', name: 'Movies', icon: 'movies.svg' },
 		// { route: '/podcasts', name: 'Podcasts', icon: 'podcasts.svg' },
 		{ route: '/tv', name: 'TV', icon: 'tv.svg' },
+		{ route: '/books', name: 'Books', icon: 'books.svg' },
 		{ route: '/torrents', name: 'Torrents', icon: 'torrent.svg' }
 		// { route: '/streaming', name: 'Streaming', icon: 'streaming.svg' }
 	];
