@@ -281,6 +281,26 @@ export const actions = ({ connection: db }) => {
 			return await this.addTorrent(client, magnet, path);
 		},
 
+		async processTorrentsInBatches(torrents, batchSize) {
+			let index = 0;
+			while (index < torrents.length) {
+				const batch = torrents.slice(index, index + batchSize);
+				await Promise.all(
+					batch.map(async (torrent) => {
+						try {
+							const magnet = await Torrent.getMagnet(torrent);
+							console.log('magnet:', magnet);
+							if (magnet) {
+								torrent.magnet = magnet;
+							}
+						} catch (err) {
+							console.error(err);
+						}
+					})
+				);
+				index += batchSize;
+			}
+		},
 		async search(q, mediaType = '') {
 			let torrents = [];
 
@@ -300,24 +320,12 @@ export const actions = ({ connection: db }) => {
 			}
 
 			try {
-				torrents = await Torrent.search(q, mediaType, 20);
+				torrents = await Torrent.search(q, mediaType, 200);
 
-				for (let torrent of torrents) {
-					try {
-						const magnet = await Torrent.getMagnet(torrent);
-						console.log('magnet:', magnet);
-						if (!magnet) continue;
-						torrent.magnet = magnet;
-					} catch (err) {
-						console.error(err);
-						continue;
-					}
-				}
+				await this.processTorrentsInBatches(torrents, 5);
 			} catch (err) {
 				console.error(err);
 			}
-
-			console.log(torrents);
 
 			return torrents.filter((t) => t.magnet);
 		}
