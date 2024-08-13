@@ -163,7 +163,7 @@
 			{#each paginatedChannels as channel}
 				<div class="channel" title={channel.name}>
 					<img class="channel-icon" src={channel.icon} />
-					<div class="channel-name">{channel.id}</div>
+					<div class="channel-name">{channel.name}</div>
 				</div>
 			{/each}
 			<div class="placeholder channel"></div>
@@ -236,8 +236,9 @@
 	}
 
 	.channel-name {
-		max-width: 15rem;
+		max-width: 25rem;
 		overflow: hidden;
+		text-wrap: nowrap;
 		text-overflow: ellipsis;
 	}
 
