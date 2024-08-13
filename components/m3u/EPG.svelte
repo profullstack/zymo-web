@@ -8,7 +8,7 @@
 	currentTime.setMinutes(0, 0, 0);
 
 	let endTime = new Date(currentTime);
-	endTime.setHours(currentTime.getHours() + 24)
+	endTime.setHours(currentTime.getHours() + 24);
 
 	let filterText = ''; // Reactive variable for filter input
 	let currentPage = 1; // Current page for pagination
@@ -44,12 +44,67 @@
 	}
 
 	function formatHour(time) {
+		time = new Date(time);
 		const hours = time.getHours();
 		const minutes = time.getMinutes().toString().padStart(2, '0');
 		const ampm = hours >= 12 ? 'PM' : 'AM';
 		const formattedHours = hours % 12 || 12;
 		return `${formattedHours}:${minutes} ${ampm}`;
 	}
+
+	function removeEmptyChannels(channels) {
+		return channels.filter((channel) => channel.programs.length > 0);
+	}
+
+	function fillMissingTime(channels) {
+    channels.forEach(channel => {
+        const updatedPrograms = [];
+        let previousStop = new Date(currentTime);
+        previousStop.setSeconds(0, 0); 
+
+		let newEndTime = new Date(endTime)
+		newEndTime.setHours(newEndTime.getHours() + 1);
+
+        channel.programs.forEach(program => {
+            const programStart = new Date(program.start);
+            const programStop = new Date(program.stop);
+            programStart.setSeconds(0, 0); 
+            programStop.setSeconds(0, 0);
+
+            if (previousStop < programStart) {
+                updatedPrograms.push({
+                    title: 'empty',
+                    start: new Date(previousStop),
+                    stop: new Date(programStart),
+					empty: true
+                });
+            }
+            updatedPrograms.push({
+                ...program,
+                start: programStart,
+                stop: programStop
+            });
+            previousStop = programStop;
+        });
+
+        if (previousStop < newEndTime) {
+            const end = new Date(newEndTime);
+            end.setSeconds(0, 0); 
+
+            updatedPrograms.push({
+                title: 'empty',
+                start: previousStop,
+                stop: end,
+				empty: true
+            });
+        }
+
+        channel.programs = updatedPrograms;
+    });
+
+    return channels;
+}
+
 
 	async function fetchEPG() {
 		try {
@@ -100,7 +155,9 @@
 				}
 			});
 
-			channels = channels.filter((channel) => channel.programs.length > 0);
+			channels = removeEmptyChannels(channels);
+
+			channels = fillMissingTime(channels)
 
 			setEPGData({ channels, timeBlocks: generateTimeBlocks() });
 		} catch (err) {
@@ -163,7 +220,7 @@
 			{#each paginatedChannels as channel}
 				<div class="channel" title={channel.name}>
 					<img class="channel-icon" src={channel.icon} />
-					<div class="channel-name">{channel.id}</div>
+					<div class="channel-name">{channel.name}</div>
 				</div>
 			{/each}
 			<div class="placeholder channel"></div>
@@ -178,9 +235,11 @@
 				<div class="programs-list">
 					{#each channel.programs as program}
 						<div
-							title="{program.title} - {formatHour(program.start)}"
+							title="{program.title} - {formatHour(program.start)} to {formatHour(
+								program.stop
+							)}"
 							class="program"
-							style="min-width: {calculateWidth(program.start, program.stop)}rem;"
+							style="min-width: {calculateWidth(program.start, program.stop)}rem; {program.empty ? 'background-color:gray;' : ''}"
 						>
 							{program.title}
 						</div>
@@ -236,8 +295,9 @@
 	}
 
 	.channel-name {
-		max-width: 15rem;
+		max-width: 25rem;
 		overflow: hidden;
+		text-wrap: nowrap;
 		text-overflow: ellipsis;
 	}
 
