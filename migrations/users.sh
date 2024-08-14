@@ -8,7 +8,7 @@
 DATA="DEFINE TABLE user SCHEMAFULL
   PERMISSIONS
     FOR select FULL,
-    FOR update, delete WHERE id = \$auth.id,
+    FOR update, delete WHERE id = \$auth.id OR \$auth.isAdmin = true,
     FOR create NONE;
 DEFINE FIELD email ON user TYPE string;
 DEFINE FIELD isAdmin ON user TYPE option<bool> DEFAULT false;

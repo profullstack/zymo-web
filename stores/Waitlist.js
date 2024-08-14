@@ -2,34 +2,32 @@ import env from '@rcompat/env';
 import primary from '@primate/types/primary';
 
 export const actions = ({ connection: db }) => {
-    return {
-        async add(email) {
-
-            try {
-                const subscribedEmail = await db.create("waitlist", { email });
-
-                return subscribedEmail;
-
-            } catch (e) {
-                console.error(e)
-                throw e;
-            }
-
-        },
-        async getAll() {
+	return {
+		async add(email) {
 			try {
-                const query = `SELECT * FROM waitlist`;
+				const createdAt = new Date();
+				const subscribedEmail = await db.create('waitlist', { email, createdAt });
 
-                const waitlist = await db.query(query);
+				return subscribedEmail;
+			} catch (e) {
+				console.error(e);
+				throw e;
+			}
+		},
+		async getAll() {
+			try {
+				const query = `SELECT * FROM waitlist ORDER BY createdAt DESC`;
 
-                return waitlist.pop();
-            } catch (e) {
-                console.error(e)
-            }
+				const waitlist = await db.query(query);
+
+				return waitlist.pop();
+			} catch (e) {
+				console.error(e);
+			}
 		}
-    }
-}
+	};
+};
 
 export default {
-    id: primary
+	id: primary
 };

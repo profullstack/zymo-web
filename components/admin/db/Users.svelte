@@ -1,6 +1,8 @@
 <script>
 	export let users = [];
 
+	let msg = '';
+
 	function exportAsCSV() {
 		const headers = [
 			'#',
@@ -30,11 +32,29 @@
 		document.body.removeChild(a);
 		URL.revokeObjectURL(url);
 	}
+
+	async function deleteUser(user, index) {
+		const url = `/admin/db/users/${user.id}/delete`;
+		try {
+			const res = await fetch(url, {
+				method: 'DELETE'
+			});
+
+			const data = await res.json();
+			msg = data.message;
+
+			document.getElementById('user-' + index).remove();
+		} catch (err) {
+			console.error(err);
+		}
+	}
 </script>
 
 <div>
 	<h2>Users</h2>
 	<button on:click={exportAsCSV}>Export as CSV</button>
+
+	{#if msg}<pre>{JSON.stringify(msg, null, 2)}</pre>{/if}
 	<table>
 		<tr>
 			<th>#</th>
@@ -43,15 +63,24 @@
 			<th>Email Address</th>
 			<th>Phone</th>
 			<th>Created At</th>
+			<th>Actions</th>
 		</tr>
 		{#each users as user, index}
-			<tr>
+			<tr id="user-{index}">
 				<td>{index + 1}</td>
 				<td>{user.firstName}</td>
 				<td>{user.lastName}</td>
 				<td>{user.email}</td>
 				<td>{user.phonePrefix + user.phone}</td>
 				<td>{user.createdAt}</td>
+				<td
+					><a
+						href="#"
+						on:click|preventDefault={() => {
+							deleteUser(user, index);
+						}}>delete</a
+					></td
+				>
 			</tr>
 		{/each}
 	</table>
