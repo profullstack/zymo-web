@@ -5,8 +5,8 @@ export default {
 		const { store, path } = request;
 		const { User } = store;
 
-		const result = await User.delete(path.get('id'));
+		await User.delete(path.get('id'));
 
-		return { result };
+		return { message: 'User has been deleted' };
 	}
 };

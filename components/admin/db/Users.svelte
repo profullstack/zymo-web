@@ -41,7 +41,7 @@
 			});
 
 			const data = await res.json();
-			msg = result;
+			msg = data.message;
 
 			document.getElementById('user-' + index).remove();
 		} catch (err) {
