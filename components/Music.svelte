@@ -75,7 +75,7 @@
 			artist: song.artist,
 			album: song.album,
 			songname: song.songname,
-			coverArt: song.coverArt
+			coverArt: song?.musicbrainz?.coverArt
 		});
 		isPlaying.set(true);
 	}
@@ -89,7 +89,7 @@
 				artist: song.artist,
 				album: song.album,
 				songname: song.songname,
-				coverArt: song.coverArt
+				coverArt: song?.musicbrainz?.coverArt
 			});
 		}
 		isPlaying.set(true);
