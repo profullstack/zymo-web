@@ -9,8 +9,8 @@
 		// { route: '/podcasts', name: 'Podcasts', icon: 'podcasts.svg' },
 		{ route: '/tv', name: 'TV', icon: 'tv.svg' },
 		{ route: '/books', name: 'Books', icon: 'books.svg' },
-		{ route: '/torrents', name: 'Torrents', icon: 'torrent.svg' }
-		// { route: '/streaming', name: 'Streaming', icon: 'streaming.svg' }
+		{ route: '/torrents', name: 'Torrents', icon: 'torrent.svg' },
+		{ route: '/streaming', name: 'Streaming', icon: 'streaming.svg' }
 	];
 
 	function handleLinkClick(event) {
