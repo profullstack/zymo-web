@@ -25,11 +25,13 @@
 		<tr>
 			<th>#</th>
 			<th>Email address</th>
+			<th>Created At</th>
 		</tr>
 		{#each waitlist as user, index}
 			<tr>
 				<td>{index + 1}</td>
 				<td>{user.email}</td>
+				<td>{user.createdAt}</td>
 			</tr>
 		{/each}
 	</table>
