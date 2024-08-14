@@ -30,7 +30,7 @@
 		"@primate/handlebars": "^0.1.2",
 		"@primate/native": "^0.1.4",
 		"@primate/session": "^0.20.0",
-		"@primate/store": "^0.25.1",
+		"@primate/store": "^0.25.2",
 		"@primate/surrealdb": "^0.3.2",
 		"@primate/svelte": "^0.18.2",
 		"@primate/types": "^0.16.1",
