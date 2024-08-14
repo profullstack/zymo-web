@@ -33,7 +33,7 @@
 		URL.revokeObjectURL(url);
 	}
 
-	async function deleteUser(user) {
+	async function deleteUser(user, index) {
 		const url = `/api/admin/db/users/${user.id}/delete`;
 		try {
 			const res = await fetch(url, {
@@ -42,6 +42,8 @@
 
 			const data = await res.json();
 			msg = result;
+
+			document.getElementById('user-' + index).remove();
 		} catch (err) {
 			console.error(err);
 		}
@@ -64,7 +66,7 @@
 			<th>Actions</th>
 		</tr>
 		{#each users as user, index}
-			<tr>
+			<tr id="user-{index}">
 				<td>{index + 1}</td>
 				<td>{user.firstName}</td>
 				<td>{user.lastName}</td>
@@ -75,7 +77,7 @@
 					><a
 						href="#"
 						on:click|preventDefault={() => {
-							deleteUser(user);
+							deleteUser(user, index);
 						}}>delete</a
 					></td
 				>
