@@ -361,6 +361,10 @@ export const actions = ({ connection: db }) => {
 			} catch (e) {
 				console.error(e);
 			}
+		},
+
+		async delete(userId) {
+			return await db.delete(userId);
 		}
 	};
 };
