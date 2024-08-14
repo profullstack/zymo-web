@@ -46,7 +46,7 @@ export const actions = ({ connection: db }) => {
 				});
 				return user.pop().pop();
 			} catch (e) {
-				console.error(e)
+				console.error(e);
 				throw e;
 			}
 		},
@@ -58,7 +58,7 @@ export const actions = ({ connection: db }) => {
 				});
 				return user.pop().pop();
 			} catch (e) {
-				console.error(e)
+				console.error(e);
 				throw e;
 			}
 		},
@@ -70,7 +70,7 @@ export const actions = ({ connection: db }) => {
 				});
 				return user.pop().pop();
 			} catch (e) {
-				console.error(e)
+				console.error(e);
 				throw e;
 			}
 		},
@@ -80,7 +80,7 @@ export const actions = ({ connection: db }) => {
 				const expiration = new Date(Date.now() + 2 * (60 * 60 * 1000));
 
 				const [[result]] = await db.query(
-					"UPDATE $id SET passwordReset.token = $_token, passwordReset.expiration = $expiration",
+					'UPDATE $id SET passwordReset.token = $_token, passwordReset.expiration = $expiration',
 					{
 						id,
 						_token: token,
@@ -89,7 +89,7 @@ export const actions = ({ connection: db }) => {
 				);
 				return result;
 			} catch (e) {
-				console.error(e)
+				console.error(e);
 			}
 		},
 		generateToken(length = 30) {
@@ -110,27 +110,24 @@ export const actions = ({ connection: db }) => {
 				});
 				return user.pop().pop();
 			} catch (e) {
-				console.error(e)
+				console.error(e);
 				throw e;
 			}
 		},
 		async deletePasswordResetToken(id) {
 			try {
-				const [[result]] = await db.query(
-					"UPDATE $id SET passwordReset = {}",
-					{
-						id
-					}
-				);
+				const [[result]] = await db.query('UPDATE $id SET passwordReset = {}', {
+					id
+				});
 				return result;
 			} catch (e) {
-				console.error(e)
+				console.error(e);
 			}
 		},
 		async updatePassword(id, password) {
 			try {
 				const [[result]] = await db.query(
-					"UPDATE $id SET password = crypto::argon2::generate($password)",
+					'UPDATE $id SET password = crypto::argon2::generate($password)',
 					{
 						id,
 						password
@@ -138,7 +135,7 @@ export const actions = ({ connection: db }) => {
 				);
 				return result;
 			} catch (e) {
-				console.error(e)
+				console.error(e);
 			}
 		},
 		async generateEmailVerifyCode(id) {
@@ -160,7 +157,6 @@ export const actions = ({ connection: db }) => {
 		},
 		async verifyEmail(id) {
 			try {
-
 				const query = `
 					UPDATE $id SET verify.email.status = 'verified'
 				`;
@@ -220,7 +216,6 @@ export const actions = ({ connection: db }) => {
 		},
 		async verifyPhone(id) {
 			try {
-
 				const query = `
 					UPDATE $id SET verify.phone.status = 'verified'
 				`;
@@ -339,7 +334,7 @@ export const actions = ({ connection: db }) => {
 			}
 		},
 
-		async logout(session) { },
+		async logout(session) {},
 		async tryApiLogin(request) {
 			const { headers, session } = request;
 			const apikey = headers.get('x-api-key');
@@ -358,13 +353,13 @@ export const actions = ({ connection: db }) => {
 		},
 		async getAll() {
 			try {
-				const query = `SELECT * FROM user`;
+				const query = `SELECT * OMIT password FROM user order by createdAt DESC`;
 
 				const users = await db.query(query);
 
 				return users.pop();
 			} catch (e) {
-				console.error(e)
+				console.error(e);
 			}
 		}
 	};
