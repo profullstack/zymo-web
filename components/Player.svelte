@@ -111,7 +111,12 @@
 		});
 
 		audioElement.subscribe(value => {
-			localAudioElement = value;
+			if(!localAudioElement) {
+				localAudioElement = value;
+				duration = localAudioElement.duration;
+				localAudioElement.addEventListener('ended', handleSongEnd);
+				localAudioElement.addEventListener('timeupdate', updateProgress);
+			}
 		});
 
 		playlist.subscribe(value => {
