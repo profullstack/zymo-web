@@ -364,6 +364,7 @@ export const actions = ({ connection: db }) => {
 		},
 
 		async delete(userId) {
+			console.log('deleting:', userId);
 			return await db.delete(userId);
 		}
 	};
