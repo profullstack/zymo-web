@@ -8,23 +8,145 @@
 		currentSongIndex,
 		currentSongMetadata,
 		isMuted,
-		volumeLevel
+		volumeLevel,
+		isInitialized // Global store for initialization
 	} from '../modules/store.js';
-	import { get } from 'svelte/store';
 
-	let localAudioContext = get(audioContext);
-	let localAudioElement = get(audioElement);
-	let track;
-	let gainNode;
-	let playing = get(isPlaying);
-	let songs = get(playlist);
-	let songIndex = get(currentSongIndex);
-	let songMetadata = get(currentSongMetadata);
+	let localAudioContext;
+	let localAudioElement;
 	let currentTime = 0;
 	let duration = 0;
-	let muted = get(isMuted);
-	let volume = get(volumeLevel);
 	let showVolume = false;
+
+	let playing;
+	let songs = [];
+	let songIndex;
+	let songMetadata = { artist: '', album: '', songname: '' };
+	let muted;
+	let volume;
+
+	onMount(() => {
+		isInitialized.subscribe(value => {
+			if (!value) {
+				initializePlayer();
+				isInitialized.set(true);
+			} else {
+				// Resume or continue using the existing player instance
+				resumePlayer();
+			}
+		});
+	});
+
+	function initializePlayer() {
+		const unsubAudioContext = audioContext.subscribe(value => {
+			if (!value) {
+				value = new (window.AudioContext || window.webkitAudioContext)();
+				audioContext.set(value);
+			}
+			localAudioContext = value;
+		});
+
+		const unsubAudioElement = audioElement.subscribe(value => {
+			if (!value) {
+				value = new Audio();
+				audioElement.set(value);
+			}
+			localAudioElement = value;
+		});
+
+		const unsubPlaylist = playlist.subscribe(value => {
+			songs = value;
+			if (songs.length > 0 && songIndex >= 0 && songIndex < songs.length) {
+				playSongAtIndex(songIndex);
+			}
+		});
+
+		const unsubCurrentSongIndex = currentSongIndex.subscribe(value => {
+			songIndex = value;
+			if (songs.length > 0 && songIndex >= 0 && songIndex < songs.length) {
+				playSongAtIndex(songIndex);
+			}
+		});
+
+		const unsubIsPlaying = isPlaying.subscribe(value => {
+			playing = value;
+			if (playing) {
+				localAudioContext.resume().then(() => {
+					localAudioElement.play();
+				});
+			} else {
+				localAudioElement.pause();
+			}
+		});
+
+		const unsubIsMuted = isMuted.subscribe(value => {
+			muted = value;
+			localAudioElement.muted = muted;
+		});
+
+		const unsubVolumeLevel = volumeLevel.subscribe(value => {
+			volume = value;
+			localAudioElement.volume = volume;
+		});
+
+		const unsubCurrentSongMetadata = currentSongMetadata.subscribe(value => {
+			songMetadata = value || { artist: '', album: '', songname: '' };
+		});
+
+		// onDestroy(() => {
+		// 	unsubAudioContext();
+		// 	unsubAudioElement();
+		// 	unsubPlaylist();
+		// 	unsubCurrentSongIndex();
+		// 	unsubIsPlaying();
+		// 	unsubIsMuted();
+		// 	unsubVolumeLevel();
+		// 	unsubCurrentSongMetadata();
+		// });
+	}
+
+	function resumePlayer() {
+		audioContext.subscribe(value => {
+			localAudioContext = value;
+		});
+
+		audioElement.subscribe(value => {
+			localAudioElement = value;
+		});
+
+		playlist.subscribe(value => {
+			songs = value;
+		});
+
+		currentSongIndex.subscribe(value => {
+			songIndex = value;
+		});
+
+		isPlaying.subscribe(value => {
+			playing = value;
+			if (playing) {
+				localAudioContext.resume().then(() => {
+					localAudioElement.play();
+				});
+			} else {
+				localAudioElement.pause();
+			}
+		});
+
+		isMuted.subscribe(value => {
+			muted = value;
+			localAudioElement.muted = muted;
+		});
+
+		volumeLevel.subscribe(value => {
+			volume = value;
+			localAudioElement.volume = volume;
+		});
+
+		currentSongMetadata.subscribe(value => {
+			songMetadata = value || { artist: '', album: '', songname: '' };
+		});
+	}
 
 	function getProxyUrl(song) {
 		if (song.user && song.pass) {
@@ -45,9 +167,9 @@
 
 			currentSongIndex.set(index);
 			currentSongMetadata.set({
-				artist: song.artist,
-				album: song.album,
-				songname: song.songname
+				artist: song.artist || '',
+				album: song.album || '',
+				songname: song.songname || ''
 			});
 
 			localAudioElement.addEventListener('ended', handleSongEnd);
@@ -55,9 +177,6 @@
 			localAudioElement.addEventListener('loadedmetadata', () => {
 				duration = localAudioElement.duration;
 			});
-
-			localAudioElement.volume = volume;
-			localAudioElement.muted = muted;
 		}
 	}
 
@@ -73,81 +192,7 @@
 		currentTime = localAudioElement.currentTime;
 	}
 
-	onMount(() => {
-		if (!localAudioContext) {
-			localAudioContext = new (window.AudioContext || window.webkitAudioContext)();
-			audioContext.set(localAudioContext);
-		}
-
-		if (!localAudioElement) {
-			localAudioElement = new Audio();
-			audioElement.set(localAudioElement);
-		}
-
-		track = localAudioContext.createMediaElementSource(localAudioElement);
-		gainNode = localAudioContext.createGain();
-		track.connect(gainNode).connect(localAudioContext.destination);
-
-		playlist.subscribe((value) => {
-			songs = value;
-			if (songs.length > 0 && songIndex >= 0 && songIndex < songs.length) {
-				playSongAtIndex(songIndex);
-			}
-		});
-
-		currentSongIndex.subscribe((value) => {
-			songIndex = value;
-			if (songs.length > 0 && songIndex >= 0 && songIndex < songs.length) {
-				playSongAtIndex(songIndex);
-			}
-		});
-
-		isPlaying.subscribe((value) => {
-			playing = value;
-			if (playing) {
-				localAudioContext.resume().then(() => {
-					localAudioElement.play();
-				});
-			} else {
-				localAudioElement.pause();
-			}
-		});
-
-		isMuted.subscribe((value) => {
-			muted = value;
-			if (localAudioElement) {
-				localAudioElement.muted = muted;
-			}
-		});
-
-		volumeLevel.subscribe((value) => {
-			volume = value;
-			if (localAudioElement) {
-				localAudioElement.volume = volume;
-			}
-		});
-
-		currentSongMetadata.subscribe((value) => {
-			songMetadata = value;
-		});
-	});
-
-	onDestroy(() => {
-		if (localAudioElement) {
-			localAudioElement.pause();
-			localAudioElement.src = '';
-			localAudioElement.load();
-		}
-	});
-
 	function togglePlay() {
-		if (playing) {
-			localAudioElement.pause();
-		} else {
-			localAudioContext.resume().then(() => {
-				localAudioElement.play();
-			});
-		}
 		isPlaying.set(!playing);
 	}
 
@@ -218,6 +263,7 @@
 		/>
 	</div>
 </div>
+
 
 <style>
 	.player-bar {

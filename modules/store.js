@@ -14,6 +14,7 @@ export const currentSongMetadata = writable({});
 export const isMuted = writable(false);
 export const volumeLevel = writable(1);
 export const seekPosition = writable(0); // Add this line
+export const isInitialized = writable(false);
 
 // /live store
 export const channels = writable([]);
