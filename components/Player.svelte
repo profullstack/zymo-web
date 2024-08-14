@@ -250,6 +250,7 @@
 	</div>
 	{#if songMetadata.artist && songMetadata.album && songMetadata.songname}
 		<div class="song-info">
+			<img class="poster" src={songMetadata.coverArt || "/icons/placeholder.music.svg"} />
 			<small>{songMetadata.artist} - {songMetadata.album} - {songMetadata.songname}</small>
 		</div>
 	{/if}
@@ -258,7 +259,7 @@
 			type="range"
 			min="0"
 			max="100"
-			value={(currentTime / duration) * 100}
+			value={((currentTime / duration) * 100) || 0}
 			on:input={handleSeek}
 		/>
 	</div>
@@ -281,7 +282,9 @@
 	.player-bar:hover {
 		opacity: 1;
 	}
-
+	.progress-bar input {
+		padding: 0.8rem 0;
+	}
 	.controls {
 		display: flex;
 		justify-content: center;
@@ -301,6 +304,14 @@
 	.song-info {
 		text-align: center;
 		margin-bottom: 0.4rem;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+	.poster {
+		width: 6rem;
+		height: auto;
+		border: 1px solid var(--cover-art-border-color);
 	}
 	.progress-bar {
 		width: 100%;
