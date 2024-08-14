@@ -34,7 +34,7 @@
 	}
 
 	async function deleteUser(user, index) {
-		const url = `/api/admin/db/users/${user.id}/delete`;
+		const url = `/admin/db/users/${user.id}/delete`;
 		try {
 			const res = await fetch(url, {
 				method: 'DELETE'
