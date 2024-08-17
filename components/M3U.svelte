@@ -133,6 +133,9 @@
 </script>
 
 <div id="main-content">
+	<p>
+		Need an IPTV service? <a href="https://necroiptv.com/shop/aff.php?aff=990">Get one here!</a>
+	</p>
 	<div class="field">
 		<strong>Filter:</strong>
 		<label>
