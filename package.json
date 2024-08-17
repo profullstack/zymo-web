@@ -61,6 +61,7 @@
 		"googleapis": "^142.0.0",
 		"handlebars": "^4.7.8",
 		"hls.js": "^1.5.14",
+		"googleapis": "^142.0.0",
 		"jsdom": "^24.1.1",
 		"leaflet": "^1.9.4",
 		"leaflet-control-geocoder": "^2.4.0",
