@@ -26,7 +26,7 @@
 	let volume;
 
 	onMount(() => {
-		isInitialized.subscribe(value => {
+		isInitialized.subscribe((value) => {
 			if (!value) {
 				initializePlayer();
 				isInitialized.set(true);
@@ -38,7 +38,7 @@
 	});
 
 	function initializePlayer() {
-		const unsubAudioContext = audioContext.subscribe(value => {
+		const unsubAudioContext = audioContext.subscribe((value) => {
 			if (!value) {
 				value = new (window.AudioContext || window.webkitAudioContext)();
 				audioContext.set(value);
@@ -46,7 +46,7 @@
 			localAudioContext = value;
 		});
 
-		const unsubAudioElement = audioElement.subscribe(value => {
+		const unsubAudioElement = audioElement.subscribe((value) => {
 			if (!value) {
 				value = new Audio();
 				audioElement.set(value);
@@ -54,21 +54,21 @@
 			localAudioElement = value;
 		});
 
-		const unsubPlaylist = playlist.subscribe(value => {
+		const unsubPlaylist = playlist.subscribe((value) => {
 			songs = value;
 			if (songs.length > 0 && songIndex >= 0 && songIndex < songs.length) {
 				playSongAtIndex(songIndex);
 			}
 		});
 
-		const unsubCurrentSongIndex = currentSongIndex.subscribe(value => {
+		const unsubCurrentSongIndex = currentSongIndex.subscribe((value) => {
 			songIndex = value;
 			if (songs.length > 0 && songIndex >= 0 && songIndex < songs.length) {
 				playSongAtIndex(songIndex);
 			}
 		});
 
-		const unsubIsPlaying = isPlaying.subscribe(value => {
+		const unsubIsPlaying = isPlaying.subscribe((value) => {
 			playing = value;
 			if (playing) {
 				localAudioContext.resume().then(() => {
@@ -79,17 +79,17 @@
 			}
 		});
 
-		const unsubIsMuted = isMuted.subscribe(value => {
+		const unsubIsMuted = isMuted.subscribe((value) => {
 			muted = value;
 			localAudioElement.muted = muted;
 		});
 
-		const unsubVolumeLevel = volumeLevel.subscribe(value => {
+		const unsubVolumeLevel = volumeLevel.subscribe((value) => {
 			volume = value;
 			localAudioElement.volume = volume;
 		});
 
-		const unsubCurrentSongMetadata = currentSongMetadata.subscribe(value => {
+		const unsubCurrentSongMetadata = currentSongMetadata.subscribe((value) => {
 			songMetadata = value || { artist: '', album: '', songname: '' };
 		});
 
@@ -106,12 +106,12 @@
 	}
 
 	function resumePlayer() {
-		audioContext.subscribe(value => {
+		audioContext.subscribe((value) => {
 			localAudioContext = value;
 		});
 
-		audioElement.subscribe(value => {
-			if(!localAudioElement) {
+		audioElement.subscribe((value) => {
+			if (!localAudioElement) {
 				localAudioElement = value;
 				duration = localAudioElement.duration;
 				localAudioElement.addEventListener('ended', handleSongEnd);
@@ -119,15 +119,15 @@
 			}
 		});
 
-		playlist.subscribe(value => {
+		playlist.subscribe((value) => {
 			songs = value;
 		});
 
-		currentSongIndex.subscribe(value => {
+		currentSongIndex.subscribe((value) => {
 			songIndex = value;
 		});
 
-		isPlaying.subscribe(value => {
+		isPlaying.subscribe((value) => {
 			playing = value;
 			if (playing) {
 				localAudioContext.resume().then(() => {
@@ -138,18 +138,32 @@
 			}
 		});
 
-		isMuted.subscribe(value => {
+		isMuted.subscribe((value) => {
 			muted = value;
 			localAudioElement.muted = muted;
 		});
 
-		volumeLevel.subscribe(value => {
+		volumeLevel.subscribe((value) => {
 			volume = value;
 			localAudioElement.volume = volume;
 		});
 
-		currentSongMetadata.subscribe(value => {
+		currentSongMetadata.subscribe((value) => {
 			songMetadata = value || { artist: '', album: '', songname: '' };
+			if ('mediaSession' in navigator) {
+				navigator.mediaSession.metadata = new MediaMetadata({
+					title: value.songname,
+					artist: value.artist,
+					album: value.album,
+					artwork: [
+						{
+							src: value.coverArt || '/icons/placeholder.music.svg',
+							sizes: '512x512',
+							type: 'image/png'
+						}
+					]
+				});
+			}
 		});
 	}
 
@@ -255,7 +269,7 @@
 	</div>
 	{#if songMetadata.artist && songMetadata.album && songMetadata.songname}
 		<div class="song-info">
-			<img class="poster" src={songMetadata.coverArt || "/icons/placeholder.music.svg"} />
+			<img class="poster" src={songMetadata.coverArt || '/icons/placeholder.music.svg'} />
 			<small>{songMetadata.artist} - {songMetadata.album} - {songMetadata.songname}</small>
 		</div>
 	{/if}
@@ -264,12 +278,11 @@
 			type="range"
 			min="0"
 			max="100"
-			value={((currentTime / duration) * 100) || 0}
+			value={(currentTime / duration) * 100 || 0}
 			on:input={handleSeek}
 		/>
 	</div>
 </div>
-
 
 <style>
 	.player-bar {
