@@ -45,8 +45,9 @@ const AFFILIATE_TEAM_IDS = {
 };
 export default class MLBTV {
 	constructor() {
-		this.username = process.env.MLB_TV_USER;
-		this.password = process.env.MLB_TV_PASS;
+		this.username =
+			typeof process !== 'undefined' ? process.env.MLB_TV_USER : 'anthony@chovy.com';
+		this.password = typeof process !== 'undefined' ? process.env.MLB_TV_PASS : '6@ouEF%K&3hQ8';
 		this.jar = new CookieJar();
 		this.login_url = 'https://ids.mlb.com/oauth2/aus1m088yK07noBfh356/v1/token';
 		this.media_url = 'https://media-gateway.mlb.com/graphql';
@@ -106,6 +107,8 @@ export default class MLBTV {
 					Date.now() + data['expires_in'] * 1000
 				).toISOString();
 				await this.getDeviceSessionID();
+
+				return this.login_token;
 			} else {
 				const errorData = await response.json();
 				console.error(errorData);
@@ -393,7 +396,7 @@ export default class MLBTV {
 
 			// Simplified headers string
 			const streamHeaders = `User-Agent=${UA_PC}`;
-			return {streamUrl, streamHeaders};
+			return { streamUrl, streamHeaders, login_token: this.login_token };
 		} catch (error) {
 			console.error('Failed to get stream:', error);
 			throw error;

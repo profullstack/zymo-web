@@ -28,7 +28,7 @@
 	async function deleteM3u(e, m3u) {
 		e.preventDefault();
 		try {
-			const res = await fetch(`/live/${m3u.id}`, {
+			const res = await fetch(`/live/stream/${m3u.id}`, {
 				method: 'DELETE'
 			});
 
@@ -190,7 +190,7 @@
 		<li>
 			{m3u.name} - {m3u.id}
 			<nav>
-				<a href="/live//{m3u.id}">edit</a>
+				<a href="/live/stream/{m3u.id}">edit</a>
 				<a
 					href="#"
 					on:click={(e) => {

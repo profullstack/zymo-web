@@ -5,7 +5,7 @@
 		e.preventDefault();
 
 		console.log(m3u);
-		const res = await fetch(`/live/${m3u.id}`, {
+		const res = await fetch(`/live/stream/${m3u.id}`, {
 			method: 'PUT',
 			body: JSON.stringify(m3u),
 			headers: {

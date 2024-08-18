@@ -1,13 +1,15 @@
 <script>
 	import Hls from 'hls.js';
+
 	export let games = [];
 
 	let selectedStreamUrl = null;
 	let selectedHeaders = null;
-	let proxy = false;
+	let proxy = true;
+	let login_token = null;
 
 	// Function to play the selected stream
-	async function playStream(url) {
+	async function playStream(url, login_token) {
 		url =
 			url.includes('m3u8') ||
 			url.includes('mp4') ||
@@ -17,7 +19,7 @@
 				: `${url}.m3u8`;
 
 		if (proxy) {
-			url = `/proxy?url=${encodeURIComponent(url)}`;
+			url = `/proxy?url=${encodeURIComponent(url)}&provider=mlb&login_token=${encodeURIComponent(login_token)}`;
 		}
 
 		const video = document.getElementById('video');
@@ -43,12 +45,14 @@
 
 	async function fetchStreamUrl(contentId) {
 		try {
+			// const response = mlbTv.streamSelect(contentId);
 			const response = await fetch(`/api/providers/mlb/play?contentId=${contentId}`);
 			if (response.ok) {
 				const data = await response.json();
 				selectedStreamUrl = data.streamUrl;
 				selectedHeaders = data.streamHeaders;
-				playStream(selectedStreamUrl);
+				login_token = data.login_token;
+				playStream(selectedStreamUrl, login_token);
 			} else {
 				console.error('Failed to fetch stream URL');
 			}
