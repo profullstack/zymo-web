@@ -113,6 +113,7 @@
 		audioElement.subscribe((value) => {
 			if (!localAudioElement) {
 				localAudioElement = value;
+				localAudioElement.preload = 'auto';
 				duration = localAudioElement.duration;
 				localAudioElement.addEventListener('ended', handleSongEnd);
 				localAudioElement.addEventListener('timeupdate', updateProgress);

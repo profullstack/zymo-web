@@ -11,9 +11,12 @@
 -   Share libraries with friends
 -   Add friend.
 -   create a group
-- https://github.com/matthuisman/slyguy.addons
-    - disney+
-    - paramount+
-    - udemy
-- https://github.com/eracknaphobia/plugin.video.slingtv
-- https://github.com/eracknaphobia/plugin.video.nhlgcl
+-   https://github.com/matthuisman/slyguy.addons
+    -   disney+
+    -   paramount+
+    -   udemy
+    -   hbomax
+    -   showmax
+    -   espn
+-   https://github.com/eracknaphobia/plugin.video.slingtv
+-   https://github.com/eracknaphobia/plugin.video.nhlgcl
