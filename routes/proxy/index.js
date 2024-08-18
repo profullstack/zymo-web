@@ -60,22 +60,36 @@ export default {
 
 				console.log('before:', data);
 				baseURL = baseURL.origin;
-				data = data.replace(/^(\/?)(.*)$/gm, (match, p1, p2) => {
-					// Skip lines that start with #
-					if (match.trim().startsWith('#')) {
-						return match; // Return the line as is without any modifications
-					}
 
-					// Process other lines
-					if (provider === 'mlb') {
-						const lastSlashIndex = pathname.lastIndexOf('/');
-						const newPathname = pathname.slice(0, lastSlashIndex);
-						const tokenized = `${newPathname}`;
-						return `/proxy?url=${`${baseURL}${tokenized}/${p2}&provider=mlb`}`;
-					} else {
-						return `/proxy?url=${`${baseURL}/${p2}`}`;
-					}
-				});
+				if (url.indexOf('m3u') > -1) {
+					let baseURL = new URL(url);
+					const res = await fetch(url, { headers, redirect: 'follow' });
+					let data = await res.text();
+
+					console.log('before:', data);
+					baseURL = baseURL.origin;
+					data = data.replace(/^(\/.*)$/gm, `/proxy?url=${baseURL}$1`);
+					console.log('after:', data);
+
+					return data;
+				}
+
+				// data = data.replace(/^(\/?)(.*)$/gm, (match, p1, p2) => {
+				// 	// Skip lines that start with #
+				// 	if (match.trim().startsWith('#')) {
+				// 		return match; // Return the line as is without any modifications
+				// 	}
+
+				// 	// Process other lines
+				// 	if (provider === 'mlb') {
+				// 		const lastSlashIndex = pathname.lastIndexOf('/');
+				// 		const newPathname = pathname.slice(0, lastSlashIndex);
+				// 		const tokenized = `${newPathname}`;
+				// 		return `/proxy?url=${`${baseURL}${tokenized}/${p2}&provider=mlb`}`;
+				// 	} else {
+				// 		return `/proxy?url=${`${baseURL}/${p2}`}`;
+				// 	}
+				// });
 
 				console.log('after:', data);
 
