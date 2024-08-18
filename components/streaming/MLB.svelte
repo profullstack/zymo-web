@@ -92,7 +92,7 @@
 				<strong>{game.teams.home.team.name}</strong>
 				<span> - {formatTime(game.gameDate)}</span>
 			</div>
-			{#if hasGameStarted(game.gameDate) && game.media_state === 'media_on' && game.status !== 'Final' && game.status !== 'Game Over'}
+			{#if hasGameStarted(game.gameDate) && game.abstractGameState !== 'Final' && game.abstractGameState !== 'Game Over'}
 				<div>
 					{#each game.broadcasts as broadcast}
 						<button on:click={() => fetchStreamUrl(broadcast.mediaId)}>

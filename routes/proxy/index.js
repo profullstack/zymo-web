@@ -66,34 +66,35 @@ export default {
 					const res = await fetch(url, { headers, redirect: 'follow' });
 					let data = await res.text();
 
+					const provider = query.get('provider');
 					console.log('before:', data);
-					baseURL = baseURL.origin;
-					data = data.replace(/^(\/.*)$/gm, `/proxy?url=${baseURL}$1`);
-					console.log('after:', data);
 
+					if (provider === 'mlb') {
+						// Preserve the original base path for relative URLs
+						const basePath = url.substring(0, url.lastIndexOf('/') + 1);
+
+						// Rewrite relative paths and URLs within the m3u8 response
+						data = data.replace(/(URI=")([^"]+)("|,)/g, (match, p1, p2, p3) => {
+							const newUrl = p2.startsWith('http')
+								? `/proxy?provider=mlb&url=${p2}`
+								: `/proxy?provider=mlb&url=${basePath}${p2}`;
+							return `${p1}${newUrl}${p3}`;
+						});
+
+						data = data.replace(/^([^\s#].*)$/gm, (match) => {
+							const newUrl = match.startsWith('http')
+								? `/proxy?provider=mlb&url=${match}`
+								: `/proxy?provider=mlb&url=${basePath}${match}`;
+							return newUrl;
+						});
+					} else {
+						baseURL = baseURL.origin;
+						data = data.replace(/^(\/.*)$/gm, `/proxy?url=${baseURL}$1`);
+					}
+
+					console.log('after:', data);
 					return data;
 				}
-
-				// data = data.replace(/^(\/?)(.*)$/gm, (match, p1, p2) => {
-				// 	// Skip lines that start with #
-				// 	if (match.trim().startsWith('#')) {
-				// 		return match; // Return the line as is without any modifications
-				// 	}
-
-				// 	// Process other lines
-				// 	if (provider === 'mlb') {
-				// 		const lastSlashIndex = pathname.lastIndexOf('/');
-				// 		const newPathname = pathname.slice(0, lastSlashIndex);
-				// 		const tokenized = `${newPathname}`;
-				// 		return `/proxy?url=${`${baseURL}${tokenized}/${p2}&provider=mlb`}`;
-				// 	} else {
-				// 		return `/proxy?url=${`${baseURL}/${p2}`}`;
-				// 	}
-				// });
-
-				console.log('after:', data);
-
-				return data;
 			}
 
 			console.log('return fetch:', url, headers);
