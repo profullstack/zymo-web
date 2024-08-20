@@ -20,3 +20,5 @@
     -   espn
 -   https://github.com/eracknaphobia/plugin.video.slingtv
 -   https://github.com/eracknaphobia/plugin.video.nhlgcl
+-   add affiliate links
+-   Add filters for music tv and movies
