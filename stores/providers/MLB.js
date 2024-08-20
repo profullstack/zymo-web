@@ -34,6 +34,26 @@ export const actions = ({ connection: db }) => {
 				throw err;
 			}
 		},
+
+		async getByUserId(userId) {
+			console.log('id:', userId);
+			const query = `SELECT * FROM stream_providers WHERE createdBy = $userId`;
+
+			console.log(query);
+			try {
+				const [provider] = await db.query(query, {
+					userId
+				});
+
+				console.log('id provider:', provider);
+
+				return provider.pop();
+			} catch (err) {
+				console.error(err);
+				throw err;
+			}
+		},
+
 		async getById(id) {
 			console.log('id:', id);
 			const query = `SELECT * FROM stream_providers WHERE id = $id`;

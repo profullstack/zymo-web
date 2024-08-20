@@ -100,13 +100,11 @@
 	}
 </script>
 
-<h1>Today's games</h1>
-
+<h2>Existing accounts</h2>
 <nav>
 	<a href="/streaming/mlb/new">Add an MLB.tv account</a>
 </nav>
 
-<h2>Existing accounts</h2>
 <ul>
 	{#each providers as provider}
 		<li>
@@ -122,6 +120,8 @@
 		</li>
 	{/each}
 </ul>
+
+<h2>Today's games</h2>
 
 <ul>
 	{#each games as game}

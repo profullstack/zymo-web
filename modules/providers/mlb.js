@@ -45,9 +45,8 @@ const AFFILIATE_TEAM_IDS = {
 };
 export default class MLBTV {
 	constructor() {
-		this.username =
-			typeof process !== 'undefined' ? process.env.MLB_TV_USER : 'anthony@chovy.com';
-		this.password = typeof process !== 'undefined' ? process.env.MLB_TV_PASS : '6@ouEF%K&3hQ8';
+		this.username = null;
+		this.password = null;
 		this.jar = new CookieJar();
 		this.login_url = 'https://ids.mlb.com/oauth2/aus1m088yK07noBfh356/v1/token';
 		this.media_url = 'https://media-gateway.mlb.com/graphql';
@@ -71,13 +70,13 @@ export default class MLBTV {
 		return response;
 	}
 
-	async login() {
-		let username = this.username;
-		let password = this.password;
-
+	async login(username, password) {
 		if (!username || !password) {
 			return; // Exit the function if username or password is missing
 		}
+
+		this.username = username;
+		this.password = password;
 
 		const url = this.login_url;
 		const headers = {
