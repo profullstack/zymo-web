@@ -5,13 +5,15 @@ const mlbTv = new MLBTV();
 
 export default {
 	async get(request) {
-		const { store, session, query } = request;
+		const { store } = request;
+
 		const {
-			m3u: { M3U }
+			providers: { MLB }
 		} = store;
 
-		const result = await mlbTv.login();
+		await mlbTv.login(); //todo lookup username/password from 'stream_providers'
 		const games = await mlbTv.getTodaysGames();
-		return view('streaming/MLB.svelte', { games });
+		const providers = await MLB.getAll();
+		return view('streaming/mlb/MLB.svelte', { games, providers });
 	}
 };

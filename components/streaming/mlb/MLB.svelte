@@ -2,12 +2,30 @@
 	import Hls from 'hls.js';
 
 	export let games = [];
+	export let providers = [];
 
+	let status = {};
 	let selectedStreamUrl = null;
 	let selectedHeaders = null;
 	let proxy = true;
 	let login_token = null;
 
+	async function deleteProvider(e, provider) {
+		e.preventDefault();
+		console.log('deleting:', provider);
+
+		try {
+			const res = await fetch(`/streaming/mlb/account/${provider.id}`, {
+				method: 'DELETE'
+			});
+
+			const result = await res.json();
+			status[provider.id] = result;
+			e.target.closest('li').remove();
+		} catch (err) {
+			status[provider.id] = err;
+		}
+	}
 	// Function to play the selected stream
 	async function playStream(url, login_token) {
 		url =
@@ -83,6 +101,27 @@
 </script>
 
 <h1>Today's games</h1>
+
+<nav>
+	<a href="/streaming/mlb/new">Add an MLB.tv account</a>
+</nav>
+
+<h2>Existing accounts</h2>
+<ul>
+	{#each providers as provider}
+		<li>
+			{provider.username} -
+			<a href="/streaming/{provider.provider}/account/{provider.id}">edit</a>
+			<a
+				href="#"
+				on:click={(e) => {
+					deleteProvider(e, provider);
+				}}>delete</a
+			>
+			{#if status[provider.id]?.status}{status[provider.id].status}{/if}
+		</li>
+	{/each}
+</ul>
 
 <ul>
 	{#each games as game}
