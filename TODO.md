@@ -7,7 +7,6 @@
 -   switch fonts to .woff2 instead of .ttf
 -   autoblogger: search google for top 5 articles and combine them into one new article rewritten with ai
 -   add ability to rewrite manual blog posts with AI (via /admin/blog/new) with ai inline. so a user can cut-n-paste an article and rewrite it with ai.
--   add status icons and enable status updates for libraries on dashboard page
 -   Share libraries with friends
 -   Add friend.
 -   create a group
@@ -20,5 +19,4 @@
     -   espn
 -   https://github.com/eracknaphobia/plugin.video.slingtv
 -   https://github.com/eracknaphobia/plugin.video.nhlgcl
--   add affiliate links
 -   Add filters for music tv and movies
