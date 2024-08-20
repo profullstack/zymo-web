@@ -9,6 +9,10 @@
 
 	export let music = [];
 
+	let filterText = '';
+	let groupedMusic = groupAndSortMusic(music);
+	let filteredMusic = groupedMusic;
+
 	function groupAndSortMusic(music) {
 		const grouped = {};
 
@@ -53,7 +57,16 @@
 		return sortedGrouped;
 	}
 
-	let groupedMusic = groupAndSortMusic(music);
+	function filterMusic() {
+		const lowerFilter = filterText.toLowerCase();
+		filteredMusic = Object.fromEntries(
+			Object.entries(groupedMusic).filter(([artist]) =>
+				artist.toLowerCase().includes(lowerFilter)
+			)
+		);
+	}
+
+	$: filterMusic();
 
 	let visibleArtists = new Set();
 	let visibleAlbums = new Set();
@@ -113,9 +126,18 @@
 	}
 </script>
 
-{#if Object.keys(groupedMusic).length}
+<div class="filter">
+	<input
+		type="text"
+		placeholder="Filter artists..."
+		bind:value={filterText}
+		on:input={filterMusic}
+	/>
+</div>
+
+{#if Object.keys(filteredMusic).length}
 	<section>
-		{#each Object.entries(groupedMusic) as [artist, albums]}
+		{#each Object.entries(filteredMusic) as [artist, albums]}
 			<div class="collapsible" on:click={() => toggleVisibility(visibleArtists, artist)}>
 				<button
 					class="play-button"
@@ -140,7 +162,6 @@
 							class="collapsible"
 							on:click={() => toggleVisibility(visibleAlbums, `${artist}-${album}`)}
 						>
-							<!-- <pre>{JSON.stringify(songs, null, 2)}</pre> -->
 							{#if songs[0] && songs[0].musicbrainz && songs[0].musicbrainz.coverArt}
 								<img src={songs[0].musicbrainz.coverArt} alt="" class="poster" />
 							{:else}
@@ -187,9 +208,21 @@
 			{/if}
 		{/each}
 	</section>
+{:else}
+	<p>No artists found.</p>
 {/if}
 
 <style>
+	.filter {
+		margin-bottom: 1rem;
+	}
+
+	.filter input {
+		width: 100%;
+		padding: 0.5rem;
+		font-size: 1rem;
+	}
+
 	.collapsible {
 		cursor: pointer;
 		font-weight: bold;

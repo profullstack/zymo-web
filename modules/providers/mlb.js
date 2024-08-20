@@ -50,8 +50,6 @@ export default class MLBTV {
 		this.jar = new CookieJar();
 		this.login_url = 'https://ids.mlb.com/oauth2/aus1m088yK07noBfh356/v1/token';
 		this.media_url = 'https://media-gateway.mlb.com/graphql';
-
-		console.log(this.username, this.password);
 	}
 
 	async fetchWithCookies(url, options = {}) {
