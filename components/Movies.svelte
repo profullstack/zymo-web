@@ -1,6 +1,10 @@
 <script>
 	export let movies = [];
 
+	let filterText = '';
+	let groupedMovies = groupAndSortMovies(movies);
+	let filteredMovies = groupedMovies;
+
 	// Function to group and sort movies by show name and optionally by season
 	function groupAndSortMovies(movies) {
 		const grouped = {};
@@ -52,7 +56,16 @@
 		return sortedGrouped;
 	}
 
-	let groupedMovies = groupAndSortMovies(movies);
+	function filterMovies() {
+		const lowerFilter = filterText.toLowerCase();
+		filteredMovies = Object.fromEntries(
+			Object.entries(groupedMovies).filter(([showName]) =>
+				showName.toLowerCase().includes(lowerFilter)
+			)
+		);
+	}
+
+	$: filterMovies();
 
 	let visibleShows = new Set();
 	let visibleSeasons = new Set();
@@ -69,9 +82,18 @@
 	}
 </script>
 
-{#if Object.keys(groupedMovies).length}
+<div class="filter">
+	<input
+		type="text"
+		placeholder="Filter shows..."
+		bind:value={filterText}
+		on:input={filterMovies}
+	/>
+</div>
+
+{#if Object.keys(filteredMovies).length}
 	<section>
-		{#each Object.entries(groupedMovies) as [showName, { poster, seasons }]}
+		{#each Object.entries(filteredMovies) as [showName, { poster, seasons }]}
 			<div class="collapsible" on:click={() => toggleVisibility(visibleShows, showName)}>
 				<img src={poster} alt={showName} class="poster" />
 				{showName}
@@ -114,9 +136,21 @@
 			{/if}
 		{/each}
 	</section>
+{:else}
+	<p>No shows found.</p>
 {/if}
 
 <style>
+	.filter {
+		margin-bottom: 1rem;
+	}
+
+	.filter input {
+		width: 100%;
+		padding: 0.5rem;
+		font-size: 1rem;
+	}
+
 	.collapsible {
 		cursor: pointer;
 		font-weight: bold;

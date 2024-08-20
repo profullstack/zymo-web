@@ -19,4 +19,3 @@
     -   espn
 -   https://github.com/eracknaphobia/plugin.video.slingtv
 -   https://github.com/eracknaphobia/plugin.video.nhlgcl
--   Add filters for music tv and movies
