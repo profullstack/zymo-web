@@ -36,7 +36,7 @@ export const actions = ({ connection: db }) => {
 		},
 
 		async getByUserId(userId) {
-			console.log('id:', userId);
+			console.log('mlb userId:', userId);
 			const query = `SELECT * FROM stream_providers WHERE createdBy = $userId`;
 
 			console.log(query);

@@ -76,6 +76,8 @@ export default class MLBTV {
 		this.username = username;
 		this.password = password;
 
+		console.log('mlb:', username, password);
+
 		const url = this.login_url;
 		const headers = {
 			'User-Agent': UA_ANDROID,
@@ -237,7 +239,7 @@ export default class MLBTV {
 				games = jsonSource.dates[0].games;
 			}
 
-			console.log('Games today:', games);
+			// console.log('Games today:', games);
 			return games; // Return the list of games for today
 		} catch (error) {
 			console.error('Error fetching games:', error);
@@ -387,7 +389,7 @@ export default class MLBTV {
 				throw new Error(errors);
 			}
 
-			console.log(JSON.stringify(result, null, 2));
+			// console.log(JSON.stringify(result, null, 2));
 			const streamUrl = result.data.initPlaybackSession?.playback.url;
 			console.log(`Stream URL: ${streamUrl}`);
 

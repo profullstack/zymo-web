@@ -6,15 +6,16 @@ const mlbTv = new MLBTV();
 export default {
 	async get(request) {
 		const { store, session } = request;
-		const userId = session.get('id');
+		const user = session.get('user');
+		const { id: userId } = user;
 
 		const {
 			providers: { MLB }
 		} = store;
 
-		const provider = MLB.getByUserId(userId);
+		const provider = await MLB.getByUserId(userId);
 		const { username, password } = provider;
-		await mlbTv.login(username, password); //todo lookup username/password from 'stream_providers'
+		await mlbTv.login(username, password);
 		const games = await mlbTv.getTodaysGames();
 		const providers = await MLB.getAll();
 		return view('streaming/mlb/MLB.svelte', { games, providers });
