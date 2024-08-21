@@ -6,6 +6,7 @@
 		currentSongMetadata
 	} from '../modules/store.js';
 	import { get } from 'svelte/store';
+	import FilterInput from './FilterInput.svelte';
 
 	export let music = [];
 
@@ -126,14 +127,7 @@
 	}
 </script>
 
-<div class="filter">
-	<input
-		type="text"
-		placeholder="Filter artists..."
-		bind:value={filterText}
-		on:input={filterMusic}
-	/>
-</div>
+<FilterInput placeholder="Filter artists..." bind:filterText on:filter={filterMusic} />
 
 {#if Object.keys(filteredMusic).length}
 	<section>
