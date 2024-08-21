@@ -21,7 +21,7 @@ export const actions = ({ connection: db }) => {
 				const provider = await db.create('stream_providers', {
 					username,
 					password,
-					provider: 'mlb',
+					provider: 'hulu',
 					createdBy: me.id,
 					createdAt: new Date().toISOString(),
 					updatedAt: new Date().toISOString()
@@ -37,7 +37,7 @@ export const actions = ({ connection: db }) => {
 
 		async getByUserId(userId) {
 			console.log('mlb userId:', userId);
-			const query = `SELECT * FROM stream_providers WHERE createdBy = $userId AND provider = 'mlb'`;
+			const query = `SELECT * FROM stream_providers WHERE createdBy = $userId AND provider = 'hulu'`;
 
 			console.log(query);
 			try {
@@ -77,7 +77,7 @@ export const actions = ({ connection: db }) => {
 			const me = await this.me();
 			const { id: userId } = me;
 
-			const query = `SELECT * FROM stream_providers WHERE createdBy = $userId AND provider = 'mlb'`;
+			const query = `SELECT * FROM stream_providers WHERE createdBy = $userId AND provider = 'hulu'`;
 			try {
 				const [providers] = await db.query(query, { userId });
 
