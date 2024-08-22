@@ -20,3 +20,4 @@
     -   hulu
 -   https://github.com/eracknaphobia/plugin.video.slingtv
 -   https://github.com/eracknaphobia/plugin.video.nhlgcl
+-   add pagination

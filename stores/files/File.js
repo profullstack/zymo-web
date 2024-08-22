@@ -30,7 +30,7 @@ export const actions = ({ connection: db }) => {
 				where += ` mediaInfo.videoType = $videoType AND `;
 			}
 
-			const query = `SELECT * FROM media_files WHERE ${where} createdBy = $createdBy`;
+			const query = `SELECT * FROM media_files WHERE ${where} createdBy = $createdBy ORDER BY createdAt DESC LIMIT 10000`;
 
 			console.log(query, type, videoType, createdBy);
 
