@@ -1,4 +1,6 @@
 <script>
+	import FilterInput from './FilterInput.svelte';
+
 	export let shows = [];
 
 	let filterText = '';
@@ -81,14 +83,7 @@
 	}
 </script>
 
-<div class="filter">
-	<input
-		type="text"
-		placeholder="Filter shows..."
-		bind:value={filterText}
-		on:input={filterShows}
-	/>
-</div>
+<FilterInput placeholder="Filter shows..." bind:filterText on:filter={filterShows} />
 
 {#if Object.keys(filteredShows).length}
 	<section>
