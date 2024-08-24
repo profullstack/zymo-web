@@ -56,33 +56,37 @@
 
 	{#if msg}<pre>{JSON.stringify(msg, null, 2)}</pre>{/if}
 	<table>
-		<tr>
-			<th>#</th>
-			<th>First Name</th>
-			<th>Last Name</th>
-			<th>Email Address</th>
-			<th>Phone</th>
-			<th>Created At</th>
-			<th>Actions</th>
-		</tr>
-		{#each users as user, index}
-			<tr id="user-{index}">
-				<td>{index + 1}</td>
-				<td>{user.firstName}</td>
-				<td>{user.lastName}</td>
-				<td>{user.email}</td>
-				<td>{user.phonePrefix + user.phone}</td>
-				<td>{user.createdAt}</td>
-				<td
-					><a
-						href="#"
-						on:click|preventDefault={() => {
-							deleteUser(user, index);
-						}}>delete</a
-					></td
-				>
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>First Name</th>
+				<th>Last Name</th>
+				<th>Email Address</th>
+				<th>Phone</th>
+				<th>Created At</th>
+				<th>Actions</th>
 			</tr>
-		{/each}
+		</thead>
+		<tbody>
+			{#each users as user, index}
+				<tr id="user-{index}">
+					<td>{index + 1}</td>
+					<td>{user.firstName}</td>
+					<td>{user.lastName}</td>
+					<td>{user.email}</td>
+					<td>{user.phonePrefix + user.phone}</td>
+					<td>{user.createdAt}</td>
+					<td
+						><a
+							href="#"
+							on:click|preventDefault={() => {
+								deleteUser(user, index);
+							}}>delete</a
+						></td
+					>
+				</tr>
+			{/each}
+		</tbody>
 	</table>
 </div>
 
@@ -90,5 +94,8 @@
 	table {
 		width: 100%;
 		text-align: center;
+	}
+	tbody tr:hover {
+		background-color: var(--tbody-tr-hover-background-color);
 	}
 </style>
