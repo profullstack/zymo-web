@@ -169,7 +169,7 @@ export const actions = ({ connection: db }) => {
 			console.log('update:', data);
 
 			try {
-				const m3u = await db.merge(id, {
+				const m3u = await db.update(id, {
 					...data,
 					updatedAt: new Date().toISOString()
 				});
