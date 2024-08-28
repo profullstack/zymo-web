@@ -65,14 +65,6 @@
 
 	// Function to play the selected stream
 	async function playStream(url) {
-		url =
-			url.includes('m3u8') ||
-			url.includes('mp4') ||
-			url.includes('mov') ||
-			url.includes('mkv')
-				? url
-				: `${url}.m3u8`;
-
 		if (proxy) {
 			url = `/proxy?url=${encodeURIComponent(url)}`;
 		}
