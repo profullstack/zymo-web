@@ -78,6 +78,7 @@ export const actions = ({ connection: db }) => {
 			try {
 				const token = this.generateToken();
 				const expiration = new Date(Date.now() + 2 * (60 * 60 * 1000));
+				console.log('expiration:', expiration);
 
 				const [[result]] = await db.query(
 					'UPDATE $id SET passwordReset.token = $_token, passwordReset.expiration = $expiration',
@@ -229,8 +230,17 @@ export const actions = ({ connection: db }) => {
 		},
 		async create(user) {
 			console.log('create:', user);
-			let { email, username, firstName, lastName, phone, phonePrefix, password, password2 } =
-				user;
+			let {
+				email,
+				username,
+				firstName,
+				lastName,
+				phone,
+				phonePrefix,
+				password,
+				password2,
+				headers
+			} = user;
 			const { DB_NS, DB_DB } = env;
 
 			console.log('db:', DB_NS, DB_DB);
@@ -241,22 +251,26 @@ export const actions = ({ connection: db }) => {
 
 			username = username.replace(/[^a-zA-Z0-9]+/g, '');
 			console.log('user:', user, DB_NS, DB_DB);
+			const userObject = {
+				namespace: DB_NS,
+				database: DB_DB,
+				scope: 'allusers',
+				email,
+				firstName,
+				lastName,
+				phone,
+				phonePrefix,
+				username,
+				password,
+				headers,
+				createdAt: new Date(),
+				updatedAt: new Date()
+			};
+
+			console.log(userObject, '<< userObject');
 
 			try {
-				const token = await db.signup({
-					namespace: DB_NS,
-					database: DB_DB,
-					scope: 'allusers',
-					email,
-					firstName,
-					lastName,
-					phone,
-					phonePrefix,
-					username,
-					password,
-					createdAt: new Date().toISOString(),
-					updatedAt: new Date().toISOString()
-				});
+				const token = await db.signup(userObject);
 
 				console.log('token: ', token);
 				return token;

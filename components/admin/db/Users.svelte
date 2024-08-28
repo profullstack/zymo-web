@@ -1,6 +1,8 @@
 <script>
 	export let users = [];
 
+	console.log(users, '<< users');
+
 	let msg = '';
 
 	function exportAsCSV() {
@@ -10,6 +12,7 @@
 			'Last Name',
 			'Email Address',
 			'Phone Number',
+			'Host',
 			'Created At'
 		];
 		const rows = users.map((user, index) => [
@@ -18,8 +21,11 @@
 			user.lastName,
 			user.email,
 			user.phonePrefix + user.phone,
+			(user.headers && user.headers.host) || '',
 			user.createdAt
 		]);
+
+		console.log(rows, '<< rows');
 		const csvContent = [headers, ...rows].map((e) => e.join(',')).join('\n');
 
 		const blob = new Blob([csvContent], { type: 'text/csv' });
@@ -63,6 +69,7 @@
 				<th>Last Name</th>
 				<th>Email Address</th>
 				<th>Phone</th>
+				<th>Host</th>
 				<th>Created At</th>
 				<th>Actions</th>
 			</tr>
@@ -75,6 +82,7 @@
 					<td>{user.lastName}</td>
 					<td>{user.email}</td>
 					<td>{user.phonePrefix + user.phone}</td>
+					<td>{(user.headers && user.headers.host) || ''}</td>
 					<td>{user.createdAt}</td>
 					<td
 						><a
