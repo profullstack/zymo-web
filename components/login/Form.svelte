@@ -2,6 +2,7 @@
 	import NDK, { NDKNip07Signer, NDKEvent } from '@nostr-dev-kit/ndk';
 
 	export let next, status, errors;
+	let isLoading = false;
 
 	async function loginWithNostr(e) {
 		e.preventDefault();
@@ -40,6 +41,11 @@
 		console.log('token:', token);
 		window.location.href = '/dashboard';
 	}
+
+	function onSubmit() {
+		isLoading = true;
+		return true;
+	}
 </script>
 
 <svelte:head>
@@ -49,7 +55,7 @@
 <section>
 	<h1>Login</h1>
 
-	<form method="post">
+	<form method="post" on:submit={onSubmit}>
 		{#if next}
 			<input type="hidden" name="next" value={next} />
 		{/if}
@@ -63,10 +69,26 @@
 			<input name="password" type="password" placeholder="Enter password" required />
 		</div>
 		<div>{errors?.password ?? ''}</div>
-		<footer><button type="submit">Login</button></footer>
+		<footer>
+			<button type="submit"
+				>{#if isLoading}<span><Spinner {isLoading} /></span>{/if} Login</button
+			>
+		</footer>
 		<p><strong>-- or --</strong></p>
 		<footer><button type="button" on:click={loginWithNostr}>Login with Nostr</button></footer>
 	</form>
 
 	<p><a href="/reset">Forgot password?</a></p>
 </section>
+
+<style>
+	button[type='submit'] {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+	}
+
+	button[type='submit'] span {
+		margin-right: 0.8rem;
+	}
+</style>
