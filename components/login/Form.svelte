@@ -1,4 +1,5 @@
 <script>
+	import Spinner from '../Spinner.svelte';
 	import NDK, { NDKNip07Signer, NDKEvent } from '@nostr-dev-kit/ndk';
 
 	export let next, status, errors;
