@@ -1,6 +1,8 @@
 <script>
 	export let users = [];
 
+	console.log(users, '<< users');
+
 	let msg = '';
 
 	function exportAsCSV() {
@@ -10,6 +12,7 @@
 			'Last Name',
 			'Email Address',
 			'Phone Number',
+			'Host',
 			'Created At'
 		];
 		const rows = users.map((user, index) => [
@@ -18,8 +21,11 @@
 			user.lastName,
 			user.email,
 			user.phonePrefix + user.phone,
+			(user.headers && user.headers.host) || '',
 			user.createdAt
 		]);
+
+		console.log(rows, '<< rows');
 		const csvContent = [headers, ...rows].map((e) => e.join(',')).join('\n');
 
 		const blob = new Blob([csvContent], { type: 'text/csv' });
@@ -56,33 +62,39 @@
 
 	{#if msg}<pre>{JSON.stringify(msg, null, 2)}</pre>{/if}
 	<table>
-		<tr>
-			<th>#</th>
-			<th>First Name</th>
-			<th>Last Name</th>
-			<th>Email Address</th>
-			<th>Phone</th>
-			<th>Created At</th>
-			<th>Actions</th>
-		</tr>
-		{#each users as user, index}
-			<tr id="user-{index}">
-				<td>{index + 1}</td>
-				<td>{user.firstName}</td>
-				<td>{user.lastName}</td>
-				<td>{user.email}</td>
-				<td>{user.phonePrefix + user.phone}</td>
-				<td>{user.createdAt}</td>
-				<td
-					><a
-						href="#"
-						on:click|preventDefault={() => {
-							deleteUser(user, index);
-						}}>delete</a
-					></td
-				>
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>First Name</th>
+				<th>Last Name</th>
+				<th>Email Address</th>
+				<th>Phone</th>
+				<th>Host</th>
+				<th>Created At</th>
+				<th>Actions</th>
 			</tr>
-		{/each}
+		</thead>
+		<tbody>
+			{#each users as user, index}
+				<tr id="user-{index}">
+					<td>{index + 1}</td>
+					<td>{user.firstName}</td>
+					<td>{user.lastName}</td>
+					<td>{user.email}</td>
+					<td>{user.phonePrefix + user.phone}</td>
+					<td>{(user.headers && user.headers.host) || ''}</td>
+					<td>{user.createdAt}</td>
+					<td
+						><a
+							href="#"
+							on:click|preventDefault={() => {
+								deleteUser(user, index);
+							}}>delete</a
+						></td
+					>
+				</tr>
+			{/each}
+		</tbody>
 	</table>
 </div>
 
@@ -90,5 +102,8 @@
 	table {
 		width: 100%;
 		text-align: center;
+	}
+	tbody tr:hover {
+		background-color: var(--tbody-tr-hover-background-color);
 	}
 </style>

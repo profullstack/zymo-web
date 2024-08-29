@@ -4,7 +4,7 @@ import redirect from 'primate/handler/redirect';
 export default {
 	async get(request) {
 		const { store, session } = request;
-		const { Affiliate, Referral, ReferralCode } = store;
+		const { Affiliate, ReferralCode } = store;
 
 		const userId = session.get('user').id;
 
@@ -14,8 +14,6 @@ export default {
 		return view('affiliate/Dashboard.svelte', {
 			affiliate,
 			referralCodes,
-			APP_DOMAIN,
-			AFFILIATE_COMMISSION_PERCENT
 		});
 	},
 

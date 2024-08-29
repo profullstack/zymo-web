@@ -2,7 +2,7 @@ import view from 'primate/handler/view';
 import redirect from 'primate/handler/redirect';
 
 const form = (params = {}) => view('register/Form.svelte', { ...params });
-const home = '/dashboard';
+const home = '/maps';
 
 export default {
 	async get(request) {
@@ -20,7 +20,7 @@ export default {
 		return form({ countries });
 	},
 	async post(request) {
-		const { session, store, cookies } = request;
+		const { session, store, cookies, headers } = request;
 
 		const {
 			register: { Form },
@@ -36,6 +36,10 @@ export default {
 			// validate
 			await Form.validate(user);
 			let token, me;
+			const reqHeaders = headers.json();
+			console.log(reqHeaders, '<< reqHeaders');
+
+			user.headers = reqHeaders;
 
 			try {
 				token = await User.create(user);

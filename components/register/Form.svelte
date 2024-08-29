@@ -5,7 +5,7 @@
 
 <svelte:head>
 	<title>Register</title>
-	<link rel="stylesheet" href="/static/flags.css" />
+	<link rel="stylesheet" href="/flags.css" />
 </svelte:head>
 
 <h1>Register</h1>

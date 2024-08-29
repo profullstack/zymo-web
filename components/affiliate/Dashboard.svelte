@@ -58,7 +58,7 @@
 						0
 					)}
 				</h4>
-				<h4>Commission Percentage: {affiliateCommisionPercent} %</h4>
+				<h4>Commission Percentage: {affiliateCommissionPercent} %</h4>
 			</div>
 			<div style="padding: 10px;border: 1px solid;border-radius: 10px; margin: 10px 0;">
 				<h4>Referral Links</h4>

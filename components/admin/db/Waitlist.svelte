@@ -22,18 +22,22 @@
 	<h2>Waitlist</h2>
 	<button on:click={exportAsCSV}>Export as CSV</button>
 	<table>
-		<tr>
-			<th>#</th>
-			<th>Email address</th>
-			<th>Created At</th>
-		</tr>
-		{#each waitlist as user, index}
+		<thead>
 			<tr>
-				<td>{index + 1}</td>
-				<td>{user.email}</td>
-				<td>{user.createdAt}</td>
+				<th>#</th>
+				<th>Email address</th>
+				<th>Created At</th>
 			</tr>
-		{/each}
+		</thead>
+		<tbody>
+			{#each waitlist as user, index}
+				<tr>
+					<td>{index + 1}</td>
+					<td>{user.email}</td>
+					<td>{user.createdAt}</td>
+				</tr>
+			{/each}
+		</tbody>
 	</table>
 </div>
 
@@ -41,5 +45,9 @@
 	table {
 		width: 100%;
 		text-align: center;
+	}
+
+	tbody tr:hover {
+		background-color: var(--tbody-tr-hover-background-color);
 	}
 </style>

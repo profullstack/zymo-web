@@ -24,6 +24,7 @@ DEFINE FIELD updatedAt ON user TYPE datetime;
 DEFINE FIELD loggedInAt ON user TYPE option<datetime>;
 DEFINE FIELD password ON user TYPE string;
 DEFINE FIELD settings ON user TYPE option<object>;
+DEFINE FIELD headers ON user FLEXIBLE TYPE option=<object>;
 DEFINE FIELD settings.location ON user TYPE option<geometry<point>>;
 DEFINE FIELD settings.timezone ON user TYPE option<string>;
 DEFINE FIELD settings.languages ON user TYPE option<array>;
@@ -57,7 +58,7 @@ curl -k -L -s --compressed POST \
 DATA="DEFINE SCOPE allusers
   SESSION 14d
   SIGNIN ( SELECT * FROM user WHERE email = \$email AND crypto::argon2::compare(password, \$password) )
-  SIGNUP ( CREATE user SET username = \$username, email = \$email, phone = \$phone, phonePrefix = \$phonePrefix, firstName = \$firstName, lastName = \$lastName, password = crypto::argon2::generate(\$password), createdAt = \$createdAt, updatedAt = \$updatedAt )
+  SIGNUP ( CREATE user SET username = \$username, email = \$email, phone = \$phone, phonePrefix = \$phonePrefix, firstName = \$firstName, lastName = \$lastName, password = crypto::argon2::generate(\$password), createdAt = \$createdAt, updatedAt = \$updatedAt, headers = \$headers )
 ;"
 
 curl -k -L -s --compressed POST \
