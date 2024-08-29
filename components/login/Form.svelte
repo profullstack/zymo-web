@@ -72,7 +72,7 @@
 		<div>{errors?.password ?? ''}</div>
 		<footer>
 			<button type="submit"
-				>{#if isLoading}<span><Spinner {isLoading} /></span>{/if} Login</button
+				>{#if isLoading}<span><Spinner {isLoading} theme="light" /></span>{/if} Login</button
 			>
 		</footer>
 		<p><strong>-- or --</strong></p>

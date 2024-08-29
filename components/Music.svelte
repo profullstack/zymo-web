@@ -138,14 +138,14 @@
 					on:click={(e) => {
 						e.stopPropagation();
 						playAllSongs(Object.values(albums).flat());
-					}}><img src="/static/icons/play.svg" alt="" style="width: 3rem;" /></button
+					}}><img src="/icons/play.svg" alt="" style="width: 3rem;" /></button
 				>
 				<button
 					class="random-button"
 					on:click={(e) => {
 						e.stopPropagation();
 						randomizeAndPlaySongs(Object.values(albums).flat());
-					}}><img src="/static/icons/shuffle.svg" alt="" style="width: 3rem;" /></button
+					}}><img src="/icons/shuffle.svg" alt="" style="width: 3rem;" /></button
 				>
 				{artist}
 			</div>
@@ -159,25 +159,21 @@
 							{#if songs[0] && songs[0].musicbrainz && songs[0].musicbrainz.coverArt}
 								<img src={songs[0].musicbrainz.coverArt} alt="" class="poster" />
 							{:else}
-								<img
-									class="poster"
-									src="/static/icons/placeholder.music.svg"
-									alt=""
-								/>
+								<img class="poster" src="/icons/placeholder.music.svg" alt="" />
 							{/if}
 							<button
 								class="play-button"
 								on:click={(e) => {
 									e.stopPropagation();
 									playAllSongs(songs);
-								}}><img src="/static/icons/play.svg" alt="" /></button
+								}}><img src="/icons/play.svg" alt="" /></button
 							>
 							<button
 								class="random-button"
 								on:click={(e) => {
 									e.stopPropagation();
 									randomizeAndPlaySongs(songs);
-								}}><img src="/static/icons/shuffle.svg" alt="" /></button
+								}}><img src="/icons/shuffle.svg" alt="" /></button
 							>
 							{album}
 						</div>
@@ -189,7 +185,7 @@
 											{#if song.playing}
 												{'❚❚'}
 											{:else}
-												<img src="/static/icons/play.svg" alt="" />
+												<img src="/icons/play.svg" alt="" />
 											{/if}
 										</button>
 										<a href={song.url}>{song.songname}</a>

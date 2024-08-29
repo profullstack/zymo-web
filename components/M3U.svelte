@@ -1,5 +1,6 @@
 <script>
 	import Hls from 'hls.js';
+	// import videojs from 'video.js';
 	import { onMount } from 'svelte';
 	import Spinner from './Spinner.svelte';
 	import {
@@ -18,7 +19,30 @@
 	export let m3us = [];
 	export let proxy = false;
 
+	const options = {};
+	let videoRef;
+	let type = 'mp4';
+	let url;
 	let isChannelSearchHovered = false;
+	let transcode = true;
+
+	// Function to handle checkbox change
+	function handleTranscodeCheckboxChange(event) {
+		transcode = event.target.checked;
+		console.log('transcoding:', transcode);
+		transcodeMedia($streamUrl);
+	}
+
+	function transcodeMedia(url) {
+		url = `/api/transcode?url=${encodeURIComponent(url)}`;
+		type = 'mp4';
+		streamUrl.set(url);
+		console.log(url);
+		const source = videoRef.querySelector('source');
+		source.src = $streamUrl;
+		videoRef.load();
+		console.log($streamUrl, '<< $streamUrl');
+	}
 
 	// Function to fetch the channels from the selected provider
 	async function fetchChannels(provider) {
@@ -60,11 +84,33 @@
 		isChannelListOpen.set(false);
 		selectedChannel.set(channel);
 		streamUrl.set(channel.url);
-		playStream(channel.url);
+		if (transcode) {
+			transcodeMedia($streamUrl);
+		} else {
+			playHLSStream($streamUrl);
+		}
 	}
 
+	// async function playStream(url) {
+	// 	const player = videojs('video', options, async function onPlayerReady() {
+	// 		videojs.log('Your player is ready!');
+
+	// 		player.src({
+	// 			src: url,
+	// 			type: 'video/mp2t'
+	// 		});
+
+	// 		// Play the video
+	// 		await this.play();
+
+	// 		// Add an event listener for the 'ended' event
+	// 		this.on('ended', () => {
+	// 			videojs.log('Awww...over so soon?!');
+	// 		});
+	// 	});
+	// }
 	// Function to play the selected stream
-	async function playStream(url) {
+	async function playHLSStream(url) {
 		if (proxy) {
 			url = `/proxy?url=${encodeURIComponent(url)}`;
 		}
@@ -121,6 +167,12 @@
 		setTimeout(() => {
 			if (!isChannelSearchHovered) isChannelListOpen.set(false);
 		}, 100);
+	}
+
+	$: if ($streamUrl && videoRef) {
+		const source = videoRef.querySelector('source');
+		source.src = $streamUrl;
+		videoRef.load();
 	}
 </script>
 
@@ -199,17 +251,21 @@
 				/>
 				Enable proxy
 			</label>
+			<label>
+				<input
+					type="checkbox"
+					id="transcode-checkbox"
+					on:change={handleTranscodeCheckboxChange}
+					bind:checked={transcode}
+				/>
+				Transcode
+			</label>
 		</div>
 	{/if}
 
-	{#if $selectedChannel?.url?.indexOf('mp4') > -1}
-		<video id="video" controls>
-			<source src={$selectedChannel.url} type="video/mp4" />
-		</video>
-	{:else}
-		<!-- <button on:click={() => playStream($streamUrl)}>Play</button> -->
-		<video id="video" controls></video>
-	{/if}
+	<video id="video" controls autoplay bind:this={videoRef}>
+		<source src={$streamUrl} type="video/{type}" />
+	</video>
 </div>
 
 <style>

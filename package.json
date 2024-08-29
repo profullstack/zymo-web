@@ -68,6 +68,7 @@
 		"marked": "^14.0.0",
 		"minimist": "^1.2.8",
 		"moment-timezone": "^0.5.45",
+		"mpegts.js": "^1.7.3",
 		"nlcst-to-string": "^4.0.0",
 		"node-fetch": "^3.3.2",
 		"npm-check-updates": "^17.1.0",

@@ -40,7 +40,7 @@
 					on:click={handleLinkClick}
 					class:active={activeLink(item.route)}
 				>
-					<img src="/static/icons/{item.icon}" alt="" border="0" />
+					<img src="/icons/{item.icon}" alt="" border="0" />
 					<strong>{item.name}</strong>
 				</a>
 			</li>

@@ -19,7 +19,7 @@
 
 			if (!grouped[showName]) {
 				grouped[showName] = {
-					poster: movie.omdb?.Poster || '/static/icons/placeholder.movie.svg',
+					poster: movie.omdb?.Poster || '/icons/placeholder.movie.svg',
 					seasons: {}
 				};
 			}

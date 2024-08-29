@@ -31,9 +31,9 @@
 <nav>
 	<span>
 		<a href="#" id="hamburger" on:click={toggleSidebar}>
-			<img src="/static/images/hamburger.svg" alt="" />
+			<img src="/images/hamburger.svg" alt="" />
 		</a>
-		<a href="/" id="logo"><img src="/static/logo.svg" alt="" /></a>
+		<a href="/" id="logo"><img src="/logo.svg" alt="" /></a>
 	</span>
 	<span>
 		<a href="/pricing">Pricing</a>

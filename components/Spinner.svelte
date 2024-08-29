@@ -1,9 +1,10 @@
 <script>
 	export let isLoading = false;
+	export let theme = 'dark';
 </script>
 
 {#if isLoading}
-	<div class="spinner"></div>
+	<div class="spinner" class:light={theme === 'light'}></div>
 {/if}
 
 <style>
@@ -15,6 +16,10 @@
 		border-radius: 50%;
 		border-left-color: var(--spinner-color);
 		animation: spin 1s linear infinite;
+	}
+
+	.spinner.light {
+		border-left-color: #fff;
 	}
 
 	@keyframes spin {
