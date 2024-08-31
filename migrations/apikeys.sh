@@ -9,7 +9,7 @@ DATA="DEFINE TABLE apikeys SCHEMALESS
     FOR create WHERE \$scope = \"allusers\",
 	FOR update WHERE createdBy = \$auth.id,
 	FOR delete WHERE createdBy = \$auth.id;
-	DEFINE INDEX idx_name ON apikeys COLUMNS name UNIQUE;
+	DEFINE INDEX IF NOT EXISTS idx_name ON apikeys COLUMNS name UNIQUE;
 "
 # 	-- FOR select WHERE \$scope = \"allusers\" -- limit to only users in db
 

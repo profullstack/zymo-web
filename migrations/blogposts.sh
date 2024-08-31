@@ -8,14 +8,14 @@ DATA="DEFINE TABLE blogposts SCHEMALESS
     FOR select FULL,
     FOR update, create WHERE \$scope = \"allusers\" OR \$scope = \"apiusers\" OR \$scope = \"allnostrusers\",
 	FOR delete WHERE userId = \$auth.id;
-DEFINE FIELD title ON blogposts TYPE option<string>;
-DEFINE FIELD thumbnail ON blogposts TYPE option<string>;
-DEFINE FIELD slug ON blogposts TYPE option<string>;
-DEFINE FIELD tags ON blogposts TYPE option<array>;
-DEFINE FIELD views ON blogposts TYPE option<number> DEFAULT 0;
-DEFINE FIELD authorName ON blogposts TYPE option<string>;
-DEFINE FIELD markdown ON blogposts TYPE option<string>;
-DEFINE INDEX idx_userId ON affiliates COLUMNS userId UNIQUE;
+DEFINE FIELD IF NOT EXISTS title ON blogposts TYPE option<string>;
+DEFINE FIELD IF NOT EXISTS thumbnail ON blogposts TYPE option<string>;
+DEFINE FIELD IF NOT EXISTS slug ON blogposts TYPE option<string>;
+DEFINE FIELD IF NOT EXISTS tags ON blogposts TYPE option<array>;
+DEFINE FIELD IF NOT EXISTS views ON blogposts TYPE option<number> DEFAULT 0;
+DEFINE FIELD IF NOT EXISTS authorName ON blogposts TYPE option<string>;
+DEFINE FIELD IF NOT EXISTS markdown ON blogposts TYPE option<string>;
+DEFINE INDEX IF NOT EXISTS idx_userId ON affiliates COLUMNS userId UNIQUE;
 "
 
 curl -k -L -s --compressed POST \

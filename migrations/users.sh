@@ -6,44 +6,44 @@
 . .env.local
 
 DATA="DEFINE TABLE user SCHEMAFULL
-  PERMISSIONS
-    FOR select FULL,
-    FOR update, delete WHERE id = \$auth.id OR \$auth.isAdmin = true,
-    FOR create NONE;
-DEFINE FIELD email ON user TYPE string;
-DEFINE FIELD isAdmin ON user TYPE option<bool> DEFAULT false;
-DEFINE FIELD phone ON user TYPE option<string>;
-DEFINE FIELD stripeCustomerId ON user TYPE option<string>;
-DEFINE FIELD googleRefreshToken ON user TYPE option<string>;
-DEFINE FIELD phonePrefix ON user TYPE option<string>;
-DEFINE FIELD firstName ON user TYPE string;
-DEFINE FIELD lastName ON user TYPE string;
-DEFINE FIELD username ON user TYPE string;
-DEFINE FIELD createdAt ON user TYPE datetime;
-DEFINE FIELD updatedAt ON user TYPE datetime;
-DEFINE FIELD loggedInAt ON user TYPE option<datetime>;
-DEFINE FIELD password ON user TYPE string;
-DEFINE FIELD settings ON user TYPE option<object>;
-DEFINE FIELD headers ON user FLEXIBLE TYPE option=<object>;
-DEFINE FIELD settings.location ON user TYPE option<geometry<point>>;
-DEFINE FIELD settings.timezone ON user TYPE option<string>;
-DEFINE FIELD settings.languages ON user TYPE option<array>;
-DEFINE FIELD settings.languages.* ON user TYPE option<string>;
-DEFINE FIELD settings.offset ON user TYPE option<string>;
-DEFINE FIELD verify ON user TYPE option<object>;
-DEFINE FIELD verify.email ON user TYPE option<object>;
-DEFINE FIELD verify.email.code ON user TYPE option<string>;
-DEFINE FIELD verify.email.expiration ON user TYPE option<datetime>;
-DEFINE FIELD verify.email.status ON user TYPE option<string>;
-DEFINE FIELD verify.phone ON user TYPE option<object>;
-DEFINE FIELD verify.phone.code ON user TYPE option<string>;
-DEFINE FIELD verify.phone.expiration ON user TYPE option<datetime>;
-DEFINE FIELD verify.phone.status ON user TYPE option<string>;
-DEFINE FIELD passwordReset ON user TYPE option<object>;
-DEFINE FIELD passwordReset.token ON user TYPE option<string>;
-DEFINE FIELD passwordReset.expiration ON user TYPE option<string>;
-DEFINE INDEX idx_email ON user COLUMNS email UNIQUE;
-DEFINE INDEX idx_username ON user COLUMNS username UNIQUE;
+ PERMISSIONS
+  FOR select FULL,
+  FOR update, delete WHERE id = \$auth.id OR \$auth.isAdmin = true,
+  FOR create NONE;
+DEFINE FIELD IF NOT EXISTS email ON user TYPE string;
+DEFINE FIELD IF NOT EXISTS isAdmin ON user TYPE option<bool> DEFAULT false;
+DEFINE FIELD IF NOT EXISTS phone ON user TYPE option<string>;
+DEFINE FIELD IF NOT EXISTS stripeCustomerId ON user TYPE option<string>;
+DEFINE FIELD IF NOT EXISTS googleRefreshToken ON user TYPE option<string>;
+DEFINE FIELD IF NOT EXISTS phonePrefix ON user TYPE option<string>;
+DEFINE FIELD IF NOT EXISTS firstName ON user TYPE string;
+DEFINE FIELD IF NOT EXISTS lastName ON user TYPE string;
+DEFINE FIELD IF NOT EXISTS username ON user TYPE string;
+DEFINE FIELD IF NOT EXISTS createdAt ON user TYPE datetime;
+DEFINE FIELD IF NOT EXISTS updatedAt ON user TYPE datetime;
+DEFINE FIELD IF NOT EXISTS loggedInAt ON user TYPE option<datetime>;
+DEFINE FIELD IF NOT EXISTS password ON user TYPE string;
+DEFINE FIELD IF NOT EXISTS settings ON user TYPE option<object>;
+DEFINE FIELD IF NOT EXISTS headers ON user FLEXIBLE TYPE option<object>;
+DEFINE FIELD IF NOT EXISTS settings.location ON user TYPE option<geometry<point>>;
+DEFINE FIELD IF NOT EXISTS settings.timezone ON user TYPE option<string>;
+DEFINE FIELD IF NOT EXISTS settings.languages ON user TYPE option<array>;
+DEFINE FIELD IF NOT EXISTS settings.languages.* ON user TYPE option<string>;
+DEFINE FIELD IF NOT EXISTS settings.offset ON user TYPE option<string>;
+DEFINE FIELD IF NOT EXISTS verify ON user TYPE option<object>;
+DEFINE FIELD IF NOT EXISTS verify.email ON user TYPE option<object>;
+DEFINE FIELD IF NOT EXISTS verify.email.code ON user TYPE option<string>;
+DEFINE FIELD IF NOT EXISTS verify.email.expiration ON user TYPE option<datetime>;
+DEFINE FIELD IF NOT EXISTS verify.email.status ON user TYPE option<string>;
+DEFINE FIELD IF NOT EXISTS verify.phone ON user TYPE option<object>;
+DEFINE FIELD IF NOT EXISTS verify.phone.code ON user TYPE option<string>;
+DEFINE FIELD IF NOT EXISTS verify.phone.expiration ON user TYPE option<datetime>;
+DEFINE FIELD IF NOT EXISTS verify.phone.status ON user TYPE option<string>;
+DEFINE FIELD IF NOT EXISTS passwordReset ON user TYPE option<object>;
+DEFINE FIELD IF NOT EXISTS passwordReset.token ON user TYPE option<string>;
+DEFINE FIELD IF NOT EXISTS passwordReset.expiration ON user TYPE option<string>;
+DEFINE INDEX IF NOT EXISTS idx_email ON user COLUMNS email UNIQUE;
+DEFINE INDEX IF NOT EXISTS idx_username ON user COLUMNS username UNIQUE;
 "
 
 curl -k -L -s --compressed POST \
@@ -56,9 +56,9 @@ curl -k -L -s --compressed POST \
 
 
 DATA="DEFINE SCOPE allusers
-  SESSION 14d
-  SIGNIN ( SELECT * FROM user WHERE email = \$email AND crypto::argon2::compare(password, \$password) )
-  SIGNUP ( CREATE user SET username = \$username, email = \$email, phone = \$phone, phonePrefix = \$phonePrefix, firstName = \$firstName, lastName = \$lastName, password = crypto::argon2::generate(\$password), createdAt = \$createdAt, updatedAt = \$updatedAt, headers = \$headers )
+ SESSION 14d
+ SIGNIN ( SELECT * FROM user WHERE email = \$email AND crypto::argon2::compare(password, \$password) )
+ SIGNUP ( CREATE user SET username = \$username, email = \$email, phone = \$phone, phonePrefix = \$phonePrefix, firstName = \$firstName, lastName = \$lastName, password = crypto::argon2::generate(\$password), createdAt = \$createdAt, updatedAt = \$updatedAt, headers = \$headers )
 ;"
 
 curl -k -L -s --compressed POST \
@@ -70,7 +70,7 @@ curl -k -L -s --compressed POST \
 	${DB_SQL_URL}
 
 DATA="DEFINE SCOPE apiusers
-  SESSION 14d
+ SESSION 14d
 SIGNIN ( (SELECT *, (SELECT * FROM apikeys WHERE createdBy = \$parent.id AND id = \$apikey) AS apikeys FROM user)[WHERE array::matches(apikeys, {createdBy: id})] )
 "
 
@@ -84,8 +84,8 @@ curl -k -L -s --compressed POST \
 
 
 DATA="DEFINE SCOPE allnostrusers
-   SESSION 14d
-   SIGNUP ( CREATE nostrusers SET name = \$name, website = \$website, displayName = \$displayName, about = \$about, lud16 = \$lud16, image = \$image, createdAt = \$created_at, updatedAt = \$updatedAt, banner = \$banner, nip05 = \$nip05 )
+  SESSION 14d
+  SIGNUP ( CREATE nostrusers SET name = \$name, website = \$website, displayName = \$displayName, about = \$about, lud16 = \$lud16, image = \$image, createdAt = \$created_at, updatedAt = \$updatedAt, banner = \$banner, nip05 = \$nip05 )
 	SESSION 14d
 	SIGNIN ( (SELECT * FROM nostrusers WHERE nip05 = \$nip05) )
 ;"

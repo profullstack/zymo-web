@@ -8,11 +8,11 @@ DATA="DEFINE TABLE payouts SCHEMALESS
     FOR select FULL,
     FOR update, create WHERE \$scope = \"allusers\" OR \$scope = \"apiusers\" OR \$scope = \"allnostrusers\",
 	FOR delete WHERE userId = \$auth.id;
-DEFINE FIELD method ON payouts TYPE string;
-DEFINE FIELD amount ON payouts TYPE option<number>;
-DEFINE FIELD status ON payouts TYPE option<string>;
-DEFINE FIELD details ON payouts TYPE object;
-DEFINE INDEX idx_userId ON payouts COLUMNS userId;
+DEFINE FIELD IF NOT EXISTS method ON payouts TYPE string;
+DEFINE FIELD IF NOT EXISTS amount ON payouts TYPE option<number>;
+DEFINE FIELD IF NOT EXISTS status ON payouts TYPE option<string>;
+DEFINE FIELD IF NOT EXISTS details ON payouts TYPE object;
+DEFINE INDEX IF NOT EXISTS idx_userId ON payouts COLUMNS userId;
 "
 
 curl -k -L -s --compressed POST \
