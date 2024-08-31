@@ -150,7 +150,7 @@
 		proxy = event.target.checked;
 		const channel = get(selectedChannel);
 		if (channel) {
-			playStream(channel.url);
+			playHLSStream(channel.url);
 		}
 	}
 
