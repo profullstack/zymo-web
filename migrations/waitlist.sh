@@ -7,7 +7,7 @@ DATA="DEFINE TABLE waitlist SCHEMALESS
   PERMISSIONS
     FOR select FULL,
     FOR update, create WHERE \$scope = \"allusers\" OR \$scope = \"apiusers\" OR \$scope = \"allnostrusers\";
-DEFINE INDEX idx_email ON waitlist COLUMNS email UNIQUE;
+DEFINE INDEX IF NOT EXISTS idx_email ON waitlist COLUMNS email UNIQUE;
 "
 
 curl -k -L -s --compressed POST \

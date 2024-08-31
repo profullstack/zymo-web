@@ -8,9 +8,9 @@ DATA="DEFINE TABLE affiliates SCHEMALESS
     FOR select FULL,
     FOR update, create WHERE \$scope = \"allusers\" OR \$scope = \"apiusers\" OR \$scope = \"allnostrusers\",
 	FOR delete WHERE userId = \$auth.id;
-DEFINE FIELD balance ON affiliates TYPE option<number> DEFAULT 0;
-DEFINE FIELD payoutMethods ON affiliates TYPE option<array> DEFAULT [];
-DEFINE INDEX idx_userId ON affiliates COLUMNS userId UNIQUE;
+DEFINE FIELD IF NOT EXISTS balance ON affiliates TYPE option<number> DEFAULT 0;
+DEFINE FIELD IF NOT EXISTS payoutMethods ON affiliates TYPE option<array> DEFAULT [];
+DEFINE INDEX IF NOT EXISTS idx_userId ON affiliates COLUMNS userId UNIQUE;
 "
 
 curl -k -L -s --compressed POST \
