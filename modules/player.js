@@ -102,8 +102,9 @@ export function parseM3U8(m3u8Text) {
 
 	lines.forEach((line) => {
 		if (line.startsWith('#EXTINF')) {
-			const name = line.split(',')[1];
-			channel = { name: name.trim() };
+			const name = line.split(',')[1]?.trim();
+			const channelId = line.match(/tvg-id="([^"]*)"/)?.[1]?.trim();
+			channel = { name, channelId };
 		} else if (line.startsWith('http')) {
 			channel.url = line.trim();
 			channelList.push(channel);
@@ -113,8 +114,25 @@ export function parseM3U8(m3u8Text) {
 	return channelList;
 }
 
+export async function selectChannelByProgram(program) {
+	console.log('selectChannelByProgram:', program);
+	await fetchChannels(program.providerId);
+	const channel = get(channels).find((ch) => ch.channelId === program.channelId);
+	console.log('found channel:', channel);
+
+	isChannelListOpen.set(false);
+	selectedChannel.set(channel);
+	streamUrl.set(channel.url);
+	const transcode = get(transcodeStore); // Assume there's a transcode store to track state
+	if (transcode) {
+		transcodeMedia(channel.url, document.getElementById('video'));
+	} else {
+		playHLSStream(channel.url, document.getElementById('video'), get(proxyStore)); // Assume proxyStore exists
+	}
+}
 // Function to select a channel and play it
 export function selectChannel(channel) {
+	console.log('selectChannel:', channel);
 	isChannelListOpen.set(false);
 	selectedChannel.set(channel);
 	streamUrl.set(channel.url);
@@ -144,13 +162,14 @@ export async function fetchEPG(m3uId) {
 		let channels = [];
 
 		Array.from(xmlChannels).forEach((channel) => {
-			const id = channel.getAttribute('id');
+			const channelId = channel.getAttribute('id');
 			const name = channel.querySelector('display-name').textContent;
 			const icon = channel.querySelector('icon')?.getAttribute('src');
 			const programs = [];
 
 			channels.push({
-				id,
+				providerId: m3uId,
+				channelId,
 				name,
 				icon,
 				programs
@@ -159,7 +178,7 @@ export async function fetchEPG(m3uId) {
 
 		Array.from(xmlPrograms).forEach((program) => {
 			const channelId = program.getAttribute('channel').trim();
-			const channelIndex = channels.findIndex((channel) => channel.id === channelId);
+			const channelIndex = channels.findIndex((channel) => channel.channelId === channelId);
 
 			if (channelIndex > -1) {
 				const title = program.querySelector('title').textContent;
@@ -168,6 +187,7 @@ export async function fetchEPG(m3uId) {
 
 				if (currentTime <= start && start <= endTime) {
 					channels[channelIndex].programs.push({
+						providerId: m3uId,
 						channelId,
 						title,
 						start,

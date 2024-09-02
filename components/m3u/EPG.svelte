@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import { epgStore, setEPGData, selectedChannel } from '../../modules/store.js';
-	import { fetchEPG, selectChannel } from '../../modules/player.js';
+	import { fetchEPG, selectChannelByProgram } from '../../modules/player.js';
 	import VideoPlayer from '../VideoPlayer.svelte';
 
 	export let m3u = {};
@@ -19,7 +19,6 @@
 	let filteredChannels = []; // Initialize filteredChannels as an empty array
 	let paginatedChannels = []; // Initialize paginatedChannels as an empty array
 
-
 	function calculateWidth(start, stop) {
 		const duration = (stop - start) / (1000 * 60 * 60);
 		const span = duration * 30;
@@ -34,9 +33,6 @@
 		const formattedHours = hours % 12 || 12;
 		return `${formattedHours}:${minutes} ${ampm}`;
 	}
-
-
-
 
 	// Ensure $epgStore is defined and contains necessary data
 	$: channels = $epgStore.channels || [];
@@ -115,7 +111,8 @@
 								program.start,
 								program.stop
 							)}rem; {program.empty ? 'background-color:gray;' : ''}"
-							on:click|preventDefault={() => selectChannel(program)}
+							on:click|preventDefault={async () =>
+								await selectChannelByProgram(program)}
 						>
 							{program.title}
 						</div>
