@@ -1,5 +1,6 @@
 # todo
 
+-   add logo to VideoPlayer.svelte
 -   add favorites for each type of media
 -   add scan status page
 -   document api for end users (see markdown stuff)
@@ -20,4 +21,4 @@
     -   hulu
 -   https://github.com/eracknaphobia/plugin.video.slingtv
 -   https://github.com/eracknaphobia/plugin.video.nhlgcl
--   add pagination
+-   add pagination (but I forgot where)

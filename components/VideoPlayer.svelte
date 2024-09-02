@@ -15,10 +15,10 @@
 	export let channel;
 
 	let videoRef;
-	let proxy = false;
-	let transcode = true;
+	let proxy = Boolean(!channel.url.contains('https://')) || get(proxyStore);
+	let transcode = Boolean(!channel.url.contains('m3u')) || get(transcodeStore);
 
-	function handleProxyChange(event) {
+	function handleProxyChange(event) { 
 		handleProxyCheckboxChange(event, videoRef);
 	}
 

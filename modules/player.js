@@ -234,6 +234,7 @@ export function removeEmptyChannels(channels) {
 
 export function fillMissingTime(channels) {
 	channels.forEach((channel) => {
+		const { channelId, providerId } = channel;
 		const updatedPrograms = [];
 		let previousStop = new Date(currentTime);
 		previousStop.setSeconds(0, 0);
@@ -249,6 +250,8 @@ export function fillMissingTime(channels) {
 
 			if (previousStop < programStart) {
 				updatedPrograms.push({
+					channelId,
+					providerId,
 					title: 'empty',
 					start: new Date(previousStop),
 					stop: new Date(programStart),
@@ -257,6 +260,8 @@ export function fillMissingTime(channels) {
 			}
 			updatedPrograms.push({
 				...program,
+				channelId,
+				providerId,
 				start: programStart,
 				stop: programStop
 			});
@@ -268,6 +273,9 @@ export function fillMissingTime(channels) {
 			end.setSeconds(0, 0);
 
 			updatedPrograms.push({
+				channelId,
+				providerId,
+
 				title: 'empty',
 				start: previousStop,
 				stop: end,

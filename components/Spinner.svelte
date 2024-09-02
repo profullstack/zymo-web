@@ -9,7 +9,7 @@
 
 <style>
 	.spinner {
-		margin-left: 10px;
+		margin: 0.2rem 0.4rem;
 		border: 4px solid rgba(0, 0, 0, 0.1);
 		width: 24px;
 		height: 24px;
