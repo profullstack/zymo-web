@@ -69,7 +69,8 @@
 				<th>Last Name</th>
 				<th>Email Address</th>
 				<th>Phone</th>
-				<th>Host</th>
+				<th>Real IP</th>
+				<th>Forwarded IP</th>
 				<th>Created At</th>
 				<th>Actions</th>
 			</tr>
@@ -82,7 +83,8 @@
 					<td>{user.lastName}</td>
 					<td>{user.email}</td>
 					<td>{user.phonePrefix + user.phone}</td>
-					<td>{(user.headers && user.headers.host) || ''}</td>
+					<td>{(user.headers && user.headers['x-real-ip']) || ''}</td>
+					<td>{(user.headers && user.headers['x-forwarded-for']) || ''}</td>
 					<td>{user.createdAt}</td>
 					<td
 						><a
