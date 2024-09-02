@@ -26,7 +26,7 @@ export const isLoading = writable(false);
 export const isChannelListOpen = writable(false);
 export const mp4 = writable(false);
 
-export const transcodeStore = writable(false);
+export const transcodeStore = writable(true);
 export const proxyStore = writable(false);
 
 export const filteredChannels = derived(

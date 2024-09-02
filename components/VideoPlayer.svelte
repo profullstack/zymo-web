@@ -26,13 +26,14 @@
 		handleTranscodeCheckboxChange(event, videoRef);
 	}
 
-	onMount(() => {
+	onMount(async () => {
 		const channelObj = channel || get(selectedChannel);
 		const initialUrl = channelObj.url;
-		if ($transcodeStore) {
-			transcodeMedia(initialUrl, videoRef);
+
+		if (get(transcodeStore)) {
+			await transcodeMedia(initialUrl, videoRef);
 		} else {
-			playHLSStream(initialUrl, videoRef, $proxyStore);
+			await playHLSStream(initialUrl, videoRef, get(proxyStore));
 		}
 	});
 

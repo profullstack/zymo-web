@@ -65,7 +65,7 @@ export function handleProxyCheckboxChange(event, videoRef) {
 	const channel = get(selectedChannel);
 
 	if (channel) {
-		playHLSStream(channel.url, videoRef, $proxyStore);
+		playHLSStream(channel.url, videoRef, get(proxyStore));
 	}
 }
 
