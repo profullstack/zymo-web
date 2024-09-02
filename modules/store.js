@@ -26,6 +26,9 @@ export const isLoading = writable(false);
 export const isChannelListOpen = writable(false);
 export const mp4 = writable(false);
 
+export const transcodeStore = writable(false);
+export const proxyStore = writable(false);
+
 export const filteredChannels = derived(
 	[channels, filterValue, mp4],
 	([$channels, $filterValue, $mp4]) => {

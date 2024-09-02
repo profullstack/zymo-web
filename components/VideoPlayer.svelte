@@ -1,0 +1,62 @@
+<!-- VideoPlayer.svelte -->
+
+<script>
+	import { onMount } from 'svelte';
+	import {
+		playHLSStream,
+		transcodeMedia,
+		handleProxyCheckboxChange,
+		handleTranscodeCheckboxChange,
+		updateVideoSource
+	} from '../modules/player.js';
+	import { streamUrl, selectedChannel, proxyStore, transcodeStore } from '../modules/store.js';
+	import { get } from 'svelte/store';
+
+	export let channel;
+
+	let videoRef;
+	let proxy = false;
+	let transcode = true;
+
+	function handleProxyChange(event) {
+		handleProxyCheckboxChange(event, videoRef);
+	}
+
+	function handleTranscodeChange(event) {
+		handleTranscodeCheckboxChange(event, videoRef);
+	}
+
+	onMount(() => {
+		const channelObj = channel || get(selectedChannel);
+		const initialUrl = channelObj.url;
+		if ($transcodeStore) {
+			transcodeMedia(initialUrl, videoRef);
+		} else {
+			playHLSStream(initialUrl, videoRef, $proxyStore);
+		}
+	});
+
+	$: if ($streamUrl && videoRef) {
+		updateVideoSource(videoRef, $streamUrl, 'mp4');
+	}
+</script>
+
+<div>
+	<label>
+		<input type="checkbox" on:change={handleProxyChange} bind:checked={proxy} /> Enable proxy
+	</label>
+	<label>
+		<input type="checkbox" on:change={handleTranscodeChange} bind:checked={transcode} /> Transcode
+	</label>
+</div>
+<video id="video" controls autoplay={Boolean($streamUrl)} bind:this={videoRef}>
+	<source src={$streamUrl} type="video/mp4" />
+</video>
+
+<style>
+	video {
+		width: 50%;
+		max-width: 80vw;
+		height: auto;
+	}
+</style>

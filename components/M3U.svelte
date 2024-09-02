@@ -1,166 +1,32 @@
 <script>
-	import Hls from 'hls.js';
-	// import videojs from 'video.js';
 	import { onMount } from 'svelte';
 	import Spinner from './Spinner.svelte';
 	import {
 		channels,
 		filterValue,
 		selectedChannel,
-		streamUrl,
 		selectedProvider,
 		isLoading,
 		isChannelListOpen,
 		mp4,
 		filteredChannels
 	} from '../modules/store.js';
+	import { fetchChannels, parseM3U8, selectChannel } from '../modules/player.js';
+	import VideoPlayer from './VideoPlayer.svelte';
 	import { get } from 'svelte/store';
 
 	export let m3us = [];
-	export let proxy = false;
 
-	const options = {};
-	let videoRef;
-	let type = 'mp4';
-	let url;
 	let isChannelSearchHovered = false;
-	let transcode = true;
-
-	// Function to handle checkbox change
-	function handleTranscodeCheckboxChange(event) {
-		transcode = event.target.checked;
-		console.log('transcoding:', transcode);
-		transcodeMedia($streamUrl);
-	}
-
-	function transcodeMedia(url) {
-		url = `/api/transcode?url=${encodeURIComponent(url)}`;
-		type = 'mp4';
-		streamUrl.set(url);
-		console.log(url);
-		const source = videoRef.querySelector('source');
-		source.src = $streamUrl;
-		videoRef.load();
-		console.log($streamUrl, '<< $streamUrl');
-	}
-
-	// Function to fetch the channels from the selected provider
-	async function fetchChannels(provider) {
-		isLoading.set(true);
-		channels.set([]);
-		try {
-			const response = await fetch(`/api/m3u/${provider}`);
-			const m3u8Text = await response.text();
-			const channelList = parseM3U8(m3u8Text);
-			channels.set(channelList);
-		} catch (error) {
-			console.error('Error fetching channels:', error);
-		} finally {
-			isLoading.set(false);
-		}
-	}
-
-	// Function to parse M3U8 content and extract channels
-	function parseM3U8(m3u8Text) {
-		const lines = m3u8Text.split('\n');
-		const channelList = [];
-		let channel = {};
-
-		lines.forEach((line) => {
-			if (line.startsWith('#EXTINF')) {
-				const name = line.split(',')[1];
-				channel = { name: name.trim() };
-			} else if (line.startsWith('http')) {
-				channel.url = line.trim();
-				channelList.push(channel);
-			}
-		});
-
-		return channelList;
-	}
-
-	// Function to select a channel from the dropdown
-	function selectChannel(channel) {
-		isChannelListOpen.set(false);
-		selectedChannel.set(channel);
-		streamUrl.set(channel.url);
-		if (transcode) {
-			transcodeMedia($streamUrl);
-		} else {
-			playHLSStream($streamUrl);
-		}
-	}
-
-	// async function playStream(url) {
-	// 	const player = videojs('video', options, async function onPlayerReady() {
-	// 		videojs.log('Your player is ready!');
-
-	// 		player.src({
-	// 			src: url,
-	// 			type: 'video/mp2t'
-	// 		});
-
-	// 		// Play the video
-	// 		await this.play();
-
-	// 		// Add an event listener for the 'ended' event
-	// 		this.on('ended', () => {
-	// 			videojs.log('Awww...over so soon?!');
-	// 		});
-	// 	});
-	// }
-	// Function to play the selected stream
-	async function playHLSStream(url) {
-		if (proxy) {
-			url = `/proxy?url=${encodeURIComponent(url)}`;
-		}
-
-		const video = document.getElementById('video');
-		video.muted = false;
-		video.volume = 1.0;
-
-		if (Hls.isSupported()) {
-			const hls = new Hls();
-			hls.loadSource(url);
-			hls.attachMedia(video);
-			hls.on(Hls.Events.MANIFEST_PARSED, () => {
-				video.play();
-			});
-		} else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-			video.src = url;
-			video.addEventListener('loadedmetadata', () => {
-				video.play();
-			});
-		} else {
-			console.error('This device does not support HLS.');
-		}
-	}
 
 	// Handle provider change event
-	function handleProviderChange(event) {
+	async function handleProviderChange(event) {
 		const provider = event.target.value;
 		if (provider !== '-- Select Provider --') {
 			selectedProvider.set(provider);
-			fetchChannels(provider);
+			await fetchChannels(provider);
 		}
 	}
-
-	// Handle proxy checkbox change event
-	function handleCheckboxChange(event) {
-		proxy = event.target.checked;
-		const channel = get(selectedChannel);
-		if (channel) {
-			playHLSStream(channel.url);
-		}
-	}
-
-	onMount(() => {
-		const checkbox = document.querySelector('#proxy-checkbox');
-		if (proxy && checkbox) {
-			checkbox.checked = true;
-		}
-		isLoading.set(false); // Ensure spinner is not showing by default
-	});
 
 	function closeChannelList() {
 		isChannelSearchHovered = false;
@@ -169,11 +35,9 @@
 		}, 100);
 	}
 
-	$: if ($streamUrl && videoRef) {
-		const source = videoRef.querySelector('source');
-		source.src = $streamUrl;
-		videoRef.load();
-	}
+	onMount(() => {
+		isLoading.set(false); // Ensure spinner is not showing by default
+	});
 </script>
 
 <div id="main-content">
@@ -241,31 +105,8 @@
 
 	{#if $selectedChannel}
 		<h2>{$selectedChannel.name}</h2>
-		<div class="field">
-			<label>
-				<input
-					type="checkbox"
-					id="proxy-checkbox"
-					on:change={handleCheckboxChange}
-					bind:checked={proxy}
-				/>
-				Enable proxy
-			</label>
-			<label>
-				<input
-					type="checkbox"
-					id="transcode-checkbox"
-					on:change={handleTranscodeCheckboxChange}
-					bind:checked={transcode}
-				/>
-				Transcode
-			</label>
-		</div>
+		<VideoPlayer channel={$selectedChannel} />
 	{/if}
-
-	<video id="video" controls autoplay={Boolean($streamUrl)} bind:this={videoRef}>
-		<source src={$streamUrl} type="video/{type}" />
-	</video>
 </div>
 
 <style>
@@ -301,10 +142,5 @@
 		margin-bottom: 1rem;
 		max-width: 60rem;
 		box-sizing: border-box;
-	}
-	video {
-		width: 50%;
-		max-width: 80vw;
-		height: auto;
 	}
 </style>
