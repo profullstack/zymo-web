@@ -263,7 +263,7 @@
 		</div>
 	{/if}
 
-	<video id="video" controls autoplay bind:this={videoRef}>
+	<video id="video" controls autoplay={Boolean($streamUrl)} bind:this={videoRef}>
 		<source src={$streamUrl} type="video/{type}" />
 	</video>
 </div>
