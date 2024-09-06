@@ -7,7 +7,8 @@
 		"crawler:restart_scans": "./bin/crawlers/restart_scans.sh",
 		"start": "pnpm run env:prod && npx primate serve",
 		"build": "pnpm run env:prod && npx primate build",
-		"build:desktop": "bun --bun x primate build desktop",
+		"build:dev:desktop": "pnpm run env:dev:desktop && bun --bun x primate build desktop",
+		"build:prod:desktop": "pnpm run env:prod:desktop && bun --bun x primate build desktop",
 		"clean": "rm -rf node_modules pnpm-lock.yaml && pnpm i",
 		"db:start": ". ./.env && . ./.env.local && SURREAL_INSECURE_FORWARD_SCOPE_INTERNAL_SERVER_ERRORS=true surreal start --log trace -A --auth --user root --pass root --bind 0.0.0.0:$DB_PORT file:///${HOME}/data/db",
 		"db:console": ". ./.env && . ./.env.local && surreal sql --conn http://localhost:$DB_PORT --user root --pass root --ns $DB_NS --db $DB_DB --pretty",
@@ -20,7 +21,9 @@
 		"deploy": "pnpm run env:prod && ./bin/deploy.sh",
 		"deploy:crawler": "pnpm run env:prod && ./bin/deploy.sh crawler",
 		"env:prod": "ln -sf .env.prod .env.local ",
-		"env:dev": "ln -sf .env.dev .env.local"
+		"env:prod:desktop": "ln -sf .env.prod.desktop .env.local ",
+		"env:dev": "ln -sf .env.dev .env.local",
+		"env:dev:desktop": "ln -sf .env.dev.desktop .env.local"
 	},
 	"dependencies": {
 		"@mozilla/readability": "^0.5.0",
