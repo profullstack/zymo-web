@@ -10,7 +10,7 @@ export default {
 		const q = query.get('q') || '1080';
 		const mediaType = query.get('mediaType') || '';
 		const sort = query.get('sort') || 'seeds';
-		const results = await Torrent.search(q, mediaType, sort);
+		const results = await Torrent.searchTorge(q, mediaType, sort);
 
 		return results;
 	}

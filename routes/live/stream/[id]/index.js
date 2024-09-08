@@ -28,8 +28,7 @@ export default {
 			await Form.validate(data);
 
 			try {
-				const m3u = await M3U.update(id, data);
-				console.log('m3u updated:', m3u);
+				await M3U.update(id, data);
 				return { status: 'M3U updated' };
 			} catch (err) {
 				return { status: err.message };

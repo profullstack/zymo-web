@@ -2,6 +2,7 @@ import env from 'rcompat/env';
 import primary from '@primate/types/primary';
 import FormData from 'form-data';
 import Torrent from 'torrent-search-api-for-barbaroussa';
+import spawn from '@rcompat/stdio/spawn';
 
 export const actions = ({ connection: db }) => {
 	return {
@@ -328,6 +329,21 @@ export const actions = ({ connection: db }) => {
 			}
 
 			return torrents.filter((t) => t.magnet);
+		},
+		async searchTorge(q, mediaType = '', sort = 'size') {
+			let torrents = [];
+
+			try {
+				torrents = await spawn(`node ./bin/torge-all.sh "${q}" -s ${sort}`);
+
+				console.log(stdout);
+
+				// await this.processTorrentsInBatches(torrents, 50);
+			} catch (err) {
+				console.error(err);
+			}
+
+			return torrents;
 		}
 	};
 };

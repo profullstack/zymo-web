@@ -1,6 +1,7 @@
 import env from 'rcompat/env';
 import primary from '@primate/types/primary';
 import { createClient } from '@redis/client';
+import { fetchChannels, parseM3U8, selectChannel } from '../../modules/player.js';
 
 const client = createClient();
 
@@ -82,7 +83,7 @@ export const actions = ({ connection: db }) => {
 				throw err;
 			}
 		},
-		async fetchById(id) {
+		async fetchById(id, filterValue = '') {
 			console.log('id:', id);
 			const query = `SELECT * FROM m3u WHERE id = $id`;
 			const [m3u] = await db.query(query, {
@@ -100,10 +101,11 @@ export const actions = ({ connection: db }) => {
 			}
 
 			try {
-				const res = await fetch(m3u.pop().url);
+				const res = await fetchChannels(id, filterValue);
+				// const res = await fetch(m3u.pop().url);
 
 				if (res.ok) {
-					const data = await res.text();
+					const data = await res.json();
 					console.log('set cache:', cacheKey);
 					await client.set(cacheKey, data, {
 						EX: CACHE_EXPIRATION
@@ -168,11 +170,11 @@ export const actions = ({ connection: db }) => {
 		async update(id, data) {
 			console.log('update:', data);
 
+			data.updatedAt = new Date().toISOString();
+
 			try {
-				const m3u = await db.update(id, {
-					...data,
-					updatedAt: new Date().toISOString()
-				});
+				await db.update(id, data);
+				const [m3u] = await db.select(id);
 
 				console.log('m3u updated: ', m3u);
 				return m3u;

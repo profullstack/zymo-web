@@ -13,6 +13,7 @@ import {
 	setEPGError,
 	setEPGData
 } from './store.js';
+import { parse } from 'handlebars';
 
 let currentTime = new Date();
 currentTime.setMinutes(0, 0, 0);
@@ -79,13 +80,20 @@ export function handleTranscodeCheckboxChange(event, videoRef) {
 }
 
 // Function to fetch the M3U channels from the selected provider
-export async function fetchChannels(provider) {
+export async function fetchChannels(provider, filterValue = '') {
 	isLoading.set(true);
 	channels.set([]);
 	try {
 		const response = await fetch(`/api/m3u/${provider}`);
 		const m3u8Text = await response.text();
 		const channelList = parseM3U8(m3u8Text);
+
+		// const channelList = parseM3U8(m3u8Text).filter((ch) => {
+		// 	if (!filterValue) return ch;
+
+		// 	return ch.name.toLowerCase().indexOf(filterValue.toLowerCase()) > -1;
+		// });
+
 		channels.set(channelList);
 	} catch (error) {
 		console.error('Error fetching channels:', error);
