@@ -22,3 +22,4 @@
 -   https://github.com/eracknaphobia/plugin.video.slingtv
 -   https://github.com/eracknaphobia/plugin.video.nhlgcl
 -   add pagination (but I forgot where)
+-   add ability to email all Users or Waitlist from admin UI
