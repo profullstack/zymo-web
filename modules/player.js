@@ -13,7 +13,7 @@ import {
 	setEPGError,
 	setEPGData
 } from './store.js';
-import { parse } from 'handlebars';
+//import { parse } from 'handlebars';
 
 let currentTime = new Date();
 currentTime.setMinutes(0, 0, 0);

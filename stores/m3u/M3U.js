@@ -101,11 +101,11 @@ export const actions = ({ connection: db }) => {
 			}
 
 			try {
-				const res = await fetchChannels(id, filterValue);
-				// const res = await fetch(m3u.pop().url);
+				// const res = await fetchChannels(id, filterValue);
+				const res = await fetch(m3u.pop().url);
 
 				if (res.ok) {
-					const data = await res.json();
+					const data = await res.text();
 					console.log('set cache:', cacheKey);
 					await client.set(cacheKey, data, {
 						EX: CACHE_EXPIRATION
