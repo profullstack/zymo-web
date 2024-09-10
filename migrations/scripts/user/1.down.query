@@ -1,0 +1,3 @@
+-- Rollback Migration 1: Drop the 'user' table
+
+REMOVE TABLE user;
