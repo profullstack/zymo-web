@@ -17,7 +17,7 @@ const {
 const db = new Surreal();
 
 async function connectDB() {
-	await db.connect(host + ':' + port + '/rpc', {
+	await db.connect(`${host}:${port}/rpc`, {
 		namespace,
 		database,
 		auth: {
@@ -67,14 +67,13 @@ async function getLatestVersionAndDirection(collection) {
 
 		console.log('RESULT:', result);
 
-		if (result.length === 0) {
+		if (!result) {
 			console.log('No records found in migration history.');
 			return { version: 0, direction: 'none' };
 		}
 
-		const latest = result;
-		const latestVersion = latest.version || 0;
-		const latestDirection = latest.direction || 'none';
+		const latestVersion = result.version || 0;
+		const latestDirection = result.direction || 'none';
 
 		console.log(
 			`Latest migration record fetched: version ${latestVersion}, direction ${latestDirection}`
@@ -112,10 +111,18 @@ async function migrateUp(collection, version) {
 			`Migration to version ${version} applied for collection ${collection} in the 'up' direction.`
 		);
 	} catch (error) {
-		console.error(
-			`Error applying UP migration or inserting history for collection '${collection}': ${error.message}`
-		);
+		if (error.code === 'ENOENT') {
+			console.log(
+				`No further UP migration file found for collection '${collection}' at version ${version}.`
+			);
+			return false; // Stop further processing for this collection
+		} else {
+			console.error(
+				`Error applying UP migration or inserting history for collection '${collection}': ${error.message}`
+			);
+		}
 	}
+	return true; // Continue processing if no error
 }
 
 // Function to rollback a migration down for a specific collection
@@ -144,10 +151,18 @@ async function migrateDown(collection, version) {
 			`Rolled back to version ${version} for collection ${collection} in the 'down' direction.`
 		);
 	} catch (error) {
-		console.error(
-			`Error applying DOWN migration or inserting history for collection '${collection}': ${error.message}`
-		);
+		if (error.code === 'ENOENT') {
+			console.log(
+				`No further DOWN migration file found for collection '${collection}' at version ${version}.`
+			);
+			return false; // Stop further processing for this collection
+		} else {
+			console.error(
+				`Error applying DOWN migration or inserting history for collection '${collection}': ${error.message}`
+			);
+		}
 	}
+	return true; // Continue processing if no error
 }
 
 // Function to process all collections
@@ -161,16 +176,28 @@ async function processAllCollections(action) {
 			const { version, direction } = await getLatestVersionAndDirection(collection);
 
 			if (action === 'up') {
-				await migrateUp(collection, version + 1);
+				// Apply migrations up sequentially
+				let nextVersion = direction === 'down' ? version : version + 1;
+
+				while (true) {
+					const result = await migrateUp(collection, nextVersion);
+					if (!result) break; // Stop if no further migrations are found
+					nextVersion++;
+				}
 			} else if (action === 'down') {
-				if (version === 1 && direction === 'down') {
+				// Rollback migrations down sequentially
+				let currentVersion = version;
+
+				while (currentVersion >= 1) {
+					const result = await migrateDown(collection, currentVersion);
+					if (!result) break; // Stop if no further rollbacks are found
+					currentVersion--;
+				}
+
+				if (currentVersion === 1) {
 					console.log(
-						`Already at the initial version (1, down), cannot rollback further for collection ${collection}.`
+						`All migrations rolled back to version 1 for collection '${collection}'.`
 					);
-				} else if (version >= 1) {
-					await migrateDown(collection, version);
-				} else {
-					console.log(`No further rollback possible for collection ${collection}.`);
 				}
 			}
 		}
@@ -189,8 +216,13 @@ async function main(action, collection) {
 		if (collection === 'all') {
 			await processAllCollections('up');
 		} else {
-			const { version } = await getLatestVersionAndDirection(collection);
-			await migrateUp(collection, version + 1);
+			const { version, direction } = await getLatestVersionAndDirection(collection);
+			let startVersion = direction === 'down' ? version : version + 1;
+			while (true) {
+				const result = await migrateUp(collection, startVersion);
+				if (!result) break; // Stop if no further migrations are found
+				startVersion++;
+			}
 		}
 	} else if (action === 'down') {
 		if (collection === 'all') {
@@ -202,7 +234,12 @@ async function main(action, collection) {
 					`Already at the initial version (1, down), cannot rollback further for collection ${collection}.`
 				);
 			} else if (version >= 1) {
-				await migrateDown(collection, version);
+				let currentVersion = version;
+				while (currentVersion >= 1) {
+					const result = await migrateDown(collection, currentVersion);
+					if (!result) break; // Stop if no further rollbacks are found
+					currentVersion--;
+				}
 			} else {
 				console.log(`No further rollback possible for collection ${collection}.`);
 			}
