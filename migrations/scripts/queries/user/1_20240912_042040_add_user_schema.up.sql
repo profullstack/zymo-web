@@ -1,4 +1,4 @@
--- Migration 1: Create the 'user' table and define its schema
+-- Write your SQL migration up query here for user
 
 DEFINE TABLE user SCHEMAFULL
   PERMISSIONS

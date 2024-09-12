@@ -1,3 +1,5 @@
+-- Write your SQL migration up query here for affiliates
+
 -- Define the affiliates table with schema and permissions
 DEFINE TABLE affiliates SCHEMALESS
   PERMISSIONS

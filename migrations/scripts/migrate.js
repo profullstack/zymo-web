@@ -35,7 +35,6 @@ async function connectDB() {
 }
 
 async function createMigrationHistoryTable() {
-	// Define the migration_history table schema with correct datetime handling
 	await db.query(`
         DEFINE TABLE migration_history SCHEMAFULL
             PERMISSIONS FULL;
@@ -71,9 +70,8 @@ async function applyMigration(filePath, version, name, direction, tableName) {
 }
 
 async function processMigrations(direction = 'up') {
-	const baseDir = path.join(__dirname, 'queries'); // Go to the 'queries' directory within 'migrations/scripts'
+	const baseDir = path.join(__dirname, 'queries');
 
-	// Get all table directories
 	const tableDirs = await fs.readdir(baseDir, { withFileTypes: true });
 	const appliedMigrations = await getAppliedMigrations();
 
@@ -83,21 +81,18 @@ async function processMigrations(direction = 'up') {
 		const tableName = dirent.name;
 		const tableDir = path.join(baseDir, tableName);
 
-		// Find migrations for this table
 		const files = await fs.readdir(tableDir);
-		const directionMigrations = files.filter((file) => file.endsWith(`.${direction}.query`));
+		const directionMigrations = files.filter((file) => file.endsWith(`.${direction}.sql`));
 		directionMigrations.sort(); // Ensure files are sorted by version
 
-		// Get the latest migration state for each table
 		const migrationStates = new Map(
 			appliedMigrations
 				.filter((m) => m.table_name === tableName)
 				.map((m) => [m.version, m.up_or_down])
 		);
 
-		// Apply or rollback migrations
 		for (const file of directionMigrations) {
-			const [versionStr] = file.split('.');
+			const [versionStr] = file.split('_');
 			const version = parseInt(versionStr, 10);
 
 			if (
@@ -115,10 +110,9 @@ async function processMigrations(direction = 'up') {
 }
 
 async function resetMigrations() {
-	const baseDir = path.join(__dirname, 'queries'); // Go to the 'queries' directory within 'migrations/scripts'
+	const baseDir = path.join(__dirname, 'queries');
 	const appliedMigrations = await getAppliedMigrations();
 
-	// Find the most recent migration for each table
 	const lastMigrationByTable = appliedMigrations.reduce((acc, migration) => {
 		const { table_name, version, up_or_down } = migration;
 		if (!acc[table_name] || acc[table_name].version < version) {
@@ -127,11 +121,10 @@ async function resetMigrations() {
 		return acc;
 	}, {});
 
-	// Process rollback for each table where the last migration was an "up"
 	for (const [tableName, { version, up_or_down }] of Object.entries(lastMigrationByTable)) {
 		if (up_or_down === 'up') {
 			const tableDir = path.join(baseDir, tableName);
-			const file = `${version}.down.query`;
+			const file = `${version}_*.down.sql`; // Matches the format with the version
 			const filePath = path.join(tableDir, file);
 
 			console.log(`Rolling back table ${tableName} using ${file}`);
@@ -141,18 +134,60 @@ async function resetMigrations() {
 		}
 	}
 
-	// After rolling back, delete only the "up" migrations from history
 	await db.query("DELETE FROM migration_history WHERE up_or_down = 'up';");
 	console.log('Cleared "up" migrations from migration history.');
 
-	// Re-apply all up migrations
 	await processMigrations('up');
+}
+
+function formatTimestamp() {
+	const now = new Date();
+	return `${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}_${now.getHours().toString().padStart(2, '0')}${now.getMinutes().toString().padStart(2, '0')}${now.getSeconds().toString().padStart(2, '0')}`;
+}
+
+async function createMigrationFiles(tableName, description = 'migration') {
+	const tableDir = path.join(__dirname, 'queries', tableName);
+
+	await fs.mkdir(tableDir, { recursive: true });
+
+	const files = await fs.readdir(tableDir);
+	const migrationNumbers = files
+		.map((file) => parseInt(file.split('_')[0], 10))
+		.filter(Number.isInteger)
+		.sort((a, b) => a - b);
+
+	const latestMigrationNumber = migrationNumbers.length ? migrationNumbers.pop() : 0;
+	const newMigrationNumber = latestMigrationNumber + 1;
+	const timestamp = formatTimestamp();
+	const formattedDescription = description.replace(/\s+/g, '_');
+
+	const upFilePath = path.join(
+		tableDir,
+		`${newMigrationNumber}_${timestamp}_${formattedDescription}.up.sql`
+	);
+	const downFilePath = path.join(
+		tableDir,
+		`${newMigrationNumber}_${timestamp}_${formattedDescription}.down.sql`
+	);
+
+	await fs.writeFile(
+		upFilePath,
+		`-- Write your SQL migration up query here for ${tableName}`,
+		'utf8'
+	);
+	await fs.writeFile(
+		downFilePath,
+		`-- Write your SQL migration down query here for ${tableName}`,
+		'utf8'
+	);
+
+	console.log(`Created new migration files: ${upFilePath} and ${downFilePath}`);
 }
 
 (async function () {
 	try {
 		await connectDB();
-		await createMigrationHistoryTable(); // Ensure the table exists
+		await createMigrationHistoryTable();
 
 		const command = process.argv[2];
 
@@ -162,8 +197,16 @@ async function resetMigrations() {
 			await processMigrations('down');
 		} else if (command === 'reset') {
 			await resetMigrations();
+		} else if (command === 'create') {
+			const tableName = process.argv[3];
+			const description = process.argv[4] || 'migration';
+			if (!tableName) {
+				console.error('Please specify the table name for creating migrations.');
+				process.exit(1);
+			}
+			await createMigrationFiles(tableName, description);
 		} else {
-			console.log('Usage: node migrate.js [up|down|reset]');
+			console.log('Usage: node migrate.js [up|down|reset|create :table-name :description]');
 		}
 
 		await db.close();

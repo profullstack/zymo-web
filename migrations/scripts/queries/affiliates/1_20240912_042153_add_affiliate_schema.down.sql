@@ -1,3 +1,5 @@
+-- Write your SQL migration down query here for affiliates
+
 -- Drop the referrals table
 REMOVE TABLE referrals;
 
