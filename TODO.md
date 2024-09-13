@@ -8,6 +8,8 @@
 -   switch fonts to .woff2 instead of .ttf
 -   autoblogger: search google for top 5 articles and combine them into one new article rewritten with ai
 -   add ability to rewrite manual blog posts with AI (via /admin/blog/new) with ai inline. so a user can cut-n-paste an article and rewrite it with ai.
+-   ReferenceError: TWILIO_ACCOUNT_SID is not defined at Object.sendPhoneVerificationCode (file:///home/ubuntu/www/zymo.tv/zymo-web/build/server/stores/external/Twilio.js:10:32)
+- login title needs to update after logging in
 -   Share libraries with friends
 -   Add friend.
 -   create a group
@@ -23,3 +25,6 @@
 -   https://github.com/eracknaphobia/plugin.video.nhlgcl
 -   add pagination (but I forgot where)
 -   add ability to email all Users or Waitlist from admin UI
+
+- add up() and down() commands to ./migrations/*.sh
+
