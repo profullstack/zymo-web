@@ -8,6 +8,7 @@ export const actions = ({ connection: db }) => {
 			const { ID: userId } = token;
 			const [me] = await db.select(userId);
 
+			delete me?.password;
 			console.log('me: ', me);
 
 			return me;
