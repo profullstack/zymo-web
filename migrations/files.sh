@@ -8,13 +8,13 @@ DATA="DEFINE TABLE files SCHEMALESS
     FOR select FULL,
     FOR update, create WHERE \$scope = \"allusers\" OR \$scope = \"apiusers\" OR \$scope = \"allnostrusers\",
     FOR delete WHERE userId = \$auth.id;
-DEFINE FIELD IF NOT EXISTS uuid ON files TYPE option<string>;
-DEFINE FIELD IF NOT EXISTS type ON files TYPE option<string>;
-DEFINE FIELD IF NOT EXISTS path ON files TYPE option<string>;
-DEFINE FIELD IF NOT EXISTS extension ON files TYPE option<string>;
-DEFINE FIELD IF NOT EXISTS isPublic ON files TYPE option<bool>;
-DEFINE FIELD IF NOT EXISTS publicUrl ON files TYPE option<bool>;
-DEFINE INDEX IF NOT EXISTS idx_userId ON files COLUMNS userId;
+DEFINE FIELD uuid ON files TYPE option<string>;
+DEFINE FIELD type ON files TYPE option<string>;
+DEFINE FIELD path ON files TYPE option<string>;
+DEFINE FIELD extension ON files TYPE option<string>;
+DEFINE FIELD isPublic ON files TYPE option<bool>;
+DEFINE FIELD publicUrl ON files TYPE option<bool>;
+DEFINE INDEX idx_userId ON files COLUMNS userId;
 "
 
 curl -k -L -s --compressed POST \

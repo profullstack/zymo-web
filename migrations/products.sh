@@ -11,12 +11,12 @@ DATA="DEFINE TABLE products SCHEMALESS
     FOR update, create WHERE \$scope = \"allusers\" OR \$scope = \"apiusers\" OR \$scope = \"allnostrusers\",
 	FOR delete WHERE id = \$auth.id;
 	
-DEFINE FIELD IF NOT EXISTS name ON products TYPE string;
-DEFINE FIELD IF NOT EXISTS mode ON products TYPE string;
-DEFINE FIELD IF NOT EXISTS stripeProductId ON products TYPE string;
-DEFINE FIELD IF NOT EXISTS stripePriceId ON products TYPE option<string>;
-DEFINE FIELD IF NOT EXISTS price ON products TYPE number;
-DEFINE FIELD IF NOT EXISTS subscriptionOptions ON products TYPE option<array>;
+DEFINE FIELD name ON products TYPE string;
+DEFINE FIELD mode ON products TYPE string;
+DEFINE FIELD stripeProductId ON products TYPE string;
+DEFINE FIELD stripePriceId ON products TYPE option<string>;
+DEFINE FIELD price ON products TYPE number;
+DEFINE FIELD subscriptionOptions ON products TYPE option<array>;
 "
 
 
@@ -36,16 +36,16 @@ DATA="DEFINE TABLE payments SCHEMALESS
     FOR select FULL,
     FOR update, create WHERE \$scope = \"allusers\" OR \$scope = \"apiusers\" OR \$scope = \"allnostrusers\",
 	FOR delete WHERE id = \$auth.id;
-DEFINE FIELD IF NOT EXISTS status ON payments TYPE string;
-DEFINE FIELD IF NOT EXISTS amount ON payments TYPE number;
-DEFINE FIELD IF NOT EXISTS subscriptionInterval ON payments TYPE option<string>;
-DEFINE FIELD IF NOT EXISTS stripeSubscriptionId ON payments TYPE option<string>;
-DEFINE FIELD IF NOT EXISTS stripePaymentIntent ON payments TYPE option<string>;
-DEFINE FIELD IF NOT EXISTS refunded ON payments TYPE option<bool>;
-DEFINE FIELD IF NOT EXISTS productId ON payments TYPE string;
-DEFINE FIELD IF NOT EXISTS renewalDate ON payments TYPE option<number>;
-DEFINE FIELD IF NOT EXISTS cancelAtPeriodEnd ON payments TYPE option<bool>;
-DEFINE INDEX IF NOT EXISTS idx_userId ON payments COLUMNS userId;
+DEFINE FIELD status ON payments TYPE string;
+DEFINE FIELD amount ON payments TYPE number;
+DEFINE FIELD subscriptionInterval ON payments TYPE option<string>;
+DEFINE FIELD stripeSubscriptionId ON payments TYPE option<string>;
+DEFINE FIELD stripePaymentIntent ON payments TYPE option<string>;
+DEFINE FIELD refunded ON payments TYPE option<bool>;
+DEFINE FIELD productId ON payments TYPE string;
+DEFINE FIELD renewalDate ON payments TYPE option<number>;
+DEFINE FIELD cancelAtPeriodEnd ON payments TYPE option<bool>;
+DEFINE INDEX idx_userId ON payments COLUMNS userId;
 "
 
 

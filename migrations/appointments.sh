@@ -8,9 +8,9 @@ DATA="DEFINE TABLE appointments SCHEMALESS
     FOR select FULL,
     FOR update, create WHERE \$scope = \"allusers\" OR \$scope = \"apiusers\" OR \$scope = \"allnostrusers\",
 	FOR delete WHERE userId = \$auth.id;
-DEFINE FIELD IF NOT EXISTS mainCalendarEventId ON appointments TYPE string;
-DEFINE FIELD IF NOT EXISTS userCalendarEventId ON appointments TYPE string;
-DEFINE INDEX IF NOT EXISTS idx_userId ON appointments COLUMNS userId UNIQUE;
+DEFINE FIELD mainCalendarEventId ON appointments TYPE string;
+DEFINE FIELD userCalendarEventId ON appointments TYPE string;
+DEFINE INDEX idx_userId ON appointments COLUMNS userId UNIQUE;
 "
 
 curl -k -L -s --compressed POST \
