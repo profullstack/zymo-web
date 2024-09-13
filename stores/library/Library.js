@@ -5,6 +5,7 @@ export const actions = ({ connection: db }) => {
 	return {
 		async me() {
 			const me = await db.info();
+
 			delete me.password;
 			console.log('me: ', me.email);
 			return me;
@@ -29,7 +30,7 @@ export const actions = ({ connection: db }) => {
 					updatedAt: new Date().toISOString()
 				});
 
-				console.log('library: ', library);
+				console.log('created library: ', library);
 				return library;
 			} catch (err) {
 				console.error(err);
@@ -91,10 +92,12 @@ export const actions = ({ connection: db }) => {
 			console.log('update:', data);
 
 			try {
-				const library = await db.merge(id, {
+				await db.update(id, {
 					...data,
 					updatedAt: new Date().toISOString()
 				});
+
+				const [library] = await db.select(id);
 
 				console.log(' updated: ', library);
 				return library;

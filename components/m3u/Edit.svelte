@@ -27,7 +27,7 @@
 	{status ?? ''}
 	<div><input name="url" placeholder="Enter url" required bind:value={m3u.url} /></div>
 	<div>{errors?.url ?? ''}</div>
-	<div><input name="name" placeholder="Enter name" bind:value={m3u.name} /></div>
+	<div><input name="name" placeholder="Enter name" required bind:value={m3u.name} /></div>
 	<div>{errors?.m3u ?? ''}</div>
 	<div><input name="epg" placeholder="Enter EPG url" bind:value={m3u.epg} /></div>
 	<div>{errors?.epg ?? ''}</div>
