@@ -4,8 +4,7 @@ import primary from '@primate/types/primary';
 export const actions = ({ connection: db }) => {
 	return {
 		async me() {
-			const { id } = await db.query('$token');
-			const [me] = await db.select(id);
+			const { ID: userId } = token;
 
 			console.log('me: ', me);
 
