@@ -6,6 +6,7 @@ export const actions = ({ connection: db }) => {
 		async me() {
 			const { ID: userId } = token;
 
+			delete me?.password;
 			console.log('me: ', me);
 
 			return me;
