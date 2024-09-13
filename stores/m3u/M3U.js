@@ -16,7 +16,10 @@ const CACHE_EXPIRATION = 60 * 15; // in seconds
 export const actions = ({ connection: db }) => {
 	return {
 		async me() {
-			const me = await db.info();
+			const [token] = await db.query('$token');
+			const { ID: userId } = token;
+			const [me] = await db.select(userId);
+
 			delete me.password;
 			console.log('me: ', me.email);
 			return me;

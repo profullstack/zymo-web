@@ -60,7 +60,10 @@ function sanitizeFile(filename) {
 export const actions = ({ connection: db }) => {
 	return {
 		async me() {
-			const me = await db.info();
+			const [token] = await db.query('$token');
+			const { ID: userId } = token;
+			const [me] = await db.select(userId);
+
 			delete me?.password;
 			console.log('me: ', me);
 			return me;

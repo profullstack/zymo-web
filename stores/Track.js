@@ -1,9 +1,12 @@
 import primary from '@primate/types/primary';
 
-export const actions = ({connection: db}) => {
+export const actions = ({ connection: db }) => {
 	return {
 		async me() {
-			const me = await db.info();
+			const [token] = await db.query('$token');
+			const { ID: userId } = token;
+			const [me] = await db.select(userId);
+
 			delete me?.password;
 			console.log('me: ', me);
 			return me;
@@ -27,7 +30,7 @@ export const actions = ({connection: db}) => {
 							headers,
 							browser: data ?? undefined,
 							user: me?.id ?? undefined,
-							createdAt: new Date().toISOString(),
+							createdAt: new Date().toISOString()
 						}
 					}
 				);
