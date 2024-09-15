@@ -100,6 +100,7 @@
 								deleteUser(user, index);
 							}}
 						>
+							delete
 							{#if Boolean(isLoading[user.id])}
 								<span
 									><Spinner
@@ -108,7 +109,6 @@
 									/></span
 								>
 							{/if}
-							delete
 						</a></td
 					>
 				</tr>
