@@ -131,7 +131,7 @@
 		margin-right: 0.8rem;
 	}
 
-	:global(svg.spinner_5nOS) {
-		fill: black;
+	:global(.spinner_5nOS) {
+		fill: black !important;
 	}
 </style>
