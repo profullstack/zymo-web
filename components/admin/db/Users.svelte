@@ -101,7 +101,12 @@
 							}}
 						>
 							{#if Boolean(isLoading[user.id])}
-								<span><Spinner isLoading={Boolean(isLoading[user.id])} /></span>
+								<span
+									><Spinner
+										isLoading={Boolean(isLoading[user.id])}
+										color="black"
+									/></span
+								>
 							{/if}
 							delete
 						</a></td
@@ -129,9 +134,5 @@
 
 	a[href='#delete'] span {
 		margin-right: 0.8rem;
-	}
-
-	:global(.spinner_5nOS) {
-		fill: black !important;
 	}
 </style>
