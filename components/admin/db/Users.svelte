@@ -102,7 +102,7 @@
 						>
 							delete
 							{#if Boolean(isLoading[user.id])}
-								<span
+								<span class="spinner"
 									><Spinner
 										isLoading={Boolean(isLoading[user.id])}
 										color="black"
@@ -134,5 +134,8 @@
 
 	a[href='#delete'] span {
 		margin-right: 0.8rem;
+	}
+	.spinner :global(svg) {
+		margin-left: 0.8rem;
 	}
 </style>
