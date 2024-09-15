@@ -104,17 +104,21 @@
 </form>
 
 <ul>
-	{#each results as torrent}
-		<li>
-			{torrent.title} seeders: {torrent.seeds} leechers: {torrent.peers} time: {torrent.time} size:
-			{torrent.size} provider: {torrent.provider}
-			<a
-				href="#"
-				on:click|preventDefault={() => {
-					download(torrent);
-				}}>download</a
-			>
-		</li>
+	{#each results as provider}
+		<li class="provider"><h2>{provider.provider}</h2></li>
+		{#each provider.results as torrent}
+			<li>
+				{torrent.name} seeders: {torrent.seeders} leechers: {torrent.leechers} category: {torrent.category}
+				size:
+				{torrent.size}
+				<a
+					href="#"
+					on:click|preventDefault={() => {
+						download(torrent);
+					}}>download</a
+				>
+			</li>
+		{/each}
 	{/each}
 </ul>
 
@@ -136,5 +140,18 @@
 	form label {
 		text-wrap: nowrap;
 		margin: 0 0.4rem;
+	}
+
+	li.provider {
+		list-style-type: none;
+		margin: 0.8rem 0;
+	}
+
+	li:not(.provider) {
+		margin-left: 4rem;
+	}
+
+	li:not(.provider):hover {
+		background-color: var(--list-hover-background-color);
 	}
 </style>

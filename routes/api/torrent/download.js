@@ -6,7 +6,7 @@ export default {
 		} = store;
 
 		console.log('post:', body);
-		const { magnet, path } = body;
+		const { link: magnet, path } = body;
 		const result = await Torrent.download(magnet, path);
 		console.log(result);
 

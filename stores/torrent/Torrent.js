@@ -337,16 +337,19 @@ export const actions = ({ connection: db }) => {
 			let torrents = [];
 
 			try {
-				torrents = await spawn(`node ./bin/torge-all.sh "${q}" -s ${sort}`);
+				const command = './bin/torge-all.sh';
+				const args = `"${q}" -s ${sort}`;
+				const fullCommand = `${command} ${args}`;
 
-				console.log(stdout);
+				console.log(fullCommand);
+				const { stdout } = spawn(fullCommand);
 
-				// await this.processTorrentsInBatches(torrents, 50);
+				return new Response(stdout, { headers: { 'context-type': 'application/json' } });
 			} catch (err) {
 				console.error(err);
+				return new Response(err);
 			}
 
-			return torrents;
 		}
 	};
 };
