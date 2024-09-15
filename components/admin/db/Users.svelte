@@ -1,9 +1,11 @@
 <script>
+	import Spinner from '../../Spinner.svelte';
 	export let users = [];
 
 	console.log(users, '<< users');
 
 	let msg = '';
+	let isLoading = false;
 
 	function exportAsCSV() {
 		const headers = [
@@ -40,6 +42,7 @@
 	}
 
 	async function deleteUser(user, index) {
+		isLoading = true;
 		const url = `/admin/db/users/${user.id}/delete`;
 		try {
 			const res = await fetch(url, {
@@ -52,6 +55,8 @@
 			document.getElementById('user-' + index).remove();
 		} catch (err) {
 			console.error(err);
+		} finally {
+			isLoading = false;
 		}
 	}
 </script>
@@ -90,11 +95,14 @@
 					<td>{user.verify?.email.status || 'n/a'}</td>
 					<td
 						><a
-							href="#"
+							href="#delete"
 							on:click|preventDefault={() => {
 								deleteUser(user, index);
-							}}>delete</a
-						></td
+							}}
+						>
+							{#if isLoading}<span><Spinner {isLoading} /></span>{/if}
+							delete
+						</a></td
 					>
 				</tr>
 			{/each}
@@ -109,5 +117,15 @@
 	}
 	tbody tr:hover {
 		background-color: var(--tbody-tr-hover-background-color);
+	}
+
+	a[href='#delete'] {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+	}
+
+	a[href='#delete'] span {
+		margin-right: 0.8rem;
 	}
 </style>
