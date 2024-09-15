@@ -135,7 +135,8 @@
 	a[href='#delete'] span {
 		margin-right: 0.8rem;
 	}
-	.spinner {
+
+	span.spinner {
 		margin-left: 0.8rem;
 	}
 </style>
