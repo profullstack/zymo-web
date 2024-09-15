@@ -1,9 +1,11 @@
 <script>
+	import Spinner from '../../Spinner.svelte';
 	export let users = [];
 
 	console.log(users, '<< users');
 
 	let msg = '';
+	let isLoading = {};
 
 	function exportAsCSV() {
 		const headers = [
@@ -40,6 +42,7 @@
 	}
 
 	async function deleteUser(user, index) {
+		isLoading[user.id] = true;
 		const url = `/admin/db/users/${user.id}/delete`;
 		try {
 			const res = await fetch(url, {
@@ -52,6 +55,8 @@
 			document.getElementById('user-' + index).remove();
 		} catch (err) {
 			console.error(err);
+		} finally {
+			isLoading[user.id] = false;
 		}
 	}
 </script>
@@ -72,6 +77,7 @@
 				<th>Real IP</th>
 				<th>Forwarded IP</th>
 				<th>Created At</th>
+				<th>Verified Email</th>
 				<th>Actions</th>
 			</tr>
 		</thead>
@@ -86,13 +92,24 @@
 					<td>{(user.headers && user.headers['x-real-ip']) || ''}</td>
 					<td>{(user.headers && user.headers['x-forwarded-for']) || ''}</td>
 					<td>{user.createdAt}</td>
+					<td>{user.verify?.email.status || 'n/a'}</td>
 					<td
 						><a
-							href="#"
+							href="#delete"
 							on:click|preventDefault={() => {
 								deleteUser(user, index);
-							}}>delete</a
-						></td
+							}}
+						>
+							delete
+							{#if Boolean(isLoading[user.id])}
+								<span class="spinner"
+									><Spinner
+										isLoading={Boolean(isLoading[user.id])}
+										color="black"
+									/></span
+								>
+							{/if}
+						</a></td
 					>
 				</tr>
 			{/each}
@@ -108,4 +125,18 @@
 	tbody tr:hover {
 		background-color: var(--tbody-tr-hover-background-color);
 	}
+
+	a[href='#delete'] {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+	}
+
+	a[href='#delete'] span {
+		margin-right: 0.8rem;
+	}
+
+	/* span.spinner {
+		margin-left: 0.8rem;
+	} */
 </style>
