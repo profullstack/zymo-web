@@ -136,7 +136,7 @@
 		margin-right: 0.8rem;
 	}
 
-	span.spinner {
+	/* span.spinner {
 		margin-left: 0.8rem;
-	}
+	} */
 </style>
