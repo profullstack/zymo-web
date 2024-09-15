@@ -72,6 +72,7 @@
 				<th>Real IP</th>
 				<th>Forwarded IP</th>
 				<th>Created At</th>
+				<th>Verified Email</th>
 				<th>Actions</th>
 			</tr>
 		</thead>
@@ -86,6 +87,7 @@
 					<td>{(user.headers && user.headers['x-real-ip']) || ''}</td>
 					<td>{(user.headers && user.headers['x-forwarded-for']) || ''}</td>
 					<td>{user.createdAt}</td>
+					<td>{user.verify?.email.status || 'n/a'}</td>
 					<td
 						><a
 							href="#"
