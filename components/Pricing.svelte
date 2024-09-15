@@ -16,6 +16,7 @@
 		<ul class="features">
 			<li>1 Group</li>
 			<li>5 Accounts</li>
+			<li>1 Free IPTV service provided (up to 3 connections)</li>
 			<li class="unavailable">Unlimited Groups</li>
 			<li class="unavailable">Unlimited Accounts</li>
 			<li class="unavailable">Unlimited Custom Integrations</li>
@@ -28,6 +29,7 @@
 			<div class="price">$400<span>&nbsp;once<br /></span></div>
 		</div>
 		<ul class="features">
+			<li>2 Free IPTV service provided (up to 3 connections each)</li>
 			<li>Unlimited Groups</li>
 			<li>Unlimited Accounts</li>
 			<li>Unlimited Custom Integrations</li>

@@ -51,4 +51,8 @@
 	<input bind:value={waitlistEmail} placeholder="Email address" />
 	<br /><br />
 	<button on:click={joinWaitlist}> Join now </button>
+
+	<p>
+		Checkout our <a href="/pricing">pricing page</a> and <a href="/register">register</a> now!
+	</p>
 </form>
