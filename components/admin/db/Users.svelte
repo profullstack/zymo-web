@@ -100,7 +100,7 @@
 								deleteUser(user, index);
 							}}
 						>
-							{#if Boolean(isLoading[user.id])
+							{#if Boolean(isLoading[user.id])}
 								<span><Spinner isLoading={Boolean(isLoading[user.id])} /></span>
 							{/if}
 							delete
@@ -132,6 +132,6 @@
 	}
 
 	:global(svg.spinner_5nOS) {
-  		fill: black;
+		fill: black;
 	}
 </style>
