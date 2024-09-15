@@ -5,7 +5,7 @@
 	console.log(users, '<< users');
 
 	let msg = '';
-	let isLoading = false;
+	let isLoading = {};
 
 	function exportAsCSV() {
 		const headers = [
@@ -42,7 +42,7 @@
 	}
 
 	async function deleteUser(user, index) {
-		isLoading = true;
+		isLoading[user.id] = true;
 		const url = `/admin/db/users/${user.id}/delete`;
 		try {
 			const res = await fetch(url, {
@@ -56,7 +56,7 @@
 		} catch (err) {
 			console.error(err);
 		} finally {
-			isLoading = false;
+			isLoading[user.id] = false;
 		}
 	}
 </script>
@@ -100,7 +100,9 @@
 								deleteUser(user, index);
 							}}
 						>
-							{#if isLoading}<span><Spinner {isLoading} /></span>{/if}
+							{#if Boolean(isLoading[user.id])
+								<span><Spinner isLoading={Boolean(isLoading[user.id])} /></span>
+							{/if}
 							delete
 						</a></td
 					>
@@ -127,5 +129,9 @@
 
 	a[href='#delete'] span {
 		margin-right: 0.8rem;
+	}
+
+	:global(svg.spinner_5nOS) {
+  		fill: black;
 	}
 </style>
