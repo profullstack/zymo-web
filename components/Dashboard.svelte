@@ -222,7 +222,9 @@
 						scan(e, library);
 					}}>scan</a
 				>
-				{#if isScanning[library.id]}<Spinner isLoading={isScanning} />{/if}
+				{#if isScanning[library.id]}
+					<Spinner color="#672ad6" />
+				{/if}
 				{#if status[library.id]?.status}{status[library.id].status}{/if}
 			</nav>
 

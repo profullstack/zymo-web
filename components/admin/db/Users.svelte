@@ -104,8 +104,7 @@
 							{#if Boolean(isLoading[user.id])}
 								<span class="spinner"
 									><Spinner
-										isLoading={Boolean(isLoading[user.id])}
-										color="black"
+										color="#672ad6"
 									/></span
 								>
 							{/if}

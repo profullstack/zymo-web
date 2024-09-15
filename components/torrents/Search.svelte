@@ -95,7 +95,9 @@
 	</div>
 
 	<button>Search</button>
-	<Spinner {isLoading} />
+	{#if isLoading}
+		<Spinner color="#672ad6" />
+	{/if}
 </form>
 
 <form>

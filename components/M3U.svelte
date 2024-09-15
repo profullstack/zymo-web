@@ -69,7 +69,9 @@
 				</option>
 			{/each}
 		</select>
-		<Spinner isLoading={$isLoading} />
+		{#if isLoading}
+			<Spinner color="#672ad6" />
+		{/if}
 	</div>
 
 	{#if $selectedProvider}
