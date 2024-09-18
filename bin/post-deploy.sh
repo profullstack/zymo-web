@@ -46,6 +46,7 @@ if [ -d "$HOME/www/${name}/${project}" ]; then
     # run migrations
     chmod 755 ./migrations/*.sh
     for f in ./migrations/*.sh; do ./$f; done
+    node ./migrations/scripts/migrate.js up                                    
 else
     echo "One or both directories do not exist"
 fi

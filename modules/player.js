@@ -13,6 +13,7 @@ import {
 	setEPGError,
 	setEPGData
 } from './store.js';
+
 //import { parse } from 'handlebars';
 
 let currentTime = new Date();
@@ -94,6 +95,64 @@ export async function fetchChannels(provider, filterValue = '') {
 		// 	return ch.name.toLowerCase().indexOf(filterValue.toLowerCase()) > -1;
 		// });
 
+		channels.set(channelList);
+	} catch (error) {
+		console.error('Error fetching channels:', error);
+	} finally {
+		isLoading.set(false);
+	}
+}
+
+
+// Function to fetch Xtream Codes credentials from SurrealDB
+// If db.select is available and works like db.select('table', 'id')
+export async function getXtreamCredentials(providerId) {
+	try {
+		const result = await db.select('xtream_codes', providerId);
+		if (result) {
+			return result;
+		} else {
+			throw new Error(`No credentials found for provider ID: ${providerId}`);
+		}
+	} catch (error) {
+		console.error('Error fetching credentials:', error);
+		throw error;
+	}
+}
+
+// Function to fetch channels using Xtream Codes API
+export async function fetchChannelsbyXtreamCodeId(providerId, filterValue = '') {
+	isLoading.set(true);
+	channels.set([]);
+	try {
+		// Fetch credentials from the database
+		const credentials = await getXtreamCredentials(providerId);
+
+		// Destructure the credentials
+		const { host, user, pass } = credentials;
+
+		// Build the Xtream Codes API URL
+		const url = `${host}/player_api.php?username=${user}&password=${pass}&action=get_live_streams`;
+
+		// Fetch the channel list from Xtream Codes API
+		const response = await fetch(url);
+
+		// Check if the response is OK
+		if (!response.ok) {
+			throw new Error(`API request failed with status ${response.status}`);
+		}
+
+		// Parse the JSON response
+		let channelList = await response.json();
+
+		// Optional: Filter the channels based on filterValue
+		if (filterValue) {
+			channelList = channelList.filter((ch) =>
+				ch.name.toLowerCase().includes(filterValue.toLowerCase())
+			);
+		}
+
+		// Update the channels store
 		channels.set(channelList);
 	} catch (error) {
 		console.error('Error fetching channels:', error);
