@@ -1,5 +1,6 @@
 <script>
 	import MetaTags from './MetaTags.svelte';
+	import AffliateLinks from './AffliateLinks.svelte';
 
 	let waitlistEmail = '';
 
@@ -57,6 +58,7 @@
 	<p>
 		Checkout our <a href="/pricing">pricing page</a> and <a href="/register">register</a> now!
 	</p>
+	<AffliateLinks />
 </form>
 
 <style>
