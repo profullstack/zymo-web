@@ -52,7 +52,17 @@
 	<br /><br />
 	<button on:click={joinWaitlist}> Join now </button>
 
+	<video src="/videos/30sec-video1.mp4" controls />
+
 	<p>
 		Checkout our <a href="/pricing">pricing page</a> and <a href="/register">register</a> now!
 	</p>
 </form>
+
+<style>
+	video {
+		margin: 2rem;
+		max-width: 80vw;
+		width: auto;
+	}
+</style>
