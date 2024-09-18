@@ -22,7 +22,7 @@
 	// Handle provider change event
 	async function handleProviderChange(event) {
 		const provider = event.target.value;
-		if (provider !== '-- Select Provider --') {
+		if (provider && provider !== '-- Select Provider --') {
 			selectedProvider.set(provider);
 			await fetchChannels(provider);
 		}
