@@ -126,7 +126,7 @@ export const actions = ({ connection: db }) => {
 
 				if (res.ok) {
 					const data = (await res.json()).map((ch) => {
-						ch.stream_url = `${url}/${username}/${password}/${ch.stream_id}`; // store stream url
+						ch.url = `${url}/${username}/${password}/${ch.stream_id}`; // store stream url
 					});
 					console.log('set cache:', cacheKey);
 					await client.set(cacheKey, JSON.stringify(data), {
