@@ -21,7 +21,7 @@
 	import VideoPlayer from './VideoPlayer.svelte';
 	import { get } from 'svelte/store';
 
-	export let m3us = [];
+	export let results = [];
 
 	let isChannelSearchHovered = false;
 
@@ -64,7 +64,7 @@
 	<div style="display: flex; align-items: center;">
 		<select on:change={handleProviderChange}>
 			<option>-- Select Provider --</option>
-			{#each m3us as provider}
+			{#each results as provider}
 				<option value={provider.id} selected={$selectedProvider === provider.id}>
 					{provider.name}
 				</option>

@@ -1,13 +1,13 @@
 <script>
-	export let m3u, status, errors;
+	export let xtream, status, errors;
 
 	async function submit(e) {
 		e.preventDefault();
 
-		console.log(m3u);
-		const res = await fetch(`/live/stream/${m3u.id}`, {
+		console.log(xtream);
+		const res = await fetch(`/xtream/stream/${xtream.id}`, {
 			method: 'PUT',
-			body: JSON.stringify(m3u),
+			body: JSON.stringify(xtream),
 			headers: {
 				'Content-Type': 'application/json'
 			}
@@ -25,11 +25,13 @@
 
 <form on:submit={submit}>
 	{status ?? ''}
-	<div><input name="url" placeholder="Enter url" required bind:value={m3u.url} /></div>
+	<div><input name="name" placeholder="Enter name" required bind:value={xtream.name} /></div>
+	<div>{errors?.name ?? ''}</div>
+	<div><input name="url" placeholder="Enter url" required bind:value={xtream.url} /></div>
 	<div>{errors?.url ?? ''}</div>
-	<div><input name="name" placeholder="Enter name" required bind:value={m3u.name} /></div>
-	<div>{errors?.m3u ?? ''}</div>
-	<div><input name="epg" placeholder="Enter EPG url" bind:value={m3u.epg} /></div>
-	<div>{errors?.epg ?? ''}</div>
+	<div><input name="username" placeholder="Enter username" required bind:value={xtream.username} /></div>
+	<div>{errors?.username ?? ''}</div>
+	<div><input name="password" type="password" placeholder="Enter password" required bind:value={xtream.password} /></div>
+	<div>{errors?.password ?? ''}</div>
 	<div><button type="submit"> Update </button></div>
 </form>

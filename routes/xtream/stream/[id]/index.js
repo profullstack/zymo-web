@@ -4,19 +4,19 @@ export default {
 	async get(request) {
 		const { session, path, store } = request;
 		const {
-			m3u: { M3U }
+			xtream: { Xtream }
 		} = store;
 		const id = path.get('id');
-		const m3u = await M3U.getById(id);
-		console.log('id m3u:', m3u);
+		const xtream = await Xtream.getById(id);
+		console.log('id:', xtream);
 
-		return view('m3u/Edit.svelte', { m3u, method: 'put' });
+		return view('xtream/Edit.svelte', { xtream, method: 'put' });
 	},
 
 	async put(request) {
-		const { session, path, store } = request;
+		const { path, store } = request;
 		const {
-			m3u: { Form, M3U }
+			xtream: { Form, Xtream }
 		} = store;
 
 		const id = path.get('id');
@@ -28,8 +28,8 @@ export default {
 			await Form.validate(data);
 
 			try {
-				await M3U.update(id, data);
-				return { status: 'M3U updated' };
+				await Xtream.update(id, data);
+				return { status: 'Xtream code updated' };
 			} catch (err) {
 				return { status: err.message };
 			}
@@ -39,9 +39,9 @@ export default {
 	},
 
 	async delete(request) {
-		const { session, path, store } = request;
+		const { path, store } = request;
 		const {
-			m3u: { Form, M3U }
+			xtream: { Xtream }
 		} = store;
 
 		const id = path.get('id');
@@ -50,9 +50,9 @@ export default {
 			console.log('delete:', id);
 
 			try {
-				const res = await M3U.delete(id);
-				console.log('delete m3u:', res);
-				return { status: 'M3U deleted' };
+				const res = await Xtream.delete(id);
+				console.log('delete:', res);
+				return { status: 'Xtream code deleted' };
 			} catch (err) {
 				return { status: err.message };
 			}

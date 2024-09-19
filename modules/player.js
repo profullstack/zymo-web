@@ -23,6 +23,8 @@ let endTime = new Date(currentTime);
 endTime.setHours(currentTime.getHours() + 24);
 
 // Function to transcode the media URL
+// http://xerotv.bz/4cb944d0d779/7ba8a14d89/696275
+
 export function transcodeMedia(url, videoRef) {
 	url = `/api/transcode?url=${encodeURIComponent(url)}`;
 	streamUrl.set(url);
