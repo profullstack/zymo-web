@@ -5,6 +5,7 @@
 <nav>
 	<a href="/dashboard">Dashboard</a>
 	<a href="/live/new">Create Live TV provider</a>
+	<a href="/xtream/new">Create Xtream Code provider</a>
 	<a href="/library/new">Create Library</a>
 	<a href="/torrents/new">Create Torrent Client</a>
 	<a href="/apikeys">Create API key</a>

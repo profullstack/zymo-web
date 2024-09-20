@@ -108,7 +108,7 @@ export const actions = ({ connection: db }) => {
 			});
 
 			console.log('id xtream:', xtream);
-			const { username, password, url } = xtream;
+			const { username, password, url } = xtream.pop();
 
 			const cacheKey = id;
 			const cachedData = await client.get(cacheKey);
@@ -127,6 +127,7 @@ export const actions = ({ connection: db }) => {
 				if (res.ok) {
 					const data = (await res.json()).map((ch) => {
 						ch.url = `${url}/${username}/${password}/${ch.stream_id}`; // store stream url
+						return ch;
 					});
 					console.log('set cache:', cacheKey);
 					await client.set(cacheKey, JSON.stringify(data), {
@@ -147,7 +148,7 @@ export const actions = ({ connection: db }) => {
 			});
 
 			console.log('id:', xtream);
-			const { username, password, url } = xtream;
+			const { username, password, url } = xtream.pop();
 
 			const cacheKey = `${id}/epg`;
 			const cachedData = await client.get(cacheKey);
@@ -158,7 +159,8 @@ export const actions = ({ connection: db }) => {
 			}
 
 			try {
-				const xtreamEpgUrl = `${url}/player_api.php?username=${username}&password=${password}&action=get_simple_data_table`;
+				const xtreamEpgUrl = `${url}/xmltv.php?username=${username}&password=${password}`;
+				// const xtreamEpgUrl = `${url}/player_api.php?username=${username}&password=${password}&action=get_simple_data_table`;
 
 				const res = await fetch(xtreamEpgUrl);
 

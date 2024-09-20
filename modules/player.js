@@ -105,14 +105,35 @@ export async function fetchChannels(provider, filterValue = '') {
 	}
 }
 
+// Function to fetch the M3U channels from the selected provider
+export async function fetchXtreamChannels(provider, filterValue = '') {
+	isLoading.set(true);
+	channels.set([]);
+	try {
+		const response = await fetch(`/api/xtream/stream/${provider}`);
+		const m3u8Text = await response.text();
+		const channelList = parseM3U8(m3u8Text);
 
+		// const channelList = parseM3U8(m3u8Text).filter((ch) => {
+		// 	if (!filterValue) return ch;
+
+		// 	return ch.name.toLowerCase().indexOf(filterValue.toLowerCase()) > -1;
+		// });
+
+		channels.set(channelList);
+	} catch (error) {
+		console.error('Error fetching channels:', error);
+	} finally {
+		isLoading.set(false);
+	}
+}
 // Function to fetch Xtream Codes credentials from SurrealDB
 // If db.select is available and works like db.select('table', 'id')
 export async function getXtreamCredentials(providerId) {
 	try {
-		const result = await db.select('xtream_codes', providerId);
-		if (result) {
-			return result;
+		const result = await fetch('/api/xtream/stream/' + providerId);
+		if (result.ok) {
+			return await result.json();
 		} else {
 			throw new Error(`No credentials found for provider ID: ${providerId}`);
 		}
@@ -131,13 +152,13 @@ export async function fetchChannelsbyXtreamCodeId(providerId, filterValue = '') 
 		const credentials = await getXtreamCredentials(providerId);
 
 		// Destructure the credentials
-		const { host, user, pass } = credentials;
+		const { url, username, password } = credentials;
 
 		// Build the Xtream Codes API URL
-		const url = `${host}/player_api.php?username=${user}&password=${pass}&action=get_live_streams`;
+		const streamsUrl = `${url}/player_api.php?username=${username}&password=${password}&action=get_live_streams`;
 
 		// Fetch the channel list from Xtream Codes API
-		const response = await fetch(url);
+		const response = await fetch(streamsUrl);
 
 		// Check if the response is OK
 		if (!response.ok) {
@@ -145,7 +166,13 @@ export async function fetchChannelsbyXtreamCodeId(providerId, filterValue = '') 
 		}
 
 		// Parse the JSON response
-		let channelList = await response.json();
+		let channelList = (await response.json()).map((ch) => {
+			ch.url = `${url}/${username}/${password}/${ch.stream_id}`;
+
+			return ch;
+		});
+
+		console.log('Channel list:', channelList);
 
 		// Optional: Filter the channels based on filterValue
 		if (filterValue) {
@@ -199,6 +226,25 @@ export async function selectChannelByProgram(program) {
 		playHLSStream(channel.url, document.getElementById('video'), get(proxyStore)); // Assume proxyStore exists
 	}
 }
+
+export async function selectXtreamChannelByProgram(program) {
+	console.log('selectXtreamChannelByProgram:', program);
+	await fetchXtreamChannels(program.providerId);
+	console.log(get(channels));
+	const channel = get(channels).find((ch) => ch.channelId === program.channelId);
+	console.log('found channel:', channel);
+
+	isChannelListOpen.set(false);
+	selectedChannel.set(channel);
+	streamUrl.set(channel.url);
+	const transcode = get(transcodeStore); // Assume there's a transcode store to track state
+	if (transcode) {
+		transcodeMedia(channel.url, document.getElementById('video'));
+	} else {
+		playHLSStream(channel.url, document.getElementById('video'), get(proxyStore)); // Assume proxyStore exists
+	}
+}
+
 // Function to select a channel and play it
 export function selectChannel(channel) {
 	console.log('selectChannel:', channel);
@@ -257,6 +303,68 @@ export async function fetchEPG(m3uId) {
 				if (currentTime <= start && start <= endTime) {
 					channels[channelIndex].programs.push({
 						providerId: m3uId,
+						channelId,
+						title,
+						start,
+						stop
+					});
+				}
+			}
+		});
+
+		channels = removeEmptyChannels(channels);
+		channels = fillMissingTime(channels);
+
+		setEPGData({ channels, timeBlocks: generateTimeBlocks() });
+	} catch (err) {
+		setEPGError(`Failed to fetch EPG data: ${err.message}`);
+		console.error('Error fetching EPG data:', err);
+	}
+}
+
+export async function fetchXtreamEPG(id) {
+	try {
+		const response = await fetch(`/api/xtream/stream/${id}/epg`);
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+		}
+
+		const xmlText = await response.text();
+		const parser = new DOMParser();
+		const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+
+		const xmlChannels = xmlDoc.querySelectorAll('channel');
+		const xmlPrograms = xmlDoc.querySelectorAll('programme');
+
+		let channels = [];
+
+		Array.from(xmlChannels).forEach((channel) => {
+			const channelId = channel.getAttribute('id');
+			const name = channel.querySelector('display-name').textContent;
+			const icon = channel.querySelector('icon')?.getAttribute('src');
+			const programs = [];
+
+			channels.push({
+				providerId: id,
+				channelId,
+				name,
+				icon,
+				programs
+			});
+		});
+
+		Array.from(xmlPrograms).forEach((program) => {
+			const channelId = program.getAttribute('channel').trim();
+			const channelIndex = channels.findIndex((channel) => channel.channelId === channelId);
+
+			if (channelIndex > -1) {
+				const title = program.querySelector('title').textContent;
+				const start = new Date(formatTime(program.getAttribute('start')));
+				const stop = new Date(formatTime(program.getAttribute('stop')));
+
+				if (currentTime <= start && start <= endTime) {
+					channels[channelIndex].programs.push({
+						providerId: id,
 						channelId,
 						title,
 						start,

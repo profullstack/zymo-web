@@ -1,10 +1,10 @@
 <script>
 	import { onMount } from 'svelte';
 	import { epgStore, setEPGData, selectedChannel } from '../../modules/store.js';
-	import { fetchEPG, selectChannelByProgram } from '../../modules/player.js';
+	import { fetchXtreamEPG, selectXtreamChannelByProgram } from '../../modules/player.js';
 	import VideoPlayer from '../VideoPlayer.svelte';
 
-	export let m3u = {};
+	export let xtream = {};
 
 	let currentTime = new Date();
 	currentTime.setMinutes(0, 0, 0);
@@ -70,7 +70,7 @@
 	}
 
 	onMount(async () => {
-		await fetchEPG(m3u.id);
+		await fetchXtreamEPG(xtream.id);
 	});
 </script>
 
@@ -112,7 +112,7 @@
 								program.stop
 							)}rem; {program.empty ? 'background-color:gray;' : ''}"
 							on:click|preventDefault={async () =>
-								await selectChannelByProgram(program)}
+								await selectXtreamChannelByProgram(program)}
 						>
 							{program.title}
 						</div>

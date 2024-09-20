@@ -5,12 +5,12 @@ export default {
 	async get(request) {
 		const { path, store } = request;
 		const {
-			m3u: { M3U }
+			xtream: { Xtream }
 		} = store;
 		const id = path.get('id');
-		const m3u = await M3U.getById(id);
-		console.log('id m3u:', m3u);
+		const xtream = await Xtream.getById(id);
+		console.log('id:',xtream);
 
-		return view('m3u/EPG.svelte', { m3u });
+		return view('xtream/EPG.svelte', { xtream });
 	}
 };

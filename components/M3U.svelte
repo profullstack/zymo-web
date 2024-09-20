@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import Spinner from './Spinner.svelte';
 	import AffliateLinks from './AffliateLinks.svelte';
+	import LiveSubNav from './navbars/LiveSubNav.svelte';
 	import {
 		channels,
 		filterValue,
@@ -42,6 +43,7 @@
 </script>
 
 <div id="main-content">
+	<LiveSubNav />
 	<AffliateLinks />
 	<div class="field">
 		<strong>Filter:</strong>

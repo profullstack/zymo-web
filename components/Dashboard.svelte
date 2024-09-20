@@ -5,6 +5,7 @@
 	export let m3us = [];
 	export let libraries = [];
 	export let clients = [];
+	export let xtream_codes = [];
 
 	let scans = {};
 	let status = {};
@@ -37,6 +38,21 @@
 			e.target.closest('li').remove();
 		} catch (err) {
 			status[m3u.id] = err;
+		}
+	}
+
+	async function deleteXtream(e, provider) {
+		e.preventDefault();
+		try {
+			const res = await fetch(`/xtream/stream/${provider.id}`, {
+				method: 'DELETE'
+			});
+
+			const result = await res.json();
+			status[provider.id] = result;
+			e.target.closest('li').remove();
+		} catch (err) {
+			status[provider.id] = err;
 		}
 	}
 
@@ -198,6 +214,26 @@
 					}}>delete</a
 				>
 				{#if status[m3u.id]?.status}{status[m3u.id].status}{/if}
+			</nav>
+		</li>
+	{/each}
+</ol>
+
+<h2>Xtream codes</h2>
+
+<ol>
+	{#each xtream_codes as provider}
+		<li>
+			{provider.name} - {provider.id}
+			<nav>
+				<a href="/xtream/stream/{provider.id}">edit</a>
+				<a
+					href="#"
+					on:click={(e) => {
+						deleteXtream(e, provider);
+					}}>delete</a
+				>
+				{#if status[provider.id]?.status}{status[provider.id].status}{/if}
 			</nav>
 		</li>
 	{/each}

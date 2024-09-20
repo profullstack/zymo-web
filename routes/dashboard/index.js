@@ -1,4 +1,4 @@
-import view from "primate/handler/view";
+import view from 'primate/handler/view';
 
 export default {
 	async get(request) {
@@ -8,7 +8,8 @@ export default {
 			User,
 			m3u: { M3U },
 			library: { Library },
-			torrent: { Torrent }
+			torrent: { Torrent },
+			xtream: { Xtream },
 		} = store;
 
 		const user = session.get('user');
@@ -17,8 +18,9 @@ export default {
 		const apikeys = await Apikey.getAllByUserId(userId);
 		const libraries = await Library.getAllByUserId(userId);
 		const clients = await Torrent.getAllByUserId(userId);
+		const xtream_codes = await Xtream.getAllByUserId(userId);
 
-		console.log('dashboard:', m3us, apikeys, libraries, clients);
+		console.log('dashboard:', m3us, apikeys, libraries, clients, xtream_codes);
 		var phoneUnverified = false;
 
 		if (user.phone) {
@@ -27,6 +29,6 @@ export default {
 				phoneUnverified = verification.verify?.phone.status !== 'verified';
 			} catch (e) {}
 		}
-		return view('Dashboard.svelte', { m3us, apikeys, libraries, clients, phoneUnverified });
+		return view('Dashboard.svelte', { m3us, apikeys, libraries, clients, xtream_codes, phoneUnverified });
 	}
 };
