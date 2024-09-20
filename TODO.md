@@ -26,5 +26,4 @@
 -   add pagination (but I forgot where)
 -   add ability to email all Users or Waitlist from admin UI
 
-- add up() and down() commands to ./migrations/*.sh
-
+- white label native app for providers

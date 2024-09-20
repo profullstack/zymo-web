@@ -156,7 +156,8 @@ export async function fetchChannelsbyXtreamCodeId(providerId, filterValue = '') 
 		const { url, username, password } = credentials;
 
 		// Build the Xtream Codes API URL
-		const streamsUrl = `${url}/player_api.php?username=${username}&password=${password}&action=get_live_streams`;
+		const streamsUrl = `/api/xtream/stream/${providerId}/playlist`;
+		// const streamsUrl = `${url}/player_api.php?username=${username}&password=${password}&action=get_live_streams`;
 
 		// Fetch the channel list from Xtream Codes API
 		const response = await fetch(streamsUrl);
