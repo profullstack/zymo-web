@@ -120,7 +120,7 @@ export const actions = ({ connection: db }) => {
 
 			try {
 				const xtreamUrl = `${url}/player_api.php?username=${username}&password=${password}&action=get_live_streams`;
-
+				console.log(xtreamUrl);
 				// const res = await fetchChannels(id, filterValue);
 				const res = await fetch(xtreamUrl);
 

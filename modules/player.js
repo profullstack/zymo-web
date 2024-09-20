@@ -151,6 +151,7 @@ export async function fetchChannelsbyXtreamCodeId(providerId, filterValue = '') 
 		// Fetch credentials from the database
 		const credentials = await getXtreamCredentials(providerId);
 
+		console.log('credentials', credentials);
 		// Destructure the credentials
 		const { url, username, password } = credentials;
 

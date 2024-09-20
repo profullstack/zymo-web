@@ -1,4 +1,3 @@
-
 export default {
 	async get(request) {
 		const { session, store, path } = request;
@@ -7,6 +6,6 @@ export default {
 		} = store;
 
 		const id = path.get('id');
-		return await Xtream.fetchById(id);
+		return await Xtream.getById(id);
 	}
 };
