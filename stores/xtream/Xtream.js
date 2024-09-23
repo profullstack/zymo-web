@@ -15,15 +15,15 @@ const CACHE_EXPIRATION = 60 * 15; // in seconds
 export const actions = ({ connection: db }) => {
 	return {
 		async me() {
-			const [token] = await db.query('$token');
-			const { ID: userId } = token;
+			const [auth] = await db.query('SELECT * FROM $auth');
+			console.log('auth:', auth);
+			const { id: userId } = auth.pop();
 			const [me] = await db.select(userId);
 
-			delete me.password;
-			console.log('me: ', me.email);
+			delete me?.password;
+			console.log('me: ', me);
 			return me;
 		},
-
 		async getXtreamCredentials(providerId) {
 			try {
 				const result = await db.select('xtream_codes', providerId);

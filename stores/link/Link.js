@@ -12,7 +12,7 @@ export const actions = ({ connection: db }) => {
 			delete me?.password;
 			console.log('me: ', me);
 			return me;
-		}
+		},
 		async create(data, token) {
 			// const { User } = store;
 
