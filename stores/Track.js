@@ -4,13 +4,14 @@ export const actions = ({ connection: db }) => {
 	return {
 		async me() {
 			const [auth] = await db.query('SELECT * FROM $auth');
-			const { id: userId } = auth;
+			console.log('auth:', auth);
+			const { id: userId } = auth.pop();
 			const [me] = await db.select(userId);
 
 			delete me?.password;
 			console.log('me: ', me);
 			return me;
-		},
+		}
 		async visit(id, headers = {}, data) {
 			if (!id) return;
 

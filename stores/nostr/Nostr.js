@@ -6,13 +6,14 @@ export const actions = ({ connection: db }) => {
 		async me() {
 			const [token] = await db.query('async me() {
 			const [auth] = await db.query('SELECT * FROM $auth');
-			const { id: userId } = auth;
+			console.log('auth:', auth);
+			const { id: userId } = auth.pop();
 			const [me] = await db.select(userId);
 
 			delete me?.password;
 			console.log('me: ', me);
 			return me;
-		},
+		}
 		async create(profile) {
 			const { DB_NS, DB_DB } = env;
 			console.log(DB_NS, DB_DB);
