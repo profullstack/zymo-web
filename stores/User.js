@@ -5,7 +5,7 @@ export const actions = ({ connection: db }) => {
 	return {
 		async me() {
 			const [auth] = await db.query('SELECT * FROM $auth');
-			const { id: userId } = auth;
+			const { id: userId } = auth.pop();
 			const [me] = await db.select(userId);
 
 			delete me?.password;
