@@ -11,7 +11,7 @@ export const actions = ({ connection: db }) => {
 			delete me?.password;
 			console.log('me: ', me);
 			return me;
-		}
+		},
 		async visit(id, headers = {}, data) {
 			if (!id) return;
 
