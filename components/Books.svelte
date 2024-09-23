@@ -34,7 +34,7 @@
 								<a href={book.url}
 									>({book.bookMetadata?.title ?? book.mediaInfo.title})</a
 								>
-								{#if book.bookMetadata.author}
+								{#if book.bookMetadata?.author}
 									by ${book.bookMetadata.author}
 								{/if}
 							</li>
