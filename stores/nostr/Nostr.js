@@ -12,7 +12,7 @@ export const actions = ({ connection: db }) => {
 			delete me?.password;
 			console.log('me: ', me);
 			return me;
-		}
+		},
 		async create(profile) {
 			const { DB_NS, DB_DB } = env;
 			console.log(DB_NS, DB_DB);
