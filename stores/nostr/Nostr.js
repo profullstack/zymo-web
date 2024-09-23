@@ -4,7 +4,6 @@ import primary from '@primate/types/primary';
 export const actions = ({ connection: db }) => {
 	return {
 		async me() {
-			const [token] = await db.query('async me() {
 			const [auth] = await db.query('SELECT * FROM $auth');
 			console.log('auth:', auth);
 			const { id: userId } = auth.pop();
@@ -13,7 +12,7 @@ export const actions = ({ connection: db }) => {
 			delete me?.password;
 			console.log('me: ', me);
 			return me;
-		}
+		},
 		async create(profile) {
 			const { DB_NS, DB_DB } = env;
 			console.log(DB_NS, DB_DB);
