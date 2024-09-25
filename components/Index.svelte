@@ -38,8 +38,8 @@
 	const appName = REPLACE_APP_NAME;
 	const appDescription = REPLACE_APP_DESCRIPTION;
 	const meta = {
-		title: `${appName }- ${appDescription}`,
-		description: appDescription,
+		title: `${appName} - ${appDescription}`,
+		description: appDescription
 	};
 </script>
 
