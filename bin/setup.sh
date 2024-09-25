@@ -39,6 +39,7 @@ sed -i "s/hynt.us/${DOMAIN_NAME}/g" ./etc/${PROJECT_NAME}.service
 # Additionally, you might want to replace in the env file as well, if needed
 sed -i "s/hynt-web/${PROJECT_NAME}/g" ./.env.dev
 sed -i "s/hynt.us/${DOMAIN_NAME}/g" ./.env.dev
+sed -i "s/hynt/${PROJECT_NAME%-web}/g" ./.env.dev
 
 cp ./.env.dev ./.env.prod
 pnpm i
