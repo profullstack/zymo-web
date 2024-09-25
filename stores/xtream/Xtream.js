@@ -110,7 +110,7 @@ export const actions = ({ connection: db }) => {
 			console.log('id xtream:', xtream);
 			const { username, password, url } = xtream.pop();
 
-			const cacheKey = id;
+			const cacheKey = id + '/xc';
 			const cachedData = await client.get(cacheKey);
 
 			if (cachedData) {
@@ -150,7 +150,7 @@ export const actions = ({ connection: db }) => {
 			console.log('id:', xtream);
 			const { username, password, url } = xtream.pop();
 
-			const cacheKey = `${id}/epg`;
+			const cacheKey = `${id}/xc/epg`;
 			const cachedData = await client.get(cacheKey);
 
 			if (cachedData) {

@@ -95,7 +95,7 @@ export const actions = ({ connection: db }) => {
 
 			console.log('id m3u:', m3u);
 
-			const cacheKey = id;
+			const cacheKey = id + '/m3u';
 			const cachedData = await client.get(cacheKey);
 
 			if (cachedData) {
@@ -129,7 +129,7 @@ export const actions = ({ connection: db }) => {
 
 			console.log('id m3u:', m3u);
 
-			const cacheKey = `${id}/epg`;
+			const cacheKey = `${id}/m3u/epg`;
 			const cachedData = await client.get(cacheKey);
 
 			if (cachedData) {
