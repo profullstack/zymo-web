@@ -20,7 +20,6 @@
 		display: flex;
 		justify-content: flex-end;
 		align-items: center;
-		border-top: 1px solid #ccc;
 		padding: 1.2rem;
 	}
 
