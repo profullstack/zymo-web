@@ -20,6 +20,33 @@ NGINX_SYMLINK="/etc/nginx/sites-available/$DOMAIN_NAME.conf"
 SYSTEMD_SYMLINK="/etc/systemd/system/$PROJECT_NAME.service"
 user=$HOST_USER
 
+
+# Copy the files first
+cp ./etc/hynt.us.conf ./etc/${DOMAIN_NAME}.conf
+cp ./etc/hynt-web.service ./etc/${PROJECT_NAME}.service
+cp ./.env.local.sample ./.env.dev
+sed -i '/# windows (copy to .env.local.bat)/q' .env.dev
+
+
+# Replace occurrences of hynt-web and hynt.us in the new files
+sed -i "s/hynt-web/${PROJECT_NAME}/g" ./etc/${PROJECT_NAME}.service
+sed -i "s/hynt.us/${DOMAIN_NAME}/g" ./etc/${DOMAIN_NAME}.conf
+
+# Additionally, you might want to replace in the conf file as well, if needed
+sed -i "s/hynt-web/${PROJECT_NAME}/g" ./etc/${DOMAIN_NAME}.conf
+sed -i "s/hynt.us/${DOMAIN_NAME}/g" ./etc/${PROJECT_NAME}.service
+
+# Additionally, you might want to replace in the env file as well, if needed
+sed -i "s/hynt-web/${PROJECT_NAME}/g" ./.env.dev
+sed -i "s/hynt.us/${DOMAIN_NAME}/g" ./.env.dev
+sed -i "s/hynt/${PROJECT_NAME%-web}/g" ./.env.dev
+
+cp ./.env.dev ./.env.prod
+pnpm i
+pnpm run env:dev
+. .env.local
+
+
 # Create the directory if it does not exist
 ssh $user@$HOST_DOMAIN "mkdir -p $TARGET_PATH/static/_posts"
 
