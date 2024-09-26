@@ -11,3 +11,4 @@
 
 - add up() and down() commands to ./migrations/*.sh
 
+- add mass delete checkboxes and action menu for DB routes
