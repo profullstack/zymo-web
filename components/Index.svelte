@@ -53,7 +53,10 @@
 	<br /><br />
 	<button on:click={joinWaitlist}> Join now </button>
 
-	<video src="/videos/30sec-video1.mp4" controls />
+	<video controls playsinline>
+		<source src="/videos/30sec-video1.mp4" type="video/mp4" />
+		Your browser does not support the video tag.
+	</video>
 
 	<p>
 		Checkout our <a href="/pricing">pricing page</a> and <a href="/register">register</a> now!
