@@ -9,6 +9,7 @@
 			animation: spinnerAnimation 0.75s infinite linear;
 			width: 100%;
 			height: 100%;
+			display: inline-block;
 		}
 
 		@keyframes spinnerAnimation {
