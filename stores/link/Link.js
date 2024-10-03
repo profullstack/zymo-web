@@ -1,6 +1,6 @@
 import env from '@rcompat/env';
 import primary from '@primate/types/primary';
-import { getMe } from '../modules/user.js';
+import { getMe } from '../../modules/user.js';
 
 export const actions = ({ connection: db }) => {
 	return {
