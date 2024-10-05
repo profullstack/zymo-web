@@ -2,20 +2,14 @@ import primary from '@primate/types/primary';
 import file from '@rcompat/fs/file';
 import { mp4 } from '@rcompat/http/mime';
 import spawn from '@rcompat/stdio/spawn';
+import { getMe } from '../../modules/user.js';
 
 const supportedExtensions = ['.mp4', '.mkv', '.mov'];
 
 export const actions = ({ connection: db }) => {
 	return {
-		async me() {
-			const [auth] = await db.query('SELECT * FROM $auth');
-			console.log('auth:', auth);
-			const { id: userId } = auth.pop();
-			const [me] = await db.select(userId);
-
-			delete me?.password;
-			console.log('me: ', me);
-			return me;
+		me: async () => {
+			return await getMe(db);
 		},
 		async start(url, user = null, pass = null) {
 			console.log('Transcoding:', url);

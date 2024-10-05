@@ -3,18 +3,12 @@ import primary from '@primate/types/primary';
 import FormData from 'form-data';
 import Torrent from 'torrent-search-api-for-barbaroussa';
 import spawn from '@rcompat/stdio/spawn';
+import { getMe } from '../../modules/user.js';
 
 export const actions = ({ connection: db }) => {
 	return {
-		async me() {
-			const [auth] = await db.query('SELECT * FROM $auth');
-			console.log('auth:', auth);
-			const { id: userId } = auth.pop();
-			const [me] = await db.select(userId);
-
-			delete me?.password;
-			console.log('me: ', me);
-			return me;
+		me: async () => {
+			return await getMe(db);
 		},
 		async create(data) {
 			console.log('create:', data);

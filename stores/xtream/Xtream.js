@@ -1,6 +1,7 @@
 import env from 'rcompat/env';
 import primary from '@primate/types/primary';
 import { createClient } from '@redis/client';
+import { getMe } from '../../modules/user.js';
 
 const client = createClient();
 
@@ -14,15 +15,8 @@ const CACHE_EXPIRATION = 60 * 15; // in seconds
 
 export const actions = ({ connection: db }) => {
 	return {
-		async me() {
-			const [auth] = await db.query('SELECT * FROM $auth');
-			console.log('auth:', auth);
-			const { id: userId } = auth.pop();
-			const [me] = await db.select(userId);
-
-			delete me?.password;
-			console.log('me: ', me);
-			return me;
+		me: async () => {
+			return await getMe(db);
 		},
 		async getXtreamCredentials(providerId) {
 			try {

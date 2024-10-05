@@ -2,6 +2,8 @@ import primary from '@primate/types/primary';
 import * as cheerio from 'cheerio';
 import path from 'path';
 
+import { getMe } from '../../modules/user.js';
+
 const { env } = process;
 const supportedExtensions = ['.mp3', '.mp4', '.wav', '.ogg', '.pdf', '.epub', '.mkv'];
 
@@ -59,15 +61,8 @@ function sanitizeFile(filename) {
 
 export const actions = ({ connection: db }) => {
 	return {
-		async me() {
-			const [auth] = await db.query('SELECT * FROM $auth');
-			console.log('auth:', auth);
-			const { id: userId } = auth.pop();
-			const [me] = await db.select(userId);
-
-			delete me?.password;
-			console.log('me: ', me);
-			return me;
+		me: async () => {
+			return await getMe(db);
 		},
 		async parseIndexPage(libraryId, url, user = null, pass = null, save = 0) {
 			try {

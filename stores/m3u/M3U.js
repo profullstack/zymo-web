@@ -2,6 +2,7 @@ import env from 'rcompat/env';
 import primary from '@primate/types/primary';
 import { createClient } from '@redis/client';
 import { fetchChannels, parseM3U8, selectChannel } from '../../modules/player.js';
+import { getMe } from '../../modules/user.js';
 
 const client = createClient();
 
