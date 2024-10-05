@@ -10,7 +10,7 @@ export default {
 		const client = await Torrent.getClientById(id);
 		console.log('id:', client);
 
-		return view('torrents/Edit.svelte', { client, method: 'put' });
+		return view('podcasters/Edit.svelte', { client, method: 'put' });
 	},
 
 	async put(request) {

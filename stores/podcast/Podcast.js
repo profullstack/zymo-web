@@ -1,7 +1,6 @@
 import env from 'rcompat/env';
 import primary from '@primate/types/primary';
 import FormData from 'form-data';
-import Torrent from 'torrent-search-api-for-barbaroussa';
 import spawn from '@rcompat/stdio/spawn';
 
 export const actions = ({ connection: db }) => {
