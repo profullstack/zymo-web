@@ -17,13 +17,8 @@ export const actions = ({ connection: db }) => {
 			console.log('db:', DB_NS, DB_DB);
 
 			try {
-				const res = await db.create('torrent_client', {
+				const res = await db.create('podcast_shows', {
 					url,
-					name,
-					user,
-					pass,
-					provider,
-					path,
 					createdBy: me.id,
 					createdAt: new Date().toISOString(),
 					updatedAt: new Date().toISOString()
@@ -38,7 +33,7 @@ export const actions = ({ connection: db }) => {
 		},
 
 		async getAllByUserId(createdBy) {
-			const query = `SELECT * FROM torrent_client WHERE createdBy = $createdBy`;
+			const query = `SELECT * FROM podcast_shows WHERE createdBy = $createdBy`;
 
 			console.log(query, createdBy);
 			try {
@@ -84,34 +79,7 @@ export const actions = ({ connection: db }) => {
 			}
 		},
 
-		async follow(magnet, path = '') {
-			console.log('download:', magnet, path);
-
-			const me = await this.me();
-			const { id: userId } = me;
-
-			const [client] = (
-				await db.query('SELECT * FROM torrent_client WHERE createdBy = $userId', { userId })
-			).pop();
-
-			console.log('client:', client);
-
-			// set proper download path
-			if (path.startsWith('/') || path.startsWith('./')) {
-				path = client.path + path;
-			} else if (path) {
-				path = client.path + '/' + path;
-			} else {
-				path = client.path;
-			}
-
-			console.log('Download path:', path);
-			return await this.addTorrent(client, magnet, path);
-		},
-
 		async search(q) {
-			let results = [];
-
 			try {
 				const command = './bin/podsearch';
 				const args = `"${q}"`;
