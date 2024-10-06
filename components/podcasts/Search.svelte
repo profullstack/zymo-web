@@ -1,8 +1,37 @@
 <script>
 	import Spinner from '../Spinner.svelte';
+	import {
+		playlist,
+		isPlaying,
+		currentSongIndex,
+		currentSongMetadata
+	} from '../../modules/store.js';
+
 	let results = [];
 	let q = '';
 	let isLoading = false;
+	let feeds = {};
+
+	function playItem(song) {
+		console.log(song, '<< song');
+		const enclosure = song.enclosure[0].$;
+
+		song.url = enclosure.url;
+		song.title = song.title[0];
+		song.channelTitle = song.channel.title[0];
+		song.cover = song.channel['itunes:image'][0].$.href;
+
+		playlist.set([song]);
+		currentSongIndex.set(0);
+		currentSongMetadata.set({
+			artist: song.channelTitle,
+			album: song.title,
+			songname: song.title,
+			coverArt: song.cover
+		});
+
+		isPlaying.set(true);
+	}
 
 	async function searchPodcasts() {
 		isLoading = true;
@@ -40,6 +69,33 @@
 			const data = await res.json();
 
 			console.log(data);
+			feeds[podcast.url] = data;
+		} catch (err) {
+			console.error('Follow failed:', err);
+		}
+	}
+
+	async function view(podcast) {
+		console.log(podcast);
+
+		try {
+			const res = await fetch('/api/podcasts/feed', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(podcast)
+			});
+
+			if (!res.ok) {
+				throw new Error(`HTTP error! status: ${res.status}`);
+			}
+
+			const data = await res.json();
+
+			console.log(data);
+
+			feeds[podcast.url] = data;
 		} catch (err) {
 			console.error('Follow failed:', err);
 		}
@@ -77,8 +133,30 @@
 							follow(podcast);
 						}}>follow</a
 					>
+					<a
+						href="#"
+						on:click|preventDefault={() => {
+							view(podcast);
+						}}>view</a
+					>
 				</div>
 			</div>
+			{#if feeds[podcast.url]}
+				<ul>
+					{#each feeds[podcast.url].rss?.channel[0]?.item as item}
+						<li>
+							<a
+								href="#"
+								on:click|preventDefault={() => {
+									item.channel = feeds[podcast.url].rss.channel[0];
+									playItem(item);
+								}}>play</a
+							>
+							{item.title} - {item.enclosure[0].$.url}
+						</li>
+					{/each}
+				</ul>
+			{/if}
 		</li>
 	{/each}
 </ul>

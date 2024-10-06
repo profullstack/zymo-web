@@ -3,6 +3,7 @@ import primary from '@primate/types/primary';
 import FormData from 'form-data';
 import spawn from '@rcompat/stdio/spawn';
 import { getMe } from '../../modules/user.js';
+import xml2js from 'xml2js';
 
 export const actions = ({ connection: db }) => {
 	return {
@@ -92,6 +93,25 @@ export const actions = ({ connection: db }) => {
 			} catch (err) {
 				console.error(err);
 				return new Response(err);
+			}
+		},
+
+		async fetchFeed(url) {
+			try {
+				const res = await fetch(url);
+
+				if (res.ok) {
+					const xml = await res.text();
+
+					const parser = new xml2js.Parser();
+
+					const data = await parser.parseStringPromise(xml);
+					console.log(data);
+
+					return data;
+				}
+			} catch (err) {
+				console.error(err);
 			}
 		}
 	};
