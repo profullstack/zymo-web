@@ -147,10 +147,17 @@
 						<li>
 							<a
 								href="#"
+								class="play-button"
 								on:click|preventDefault={() => {
 									item.channel = feeds[podcast.url].rss.channel[0];
 									playItem(item);
-								}}>play</a
+								}}
+							>
+								{#if item.playing}
+									{'❚❚'}
+								{:else}
+									<img src="/icons/play.svg" alt="" />
+								{/if}</a
 							>
 							{item.title} - {item.enclosure[0].$.url}
 						</li>
@@ -179,10 +186,6 @@
 		list-style: none;
 	}
 
-	li:hover {
-		background-color: var(--list-hover-background-color);
-	}
-
 	.podcast-item {
 		display: flex;
 		align-items: flex-start; /* Align items at the start vertically */
@@ -206,5 +209,11 @@
 	a {
 		display: inline-block;
 		margin-top: 0.5rem; /* Space above the follow link */
+	}
+
+	.play-button img {
+		display: block;
+		width: 2rem;
+		height: auto;
 	}
 </style>
