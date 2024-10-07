@@ -159,7 +159,7 @@
 									<img src="/icons/play.svg" alt="" />
 								{/if}</a
 							>
-							{item.title} - {item.enclosure[0].$.url}
+							<a href={item.enclosure[0].$.url}>{item.title}</a>
 						</li>
 					{/each}
 				</ul>
