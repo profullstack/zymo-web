@@ -55,12 +55,23 @@ To run Fastest-Web on your server, make sure you have the following prerequisite
 
     # be sure to delete windows and/or linux variables if not using that OS
 
-    cp .env.sample .env.local
+    cp .env.sample .env.dev
+
+    # modify as needed, then run the following to symlink .env.dev to .env.local:
+
+    npm run env:dev
+    
 
 4. Start the Fastest-Web server:
 
     ```shell
     npm run db:start
+
+    # run migrations
+    chmod 755 ./migrations/*.sh;
+    for f in ./migrations/*.sh; do ./$f; done;
+    node ./migrations/scripts/migrate.js up
+    
     # new window
     npm run dev
     ```
