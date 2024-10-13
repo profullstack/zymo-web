@@ -65,6 +65,14 @@ To run Fastest-Web on your server, make sure you have the following prerequisite
 4. Start the Fastest-Web server:
 
     ```shell
+    curl -sSf https://install.surrealdb.com | sh
+
+    # for surreal 1.x
+    surreal upgrade --version 1.5.5
+
+    # for 2.x (the default)
+    surreal version
+
     npm run db:start
 
     # run migrations
