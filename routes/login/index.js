@@ -29,17 +29,22 @@ export default {
 			try {
 				token = await User.signin(user);
 				me = await User.me();
+				console.log('token/me:', token, me);
 			} catch (err) {
+				console.error(err);
 				return form({ status: err.message });
 			}
 
-			if (me.verify.email.status !== 'verified') {
+			if (me.verify?.email.status !== 'verified') {
 				await session.create({ token, user: me, loggedIn: false, unverifiedEmail: true });
 				return redirect('/verify/email');
 			}
 
+			console.log('logging in:', token, me);
+
 			await session.create({ token, user: me, loggedIn: Boolean(token) });
 
+			console.log('redirect:', next);
 			return redirect(next);
 		} catch ({ errors }) {
 			return form({ errors });

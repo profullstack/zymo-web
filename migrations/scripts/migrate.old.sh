@@ -9,15 +9,15 @@ MIGRATION_TABLE="migration_history"
 
 # Function to initialize the migration history table
 initialize_migration_table() {
-  DATA="DEFINE TABLE ${MIGRATION_TABLE} SCHEMAFULL
+  DATA="DEFINE TABLE OVERWRITE ${MIGRATION_TABLE} SCHEMAFULL
         PERMISSIONS
           FOR select FULL,
           FOR update, delete, create FULL;
-        DEFINE FIELD collection ON ${MIGRATION_TABLE} TYPE string;
-        DEFINE FIELD version ON ${MIGRATION_TABLE} TYPE int;
-        DEFINE FIELD createdAt ON ${MIGRATION_TABLE} TYPE datetime;
-        DEFINE FIELD direction ON ${MIGRATION_TABLE} TYPE string;
-        DEFINE INDEX idx_collection_version ON ${MIGRATION_TABLE} COLUMNS collection, version, direction UNIQUE;"
+        DEFINE FIELD OVERWRITE collection ON ${MIGRATION_TABLE} TYPE string;
+        DEFINE FIELD OVERWRITE version ON ${MIGRATION_TABLE} TYPE int;
+        DEFINE FIELD OVERWRITE createdAt ON ${MIGRATION_TABLE} TYPE datetime;
+        DEFINE FIELD OVERWRITE direction ON ${MIGRATION_TABLE} TYPE string;
+        DEFINE INDEX OVERWRITE idx_collection_version ON ${MIGRATION_TABLE} COLUMNS collection, version, direction UNIQUE;"
 
   echo "Executing INIT: ${DATA}"
 
@@ -125,8 +125,8 @@ migrate_down() {
 
   RESPONSE=$(curl -k -L -s --compressed POST \
     --header "Accept: application/json" \
-    --header "NS: ${DB_NS}" \
-    --header "DB: ${DB_DB}" \
+    --header "Surreal-NS: ${DB_NS}" \
+    --header "Surreal-DB: ${DB_DB}" \
     --user "root:root" \
     --data "${DATA}" \
     ${DB_SQL_URL})
@@ -139,8 +139,8 @@ migrate_down() {
   
   RESPONSE=$(curl -k -L -s --compressed POST \
     --header "Accept: application/json" \
-    --header "NS: ${DB_NS}" \
-    --header "DB: ${DB_DB}" \
+    --header "Surreal-NS: ${DB_NS}" \
+    --header "Surreal-DB: ${DB_DB}" \
     --user "root:root" \
     --data "${DATA}" \
     ${DB_SQL_URL})

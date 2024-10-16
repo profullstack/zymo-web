@@ -25,8 +25,6 @@ async function connectDB() {
         namespace,
         database,
         auth: {
-            namespace,
-            database,
             username,
             password
         }

@@ -3,15 +3,15 @@
 . .env
 . .env.local
 
-DATA="DEFINE TABLE send_email SCHEMALESS
+DATA="DEFINE TABLE OVERWRITE send_email SCHEMALESS
     PERMISSIONS NONE DROP;
 
-DEFINE FIELD from_name ON TABLE send_email TYPE string VALUE \$value OR 'Kards Social';
-DEFINE FIELD from_email ON TABLE send_email TYPE string VALUE \$value OR 'hello@globalthreat.info' ASSERT is::email(\$value);
-DEFINE FIELD to_name ON TABLE send_email TYPE string;
-DEFINE FIELD to_email ON TABLE send_email TYPE string ASSERT is::email(\$value);
-DEFINE FIELD subject ON TABLE send_email TYPE string;
-DEFINE FIELD content ON TABLE send_email TYPE array ASSERT array::len(\$value) > 0;
+DEFINE FIELD OVERWRITE from_name ON TABLE send_email TYPE string VALUE \$value OR 'Kards Social';
+DEFINE FIELD OVERWRITE from_email ON TABLE send_email TYPE string VALUE \$value OR 'hello@globalthreat.info' ASSERT is::email(\$value);
+DEFINE FIELD OVERWRITE to_name ON TABLE send_email TYPE string;
+DEFINE FIELD OVERWRITE to_email ON TABLE send_email TYPE string ASSERT is::email(\$value);
+DEFINE FIELD OVERWRITE subject ON TABLE send_email TYPE string;
+DEFINE FIELD OVERWRITE content ON TABLE send_email TYPE array ASSERT array::len(\$value) > 0;
 
 # Always send the email :D    (1=1)
 DEFINE EVENT email ON TABLE send_email WHEN 1=1 THEN {
@@ -47,8 +47,8 @@ DEFINE EVENT email ON TABLE send_email WHEN 1=1 THEN {
 
 curl -k -L -s --compressed POST \
 	--header "Accept: application/json" \
-	--header "NS: ${DB_NS}" \
-	--header "DB: ${DB_DB}" \
+	--header "Surreal-NS: ${DB_NS}" \
+	--header "Surreal-DB: ${DB_DB}" \
 	--user "root:root" \
 	--data "${DATA}" \
 	${DB_SQL_URL}
