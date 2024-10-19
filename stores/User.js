@@ -251,19 +251,17 @@ export const actions = ({ connection: db }) => {
 			const userObject = {
 				namespace: DB_NS,
 				database: DB_DB,
-				access: 'allusers',
-				variables: {
-					email,
-					firstName,
-					lastName,
-					phone,
-					phonePrefix,
-					username,
-					password,
-					headers,
-					createdAt: new Date(),
-					updatedAt: new Date()
-				}
+				scope: 'allusers',
+				email,
+				firstName,
+				lastName,
+				phone,
+				phonePrefix,
+				username,
+				password,
+				headers,
+				createdAt: new Date(),
+				updatedAt: new Date()
 			};
 
 			console.log(userObject, '<< userObject');
@@ -289,11 +287,9 @@ export const actions = ({ connection: db }) => {
 				const token = await db.signin({
 					namespace: DB_NS,
 					database: DB_DB,
-					access: 'allusers',
-					variables: {
-						email,
-						password
-					}
+					scope: 'allusers',
+					email,
+					password
 				});
 
 				console.log('token: ', token);
@@ -323,10 +319,8 @@ export const actions = ({ connection: db }) => {
 				const token = await db.signin({
 					namespace: DB_NS,
 					database: DB_DB,
-					access: 'apiusers',
-					variables: {
-						apikey
-					}
+					scope: 'apiusers',
+					apikey
 				});
 
 				console.log('token: ', token);

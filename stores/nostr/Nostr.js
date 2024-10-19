@@ -17,11 +17,9 @@ export const actions = ({ connection: db }) => {
 			return await db.signup({
 				namespace: DB_NS,
 				database: DB_DB,
-				access: 'allnostrusers',
-				variables: {
-					updatedAt: new Date().toISOString(),
-					...profile
-				}
+				scope: 'allnostrusers',
+				updatedAt: new Date().toISOString(),
+				...profile
 			});
 		},
 
@@ -31,10 +29,8 @@ export const actions = ({ connection: db }) => {
 			return await db.signin({
 				namespace: DB_NS,
 				database: DB_DB,
-				access: 'allnostrusers',
-				variables: {
-					...profile
-				}
+				scope: 'allnostrusers',
+				...profile
 			});
 		}
 	};

@@ -3,60 +3,60 @@
 . .env
 . .env.local
 
-DATA="DEFINE TABLE OVERWRITE affiliates SCHEMALESS
+DATA="DEFINE TABLE affiliates SCHEMALESS
   PERMISSIONS
     FOR select FULL,
     FOR update, create WHERE \$scope = \"allusers\" OR \$scope = \"apiusers\" OR \$scope = \"allnostrusers\",
 	FOR delete WHERE userId = \$auth.id;
-DEFINE FIELD OVERWRITE balance ON affiliates TYPE option<number> DEFAULT 0;
-DEFINE FIELD OVERWRITE payoutMethods ON affiliates TYPE option<array> DEFAULT [];
-DEFINE INDEX OVERWRITE idx_userId ON affiliates COLUMNS userId UNIQUE;
+DEFINE FIELD balance ON affiliates TYPE option<number> DEFAULT 0;
+DEFINE FIELD payoutMethods ON affiliates TYPE option<array> DEFAULT [];
+DEFINE INDEX idx_userId ON affiliates COLUMNS userId UNIQUE;
 "
 
 curl -k -L -s --compressed POST \
 	--header "Accept: application/json" \
-	--header "Surreal-NS: ${DB_NS}" \
-	--header "Surreal-DB: ${DB_DB}" \
+	--header "NS: ${DB_NS}" \
+	--header "DB: ${DB_DB}" \
 	--user "root:root" \
 	--data "${DATA}" \
 	${DB_SQL_URL}
 
-DATA="DEFINE TABLE OVERWRITE referralCodes SCHEMALESS
+DATA="DEFINE TABLE referralCodes SCHEMALESS
   PERMISSIONS
     FOR select FULL,
     FOR update, create WHERE \$scope = \"allusers\" OR \$scope = \"apiusers\" OR \$scope = \"allnostrusers\",
 	FOR delete WHERE userId = \$auth.id;
-DEFINE FIELD OVERWRITE name ON TABLE referralCodes TYPE string;
-DEFINE FIELD OVERWRITE clicks ON TABLE referralCodes TYPE option<number> DEFAULT 0;
-DEFINE FIELD OVERWRITE conversions ON TABLE referralCodes TYPE option<number> DEFAULT 0;
-DEFINE FIELD OVERWRITE commissions ON TABLE referralCodes TYPE option<number> DEFAULT 0;
-DEFINE INDEX OVERWRITE idx_userId ON referralCodes COLUMNS userId;
-DEFINE INDEX OVERWRITE idx_affiliateId ON referralCodes COLUMNS affiliateId;
-DEFINE INDEX OVERWRITE idx_code ON referralCodes COLUMNS code UNIQUE;
+DEFINE FIELD name ON TABLE referralCodes TYPE string;
+DEFINE FIELD clicks ON TABLE referralCodes TYPE option<number> DEFAULT 0;
+DEFINE FIELD conversions ON TABLE referralCodes TYPE option<number> DEFAULT 0;
+DEFINE FIELD commissions ON TABLE referralCodes TYPE option<number> DEFAULT 0;
+DEFINE INDEX idx_userId ON referralCodes COLUMNS userId;
+DEFINE INDEX idx_affiliateId ON referralCodes COLUMNS affiliateId;
+DEFINE INDEX idx_code ON referralCodes COLUMNS code UNIQUE;
 "
 
 curl -k -L -s --compressed POST \
 	--header "Accept: application/json" \
-	--header "Surreal-NS: ${DB_NS}" \
-	--header "Surreal-DB: ${DB_DB}" \
+	--header "NS: ${DB_NS}" \
+	--header "DB: ${DB_DB}" \
 	--user "root:root" \
 	--data "${DATA}" \
 	${DB_SQL_URL}
 
 
-DATA="DEFINE TABLE OVERWRITE referrals SCHEMALESS
+DATA="DEFINE TABLE referrals SCHEMALESS
   PERMISSIONS
     FOR select FULL,
     FOR update, create WHERE \$scope = \"allusers\" OR \$scope = \"apiusers\" OR \$scope = \"allnostrusers\",
 	FOR delete WHERE userId = \$auth.id;
-DEFINE FIELD OVERWRITE referralCode ON referrals TYPE string;
-DEFINE INDEX OVERWRITE idx_userId ON referrals COLUMNS userId UNIQUE;
+DEFINE FIELD referralCode ON referrals TYPE string;
+DEFINE INDEX idx_userId ON referrals COLUMNS userId UNIQUE;
 "
 
 curl -k -L -s --compressed POST \
 	--header "Accept: application/json" \
-	--header "Surreal-NS: ${DB_NS}" \
-	--header "Surreal-DB: ${DB_DB}" \
+	--header "NS: ${DB_NS}" \
+	--header "DB: ${DB_DB}" \
 	--user "root:root" \
 	--data "${DATA}" \
 	${DB_SQL_URL}

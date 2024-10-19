@@ -1,4 +1,4 @@
-import { Surreal } from 'surrealdb';
+import Surreal from 'surrealdb.js';
 import { config } from 'dotenv-flow';
 import fs from 'fs/promises';
 import path from 'path';
@@ -17,8 +17,6 @@ const {
 
 const db = new Surreal();
 
-console.log(namespace, database, username, password, port);
-
 // ESM-compatible way to get the current directory
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,6 +26,8 @@ async function connectDB() {
 		namespace,
 		database,
 		auth: {
+			namespace,
+			database,
 			username,
 			password
 		}
@@ -36,13 +36,13 @@ async function connectDB() {
 
 async function createMigrationHistoryTable() {
 	await db.query(`
-        DEFINE TABLE OVERWRITE migration_history SCHEMAFULL
+        DEFINE TABLE migration_history SCHEMAFULL
             PERMISSIONS FULL;
-        DEFINE FIELD OVERWRITE version ON migration_history TYPE int;
-        DEFINE FIELD OVERWRITE createdAt ON migration_history TYPE datetime VALUE $before OR time::now();
-        DEFINE FIELD OVERWRITE migration_name ON migration_history TYPE string;
-        DEFINE FIELD OVERWRITE up_or_down ON migration_history TYPE string ASSERT $value IN ['up', 'down'];
-        DEFINE FIELD OVERWRITE table_name ON migration_history TYPE string;
+        DEFINE FIELD version ON migration_history TYPE int;
+        DEFINE FIELD createdAt ON migration_history TYPE datetime VALUE $before OR time::now();
+        DEFINE FIELD migration_name ON migration_history TYPE string;
+        DEFINE FIELD up_or_down ON migration_history TYPE string ASSERT $value IN ['up', 'down'];
+        DEFINE FIELD table_name ON migration_history TYPE string;
     `);
 	console.log('Ensured migration_history table exists.');
 }
