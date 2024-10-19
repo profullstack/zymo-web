@@ -19,7 +19,7 @@ export const actions = ({ connection: db }) => {
         async delete(id) {
             try {
 
-                const appointment = await db.delete(id);
+                const appointment = await db.delete(r`${id}`);
                 return appointment;
             } catch (e) {
                 throw e;
