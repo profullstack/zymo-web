@@ -23,7 +23,7 @@ export const actions = ({ connection: db }) => {
 				const body = {
 					url,
 					alias,
-					createdBy: me.id,
+					createdBy: me.id.toString(),
 					createdAt: new Date().toISOString(),
 					updatedAt: new Date().toISOString()
 				};
@@ -95,7 +95,7 @@ export const actions = ({ connection: db }) => {
 			let { url, alias } = data;
 
 			try {
-				const link = await db.merge(id, {
+				const link = await db.merge(r`${id}`, {
 					url,
 					alias,
 					updatedAt: new Date().toISOString()
@@ -112,7 +112,7 @@ export const actions = ({ connection: db }) => {
 			console.log('delete:', id);
 
 			try {
-				const res = await db.delete(id);
+				const res = await db.delete(r`${id}`);
 
 				console.log('res: ', res);
 				return res;
