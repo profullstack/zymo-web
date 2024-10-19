@@ -36,6 +36,7 @@ export default {
 
 			return redirect(next);
 		} catch ({ errors }) {
+			console.error(errors);
 			return { errors };
 		}
 	}

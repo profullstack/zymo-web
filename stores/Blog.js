@@ -68,7 +68,7 @@ export const actions = ({ connection: db }) => {
         },
         async deletePost(id) {
             try {
-                const blogPost = await db.delete(id);
+                const blogPost = await db.delete(r`${id}`);
                 return blogPost;
             } catch (e) {
                 throw e;
@@ -91,7 +91,7 @@ export const actions = ({ connection: db }) => {
         },
         async updatePost(id, data) {
             try {
-                const blogPost = await db.merge(id, { ...data, updatedAt: Date.now() });
+                const blogPost = await db.merge(r`${id}`, { ...data, updatedAt: Date.now() });
                 return blogPost.pop();
 
             } catch (e) {
