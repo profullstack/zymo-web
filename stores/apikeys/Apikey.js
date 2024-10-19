@@ -20,7 +20,7 @@ export const actions = ({ connection: db }) => {
 			try {
 				const apikey = await db.create('apikeys', {
 					name,
-					createdBy: me.id.toString(),
+					createdBy: me.id,
 					createdAt: new Date().toISOString(),
 					updatedAt: new Date().toISOString()
 				});

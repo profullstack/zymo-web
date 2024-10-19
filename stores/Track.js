@@ -20,11 +20,11 @@ export const actions = ({ connection: db }) => {
 					UPDATE $id SET visits += $visit
 				`,
 					{
-						id: id.toString(),
+						id,
 						visit: {
 							headers,
 							browser: data ?? undefined,
-							user: me?.id.toString() ?? undefined,
+							user: me?.id ?? undefined,
 							createdAt: new Date().toISOString()
 						}
 					}
