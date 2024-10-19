@@ -24,7 +24,7 @@ export const actions = ({ connection: db }) => {
         async update(id, data) {
 
             try {
-                const payment = await db.merge(r`${id}`, { ...data, updatedAt: new Date().toISOString() });
+                const payment = await db.merge(id, { ...data, updatedAt: new Date().toISOString() });
                 return payment;
 
             } catch (e) {
@@ -85,7 +85,7 @@ export const actions = ({ connection: db }) => {
                 const subscription = await this.getBySubscriptionId(data.stripeSubscriptionId)
 
                 if (subscription && data.stripeSubscriptionId) {
-                    await this.update(r`${subscription.id}`, data)
+                    await this.update(subscription.id, data)
                 } else {
                     await this.create(data)
                 }
