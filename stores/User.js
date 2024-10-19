@@ -10,7 +10,7 @@ export const actions = ({ connection: db }) => {
 
 		async updateGoogleRefreshToken(id, googleRefreshToken) {
 			try {
-				const user = await db.merge(id, { googleRefreshToken });
+				const user = await db.merge(r`${id}`, { googleRefreshToken });
 				return user;
 			} catch (e) {
 				console.error(e);
@@ -19,7 +19,7 @@ export const actions = ({ connection: db }) => {
 		},
 		async removeGoogleRefreshToken(id) {
 			try {
-				const user = await db.merge(id, { googleRefreshToken: '' });
+				const user = await db.merge(r`${id}`, { googleRefreshToken: '' });
 				return user;
 			} catch (e) {
 				console.error(e);
@@ -28,7 +28,7 @@ export const actions = ({ connection: db }) => {
 		},
 		async updateStripeCustomerId(id, stripeCustomerId) {
 			try {
-				const user = await db.merge(id, { stripeCustomerId });
+				const user = await db.merge(r`${id}`, { stripeCustomerId });
 				return user;
 			} catch (e) {
 				console.error(e);
@@ -303,7 +303,7 @@ export const actions = ({ connection: db }) => {
 				const now = new Date();
 
 				await db.query('UPDATE $id SET loggedInAt = $now', {
-					id,
+					id: id.toString(),
 					now
 				});
 
@@ -336,12 +336,12 @@ export const actions = ({ connection: db }) => {
 				const now = new Date();
 
 				await db.query('UPDATE $id SET loggedInAt = $now', {
-					id,
+					id: id.toString(),
 					now
 				});
 
 				await db.query('UPDATE $id SET apiQueries += 1', {
-					id
+					id: id.toString()
 				});
 
 				return token;
@@ -382,7 +382,7 @@ export const actions = ({ connection: db }) => {
 
 		async delete(userId) {
 			console.log('deleting:', userId);
-			return await db.delete(userId);
+			return await db.delete(r`${userId}`);
 		}
 	};
 };
