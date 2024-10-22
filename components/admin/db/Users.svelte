@@ -50,7 +50,7 @@
         const url = `/admin/db/users/${user.id}/delete`;
         try {
             const res = await fetch(url, {
-                method: 'POST'
+                method: 'DELETE'
             });
 
             const data = await res.json();
@@ -109,7 +109,7 @@
     async function performBulkAction() {
         if (bulkAction === 'delete') {
             try {
-                const res = await fetch('/api/admin/db/users/mass/delete', {
+                const res = await fetch('/admin/db/users/mass/delete', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ ids: selectedIds })
