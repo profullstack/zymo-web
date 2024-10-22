@@ -381,7 +381,7 @@ export const actions = ({ connection: db }) => {
 
 		async deleteAll(ids) {
 			console.log('deleting:', ids);
-			return await db.query(`DELETE FROM users WHERE id INSIDE $ids`, { ids };
+			return await db.query(`DELETE FROM users WHERE id INSIDE $ids`, { ids });
 		}
 	};
 };
