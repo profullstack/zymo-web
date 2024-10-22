@@ -377,6 +377,11 @@ export const actions = ({ connection: db }) => {
 		async delete(userId) {
 			console.log('deleting:', userId);
 			return await db.delete(userId);
+		},
+
+		async deleteAll(ids) {
+			console.log('deleting:', ids);
+			return await db.query(`DELETE FROM users WHERE id INSIDE $ids`, { ids });
 		}
 	};
 };
