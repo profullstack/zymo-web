@@ -50,7 +50,7 @@
         const url = `/admin/db/users/${user.id}/delete`;
         try {
             const res = await fetch(url, {
-                method: 'DELETE'
+                method: 'POST'
             });
 
             const data = await res.json();
