@@ -60,6 +60,12 @@
 			type: 'string'
 		},
 		{
+			name: 'stripeCustomerId',
+			label: 'Stripe Customer ID',
+			accessor: (user) => user.stripeCustomerId || '',
+			type: 'string'
+		},
+		{
 			name: 'createdAt',
 			label: 'Created At',
 			accessor: (user) => user.createdAt,
