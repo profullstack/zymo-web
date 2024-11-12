@@ -9,8 +9,6 @@ client.on('error', (err) => {
 	console.error('Redis error:', err);
 });
 
-await client.connect();
-
 const CACHE_EXPIRATION = 60 * 15; // in seconds
 
 export const actions = ({ connection: db }) => {
@@ -95,6 +93,8 @@ export const actions = ({ connection: db }) => {
 			}
 		},
 		async fetchById(id, filterValue = '') {
+			await client.connect();
+
 			console.log('id:', id);
 			const query = `SELECT * FROM xtream_codes WHERE id = $id`;
 			const [xtream] = await db.query(query, {
@@ -135,6 +135,8 @@ export const actions = ({ connection: db }) => {
 			}
 		},
 		async fetchEPGById(id) {
+			await client.connect();
+
 			console.log('id:', id);
 			const query = `SELECT * FROM xtream_codes WHERE id = $id`;
 			const [xtream] = await db.query(query, {

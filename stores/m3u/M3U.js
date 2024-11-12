@@ -10,20 +10,12 @@ client.on('error', (err) => {
 	console.error('Redis error:', err);
 });
 
-await client.connect();
-
 const CACHE_EXPIRATION = 60 * 15; // in seconds
 
 export const actions = ({ connection: db }) => {
 	return {
-		async me() {
-			const [token] = await db.query('$token');
-			const { ID: userId } = token;
-			const [me] = await db.select(userId);
-
-			delete me.password;
-			console.log('me: ', me.email);
-			return me;
+		me: async () => {
+			return await getMe(db);
 		},
 		async create(data) {
 			// const { User } = store;
@@ -88,6 +80,8 @@ export const actions = ({ connection: db }) => {
 			}
 		},
 		async fetchById(id, filterValue = '') {
+			await client.connect();
+
 			console.log('id:', id);
 			const query = `SELECT * FROM m3u WHERE id = $id`;
 			const [m3u] = await db.query(query, {
@@ -122,6 +116,8 @@ export const actions = ({ connection: db }) => {
 			}
 		},
 		async fetchEPGById(id) {
+			await client.connect();
+
 			console.log('id:', id);
 			const query = `SELECT * FROM m3u WHERE id = $id`;
 			const [m3u] = await db.query(query, {
