@@ -1,11 +1,23 @@
 import current from '@primate/session/current';
 
-export async function getMe(db) {
-	const { id } = current().get('user');
+export async function getMe(db, email) {
+	let userId;
+	console.log('has email:', email);
+
+	if (email) {
+		const [id] = (await db.query('SELECT id FROM user WHERE email = $email', { email })).pop();
+		console.log('id foo:', id);
+		userId = id.id;
+	} else {
+		const { id } = current().get('user');
+		console.log('id foo2:', id);
+		userId = id;
+	}
 	// const [auth] = await db.query('SELECT * FROM $auth');
 	// console.log('auth:', auth);
 	// const { id: userId } = auth.pop();
-	const [me] = await db.select(id);
+	console.log('fetching ', userId);
+	const [me] = await db.select(userId);
 
 	delete me?.password;
 	console.log('me: ', me);

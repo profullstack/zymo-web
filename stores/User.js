@@ -4,8 +4,8 @@ import { getMe } from '../modules/user.js';
 
 export const actions = ({ connection: db }) => {
 	return {
-		me: async () => {
-			return await getMe(db);
+		me: async (email) => {
+			return await getMe(db, email);
 		},
 
 		async updateGoogleRefreshToken(id, googleRefreshToken) {
@@ -294,7 +294,7 @@ export const actions = ({ connection: db }) => {
 
 				console.log('token: ', token);
 
-				const me = await this.me();
+				const me = await this.me(email);
 				const { id } = me;
 				const now = new Date();
 
@@ -325,7 +325,7 @@ export const actions = ({ connection: db }) => {
 
 				console.log('token: ', token);
 
-				const me = await this.me();
+				const me = await this.me(); //todo get email from apikey or pass apikey
 				const { id } = me;
 				const now = new Date();
 
@@ -355,7 +355,7 @@ export const actions = ({ connection: db }) => {
 			}
 			const token = await this.signinApi(apikey);
 			console.log('foobar:', token);
-			const me = await this.me();
+			const me = await this.me(); //todo pass email from api key
 			console.log('foo3:', me);
 
 			await session.create({ token, user: me, loggedIn: Boolean(token) });

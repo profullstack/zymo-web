@@ -28,7 +28,9 @@ export default {
 
 			try {
 				token = await User.signin(user);
-				me = await User.me();
+				if (!token) throw new Error('invalid credentials');
+				console.log('foobar user: ', user);
+				me = await User.me(user.email);
 			} catch (err) {
 				return form({ status: err.message });
 			}
