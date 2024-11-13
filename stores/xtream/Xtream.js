@@ -93,8 +93,10 @@ export const actions = ({ connection: db }) => {
 			}
 		},
 		async fetchById(id, filterValue = '') {
-			await client.connect();
-
+			if (!client.isOpen && !client.isConnecting) {
+				await client.connect();
+			}
+			
 			console.log('id:', id);
 			const query = `SELECT * FROM xtream_codes WHERE id = $id`;
 			const [xtream] = await db.query(query, {
@@ -135,8 +137,10 @@ export const actions = ({ connection: db }) => {
 			}
 		},
 		async fetchEPGById(id) {
-			await client.connect();
-
+			if (!client.isOpen && !client.isConnecting) {
+				await client.connect();
+			}
+			
 			console.log('id:', id);
 			const query = `SELECT * FROM xtream_codes WHERE id = $id`;
 			const [xtream] = await db.query(query, {
