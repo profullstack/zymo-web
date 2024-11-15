@@ -1,30 +1,29 @@
-import view from 'primate/handler/view';
 import redirect from 'primate/handler/redirect';
+import json from 'primate/handler/json';
 
-const form = (params = {}) => view('login/Form.svelte', { ...params });
+// const form = (params = {}) => view('login/Form.svelte', { ...params });
 
 export default {
 	async post(request) {
 		const { session, store, body } = request;
 		const next = body.next || '/dashboard';
 		const {
-			login: { Form },
 			User
 		} = store;
 
 		try {
 			const user = request.body;
 
-			await Form.validate(user);
+			// await Form.validate(user);
 
 			let token;
 			let me;
 
 			try {
 				token = await User.signin(user);
-				me = await User.me();
+				me = await User.me(user.email);
 			} catch (err) {
-				return { status: err.message };
+				return json({status: err.message }, { status: 401, headers: { 'Content-Type': 'application/json' }});
 			}
 
 			if (me.verify.email.status !== 'verified') {
@@ -36,7 +35,7 @@ export default {
 
 			return redirect(next);
 		} catch ({ errors }) {
-			return { errors };
+			return json({ errors }, { status: 500, headers: { 'Content-Type': 'application/json' }});
 		}
 	}
 };
