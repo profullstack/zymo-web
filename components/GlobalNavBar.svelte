@@ -35,6 +35,10 @@
 		</a>
 		<a href="/" id="logo"><img src="/logo.svg" alt="" /></a>
 	</span>
+	<form class="search" action="/search/results" method="GET">
+		<input type="text" name="q" placeholder="Search" />
+		<button><img src="/icons/search.svg" alt="" /></button>
+	</form>
 	<span>
 		<a href="/pricing">Pricing</a>
 		{#if isLoggedIn || unverifiedUser}
@@ -94,5 +98,25 @@
 		margin-left: 1.2rem;
 		display: block;
 		border: none;
+	}
+
+	.search {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.search input {
+		width: 100%;
+		padding: 0.4rem;
+		border-radius: 1.2rem;
+		border: 1px solid var(--nav-border-color);
+	}
+
+	.search button {
+		background-color: var(--search-button-background-color);
+		padding: 0.4rem;
+		border-radius: 0 1.2rem 1.2rem 0;
+		border: 1px solid var(--search-button-background-color);
 	}
 </style>

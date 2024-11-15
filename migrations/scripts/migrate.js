@@ -190,6 +190,7 @@ async function createMigrationFiles(tableName, description = 'migration') {
 		await createMigrationHistoryTable();
 
 		const command = process.argv[2];
+		console.log('command', command);
 
 		if (command === 'up') {
 			await processMigrations('up');
