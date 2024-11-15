@@ -101,7 +101,7 @@
 	}
 
 	.search {
-		display: flex;
+		display: none;
 		justify-content: center;
 		align-items: center;
 	}
