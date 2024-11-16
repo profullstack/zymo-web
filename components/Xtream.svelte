@@ -129,9 +129,7 @@
 		list-style-type: none;
 		padding: 0;
 		margin: 0;
-		max-height: 30rem;
 		overflow-y: auto;
-		position: absolute;
 		margin-bottom: 0;
 		background-color: var(--list-background-color);
 	}

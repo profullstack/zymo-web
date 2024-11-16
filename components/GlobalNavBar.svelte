@@ -42,7 +42,7 @@
 		</a>
 		<a href="/" id="logo"><img src="/logo.svg" alt="" /></a>
 	</span>
-	<form class="search" action="/search/results" method="GET">
+	<form class="search" action="/search/results" method="GET" on:submit|preventDefault={doSearch}>
 		<input type="text" name="q" placeholder="Search" bind:value={q} />
 		<button><img src="/icons/search.svg" alt="" /></button>
 	</form>
