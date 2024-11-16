@@ -9,11 +9,8 @@
 		if (!q) return;
 
 		try {
-			const res = await fetch('/api/search', {
-				headers: {
-					'content-type': 'application/json'
-				},
-				body: JSON.stringify(q)
+			const res = await fetch('/api/search?q=' + encodeURIComponent(q), {
+				method: 'GET'
 			});
 
 			if (!res.ok) {
@@ -34,13 +31,22 @@
 <h1>Search Results for "{q}"</h1>
 
 {#if data.results}
-	<div class="results">
-		{#each data.results as result}
-			<div class="result">
-				<h3>{result.title}</h3>
-			</div>
-		{/each}
-	</div>
+<div class="results">
+	{#each Object.entries(data.results) as [category, items]}
+		<div class="result">
+			<h3>{category}</h3>
+			{#if items.length > 0}
+				<ul>
+					{#each items as item}
+						<li>{item}</li>
+					{/each}
+				</ul>
+			{:else}
+				<p>No items found in this category.</p>
+			{/if}
+		</div>
+	{/each}
+</div>
 {/if}
 
 <style>
