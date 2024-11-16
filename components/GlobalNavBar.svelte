@@ -5,10 +5,17 @@
 
 	const home = '/';
 
+	let q = '';
+
 	function toggleSidebar(e) {
 		e.preventDefault();
 
 		isExpanded.update((value) => !value);
+	}
+
+	function doSearch() {
+		// redirect to /search/results?q=searchTerm
+		window.location.href = `/search/results?q=${q}`;
 	}
 
 	async function logout(e) {
@@ -36,7 +43,7 @@
 		<a href="/" id="logo"><img src="/logo.svg" alt="" /></a>
 	</span>
 	<form class="search" action="/search/results" method="GET">
-		<input type="text" name="q" placeholder="Search" />
+		<input type="text" name="q" placeholder="Search" bind:value={q} />
 		<button><img src="/icons/search.svg" alt="" /></button>
 	</form>
 	<span>
@@ -101,7 +108,7 @@
 	}
 
 	.search {
-		display: none;
+		display: flex;
 		justify-content: center;
 		align-items: center;
 	}
