@@ -3,12 +3,16 @@
 	import { streamUrl, selectedChannel, proxyStore, transcodeStore } from '../modules/store.js';
 	import Play from './Play.svelte';
 	import VideoPlayer from './VideoPlayer.svelte';
+	import Spinner from './Spinner.svelte';
 	export let q = '';
 	let data = {};
 	let msg = '';
+	let isLoading = false;
 
 	async function search(q) {
 		if (!q) return;
+
+		isLoading = true;
 
 		try {
 			const res = await fetch('/api/search?q=' + encodeURIComponent(q), {
@@ -23,6 +27,8 @@
 		} catch (err) {
 			console.error(err);
 			msg = err.message;
+		} finally {
+			isLoading = false;
 		}
 	}
 
@@ -40,7 +46,9 @@
 	});
 </script>
 
-<h1>Search Results for "{q}"</h1>
+{#if q}
+	<h1>Search Results for "{q}" {#if isLoading}<Spinner />{/if}</h1>
+{/if}
 
 {#if data.results}
 	<div class="results">
@@ -80,6 +88,12 @@
 {/if}
 
 <style>
+	h1 {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+	}
+
 	.results {
 		display: flex;
 		flex-direction: column;
