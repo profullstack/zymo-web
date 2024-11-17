@@ -49,6 +49,7 @@ async function fetchById(db, id, filterValue = '') {
 }
 
 async function filterChannels(m3uText, filterValue) {
+    if (!m3uText) return [];
     const channelList = parseM3U8(m3uText);
 
     return channelList.filter((ch) => {
