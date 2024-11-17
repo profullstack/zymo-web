@@ -43,7 +43,7 @@ export default {
 
 			try {
 				token = await User.create(user);
-				me = await User.me();
+				me = await User.me(user.email);
 			} catch (err) {
 				return form({ status: err.message });
 			}

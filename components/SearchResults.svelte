@@ -34,11 +34,18 @@
 <div class="results">
 	{#each Object.entries(data.results) as [category, items]}
 		<div class="result">
-			<h3>{category}</h3>
+			<h2>{category}</h2>
 			{#if items.length > 0}
 				<ul>
 					{#each items as item}
-						<li>{item}</li>
+						<li>
+							<h3>{item.provider.name}</h3>
+							<ul class="channel-list">
+								{#each item.channels as channel}
+									<li>{channel.name}</li>
+								{/each}
+							</ul>
+						</li>
 					{/each}
 				</ul>
 			{:else}
@@ -59,5 +66,12 @@
 	.result {
 		border: 1px solid var(--border-color);
 		padding: 1rem;
+	}
+
+	.channel-list {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		margin-left: 1.2rem
 	}
 </style>
