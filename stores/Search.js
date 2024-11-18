@@ -1,6 +1,7 @@
 import primary from '@primate/types/primary';
 import { getMe } from '../modules/user.js';
 import { fetchEPGById, getAllByUserId, fetchById, filterChannels } from '../modules/m3u.js';
+import env from 'rcompat/env';
 
 export const actions = ({ connection: db }) => {
 	return {
@@ -8,6 +9,18 @@ export const actions = ({ connection: db }) => {
 			return await getMe(db, email);
 		},
 
+		async getPodcasts(q) {
+			const { API_URL } = env;
+			try {
+				const res = await fetch(`${API_URL}/podcasts/search?q=${encodeURIComponent(q)}`);
+
+				if (res.ok) {
+					return await res.json();
+				}
+			} catch (e) {
+				console.error(e);
+			}
+		},
 		async getProviders() {
 			const me = await this.me();
 			if (!me) return [];
@@ -26,6 +39,9 @@ export const actions = ({ connection: db }) => {
 		async search(q) {
 			console.log('search for:', q);
 			const liveStreams = [];
+			const podcasts = await this.getPodcasts(q);
+
+			console.log('podcasts:', podcasts);
 
 			try {
 				// todo do massive search
@@ -55,7 +71,7 @@ export const actions = ({ connection: db }) => {
 
 				return {
 					movies: [],
-					podcasts: [],
+					podcasts,
 					series: [],
 					liveStreams,
 					music: [],

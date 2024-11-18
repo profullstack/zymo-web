@@ -4,6 +4,7 @@
 	import Play from './Play.svelte';
 	import VideoPlayer from './VideoPlayer.svelte';
 	import Spinner from './Spinner.svelte';
+	import PodcastSearch from './podcasts/Podcast.svelte';
 	export let q = '';
 	let data = {};
 	let msg = '';
@@ -47,35 +48,39 @@
 </script>
 
 {#if q}
-	<h1>Search Results for "{q}" {#if isLoading}<Spinner />{/if}</h1>
+	<h1>
+		Search Results for "{q}" {#if isLoading}<Spinner />{/if}
+	</h1>
 {/if}
 
 {#if data.results}
 	<div class="results">
 		{#each Object.entries(data.results) as [category, items]}
 			<div class="result">
-				<h2>{category}</h2>
-				{#if items.length > 0}
-					<ul>
-						{#each items as item}
-							<li>
-								<h3>{item.provider.name}</h3>
-								<ul class="channel-list">
-									{#each item.channels as channel}
-										<li>
-											<a
-												href="#"
-												on:click|preventDefault={() => playChannel(channel)}
-												>{channel.name}</a
-											>
-										</li>
-									{/each}
-								</ul>
-							</li>
-						{/each}
-					</ul>
-				{:else}
-					<p>No items found in this category.</p>
+				<h3>{category}</h3>
+				{#if category === 'podcasts' && items.success}
+					<PodcastSearch results={items.data} />
+				{:else if category === 'liveStreams' && items.length > 0}
+					{#each items as item}
+						{#if item.provider}
+							<h3>{item.provider.name}</h3>
+						{/if}
+						{#if item.channels}
+							<ul class="channel-list">
+								{#each item.channels as channel}
+									<li>
+										<a
+											href="#"
+											on:click|preventDefault={() => playChannel(channel)}
+											>{channel.name}</a
+										>
+									</li>
+								{/each}
+							</ul>
+						{/if}
+					{:else}
+						<p>No items found in this category.</p>
+					{/each}
 				{/if}
 			</div>
 		{/each}
