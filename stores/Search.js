@@ -1,6 +1,7 @@
 import primary from '@primate/types/primary';
 import { getMe } from '../modules/user.js';
 import { fetchEPGById, getAllByUserId, fetchById, filterChannels } from '../modules/m3u.js';
+import { getAllByUserId as getAllMusicByUserId } from '../modules/music.js';
 import env from 'rcompat/env';
 
 export const actions = ({ connection: db }) => {
@@ -21,6 +22,18 @@ export const actions = ({ connection: db }) => {
 				console.error(e);
 			}
 		},
+		async getMusic(q) {
+			const me = await this.me();
+			if (!me) return [];
+
+			const music = await getAllMusicByUserId(db, me.id, 'music');
+
+			return music.filter(m => {
+				const { album, artist, songname } = m.mediaInfo;
+
+				return album.toLowerCase().includes(q.toLowerCase()) || artist.toLowerCase().includes(q.toLowerCase()) || songname.toLowerCase().includes(q.toLowerCase());
+			});
+		},
 		async getProviders() {
 			const me = await this.me();
 			if (!me) return [];
@@ -40,8 +53,9 @@ export const actions = ({ connection: db }) => {
 			console.log('search for:', q);
 			const liveStreams = [];
 			const podcasts = await this.getPodcasts(q);
+			const music = await this.getMusic(q);
 
-			console.log('podcasts:', podcasts);
+			console.log('music:', music);
 
 			try {
 				// todo do massive search
@@ -74,7 +88,7 @@ export const actions = ({ connection: db }) => {
 					podcasts,
 					series: [],
 					liveStreams,
-					music: [],
+					music,
 					books: []
 				};
 			} catch (e) {

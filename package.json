@@ -57,6 +57,7 @@
 		"csv-writer": "^1.6.0",
 		"dotenv-flow": "^4.1.0",
 		"epubjs": "^0.3.93",
+		"express": "^4.21.1",
 		"fast-csv": "^5.0.2",
 		"flag-icons": "^7.2.3",
 		"fluent-ffmpeg": "^2.1.3",
