@@ -41,6 +41,15 @@
 
 	$: if ($streamUrl && videoRef) {
 		updateVideoSource(videoRef, $streamUrl, 'mp4');
+		if (videoRef.requestFullscreen) {
+			videoRef.requestFullscreen();
+		} else if (videoRef.mozRequestFullScreen) {
+			videoRef.mozRequestFullScreen();
+		} else if (videoRef.webkitRequestFullscreen) {
+			videoRef.webkitRequestFullscreen();
+		} else if (videoRef.msRequestFullscreen) {
+			videoRef.msRequestFullscreen();
+		}
 	}
 </script>
 

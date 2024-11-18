@@ -8,6 +8,7 @@
 
 	export let results = [];
 	let feeds = {};
+	let isOpen = {};
 
 	function playItem(song) {
 		console.log(song, '<< song');
@@ -32,7 +33,7 @@
 
 	async function follow(podcast) {
 		console.log(podcast);
-
+		
 		try {
 			const res = await fetch('/api/podcasts/follow', {
 				method: 'POST',
@@ -57,7 +58,8 @@
 
 	async function view(podcast) {
 		console.log(podcast);
-
+		isOpen[podcast.url] = !isOpen[podcast.url];
+		
 		try {
 			const res = await fetch('/api/podcasts/feed', {
 				method: 'POST',
@@ -109,7 +111,7 @@
 					>
 				</div>
 			</div>
-			{#if feeds[podcast.url]}
+			{#if feeds[podcast.url] && isOpen[podcast.url]}
 				<ul>
 					{#each feeds[podcast.url].rss?.channel[0]?.item as item}
 						<li>
