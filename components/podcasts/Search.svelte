@@ -6,6 +6,7 @@
 		currentSongIndex,
 		currentSongMetadata
 	} from '../../modules/store.js';
+	import PodcastSearch from './Podcast.svelte'
 
 	let results = [];
 	let q = '';
@@ -116,57 +117,7 @@
 	{/if}
 </form>
 
-<ul>
-	{#each results as podcast}
-		<li>
-			<div class="podcast-item">
-				<img src={podcast.image} alt="" class="podcast-image" />
-				<div class="podcast-content">
-					<h4>
-						<a href={podcast.url}>{podcast.title}</a>
-					</h4>
-					<div class="description">{podcast.description}</div>
-					<!-- Additional metadata can go here -->
-					<a
-						href="#"
-						on:click|preventDefault={() => {
-							follow(podcast);
-						}}>follow</a
-					>
-					<a
-						href="#"
-						on:click|preventDefault={() => {
-							view(podcast);
-						}}>view</a
-					>
-				</div>
-			</div>
-			{#if feeds[podcast.url]}
-				<ul>
-					{#each feeds[podcast.url].rss?.channel[0]?.item as item}
-						<li>
-							<a
-								href="#"
-								class="play-button"
-								on:click|preventDefault={() => {
-									item.channel = feeds[podcast.url].rss.channel[0];
-									playItem(item);
-								}}
-							>
-								{#if item.playing}
-									{'❚❚'}
-								{:else}
-									<img src="/icons/play.svg" alt="" />
-								{/if}</a
-							>
-							<a href={item.enclosure[0].$.url}>{item.title}</a>
-						</li>
-					{/each}
-				</ul>
-			{/if}
-		</li>
-	{/each}
-</ul>
+<PodcastSearch results={results} />
 
 <style>
 	form {
@@ -179,41 +130,5 @@
 	form label {
 		text-wrap: nowrap;
 		margin: 0 0.4rem;
-	}
-
-	li {
-		margin-left: 4rem;
-		list-style: none;
-	}
-
-	.podcast-item {
-		display: flex;
-		align-items: flex-start; /* Align items at the start vertically */
-		margin-bottom: 1rem; /* Add spacing between list items */
-	}
-
-	.podcast-image {
-		margin-right: 1rem; /* Space between the image and content */
-		width: 100px; /* Set desired width */
-		height: auto;
-	}
-
-	.podcast-content {
-		flex: 1; /* Allow content to fill the remaining space */
-	}
-
-	.description {
-		margin-top: 0.5rem; /* Space between title and description */
-	}
-
-	a {
-		display: inline-block;
-		margin-top: 0.5rem; /* Space above the follow link */
-	}
-
-	.play-button img {
-		display: block;
-		width: 2rem;
-		height: auto;
 	}
 </style>
