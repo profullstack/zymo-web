@@ -46,6 +46,10 @@
 
 <MetaTags {...meta} />
 
+<h1>New demo account available for your testing:</h1>
+
+<p>Login as demo@zymo.tv with password demo to test the app out.</p>
+
 <h3>Join our waitlist</h3>
 
 <form>
