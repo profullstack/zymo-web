@@ -38,5 +38,49 @@ async function getAllByUserId(db,createdBy, type = null, videoType = null) {
     }
 }
 
+function groupAndSortMusic(music) {
+    const grouped = {};
 
-export { getAllByUserId };
+    for (const file of music) {
+        const { mediaInfo, musicbrainz } = file;
+        const { url, user, pass, id } = file;
+        const { artist, album, songname } = mediaInfo;
+
+        if (!grouped[artist]) {
+            grouped[artist] = {};
+        }
+        if (!grouped[artist][album]) {
+            grouped[artist][album] = [];
+        }
+        grouped[artist][album].push({
+            songname,
+            url,
+            user,
+            pass,
+            id,
+            playing: false,
+            artist,
+            album,
+            musicbrainz
+        });
+    }
+
+    const sortedGrouped = {};
+    const sortedArtists = Object.keys(grouped).sort((a, b) => a.localeCompare(b));
+
+    for (const artist of sortedArtists) {
+        sortedGrouped[artist] = {};
+        const sortedAlbums = Object.keys(grouped[artist]).sort((a, b) => a.localeCompare(b));
+
+        for (const album of sortedAlbums) {
+            sortedGrouped[artist][album] = grouped[artist][album].sort((a, b) =>
+                a.songname.localeCompare(b.songname)
+            );
+        }
+    }
+
+    return sortedGrouped;
+}
+
+
+export { getAllByUserId, groupAndSortMusic };

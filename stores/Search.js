@@ -1,7 +1,7 @@
 import primary from '@primate/types/primary';
 import { getMe } from '../modules/user.js';
 import { fetchEPGById, getAllByUserId, fetchById, filterChannels } from '../modules/m3u.js';
-import { getAllByUserId as getAllMusicByUserId } from '../modules/music.js';
+import { getAllByUserId as getAllMusicByUserId, groupAndSortMusic } from '../modules/music.js';
 import env from 'rcompat/env';
 
 export const actions = ({ connection: db }) => {
@@ -26,13 +26,18 @@ export const actions = ({ connection: db }) => {
 			const me = await this.me();
 			if (!me) return [];
 
-			const music = await getAllMusicByUserId(db, me.id, 'music');
-
-			return music.filter(m => {
+			let music = await getAllMusicByUserId(db, me.id, 'music');
+			music = music.filter((m) => {
 				const { album, artist, songname } = m.mediaInfo;
 
-				return album.toLowerCase().includes(q.toLowerCase()) || artist.toLowerCase().includes(q.toLowerCase()) || songname.toLowerCase().includes(q.toLowerCase());
+				return (
+					album.toLowerCase().includes(q.toLowerCase()) ||
+					artist.toLowerCase().includes(q.toLowerCase()) ||
+					songname.toLowerCase().includes(q.toLowerCase())
+				);
 			});
+			const grouped = groupAndSortMusic(music);
+			return grouped;
 		},
 		async getProviders() {
 			const me = await this.me();
@@ -74,8 +79,8 @@ export const actions = ({ connection: db }) => {
 
 					return {
 						provider,
-						channels,
-					}
+						channels
+					};
 				});
 
 				const m3uResults = await Promise.all(fetchPromises);
