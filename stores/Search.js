@@ -36,7 +36,9 @@ export const actions = ({ connection: db }) => {
 					songname.toLowerCase().includes(q.toLowerCase())
 				);
 			});
+			
 			const grouped = groupAndSortMusic(music);
+			
 			return grouped;
 		},
 		async getProviders() {

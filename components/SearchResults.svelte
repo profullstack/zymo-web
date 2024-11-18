@@ -5,6 +5,7 @@
 	import VideoPlayer from './VideoPlayer.svelte';
 	import Spinner from './Spinner.svelte';
 	import PodcastSearch from './podcasts/Podcast.svelte';
+	import MusicSearch from './music/Search.svelte';
 	export let q = '';
 	let data = {};
 	let msg = '';
@@ -60,6 +61,8 @@
 				<h3>{category}</h3>
 				{#if category === 'podcasts' && items.success}
 					<PodcastSearch results={items.data} />
+				{:else if category === 'music'}
+					<MusicSearch music={items} />
 				{:else if category === 'liveStreams' && items.length > 0}
 					{#each items as item}
 						{#if item.provider}
