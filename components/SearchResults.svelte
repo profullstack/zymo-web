@@ -66,7 +66,12 @@
 				{:else if category === 'liveStreams' && items.length > 0}
 					{#each items as item}
 						{#if item.provider}
-							<h3>{item.provider.name}</h3>
+							<h3>
+								{item.provider.name}
+								<a href="/live/stream/{item.provider.id}/epg"
+									>View EPG</a
+								>
+							</h3>
 						{/if}
 						{#if item.channels}
 							<ul class="channel-list">
@@ -100,6 +105,14 @@
 		display: flex;
 		align-items: center;
 		gap: 1rem;
+	}
+
+	h3 {
+		margin: 1.2rem 0;
+	}
+
+	h3 a {
+		font-size: 1.4rem;
 	}
 
 	.results {

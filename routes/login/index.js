@@ -13,6 +13,7 @@ export default {
 	async post(request) {
 		const { session, store, body } = request;
 		const next = body.next || '/dashboard';
+
 		const {
 			login: { Form },
 			User
@@ -42,7 +43,7 @@ export default {
 
 			await session.create({ token, user: me, loggedIn: Boolean(token) });
 
-			return redirect(next);
+			return redirect(decodeURIComponent(next));
 		} catch ({ errors }) {
 			return form({ errors });
 		}
