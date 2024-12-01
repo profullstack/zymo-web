@@ -36,9 +36,9 @@ export const actions = ({ connection: db }) => {
 					songname.toLowerCase().includes(q.toLowerCase())
 				);
 			});
-			
+
 			const grouped = groupAndSortMusic(music);
-			
+
 			return grouped;
 		},
 		async getProviders() {
@@ -56,13 +56,38 @@ export const actions = ({ connection: db }) => {
 
 			return m3us;
 		},
-		async search(q) {
-			console.log('search for:', q);
-			const liveStreams = [];
-			const podcasts = await this.getPodcasts(q);
-			const music = await this.getMusic(q);
 
-			console.log('music:', music);
+		async getLiveStreams(q) {
+			const me = await this.me();
+			if (!me) return [];
+
+			const providers = await this.getProviders();
+
+			// Fetch all m3u data in parallel
+			const fetchPromises = providers.map(async (provider) => {
+				const m3uText = await fetchById(db, provider.id, q);
+				const channels = await filterChannels(m3uText, q);
+
+				return {
+					provider,
+					channels
+				};
+			});
+
+			const m3uResults = await Promise.all(fetchPromises);
+			const liveStreams = await getAllByUserId(db, me.id, 'liveStreams');
+
+			// Collect results
+			liveStreams.push(...m3uResults);
+
+
+			return liveStreams;
+		},
+		async search(q, types = []) {
+			console.log('search for:', q);
+			let podcasts = [];
+			let music = [];
+			let liveStreams = [];
 
 			try {
 				// todo do massive search
@@ -72,23 +97,17 @@ export const actions = ({ connection: db }) => {
 				// 4. fetch all live streams from epg
 				// 5. fetch all music from db
 				// 6. fetch all books from db
-				const providers = await this.getProviders();
+				if (types.includes('podcasts')) {
+					podcasts = await this.getPodcasts(q);
+				}
 
-				// Fetch all m3u data in parallel
-				const fetchPromises = providers.map(async (provider) => {
-					const m3uText = await fetchById(db, provider.id, q);
-					const channels = await filterChannels(m3uText, q);
-
-					return {
-						provider,
-						channels
-					};
-				});
-
-				const m3uResults = await Promise.all(fetchPromises);
-
-				// Collect results
-				liveStreams.push(...m3uResults);
+				if (types.includes('music')) {
+					music = await this.getMusic(q);
+				}
+				
+				if (types.includes('livestreams')) {
+					liveStreams = await this.getLiveStreams(q);
+				}
 
 				return {
 					movies: [],
