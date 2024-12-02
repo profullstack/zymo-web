@@ -39,24 +39,33 @@ feed_videos() {
     while :; do
         CURRENT_VIDEO_INDEX=0
         while read -r video; do
+            # Skip blank lines or invalid entries
+            [[ -z "$video" ]] && continue
+            if [[ ! -f "$HOME/videos/$video" ]]; then
+                echo "$(date): File $HOME/videos/$video does not exist, skipping..." | tee -a "$LOG_FILE"
+                continue
+            fi
+
             if [[ $CURRENT_VIDEO_INDEX -lt $LAST_VIDEO_INDEX ]]; then
                 CURRENT_VIDEO_INDEX=$((CURRENT_VIDEO_INDEX + 1))
                 continue
             fi
 
             CURRENT_PLAYBACK_TIME=${LAST_PLAYBACK_TIME:-0}
-            echo "$(date): Streaming $HOME/videos/$video from $CURRENT_PLAYBACK_TIME seconds..." | tee -a "$LOG_FILE"
-            ffmpeg -re -ss "$CURRENT_PLAYBACK_TIME" -i "$HOME/videos/$video" \
+            echo "$(date): Streaming $HOME/videos/${video} from $CURRENT_PLAYBACK_TIME seconds..." | tee -a "$LOG_FILE"
+            
+            # ffmpeg command
+            ffmpeg -nostdin -re -ss "$CURRENT_PLAYBACK_TIME" -i "$HOME/videos/${video}" \
                 -vf "drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='zymo.tv':x=10:y=h-40:fontsize=32:fontcolor=white@0.2,scale=1280:720" \
                 -c:v libx264 -preset fast -c:a aac -b:a 128k -f mpegts pipe:1 > "$PIPE" 2>>"$LOG_FILE"
 
-            # Reset the playback time for subsequent videos
+            # Reset playback time for subsequent videos
             CURRENT_PLAYBACK_TIME=0
             save_state
             CURRENT_VIDEO_INDEX=$((CURRENT_VIDEO_INDEX + 1))
         done < "$VIDEO_LIST"
 
-        # Loop back to the beginning
+        # Reset index to loop back
         LAST_VIDEO_INDEX=0
         LAST_PLAYBACK_TIME=0
     done
@@ -65,7 +74,7 @@ feed_videos() {
 # Start streaming to the output URL
 start_stream() {
     echo "$(date): Starting ffmpeg live stream..." | tee -a "$LOG_FILE"
-    ffmpeg -re -f mpegts -i "$PIPE" \
+    ffmpeg -nostdin -re -f mpegts -i "$PIPE" \
            -c:v copy -c:a aac -f $FORMAT "$OUTPUT_URL" >> "$LOG_FILE" 2>&1 &
     STREAM_PID=$!
     wait "$STREAM_PID"
