@@ -53,11 +53,11 @@ feed_videos() {
             CURRENT_PLAYBACK_TIME=${LAST_PLAYBACK_TIME:-0}
             echo "$(date): Streaming $HOME/videos/${video} from $CURRENT_PLAYBACK_TIME seconds..." | tee -a "$LOG_FILE"
 
-            # Updated ffmpeg command for 4K streaming
+            # Updated ffmpeg command for 1440p streaming
             ffmpeg -nostdin -re -ss "$CURRENT_PLAYBACK_TIME" -i "$HOME/videos/${video}" \
-                -vf "scale=3840:2160,drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='zymo.tv':x=10:y=h-40:fontsize=64:fontcolor=white@0.2" \
-                -c:v libx264 -preset slow -crf 18 -maxrate 16000k -bufsize 32000k \
-                -c:a aac -b:a 256k -f mpegts pipe:1 > "$PIPE" 2>>"$LOG_FILE"
+                -vf "scale=2560:1440,drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='zymo.tv':x=10:y=h-50:fontsize=48:fontcolor=white@0.2" \
+                -c:v libx264 -preset slow -crf 20 -maxrate 10000k -bufsize 20000k \
+                -c:a aac -b:a 192k -f mpegts pipe:1 > "$PIPE" 2>>"$LOG_FILE"
 
             CURRENT_PLAYBACK_TIME=0
             save_state
