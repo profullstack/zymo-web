@@ -11,13 +11,16 @@
 <div>
 	<h2>Affiliates</h2>
 	<table>
-		<tr>
-			<th>#</th>
-			<th>Email</th>
-			<th>Balance</th>
-			<th>Payout Methods</th>
-			<th>Actions</th>
-		</tr>
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Email</th>
+				<th>Balance</th>
+				<th>Payout Methods</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
 		{#each affiliates as affiliate, index}
 			<tr>
 				<td>{index + 1}</td>
@@ -29,6 +32,7 @@
 				</td>
 			</tr>
 		{/each}
+		</tbody>
 	</table>
 </div>
 

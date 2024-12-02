@@ -63,15 +63,18 @@
 			<div style="padding: 10px;border: 1px solid;border-radius: 10px; margin: 10px 0;">
 				<h4>Referral Links</h4>
 				<table style="width: 100%; text-align: center;">
-					<tr>
-						<th>Name</th>
-						<th>Code</th>
-						<th>Link</th>
-						<th>Clicks</th>
-						<th>Conversions</th>
-						<th>Commissions</th>
-						<th></th>
-					</tr>
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Code</th>
+							<th>Link</th>
+							<th>Clicks</th>
+							<th>Conversions</th>
+							<th>Commissions</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
 					{#each referralCodes as referralCode}
 						<tr>
 							<td>{referralCode.name}</td>
@@ -88,6 +91,7 @@
 							>
 						</tr>
 					{/each}
+					</tbody>
 				</table>
 				<a href="/affiliate/code/add">Add New</a>
 			</div>
