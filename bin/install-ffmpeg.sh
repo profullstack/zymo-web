@@ -4,7 +4,7 @@ set -e  # Exit on any error
 
 # Define installation directories
 INSTALL_DIR="$HOME/ffmpeg_build"
-BIN_DIR="$HOME/bin"
+BIN_DIR="/usr/local/bin"
 SOURCE_DIR="$HOME/ffmpeg_sources"
 NUM_CORES=$(nproc)
 
@@ -20,10 +20,10 @@ sudo apt-get install -y \
   libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev \
   meson ninja-build pkg-config texinfo wget yasm zlib1g-dev \
   nasm libnuma-dev libfdk-aac-dev libmp3lame-dev libopus-dev \
-  libfreetype6 libdrm-dev
+  libfreetype6 libdrm-dev mercurial libharfbuzz-bin libharfbuzz-dev
 
 # Remove system-installed x264 and x265 to prevent conflicts
-sudo apt-get remove -y libx264-dev libx265-dev
+sudo apt-get remove -y libx264-dev libx265-dev x264 x265
 
 # Build dependencies
 cd "$SOURCE_DIR"
@@ -37,19 +37,20 @@ if [ ! -d "$SOURCE_DIR/x264" ]; then
   ./configure --prefix="$INSTALL_DIR" --enable-static --disable-opencl
   make -j$NUM_CORES
   make install
-  cd ..
+  cd "$SOURCE_DIR"
 fi
 
 # Install libx265 (static)
 if [ ! -d "$SOURCE_DIR/x265" ]; then
   echo "Building and installing libx265..."
-  hg clone https://bitbucket.org/multicoreware/x265
+  git clone --depth 1 https://github.com/videolan/x265.git
   cd x265/build/linux
+  make distclean || true
   cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" \
-    -DENABLE_SHARED=off -DENABLE_PIC=on ../../source
+    -DENABLE_SHARED=OFF -DENABLE_PIC=ON -DENABLE_PKGCONFIG=ON ../../source
   make -j$NUM_CORES
   make install
-  cd ../../../
+  cd "$SOURCE_DIR"
 fi
 
 # Install libvpx (static)
@@ -57,11 +58,12 @@ if [ ! -d "$SOURCE_DIR/libvpx" ]; then
   echo "Building and installing libvpx..."
   git clone --depth 1 https://chromium.googlesource.com/webm/libvpx.git
   cd libvpx
+  make distclean || true
   ./configure --prefix="$INSTALL_DIR" --disable-examples --disable-unit-tests \
     --enable-vp9-highbitdepth --as=yasm --enable-static --enable-pic
   make -j$NUM_CORES
   make install
-  cd ..
+  cd "$SOURCE_DIR"
 fi
 
 # Install libopus (static)
@@ -69,11 +71,12 @@ if [ ! -d "$SOURCE_DIR/opus" ]; then
   echo "Building and installing libopus..."
   git clone --depth 1 https://github.com/xiph/opus.git
   cd opus
+  make distclean || true
   ./autogen.sh
   ./configure --prefix="$INSTALL_DIR" --disable-shared
   make -j$NUM_CORES
   make install
-  cd ..
+  cd "$SOURCE_DIR"
 fi
 
 # Install libaom (static)
@@ -82,11 +85,12 @@ if [ ! -d "$SOURCE_DIR/aom" ]; then
   git clone --depth 1 https://aomedia.googlesource.com/aom
   mkdir -p aom_build
   cd aom_build
+  make distclean || true
   cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" \
-    -DENABLE_SHARED=off -DENABLE_PIC=on -DENABLE_TESTS=off ../aom
+    -DBUILD_SHARED_LIBS=0 -DENABLE_NASM=1 -DCMAKE_C_FLAGS="-fPIC" ../aom
   make -j$NUM_CORES
   make install
-  cd ..
+  cd "$SOURCE_DIR"
 fi
 
 # Build and install FFmpeg
@@ -98,11 +102,12 @@ if [ ! -d "$SOURCE_DIR/ffmpeg" ]; then
 else
   cd ffmpeg
   git pull
-  make distclean || true
 fi
 
-export PKG_CONFIG_PATH="$INSTALL_DIR/lib/pkgconfig"
+export PKG_CONFIG_PATH="$INSTALL_DIR/lib/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/lib/$(uname -m)-linux-gnu/pkgconfig:$PKG_CONFIG_PATH"
 
+make distclean || true
+  
 ./configure \
   --prefix="$INSTALL_DIR" \
   --pkg-config-flags="--static" \
@@ -114,7 +119,6 @@ export PKG_CONFIG_PATH="$INSTALL_DIR/lib/pkgconfig"
   --enable-nonfree \
   --enable-libfreetype \
   --enable-libx264 \
-  --enable-libx265 \
   --enable-libvpx \
   --enable-libmp3lame \
   --enable-libopus \
@@ -122,14 +126,14 @@ export PKG_CONFIG_PATH="$INSTALL_DIR/lib/pkgconfig"
   --enable-libvorbis \
   --enable-libaom \
   --enable-libdrm \
+  --enable-libharfbuzz \
   --enable-version3 \
   --enable-static \
   --disable-shared \
-  --enable-small \
-  --enable-filter=drawtext
-
+  --enable-small
+  
 make -j$NUM_CORES
-make install
+sudo make install
 
 # Add ffmpeg to PATH
 echo "export PATH=\"$BIN_DIR:\$PATH\"" >> "$HOME/.bashrc"
