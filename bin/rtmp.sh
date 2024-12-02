@@ -47,8 +47,8 @@ feed_videos() {
             CURRENT_PLAYBACK_TIME=${LAST_PLAYBACK_TIME:-0}
             echo "$(date): Streaming $HOME/videos/$video from $CURRENT_PLAYBACK_TIME seconds..." | tee -a "$LOG_FILE"
             ffmpeg -re -ss "$CURRENT_PLAYBACK_TIME" -i "$HOME/videos/$video" \
-                   -vf "drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='zymo.tv':x=10:y=h-40:fontsize=24:fontcolor=white@0.6,scale=1280:720" \
-                   -c:v libx264 -preset fast -c:a aac -b:a 128k -f mpegts pipe:1 > "$PIPE" 2>>"$LOG_FILE"
+                -vf "drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='zymo.tv':x=10:y=h-40:fontsize=32:fontcolor=white@0.2,scale=1280:720" \
+                -c:v libx264 -preset fast -c:a aac -b:a 128k -f mpegts pipe:1 > "$PIPE" 2>>"$LOG_FILE"
 
             # Reset the playback time for subsequent videos
             CURRENT_PLAYBACK_TIME=0
