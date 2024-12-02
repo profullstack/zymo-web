@@ -72,7 +72,7 @@
 		"slugify": "^1.6.6",
 		"stripe": "^17.4.0",
 		"surrealdb.js": "^0.11.1",
-		"svelte": "^5.4.0",
+		"svelte": "^4.x",
 		"twilio": "^5.3.6",
 		"uuid": "^11.0.3",
 		"ws": "^8.18.0"
