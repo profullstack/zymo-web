@@ -300,7 +300,7 @@ export const actions = ({ connection: db }) => {
 				index += batchSize;
 			}
 		},
-		async search(q, mediaType = '', sort = 'size') {
+		async searchOld(q, mediaType = '', sort = 'size') {
 			let torrents = [];
 
 			// Torrent.enablePublicProviders();
