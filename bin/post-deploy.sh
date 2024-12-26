@@ -24,6 +24,11 @@ if [ -d "$HOME/www/${name}/${project}" ]; then
     rm -rf ./node_modules
     npm i -g pnpm
     pnpm i
+		# curl --proto '=https' --tlsv1.2 -sSf https://install.surrealdb.com | sh -s -- --nightl
+    # sudo systemctl stop ${META_SERVICE}
+    # sudo systemctl stop surrealdb
+    # surreal upgrade --nightly
+    surreal upgrade --version 1.5.5
     pnpm run build
     sudo /etc/init.d/nginx reload
     sudo systemctl daemon-reload
