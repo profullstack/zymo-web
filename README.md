@@ -69,10 +69,6 @@ To run Fastest-Web on your server, make sure you have the following prerequisite
 
     # for surreal 1.x
     surreal upgrade --version 1.5.5
-
-    # for 2.x (the default)
-    surreal version
-
     npm run db:start
 
     # run migrations
