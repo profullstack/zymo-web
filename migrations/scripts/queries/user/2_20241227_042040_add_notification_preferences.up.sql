@@ -7,7 +7,7 @@ DEFINE FIELD settings.notificationPreferences.emailNotifications ON user TYPE bo
 DEFINE FIELD settings.notificationPreferences.emailDigestFrequency ON user TYPE string DEFAULT 'instant';
 
 -- Initialize all users with default preferences
-UPDATE user SET settings.notificationPreferences = {
-    emailNotifications: true,
-    emailDigestFrequency: 'instant'
-};
+UPDATE user
+SET
+    settings.notificationPreferences.emailNotifications = true,
+    settings.notificationPreferences.emailDigestFrequency = 'instant';
