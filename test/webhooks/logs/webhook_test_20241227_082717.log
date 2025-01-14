@@ -1,0 +1,131 @@
+2024-12-27 08:27:17 [INFO] Starting webhook test setup
+2024-12-27 08:27:17 [DEBUG] Log file: ./test/webhooks/logs/webhook_test_20241227_082717.log
+2024-12-27 08:27:17 [DEBUG] Loading environment variables...
+2024-12-27 08:27:17 [DEBUG] Base URL: http://localhost:9430
+2024-12-27 08:27:17 [DEBUG] Environment variables: PORT=9430, DB_HOST=http://127.0.0.1, DB_PORT=9451
+2024-12-27 08:27:17 [INFO] [1;33mSetting up test environment...[0m
+2024-12-27 08:27:17 [DEBUG] Checking server status...
+2024-12-27 08:27:17 [INFO] Waiting for server to be ready...
+2024-12-27 08:27:17 [DEBUG] Attempt 1: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:17 [DEBUG] Response code: 000
+2024-12-27 08:27:17 [DEBUG] Response body: 
+2024-12-27 08:27:17 [INFO] Waiting... (1/30)
+2024-12-27 08:27:18 [DEBUG] Attempt 2: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:18 [DEBUG] Response code: 000
+2024-12-27 08:27:18 [DEBUG] Response body: 
+2024-12-27 08:27:18 [INFO] Waiting... (2/30)
+2024-12-27 08:27:19 [DEBUG] Attempt 3: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:19 [DEBUG] Response code: 000
+2024-12-27 08:27:19 [DEBUG] Response body: 
+2024-12-27 08:27:19 [INFO] Waiting... (3/30)
+2024-12-27 08:27:20 [DEBUG] Attempt 4: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:20 [DEBUG] Response code: 000
+2024-12-27 08:27:20 [DEBUG] Response body: 
+2024-12-27 08:27:20 [INFO] Waiting... (4/30)
+2024-12-27 08:27:21 [DEBUG] Attempt 5: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:21 [DEBUG] Response code: 000
+2024-12-27 08:27:21 [DEBUG] Response body: 
+2024-12-27 08:27:21 [INFO] Waiting... (5/30)
+2024-12-27 08:27:22 [DEBUG] Attempt 6: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:22 [DEBUG] Response code: 000
+2024-12-27 08:27:22 [DEBUG] Response body: 
+2024-12-27 08:27:22 [INFO] Waiting... (6/30)
+2024-12-27 08:27:23 [DEBUG] Attempt 7: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:23 [DEBUG] Response code: 000
+2024-12-27 08:27:23 [DEBUG] Response body: 
+2024-12-27 08:27:23 [INFO] Waiting... (7/30)
+2024-12-27 08:27:24 [DEBUG] Attempt 8: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:24 [DEBUG] Response code: 000
+2024-12-27 08:27:24 [DEBUG] Response body: 
+2024-12-27 08:27:24 [INFO] Waiting... (8/30)
+2024-12-27 08:27:25 [DEBUG] Attempt 9: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:25 [DEBUG] Response code: 000
+2024-12-27 08:27:25 [DEBUG] Response body: 
+2024-12-27 08:27:25 [INFO] Waiting... (9/30)
+2024-12-27 08:27:26 [DEBUG] Attempt 10: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:26 [DEBUG] Response code: 000
+2024-12-27 08:27:26 [DEBUG] Response body: 
+2024-12-27 08:27:26 [INFO] Waiting... (10/30)
+2024-12-27 08:27:27 [DEBUG] Attempt 11: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:27 [DEBUG] Response code: 000
+2024-12-27 08:27:27 [DEBUG] Response body: 
+2024-12-27 08:27:27 [INFO] Waiting... (11/30)
+2024-12-27 08:27:28 [DEBUG] Attempt 12: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:28 [DEBUG] Response code: 000
+2024-12-27 08:27:28 [DEBUG] Response body: 
+2024-12-27 08:27:28 [INFO] Waiting... (12/30)
+2024-12-27 08:27:29 [DEBUG] Attempt 13: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:29 [DEBUG] Response code: 000
+2024-12-27 08:27:29 [DEBUG] Response body: 
+2024-12-27 08:27:29 [INFO] Waiting... (13/30)
+2024-12-27 08:27:30 [DEBUG] Attempt 14: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:30 [DEBUG] Response code: 000
+2024-12-27 08:27:30 [DEBUG] Response body: 
+2024-12-27 08:27:30 [INFO] Waiting... (14/30)
+2024-12-27 08:27:31 [DEBUG] Attempt 15: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:31 [DEBUG] Response code: 000
+2024-12-27 08:27:31 [DEBUG] Response body: 
+2024-12-27 08:27:31 [INFO] Waiting... (15/30)
+2024-12-27 08:27:32 [DEBUG] Attempt 16: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:32 [DEBUG] Response code: 000
+2024-12-27 08:27:32 [DEBUG] Response body: 
+2024-12-27 08:27:32 [INFO] Waiting... (16/30)
+2024-12-27 08:27:33 [DEBUG] Attempt 17: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:33 [DEBUG] Response code: 000
+2024-12-27 08:27:33 [DEBUG] Response body: 
+2024-12-27 08:27:33 [INFO] Waiting... (17/30)
+2024-12-27 08:27:34 [DEBUG] Attempt 18: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:35 [DEBUG] Response code: 000
+2024-12-27 08:27:35 [DEBUG] Response body: 
+2024-12-27 08:27:35 [INFO] Waiting... (18/30)
+2024-12-27 08:27:36 [DEBUG] Attempt 19: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:36 [DEBUG] Response code: 000
+2024-12-27 08:27:36 [DEBUG] Response body: 
+2024-12-27 08:27:36 [INFO] Waiting... (19/30)
+2024-12-27 08:27:37 [DEBUG] Attempt 20: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:37 [DEBUG] Response code: 000
+2024-12-27 08:27:37 [DEBUG] Response body: 
+2024-12-27 08:27:37 [INFO] Waiting... (20/30)
+2024-12-27 08:27:38 [DEBUG] Attempt 21: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:38 [DEBUG] Response code: 000
+2024-12-27 08:27:38 [DEBUG] Response body: 
+2024-12-27 08:27:38 [INFO] Waiting... (21/30)
+2024-12-27 08:27:39 [DEBUG] Attempt 22: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:39 [DEBUG] Response code: 000
+2024-12-27 08:27:39 [DEBUG] Response body: 
+2024-12-27 08:27:39 [INFO] Waiting... (22/30)
+2024-12-27 08:27:40 [DEBUG] Attempt 23: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:40 [DEBUG] Response code: 000
+2024-12-27 08:27:40 [DEBUG] Response body: 
+2024-12-27 08:27:40 [INFO] Waiting... (23/30)
+2024-12-27 08:27:41 [DEBUG] Attempt 24: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:41 [DEBUG] Response code: 000
+2024-12-27 08:27:41 [DEBUG] Response body: 
+2024-12-27 08:27:41 [INFO] Waiting... (24/30)
+2024-12-27 08:27:42 [DEBUG] Attempt 25: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:42 [DEBUG] Response code: 000
+2024-12-27 08:27:42 [DEBUG] Response body: 
+2024-12-27 08:27:42 [INFO] Waiting... (25/30)
+2024-12-27 08:27:43 [DEBUG] Attempt 26: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:43 [DEBUG] Response code: 000
+2024-12-27 08:27:43 [DEBUG] Response body: 
+2024-12-27 08:27:43 [INFO] Waiting... (26/30)
+2024-12-27 08:27:44 [DEBUG] Attempt 27: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:44 [DEBUG] Response code: 000
+2024-12-27 08:27:44 [DEBUG] Response body: 
+2024-12-27 08:27:44 [INFO] Waiting... (27/30)
+2024-12-27 08:27:45 [DEBUG] Attempt 28: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:45 [DEBUG] Response code: 000
+2024-12-27 08:27:45 [DEBUG] Response body: 
+2024-12-27 08:27:45 [INFO] Waiting... (28/30)
+2024-12-27 08:27:46 [DEBUG] Attempt 29: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:46 [DEBUG] Response code: 000
+2024-12-27 08:27:46 [DEBUG] Response body: 
+2024-12-27 08:27:46 [INFO] Waiting... (29/30)
+2024-12-27 08:27:47 [DEBUG] Attempt 30: Checking server health at http://localhost:9430/health
+2024-12-27 08:27:47 [DEBUG] Response code: 000
+2024-12-27 08:27:47 [DEBUG] Response body: 
+2024-12-27 08:27:47 [INFO] Waiting... (30/30)
+2024-12-27 08:27:48 [ERROR] Server did not become ready in time
+2024-12-27 08:27:48 [ERROR] Error: Server is not running. Please start the server first:
+2024-12-27 08:27:48 [ERROR] npm run dev

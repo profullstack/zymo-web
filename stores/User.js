@@ -225,6 +225,18 @@ export const actions = ({ connection: db }) => {
 				console.error(error);
 			}
 		},
+		async updateNotificationPreferences(id, preferences) {
+			try {
+				const user = await db.merge(id, {
+					notificationPreferences: preferences,
+					updatedAt: new Date().toISOString()
+				});
+				return user;
+			} catch (e) {
+				console.error(e);
+				throw e;
+			}
+		},
 		async create(user) {
 			console.log('create:', user);
 			let {

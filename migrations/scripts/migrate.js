@@ -36,15 +36,20 @@ async function connectDB() {
 
 async function createMigrationHistoryTable() {
 	await db.query(`
-        DEFINE TABLE migration_history SCHEMAFULL
-            PERMISSIONS FULL;
+        -- First, remove the table if it exists to ensure clean state
+        REMOVE TABLE IF EXISTS migration_history;
+        
+        -- Create the table with proper schema
+        DEFINE TABLE migration_history SCHEMAFULL;
+        
+        -- Define fields
         DEFINE FIELD version ON migration_history TYPE int;
-        DEFINE FIELD createdAt ON migration_history TYPE datetime VALUE $before OR time::now();
+        DEFINE FIELD createdAt ON migration_history TYPE datetime VALUE time::now();
         DEFINE FIELD migration_name ON migration_history TYPE string;
         DEFINE FIELD up_or_down ON migration_history TYPE string ASSERT $value IN ['up', 'down'];
         DEFINE FIELD table_name ON migration_history TYPE string;
     `);
-	console.log('Ensured migration_history table exists.');
+	console.log('Ensured migration_history table exists with proper schema.');
 }
 
 async function getAppliedMigrations() {
@@ -101,6 +106,7 @@ async function processMigrations(direction = 'up') {
 				(direction === 'down' && migrationStates.get(version) === 'up')
 			) {
 				const filePath = path.join(tableDir, file);
+				console.log(`Attempting to ${direction} migration: ${tableName}/${file}`);
 				await applyMigration(filePath, version, file, direction, tableName);
 			} else {
 				console.log(`Skipping ${file} as it is not applicable for the current direction.`);

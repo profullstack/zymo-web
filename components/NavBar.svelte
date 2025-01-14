@@ -6,6 +6,7 @@
 	<a href="/dashboard">Dashboard</a>
 	<a href="/links">Create Link</a>
 	<a href="/apikeys">Create API key</a>
+	<a href="/dashboard/settings">Settings</a>
 </nav>
 <nav>
 	<a href="/payment/history">Payment & Subscriptions</a>
