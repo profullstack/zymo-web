@@ -50,10 +50,10 @@ export const actions = ({ connection: db }) => {
 		async getById(id) {
 			const query = `SELECT * FROM user WHERE id = $id`;
 			try {
-				const user = await db.query(query, {
+				const [user] = await db.query(query, {
 					id
 				});
-				return user.pop().pop();
+				return user.pop();
 			} catch (e) {
 				console.error(e);
 				throw e;
@@ -62,10 +62,10 @@ export const actions = ({ connection: db }) => {
 		async getByEmail(email) {
 			const query = `SELECT * FROM user WHERE email = $email`;
 			try {
-				const user = await db.query(query, {
+				const [user] = await db.query(query, {
 					email
 				});
-				return user.pop().pop();
+				return user.pop();
 			} catch (e) {
 				console.error(e);
 				throw e;
@@ -103,10 +103,10 @@ export const actions = ({ connection: db }) => {
 		async getByPasswordResetToken(token) {
 			const query = `SELECT * FROM user WHERE passwordReset.token = $_token`;
 			try {
-				const user = await db.query(query, {
+				const [[user]] = await db.query(query, {
 					_token: token
 				});
-				return user.pop().pop();
+				return user;
 			} catch (e) {
 				console.error(e);
 				throw e;
@@ -228,7 +228,9 @@ export const actions = ({ connection: db }) => {
 		async updateNotificationPreferences(id, preferences) {
 			try {
 				const user = await db.merge(id, {
-					notificationPreferences: preferences,
+					settings: {
+						notificationPreferences: preferences
+					},
 					updatedAt: new Date().toISOString()
 				});
 				return user;

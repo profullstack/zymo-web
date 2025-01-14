@@ -3,12 +3,6 @@ export default {
         const { body, store, session } = request;
         const { User } = store;
 
-        if (!session?.user?.id) {
-            return {
-                status: 401,
-                body: { error: 'Unauthorized' }
-            };
-        }
 
         // Validate preferences
         if (typeof body.emailNotifications !== 'boolean' ||
@@ -19,11 +13,13 @@ export default {
             };
         }
 
+        console.log('body:', body);
+
         try {
             // Update user preferences under settings
-            await User.updateOne(
-                { id: session.user.id },
-                { 'settings.notificationPreferences': body }
+            await User.updateNotificationPreferences(
+                session.get('user').id,
+                body
             );
 
             return {

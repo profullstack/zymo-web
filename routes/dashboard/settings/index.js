@@ -3,7 +3,7 @@ import view from 'primate/handler/view';
 export default {
 	async get(request) {
 		const { store, session } = request;
-		const { Affiliate, User } = store;
+		const { User } = store;
 
 		const userId = session.get('user').id;
 
