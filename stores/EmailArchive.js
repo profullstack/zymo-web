@@ -2,55 +2,116 @@ import primary from '@primate/types/primary';
 
 export const actions = ({ connection: db }) => {
 	return {
-		async getAll() {
-			try {
-				const query = `SELECT * FROM email_archive ORDER BY sent_at DESC`;
-				const [emails] = await db.query(query);
-				return emails;
-			} catch (e) {
-				console.error(e);
-				throw e;
+		async create({ subject, body, recipientType, recipientCount, sentBy }) {
+			const now = new Date().toISOString();
+			const email = await db.create('email_archive', {
+				subject,
+				body,
+				recipient_type: recipientType,
+				recipient_count: recipientCount,
+				sent_by: sentBy,
+				sent_at: now
+			});
+			return email;
+		},
+
+		async createDelivery({ emailArchiveId, recipient }) {
+			const now = new Date().toISOString();
+			const delivery = await db.create('email_delivery', {
+				email_archive_id: emailArchiveId,
+				recipient,
+				status: 'pending',
+				sent_at: now,
+				retry_count: 0
+			});
+			return delivery;
+		},
+
+		async updateDeliveryStatus({ deliveryId, status, error = null }) {
+			const now = new Date().toISOString();
+			
+			if (status === 'failed') {
+				const [delivery] = await db.query(
+					'SELECT retry_count FROM email_delivery WHERE id = $deliveryId',
+					{ deliveryId }
+				);
+				const retry_count = delivery[0].retry_count + 1;
+
+				await db.query(
+					`UPDATE email_delivery 
+					SET status = $status, 
+						sent_at = $sent_at, 
+						error = $error, 
+						retry_count = $retry_count 
+					WHERE id = $deliveryId`,
+					{ 
+						status,
+						sent_at: now,
+						error,
+						retry_count,
+						deliveryId 
+					}
+				);
+			} else {
+				await db.query(
+					`UPDATE email_delivery 
+					SET status = $status, 
+						sent_at = $sent_at 
+					WHERE id = $deliveryId`,
+					{ 
+						status,
+						sent_at: now,
+						deliveryId 
+					}
+				);
 			}
 		},
 
-		async create({ subject, body, recipientType, recipientCount, sentBy }) {
-			try {
-				const sent_at = new Date();
-				const email = await db.create('email_archive', {
-					subject,
-					body,
-					sent_at,
-					recipient_type: recipientType,
-					recipient_count: recipientCount,
-					sent_by: sentBy
-				});
-				return email;
-			} catch (e) {
-				console.error(e);
-				throw e;
-			}
+		async getFailedDeliveries() {
+			const [deliveries] = await db.query(
+				'SELECT * FROM email_delivery WHERE status = $status ORDER BY sent_at DESC',
+				{ status: 'failed' }
+			);
+			return deliveries;
+		},
+
+		async getFailedDeliveriesByEmailId(emailId) {
+			const [deliveries] = await db.query(
+				`SELECT 
+					*,
+					->email_archive_id.* AS email_archive
+				FROM email_delivery
+				WHERE status = $status 
+				AND email_archive_id = $emailId 
+				ORDER BY sent_at DESC`,
+				{ status: 'failed', emailId }
+			);
+			return deliveries;
+		},
+
+		async getDeliveriesByEmailId(emailId) {
+			const [deliveries] = await db.query(
+				'SELECT * FROM email_delivery WHERE email_archive_id = $emailId ORDER BY sent_at DESC',
+				{ emailId }
+			);
+			return deliveries;
+		},
+
+		async getAll() {
+			const [emails] = await db.query(
+				'SELECT * FROM email_archive ORDER BY sent_at DESC'
+			);
+			return emails;
 		},
 
 		async getAllUserEmails() {
-			try {
-				const query = `SELECT email FROM user WHERE email != ''`;
-				const [users] = await db.query(query);
-				return users.map((u) => u.email);
-			} catch (e) {
-				console.error(e);
-				throw e;
-			}
+			const [users] = await db.query('SELECT email FROM user');
+			return users.map(user => user.email);
 		},
 
 		async getAllWaitlistEmails() {
-			try {
-				const query = `SELECT email FROM waitlist WHERE email != ''`;
-				const [waitlist] = await db.query(query);
-				return waitlist.map((w) => w.email);
-			} catch (e) {
-				console.error(e);
-				throw e;
-			}
+			const [waitlist] = await db.query('SELECT email FROM waitlist');
+			return waitlist.map(entry => entry.email);
 		}
 	};
 };
