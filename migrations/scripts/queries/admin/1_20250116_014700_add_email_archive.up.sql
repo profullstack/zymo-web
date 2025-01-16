@@ -6,7 +6,7 @@ DEFINE TABLE email_archive SCHEMAFULL PERMISSIONS
 
 DEFINE FIELD subject ON email_archive TYPE string;
 DEFINE FIELD body ON email_archive TYPE string;
-DEFINE FIELD sent_at ON email_archive TYPE datetime;
+DEFINE FIELD sent_at ON email_archive TYPE option<datetime>;
 DEFINE FIELD sent_by ON email_archive TYPE record(user);
 DEFINE FIELD recipient_type ON email_archive TYPE string;
 DEFINE FIELD recipient_count ON email_archive TYPE int;
