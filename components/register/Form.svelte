@@ -2,6 +2,7 @@
 	import CountrySelect from '../CountrySelect.svelte';
 	export let status, errors, countries;
 	let captchaToken;
+	const hcaptchaSiteKey = REPLACE_HCAPTCHA_SITE_KEY;
 
 	async function onSubmit(event) {
 		if (!captchaToken) {
@@ -62,7 +63,7 @@
 		<div class="field">
 			<div
 				class="h-captcha"
-				data-sitekey=REPLACE_HCAPTCHA_SITE_KEY
+				data-sitekey={hcaptchaSiteKey}
 				data-callback="onCaptchaVerify"
 			></div>
 		</div>
