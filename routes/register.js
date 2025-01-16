@@ -33,6 +33,26 @@ export default {
 			const user = request.body;
 			console.log('post user:', user);
 
+			// Validate captcha token
+			const captchaToken = user.captchaToken;
+			if (!captchaToken) {
+				return { errors: { captcha: 'Please complete the captcha verification' } };
+			}
+
+			const verifyUrl = 'https://hcaptcha.com/siteverify';
+			const secret = process.env.HCAPTCHA_SECRET_KEY;
+			
+			const verifyResponse = await fetch(verifyUrl, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+				body: `response=${captchaToken}&secret=${secret}`
+			});
+
+			const verifyData = await verifyResponse.json();
+			if (!verifyData.success) {
+				return { errors: { captcha: 'Invalid captcha verification' } };
+			}
+
 			// validate
 			await Form.validate(user);
 			let token, me;
