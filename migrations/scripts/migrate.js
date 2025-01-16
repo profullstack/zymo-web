@@ -35,38 +35,100 @@ async function connectDB() {
 }
 
 async function createMigrationHistoryTable() {
-	await db.query(`
-        DEFINE TABLE migration_history SCHEMAFULL
-            PERMISSIONS FULL;
-        DEFINE FIELD version ON migration_history TYPE int;
-        DEFINE FIELD createdAt ON migration_history TYPE datetime VALUE $before OR time::now();
-        DEFINE FIELD migration_name ON migration_history TYPE string;
-        DEFINE FIELD up_or_down ON migration_history TYPE string ASSERT $value IN ['up', 'down'];
-        DEFINE FIELD table_name ON migration_history TYPE string;
-    `);
-	console.log('Ensured migration_history table exists.');
+	try {
+		await db.query(`
+			-- First, remove the table if it exists to ensure clean state
+			REMOVE TABLE IF EXISTS migration_history;
+			
+			-- Create the table with proper schema
+			DEFINE TABLE migration_history SCHEMAFULL;
+			
+			-- Define fields
+			DEFINE FIELD version ON migration_history TYPE int;
+			DEFINE FIELD createdAt ON migration_history TYPE datetime VALUE time::now();
+			DEFINE FIELD migration_name ON migration_history TYPE string;
+			DEFINE FIELD up_or_down ON migration_history TYPE string ASSERT $value IN ['up', 'down'];
+			DEFINE FIELD table_name ON migration_history TYPE string;
+			
+			-- Add a unique index on version and table_name
+			DEFINE INDEX idx_version_table ON migration_history COLUMNS version, table_name UNIQUE;
+		`);
+		console.log('Migration history table created with schema');
+		
+		// Verify the table exists
+		const tables = await db.query('INFO FOR DB');
+		console.log('Database tables:', tables);
+	} catch (error) {
+		console.error('Error creating migration history table:', error);
+		throw error;
+	}
 }
 
 async function getAppliedMigrations() {
-	const [records] = await db.query('SELECT * FROM migration_history ORDER BY version ASC');
-	return records.map((r) => ({
-		version: r.version,
-		up_or_down: r.up_or_down,
-		table_name: r.table_name
-	}));
+	try {
+		// Get all records with explicit selection and ordering
+		const result = await db.query(
+			'SELECT version, up_or_down, table_name FROM migration_history ORDER BY version ASC'
+		);
+		console.log('Query result:', JSON.stringify(result, null, 2));
+		
+		// Handle both possible response formats from SurrealDB
+		let records = [];
+		if (Array.isArray(result)) {
+			records = result[0]?.result || [];
+		} else if (result?.result) {
+			records = result.result;
+		}
+		
+		console.log('Extracted records:', records);
+		
+		const mapped = records.map((r) => {
+			const version = parseInt(r.version, 10);
+			return {
+				version,
+				up_or_down: r.up_or_down,
+				table_name: r.table_name
+			};
+		});
+		console.log('Final processed records:', mapped);
+		return mapped;
+	} catch (error) {
+		console.error('Error getting applied migrations:', error);
+		throw error;
+	}
 }
 
 async function applyMigration(filePath, version, name, direction, tableName) {
+	console.log('Applying migration:', { filePath, version, name, direction, tableName });
 	const content = await fs.readFile(filePath, 'utf8');
 	await db.query(content);
-	await db.create('migration_history', {
-		version,
-		createdAt: new Date().toISOString(),
-		migration_name: name,
-		up_or_down: direction,
-		table_name: tableName
-	});
-	console.log(`Applied ${direction} migration for table ${tableName}: ${name}`);
+	
+	try {
+		// For down migrations, we need to update the existing record instead of creating a new one
+		if (direction === 'down') {
+			// Find and update the existing record
+			const updateResult = await db.query(
+				'UPDATE migration_history SET up_or_down = $direction WHERE version = $version AND table_name = $table_name',
+				{ direction, version, table_name: tableName }
+			);
+			console.log('Updated migration record for down migration:', updateResult);
+		} else {
+			// For up migrations, create a new record
+			const record = {
+				version,
+				createdAt: new Date().toISOString(),
+				migration_name: name,
+				up_or_down: direction,
+				table_name: tableName
+			};
+			console.log('Creating migration record:', record);
+			const result = await db.create('migration_history', record);
+			console.log('Created migration record:', result);
+		}
+	} catch (error) {
+		console.error('Error managing migration record:', error);
+		throw error;
+	}
 }
 
 async function processMigrations(direction = 'up') {
@@ -74,6 +136,7 @@ async function processMigrations(direction = 'up') {
 
 	const tableDirs = await fs.readdir(baseDir, { withFileTypes: true });
 	const appliedMigrations = await getAppliedMigrations();
+	console.log('Current applied migrations:', appliedMigrations);
 
 	for (const dirent of tableDirs) {
 		if (!dirent.isDirectory()) continue;
@@ -87,23 +150,54 @@ async function processMigrations(direction = 'up') {
 
 		const migrationStates = new Map(
 			appliedMigrations
-				.filter((m) => m.table_name === tableName)
-				.map((m) => [m.version, m.up_or_down])
+				.filter((m) => {
+					const matches = m.table_name === tableName;
+					console.log('Filtering migration:', { migration: m, tableName, matches });
+					return matches;
+				})
+				.map((m) => {
+					console.log('Mapping migration to state:', { version: m.version, up_or_down: m.up_or_down });
+					return [m.version, m.up_or_down];
+				})
 		);
+		console.log(`Migration states for ${tableName}:`, {
+			asObject: Object.fromEntries(migrationStates),
+			size: migrationStates.size,
+			keys: Array.from(migrationStates.keys())
+		});
 
 		for (const file of directionMigrations) {
 			const [versionStr] = file.split('_');
 			const version = parseInt(versionStr, 10);
+			console.log('Processing file:', { file, versionStr, parsedVersion: version });
+			
+			const currentState = migrationStates.get(version);
+			console.log('Looking up state:', { 
+				version, 
+				currentState,
+				hasState: migrationStates.has(version),
+				allKeys: Array.from(migrationStates.keys())
+			});
+			// For 'up' migrations: apply if not present or last state was 'down'
+			// For 'down' migrations: apply only if last state was 'up'
+			const shouldApply = direction === 'up' 
+				? (!currentState || currentState === 'down')
+				: (currentState === 'up');
 
-			if (
-				(direction === 'up' &&
-					(!migrationStates.has(version) || migrationStates.get(version) === 'down')) ||
-				(direction === 'down' && migrationStates.get(version) === 'up')
-			) {
+			if (shouldApply) {
 				const filePath = path.join(tableDir, file);
+				console.log(`Applying ${direction} migration: ${tableName}/${file}`);
 				await applyMigration(filePath, version, file, direction, tableName);
 			} else {
-				console.log(`Skipping ${file} as it is not applicable for the current direction.`);
+				if (direction === 'up' && currentState === 'up') {
+					console.log(`Skipping ${tableName}/${file} - migration has already been applied`);
+				} else if (direction === 'down' && !currentState) {
+					console.log(`Skipping ${tableName}/${file} - migration was never applied`);
+				} else if (direction === 'down' && currentState === 'down') {
+					console.log(`Skipping ${tableName}/${file} - migration is already in 'down' state`);
+				} else {
+					console.log(`Skipping ${tableName}/${file} - current state: ${currentState}, direction: ${direction}`);
+				}
 			}
 		}
 	}

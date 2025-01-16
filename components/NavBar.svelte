@@ -9,6 +9,7 @@
 	<a href="/library/new">Create Library</a>
 	<a href="/torrents/new">Create Torrent Client</a>
 	<a href="/apikeys">Create API key</a>
+	<a href="/dashboard/settings">Settings</a>
 </nav>
 <nav>
 	<a href="/payment/history">Payment & Subscriptions</a>

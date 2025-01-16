@@ -16,7 +16,7 @@ if [ -d "$HOME/www/${name}/${project}" ]; then
     # If both directories exist, run your command here
     echo "Both directories exist"
     cd $HOME/www/${name}/${project}
-    nvm install v20
+    nvm install v22
     node -v
     pnpm -v
     rm -f package-lock.json

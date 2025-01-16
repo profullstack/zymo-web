@@ -1,8 +1,6 @@
 # todo
 
--   add logo to VideoPlayer.svelte
--   add favorites for each type of media
--   add scan status page
+- webhooks api
 -   document api for end users (see markdown stuff)
 -   crypto payments (one-time)
 -   switch fonts to .woff2 instead of .ttf
