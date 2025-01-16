@@ -101,6 +101,8 @@ export default {
 			recipientCount: recipients.length,
 			sentBy: userId
 		});
+		
+		console.log('Created email archive:', emailArchive);  // Debug log
 
 		// Track delivery status for each recipient
 		const deliveryResults = await Promise.allSettled(

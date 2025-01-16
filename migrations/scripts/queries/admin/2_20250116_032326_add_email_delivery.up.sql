@@ -4,7 +4,7 @@ DEFINE TABLE email_delivery SCHEMAFULL PERMISSIONS
     FOR update, create WHERE $scope = "allusers" OR $scope = "apiusers" OR $scope = "allnostrusers",
     FOR delete WHERE userId = $auth.id;
 
-DEFINE FIELD email_archive_id ON email_delivery TYPE string;
+DEFINE FIELD email_archive_id ON email_delivery TYPE record(email_archive);
 DEFINE FIELD recipient ON email_delivery TYPE string;
 DEFINE FIELD status ON email_delivery TYPE string;  -- 'pending', 'sent', 'failed'
 DEFINE FIELD error ON email_delivery TYPE string;

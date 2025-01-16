@@ -4,15 +4,21 @@ export const actions = ({ connection: db }) => {
 	return {
 		async create({ subject, body, recipientType, recipientCount, sentBy }) {
 			const now = new Date().toISOString();
-			const email = await db.create('email_archive', {
-				subject,
-				body,
-				recipient_type: recipientType,
-				recipient_count: recipientCount,
-				sent_by: sentBy,
-				sent_at: now
-			});
-			return email;
+			try {
+				const email = await db.create('email_archive', {
+					subject,
+					body,
+					recipient_type: recipientType,
+					recipient_count: recipientCount,
+					sent_by: sentBy,
+					sent_at: now
+				});
+				console.log('Successfully created email archive:', email);  // Debug log
+				return email;
+			} catch (error) {
+				console.error('Failed to create email archive:', error);
+				throw error;
+			}
 		},
 
 		async createDelivery({ emailArchiveId, recipient }) {
