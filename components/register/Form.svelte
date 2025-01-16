@@ -59,7 +59,7 @@
 	</div>
 	<div>{errors?.password2 ?? ''}</div>
 	<div class="field">
-		<div class="h-captcha" data-sitekey={import.meta.env.VITE_HCAPTCHA_SITE_KEY} data-callback="onCaptchaVerify"></div>
+		<div class="h-captcha" data-sitekey=REPLACE_HCAPTCHA_SITE_KEY data-callback="onCaptchaVerify"></div>
 	</div>
 	<div>{errors?.captcha ?? ''}</div>
 	<footer><button type="submit">Register</button></footer>
