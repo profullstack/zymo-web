@@ -62,7 +62,7 @@
 		<div class="field">
 			<div
 				class="h-captcha"
-				data-sitekey=REPLACE_HCAPTCHA_SITE_KE
+				data-sitekey=REPLACE_HCAPTCHA_SITE_KEY
 				data-callback="onCaptchaVerify"
 			></div>
 		</div>
