@@ -1,60 +1,82 @@
-import primary from '@primate/types/primary';
+import { Store } from 'primate';
 
-export const actions = ({ connection: db }) => {
-	return {
-		async getAll() {
-			try {
-				const query = `SELECT * FROM email_archive ORDER BY sent_at DESC`;
-				const [emails] = await db.query(query);
-				return emails;
-			} catch (e) {
-				console.error(e);
-				throw e;
-			}
-		},
+export default class EmailArchive extends Store {
+	async create({ subject, body, recipientType, recipientCount, sentBy }) {
+		const now = new Date().toISOString();
+		const email = await this.db.create('email_archive', {
+			subject,
+			body,
+			recipient_type: recipientType,
+			recipient_count: recipientCount,
+			sent_by: sentBy,
+			sent_at: now
+		});
+		return email;
+	}
 
-		async create({ subject, body, recipientType, recipientCount, sentBy }) {
-			try {
-				const sent_at = new Date();
-				const email = await db.create('email_archive', {
-					subject,
-					body,
-					sent_at,
-					recipient_type: recipientType,
-					recipient_count: recipientCount,
-					sent_by: sentBy
-				});
-				return email;
-			} catch (e) {
-				console.error(e);
-				throw e;
-			}
-		},
+	async createDelivery({ emailArchiveId, recipient }) {
+		const now = new Date().toISOString();
+		const delivery = await this.db.create('email_delivery', {
+			email_archive_id: emailArchiveId,
+			recipient,
+			status: 'pending',
+			sent_at: now,
+			retry_count: 0
+		});
+		return delivery;
+	}
 
-		async getAllUserEmails() {
-			try {
-				const query = `SELECT email FROM user WHERE email != ''`;
-				const [users] = await db.query(query);
-				return users.map((u) => u.email);
-			} catch (e) {
-				console.error(e);
-				throw e;
-			}
-		},
-
-		async getAllWaitlistEmails() {
-			try {
-				const query = `SELECT email FROM waitlist WHERE email != ''`;
-				const [waitlist] = await db.query(query);
-				return waitlist.map((w) => w.email);
-			} catch (e) {
-				console.error(e);
-				throw e;
-			}
+	async updateDeliveryStatus({ deliveryId, status, error = null }) {
+		const now = new Date().toISOString();
+		const updates = {
+			status,
+			sent_at: now
+		};
+		
+		if (status === 'failed') {
+			updates.error = error;
+			updates.retry_count = (await this.db.select('retry_count').from('email_delivery').where('id', '=', deliveryId))[0].retry_count + 1;
 		}
-	};
-};
 
-export default {
-	id: primary
-};
+		await this.db.update('email_delivery').set(updates).where('id', '=', deliveryId);
+	}
+
+	async getFailedDeliveries() {
+		return await this.db.select()
+			.from('email_delivery')
+			.where('status', '=', 'failed')
+			.order('sent_at', 'desc');
+	}
+
+	async getFailedDeliveriesByEmailId(emailId) {
+		return await this.db.select('email_delivery.*, email_archive.*')
+			.from('email_delivery')
+			.join('email_archive', 'email_delivery.email_archive_id', '=', 'email_archive.id')
+			.where({
+				'email_delivery.status': 'failed',
+				'email_delivery.email_archive_id': emailId
+			})
+			.order('email_delivery.sent_at', 'desc');
+	}
+
+	async getDeliveriesByEmailId(emailId) {
+		return await this.db.select()
+			.from('email_delivery')
+			.where('email_archive_id', '=', emailId)
+			.order('sent_at', 'desc');
+	}
+
+	async getAll() {
+		return await this.db.select().from('email_archive').order('sent_at', 'desc');
+	}
+
+	async getAllUserEmails() {
+		const users = await this.db.select('email').from('user');
+		return users.map(user => user.email);
+	}
+
+	async getAllWaitlistEmails() {
+		const waitlist = await this.db.select('email').from('waitlist');
+		return waitlist.map(entry => entry.email);
+	}
+}

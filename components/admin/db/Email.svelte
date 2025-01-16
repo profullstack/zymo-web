@@ -6,6 +6,7 @@
 	let recipientType = 'all_users';
 	let sending = false;
 	let error = null;
+	let lastSendResult = null;
 
 	const recipientOptions = [
 		{ value: 'all_users', label: 'All Users' },
@@ -18,6 +19,32 @@
 		emails = await response.json();
 	}
 
+	async function resendFailedEmails(emailId) {
+		sending = true;
+		error = null;
+		lastSendResult = null;
+
+		try {
+			const response = await fetch('/api/admin/db/email', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ emailId })
+			});
+
+			const result = await response.json();
+			if (result.success) {
+				lastSendResult = result;
+				await refreshEmails();
+			} else {
+				error = result.error || 'Failed to resend emails';
+			}
+		} catch (e) {
+			error = e.message;
+		} finally {
+			sending = false;
+		}
+	}
+
 	async function sendEmail() {
 		if (!subject || !emailBody) {
 			error = 'Please fill in both subject and body';
@@ -26,9 +53,10 @@
 
 		sending = true;
 		error = null;
+		lastSendResult = null;
 
 		try {
-			const response = await fetch('/admin/db/email', {
+			const response = await fetch('/api/admin/db/email', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ subject, emailBody, recipientType })
@@ -38,6 +66,7 @@
 			if (result.success) {
 				subject = '';
 				emailBody = '';
+				lastSendResult = result;
 				await refreshEmails();
 			} else {
 				error = 'Failed to send email';
@@ -91,6 +120,25 @@
 			<div class="error">{error}</div>
 		{/if}
 
+		{#if lastSendResult}
+			<div class="send-result">
+				<h4>Send Results:</h4>
+				<p>Total Recipients: {lastSendResult.totalRecipients}</p>
+				<p class="success">Successfully Sent: {lastSendResult.successCount}</p>
+				{#if lastSendResult.failedCount > 0}
+					<p class="error">Failed: {lastSendResult.failedCount}</p>
+					<details>
+						<summary>View Failed Deliveries</summary>
+						<ul>
+							{#each lastSendResult.deliveryResults.filter(r => !r.success) as result}
+								<li>{result.recipient}: {result.error}</li>
+							{/each}
+						</ul>
+					</details>
+				{/if}
+			</div>
+		{/if}
+
 		<button on:click={sendEmail} disabled={sending} class="btn-primary">
 			{sending ? 'Sending...' : 'Send Email'}
 		</button>
@@ -105,6 +153,7 @@
 					<th>Subject</th>
 					<th>Recipients</th>
 					<th>Count</th>
+					<th>Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -114,6 +163,15 @@
 						<td>{email.subject}</td>
 						<td>{email.recipient_type}</td>
 						<td>{email.recipient_count}</td>
+						<td>
+							<button
+								on:click={() => resendFailedEmails(email.id)}
+								class="btn-secondary"
+								disabled={sending}
+							>
+								Resend Failed
+							</button>
+						</td>
 					</tr>
 				{/each}
 			</tbody>
@@ -165,11 +223,23 @@
 		font-weight: 500;
 	}
 
-	.btn-primary:hover {
-		background-color: #0056b3;
+	.btn-secondary {
+		background-color: #6c757d;
+		color: white;
+		border: none;
+		padding: 6px 12px;
+		border-radius: 4px;
+		cursor: pointer;
+		font-size: 12px;
 	}
 
-	.btn-primary:disabled {
+	.btn-primary:hover,
+	.btn-secondary:hover {
+		opacity: 0.9;
+	}
+
+	.btn-primary:disabled,
+	.btn-secondary:disabled {
 		background-color: #ccc;
 		cursor: not-allowed;
 	}
@@ -181,6 +251,39 @@
 		border: 1px solid #dc3545;
 		border-radius: 4px;
 		background-color: #f8d7da;
+	}
+
+	.send-result {
+		background-color: #f8f9fa;
+		padding: 15px;
+		border-radius: 4px;
+		border: 1px solid #dee2e6;
+	}
+
+	.send-result h4 {
+		margin: 0 0 10px 0;
+	}
+
+	.send-result p {
+		margin: 5px 0;
+	}
+
+	.send-result .success {
+		color: #28a745;
+	}
+
+	.send-result details {
+		margin-top: 10px;
+	}
+
+	.send-result summary {
+		cursor: pointer;
+		color: #007bff;
+	}
+
+	.send-result ul {
+		margin: 10px 0;
+		padding-left: 20px;
 	}
 
 	.sent-emails {
