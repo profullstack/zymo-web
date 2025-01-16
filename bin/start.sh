@@ -2,7 +2,7 @@
 
 #cd "$(dirname "$0")/.."
 . $HOME/.bashrc
-. "$NVM_DIR/nvm.sh" && nvm use v20
+. "$NVM_DIR/nvm.sh" && nvm use v22
 . .env
 . .env.local
 
