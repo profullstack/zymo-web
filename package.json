@@ -41,7 +41,6 @@
 		"@rcompat/string": "^0.4.0",
 		"@redis/client": "^1.6.0",
 		"@turf/turf": "^7.1.0",
-		"Status": "link:@rcompat/http/Status",
 		"bech32": "^2.0.0",
 		"btoa": "^1.2.1",
 		"commander": "^12.1.0",
