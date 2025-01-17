@@ -2,29 +2,13 @@
 	import CountrySelect from '../CountrySelect.svelte';
 	import HCaptcha from '../HCaptcha.svelte';
 	export let status, errors, countries;
-	let captchaToken;
 	const hcaptchaSiteKey = REPLACE_HCAPTCHA_SITE_KEY;
 	const USE_CAPTCHA = REPLACE_USE_CAPTCHA;
-	let hcaptchaRef;
 
 	async function onSubmit(event) {
 		if (!USE_CAPTCHA) {
 			return true;
 		}
-
-		captchaToken = hcaptchaRef.getCaptchaToken();
-
-		console.log('captchaToken:', captchaToken);
-
-		if (!captchaToken) {
-			event.preventDefault();
-			status = 'Please complete the captcha';
-			return;
-		}
-		// Add token to form data
-		const formData = new FormData(event.target);
-		formData.append('captchaToken', captchaToken);
-		status = 'Registering...';
 	}
 </script>
 
@@ -69,8 +53,7 @@
 		<div>{errors?.password2 ?? ''}</div>
 
 		{#if USE_CAPTCHA}
-			<HCaptcha bind:this={hcaptchaRef} sitekey={hcaptchaSiteKey} />
-			<div>{errors?.captcha ?? ''}</div>
+			<HCaptcha sitekey={hcaptchaSiteKey} />
 		{/if}
 
 		<footer><button type="submit">Register</button></footer>
