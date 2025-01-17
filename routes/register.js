@@ -21,7 +21,7 @@ export default {
 	},
 	async post(request) {
 		const { session, store, cookies, headers } = request;
-
+		const USE_CAPTCHA = false;
 		const {
 			register: { Form },
 			external: { Mailgun, Twilio },
@@ -33,24 +33,27 @@ export default {
 			const user = request.body;
 			console.log('post user:', user);
 
-			// Validate captcha token
-			const captchaToken = user.captchaToken;
-			if (!captchaToken) {
-				return { errors: { captcha: 'Please complete the captcha verification' } };
-			}
+			// Validate captcha token only if USE_CAPTCHA is true
+			if (USE_CAPTCHA) {
+				const captchaToken = user.captchaToken;
+				if (!captchaToken) {
+					return { errors: { captcha: 'Please complete the captcha verification' } };
+				}
 
-			const verifyUrl = 'https://hcaptcha.com/siteverify';
-			const secret = process.env.HCAPTCHA_SECRET_KEY;
-			
-			const verifyResponse = await fetch(verifyUrl, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-				body: `response=${captchaToken}&secret=${secret}`
-			});
+				// Verify captcha token with hCaptcha
+				const verifyUrl = 'https://hcaptcha.com/siteverify';
+				const secret = process.env.HCAPTCHA_SECRET_KEY;
 
-			const verifyData = await verifyResponse.json();
-			if (!verifyData.success) {
-				return { errors: { captcha: 'Invalid captcha verification' } };
+				const response = await fetch(verifyUrl, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+					body: `response=${captchaToken}&secret=${secret}`
+				});
+
+				const { success } = await response.json();
+				if (!success) {
+					return { errors: { captcha: 'Invalid captcha' } };
+				}
 			}
 
 			// validate

@@ -13,6 +13,7 @@
 		// Add token to form data
 		const formData = new FormData(event.target);
 		formData.append('captchaToken', captchaToken);
+		status = 'Registering...';
 	}
 
 	function onCaptchaVerify(event) {
@@ -29,7 +30,7 @@
 <section>
 	<h1>Register</h1>
 
-	<form method="post" on:submit={onSubmit}>
+	<form method="post">
 		{status ?? ''}
 		<div class="field">
 			<input name="firstName" type="text" placeholder="Enter first name" required />
@@ -60,13 +61,13 @@
 			<input name="password2" type="password" placeholder="Re-enter password" required />
 		</div>
 		<div>{errors?.password2 ?? ''}</div>
-		<div class="field">
+		<!-- <div class="field">
 			<div
 				class="h-captcha"
 				data-sitekey={hcaptchaSiteKey}
 				data-callback="onCaptchaVerify"
 			></div>
-		</div>
+		</div> -->
 		<div>{errors?.captcha ?? ''}</div>
 		<footer><button type="submit">Register</button></footer>
 	</form>

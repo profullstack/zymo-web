@@ -32,12 +32,38 @@ console.log(host, db_port);
 
 export default {
 	http: {
-		port
+		port,
 		// csp: {
-		// 	'default-src': '*',
-		// 	'script-src': "'unsafe-inline' 'self' 'unsafe-eval' *",
-		// 	'style-src': "'unsafe-inline' 'self' *",
-		// 	'img-src': "'unsafe-inline' 'self' data: *"
+		// 	'default-src': ["*", "'unsafe-inline'", "'unsafe-eval'", "data:", "blob:"],
+		// 	'script-src': [
+		// 		"*", 
+		// 		"'unsafe-inline'", 
+		// 		"'unsafe-eval'",
+		// 		"'sha384-tbg+va5T4w7wfEl2mLNBSyf2skWebWhIMm5N12l2QJZ3h4trVOu8DfUXD0GJzQyk'",
+		// 		"'sha384-9uBdOS32W6j208BVbu4KM5j1hPLfqxDaib8if7/4pu/a0O69ALwOoJoDqcRsPREO'",
+		// 		"'sha384-McUrFS+FFpd6BGpic36xZKG5HJjdekhYiNDTCI9CiVQcp5ee0eYmkYEri71g7Fjv'"
+		// 	],
+		// 	'style-src': [
+		// 		"*", 
+		// 		"'unsafe-inline'", 
+		// 		"'sha384-iSlqZXkbWIwAsKEvFmsqX/KDbw4bLNV+khJWGomCaKi7dTYEsDJXy1F0+H2B79Q1'"
+		// 	],
+		// 	'img-src': ["*", "data:", "blob:", "'self'"],
+		// 	'font-src': ["*", "data:", "'self'"],
+		// 	'connect-src': ["*", "data:", "blob:", "'self'"],
+		// 	'media-src': ["*"],
+		// 	'object-src': ["*"],
+		// 	'frame-src': ["*"],
+		// 	'worker-src': ["*", "blob:"],
+		// 	'frame-ancestors': ["*"],
+		// 	'form-action': ["*"],
+		// 	'base-uri': ["*"],
+		// 	'upgrade-insecure-requests': []
+		// },
+		// headers: {
+		// 	'Cross-Origin-Embedder-Policy': 'unsafe-none',
+		// 	'Cross-Origin-Opener-Policy': 'unsafe-none',
+		// 	'Cross-Origin-Resource-Policy': 'cross-origin'
 		// }
 	},
 	build: {
