@@ -1,10 +1,21 @@
 <script>
 	import CountrySelect from '../CountrySelect.svelte';
+	import HCaptcha from '../HCaptcha.svelte';
 	export let status, errors, countries;
 	let captchaToken;
 	const hcaptchaSiteKey = REPLACE_HCAPTCHA_SITE_KEY;
+	const USE_CAPTCHA = REPLACE_USE_CAPTCHA;
+	let hcaptchaRef;
 
 	async function onSubmit(event) {
+		if (!USE_CAPTCHA) {
+			return true;
+		}
+
+		captchaToken = hcaptchaRef.getCaptchaToken();
+
+		console.log('captchaToken:', captchaToken);
+
 		if (!captchaToken) {
 			event.preventDefault();
 			status = 'Please complete the captcha';
@@ -15,22 +26,17 @@
 		formData.append('captchaToken', captchaToken);
 		status = 'Registering...';
 	}
-
-	function onCaptchaVerify(event) {
-		captchaToken = event.detail.token;
-	}
 </script>
 
 <svelte:head>
 	<title>Register</title>
 	<link rel="stylesheet" href="/flags.css" />
-	<script src="https://js.hcaptcha.com/1/api.js" async defer></script>
 </svelte:head>
 
 <section>
 	<h1>Register</h1>
 
-	<form method="post">
+	<form method="post" on:submit={onSubmit}>
 		{status ?? ''}
 		<div class="field">
 			<input name="firstName" type="text" placeholder="Enter first name" required />
@@ -61,14 +67,12 @@
 			<input name="password2" type="password" placeholder="Re-enter password" required />
 		</div>
 		<div>{errors?.password2 ?? ''}</div>
-		<!-- <div class="field">
-			<div
-				class="h-captcha"
-				data-sitekey={hcaptchaSiteKey}
-				data-callback="onCaptchaVerify"
-			></div>
-		</div> -->
-		<div>{errors?.captcha ?? ''}</div>
+
+		{#if USE_CAPTCHA}
+			<HCaptcha bind:this={hcaptchaRef} sitekey={hcaptchaSiteKey} />
+			<div>{errors?.captcha ?? ''}</div>
+		{/if}
+
 		<footer><button type="submit">Register</button></footer>
 	</form>
 </section>

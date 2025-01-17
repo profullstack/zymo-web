@@ -25,6 +25,7 @@ const {
 	PHONE,
 	EMAIL,
 	HCAPTCHA_SITE_KEY,
+	USE_CAPTCHA,
 	AFFILIATE_COMMISSION_PERCENT
 } = process.env;
 
@@ -39,15 +40,11 @@ export default {
 		// 	'script-src': [
 		// 		"*", 
 		// 		"'unsafe-inline'", 
-		// 		"'unsafe-eval'",
-		// 		"'sha384-tbg+va5T4w7wfEl2mLNBSyf2skWebWhIMm5N12l2QJZ3h4trVOu8DfUXD0GJzQyk'",
-		// 		"'sha384-9uBdOS32W6j208BVbu4KM5j1hPLfqxDaib8if7/4pu/a0O69ALwOoJoDqcRsPREO'",
-		// 		"'sha384-McUrFS+FFpd6BGpic36xZKG5HJjdekhYiNDTCI9CiVQcp5ee0eYmkYEri71g7Fjv'"
+		// 		"'unsafe-eval'"
 		// 	],
 		// 	'style-src': [
 		// 		"*", 
 		// 		"'unsafe-inline'", 
-		// 		"'sha384-iSlqZXkbWIwAsKEvFmsqX/KDbw4bLNV+khJWGomCaKi7dTYEsDJXy1F0+H2B79Q1'"
 		// 	],
 		// 	'img-src': ["*", "data:", "blob:", "'self'"],
 		// 	'font-src': ["*", "data:", "'self'"],
@@ -79,7 +76,8 @@ export default {
 			REPLACE_PHONE: `'${PHONE}'`,
 			REPLACE_EMAIL: `'${EMAIL}'`,
 			REPLACE_HCAPTCHA_SITE_KEY: `"${HCAPTCHA_SITE_KEY}"`,
-			REPLACE_AFFILIATE_COMMISSION_PERCENT: `'${AFFILIATE_COMMISSION_PERCENT}'`
+			REPLACE_AFFILIATE_COMMISSION_PERCENT: `'${AFFILIATE_COMMISSION_PERCENT}'`,
+			REPLACE_USE_CAPTCHA: `${USE_CAPTCHA}`
 		},
 		minify: false,
 		includes: ['modules'],

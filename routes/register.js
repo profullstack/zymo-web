@@ -21,7 +21,6 @@ export default {
 	},
 	async post(request) {
 		const { session, store, cookies, headers } = request;
-		const USE_CAPTCHA = false;
 		const {
 			register: { Form },
 			external: { Mailgun, Twilio },
@@ -34,7 +33,7 @@ export default {
 			console.log('post user:', user);
 
 			// Validate captcha token only if USE_CAPTCHA is true
-			if (USE_CAPTCHA) {
+			if (process.env.USE_CAPTCHA === 'true') {
 				const captchaToken = user.captchaToken;
 				if (!captchaToken) {
 					return { errors: { captcha: 'Please complete the captcha verification' } };
