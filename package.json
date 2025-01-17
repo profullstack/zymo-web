@@ -20,6 +20,7 @@
 		"env:dev": "ln -sf .env.dev .env.local"
 	},
 	"dependencies": {
+		"@hcaptcha/vanilla-hcaptcha": "^1.1.1",
 		"@mozilla/readability": "^0.5.0",
 		"@nostr-dev-kit/ndk": "^2.10.7",
 		"@primate/core": "^0.1.10",
@@ -40,6 +41,7 @@
 		"@rcompat/string": "^0.4.0",
 		"@redis/client": "^1.6.0",
 		"@turf/turf": "^7.1.0",
+		"Status": "link:@rcompat/http/Status",
 		"bech32": "^2.0.0",
 		"btoa": "^1.2.1",
 		"commander": "^12.1.0",
