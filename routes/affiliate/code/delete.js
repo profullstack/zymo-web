@@ -1,4 +1,4 @@
-import { OK } from '@rcompat/http/status';
+import Status from "@rcompat/http/Status";
 
 export default {
 	async post(request) {
@@ -16,6 +16,6 @@ export default {
 			}
 		}
 
-		return new Response(OK);
+		return new Response(Status.OK);
 	}
 };

@@ -1,6 +1,6 @@
 import view from 'primate/handler/view';
 import redirect from 'primate/handler/redirect';
-import { OK, INTERNAL_SERVER_ERROR } from '@rcompat/http/status';
+import Status from "@rcompat/http/Status";
 import error from 'primate/handler/error';
 
 const { FROM_EMAIL } = process.env;
@@ -31,6 +31,6 @@ export default {
 			}
 		}
 
-		return error('Error', { status: INTERNAL_SERVER_ERROR });
+		return error('Error', { status: Status.INTERNAL_SERVER_ERROR });
 	}
 };

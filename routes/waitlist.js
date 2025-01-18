@@ -1,4 +1,4 @@
-import { OK, INTERNAL_SERVER_ERROR } from '@rcompat/http/status';
+import Status from "@rcompat/http/Status";
 import error from 'primate/handler/error';
 
 function isEmail(email) {
@@ -18,15 +18,15 @@ export default {
 
 		if (!email || !isEmail(email)) {
 			return error('Please provide a valid email address', {
-				status: INTERNAL_SERVER_ERROR
+				status: Status.INTERNAL_SERVER_ERROR
 			});
 		}
 		try {
 			await Waitlist.add(email);
 		} catch (e) {
-			return error('Email already exists', { status: INTERNAL_SERVER_ERROR });
+			return error('Email already exists', { status: Status.INTERNAL_SERVER_ERROR });
 		}
 
-		return new Response('created!', { status: OK });
+		return new Response('created!', { status: Status.OK });
 	}
 };

@@ -1,5 +1,5 @@
 import error from 'primate/handler/error';
-import { OK, INTERNAL_SERVER_ERROR } from '@rcompat/http/status';
+import Status from '@rcompat/http/Status';
 import MLBTV from '../../modules/providers/mlb.js';
 const UA_PC =
 	'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36';
@@ -101,7 +101,7 @@ export default {
 			return fetch(url, { headers, redirect: 'follow' }).catch(console.error);
 		} catch (err) {
 			console.log(err);
-			return error('Error fetching URL', { status: INTERNAL_SERVER_ERROR, ...err });
+			return error('Error fetching URL', { status: Status.INTERNAL_SERVER_ERROR, ...err });
 		}
 	},
 	async head(request) {
@@ -124,7 +124,7 @@ export default {
 			return fetch(url, { method: 'HEAD', headers, redirect: 'follow' });
 		} catch (err) {
 			console.log(err);
-			return error('Error fetching URL', { status: INTERNAL_SERVER_ERROR, ...err });
+			return error('Error fetching URL', { status: Status.INTERNAL_SERVER_ERROR, ...err });
 		}
 	}
 };

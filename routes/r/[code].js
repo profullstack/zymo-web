@@ -1,4 +1,4 @@
-import { FOUND } from '@rcompat/http/status';
+import Status from "@rcompat/http/Status";
 
 export default {
 	async get(request) {
@@ -11,7 +11,7 @@ export default {
 		const futureDate = new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 365 * 2);
 
 		const response = new Response(null, {
-			status: FOUND,
+			status: Status.FOUND,
 			headers: {
 				'Set-Cookie': `referralCode=${referralCode}; expires=${futureDate.toUTCString()}; path=/; SameSite=Strict`,
 				Location: '/'
