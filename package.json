@@ -35,7 +35,7 @@
 		"@primate/native": "^0.1.6",
 		"@primate/session": "^0.21.0",
 		"@primate/store": "^0.27.0",
-		"@primate/surrealdb": "^0.4.x",
+		"@primate/surrealdb": "^0.3.x",
 		"@primate/svelte": "^0.18.3",
 		"@primate/types": "^0.16.1",
 		"@rcompat/crypto": "^0.6.0",
