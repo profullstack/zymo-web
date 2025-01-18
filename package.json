@@ -92,7 +92,7 @@
 		"sharp": "^0.33.5",
 		"slugify": "^1.6.6",
 		"stripe": "^17.5.0",
-		"surrealdb.js": "^1.0.0",
+		"surrealdb.js": "^0.11.x",
 		"svelte": "^4.x",
 		"torrent-search-api-for-barbaroussa": "^1.0.5",
 		"tough-cookie": "^4.1.4",
