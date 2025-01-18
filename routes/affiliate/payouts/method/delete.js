@@ -1,4 +1,4 @@
-import { OK } from '@rcompat/http/status';
+import Status from "@rcompat/http/Status";
 import error from 'primate/handler/error';
 
 export default {
@@ -22,6 +22,6 @@ export default {
 
 		await Affiliate.deletePayoutMethod(userId, payoutMethod);
 
-		return new Response('Ok', { status: OK });
+		return new Response('Ok', { status: Status.OK });
 	}
 };

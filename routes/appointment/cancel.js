@@ -1,4 +1,4 @@
-import { OK, INTERNAL_SERVER_ERROR } from '@rcompat/http/status';
+import Status from "@rcompat/http/Status";
 import { google } from 'googleapis';
 
 const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, APP_DOMAIN, GOOGLE_CALENDAR_ID } = process.env;
@@ -38,7 +38,7 @@ export default {
 		const authorized = refreshToken ? true : false;
 
 		if (!authorized) {
-			return new Response(INTERNAL_SERVER_ERROR);
+			return new Response(Status.INTERNAL_SERVER_ERROR);
 		}
 
 		try {
@@ -70,9 +70,9 @@ export default {
 			}
 		} catch (e) {
 			console.error(e);
-			return new Response(INTERNAL_SERVER_ERROR);
+			return new Response(Status.INTERNAL_SERVER_ERROR);
 		}
 
-		return new Response(OK);
+		return new Response(Status.OK);
 	}
 };

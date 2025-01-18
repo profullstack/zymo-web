@@ -1,4 +1,4 @@
-import { OK, INTERNAL_SERVER_ERROR } from '@rcompat/http/status';
+import Status from "@rcompat/http/Status";
 import env from '@rcompat/env';
 import Stripe from 'stripe';
 
@@ -35,7 +35,7 @@ export default {
 			);
 		} catch (err) {
 			console.error('Webhook Error:', err);
-			return new Response(`Webhook Error: ${err.message}`, INTERNAL_SERVER_ERROR);
+			return new Response(`Webhook Error: ${err.message}`, Status.INTERNAL_SERVER_ERROR);
 		}
 
 		const session = body.data.object;
@@ -175,6 +175,6 @@ export default {
 				break;
 		}
 
-		return new Response(OK);
+		return new Response(Status.OK);
 	}
 };

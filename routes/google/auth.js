@@ -1,4 +1,4 @@
-import { OK, INTERNAL_SERVER_ERROR } from '@rcompat/http/status';
+import Status from "@rcompat/http/Status";
 import { google } from 'googleapis';
 
 const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, APP_DOMAIN } = process.env;
@@ -25,10 +25,10 @@ export default {
 			await session.set('user', me);
 		} catch (e) {
 			console.error(e);
-			return new Response(INTERNAL_SERVER_ERROR);
+			return new Response(Status.INTERNAL_SERVER_ERROR);
 		}
 
-		return new Response(OK);
+		return new Response(Status.OK);
 	},
 
 	async post(request) {
@@ -41,6 +41,6 @@ export default {
 		const me = await User.me();
 		await session.set('user', me);
 
-		return new Response(OK);
+		return new Response(Status.OK);
 	}
 };
