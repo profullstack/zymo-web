@@ -22,7 +22,7 @@ export default {
 
 			try {
 				token = await User.signin(user);
-				me = await User.me();
+				me = await User.me(user.email);
 			} catch (err) {
 				return { status: err.message };
 			}
