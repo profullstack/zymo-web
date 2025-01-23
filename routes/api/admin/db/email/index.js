@@ -30,18 +30,24 @@ export default {
 				recipients.map(async (to) => {
 					const delivery = failedDeliveries.find(d => d.recipient === to);
 					try {
+						// Generate unsubscribe token if this is a user email
+						const unsubscribeToken = delivery.user_id ? Mailgun.generateUnsubscribeToken(delivery.user_id, to) : null;
+						
 						// Send email
 						await Mailgun.send({
 							to,
 							subject: delivery.email_archive.subject,
 							text: delivery.email_archive.body,
-							from: process.env.FROM_EMAIL
+							from: process.env.FROM_EMAIL,
+							userId: delivery.user_id,
+							unsubscribeToken // Pass the token to the send function
 						});
 
-						// Update delivery status to sent
+						// Update delivery status to sent and store unsubscribe token
 						await EmailArchive.updateDeliveryStatus({
 							deliveryId: delivery.id,
-							status: 'sent'
+							status: 'sent',
+							unsubscribeToken
 						});
 
 						return { success: true, recipient: to };
@@ -90,8 +96,8 @@ export default {
 			recipients = recipients.concat(waitlistEmails);
 		}
 
-		// Remove duplicates
-		recipients = [...new Set(recipients)];
+		// Remove duplicates (based on email address)
+		recipients = [...new Set(recipients.map(r => JSON.stringify(r)))].map(r => JSON.parse(r));
 
 		// Create email archive entry
 		const emailArchive = await EmailArchive.create({
@@ -106,20 +112,27 @@ export default {
 
 		// Track delivery status for each recipient
 		const deliveryResults = await Promise.allSettled(
-			recipients.map(async (to) => {
+			recipients.map(async (recipient) => {
+				// Generate unsubscribe token if this is a user email
+				const unsubscribeToken = recipient.id ? Mailgun.generateUnsubscribeToken(recipient.id, recipient.email) : null;
+
 				// Create delivery record
 				const delivery = await EmailArchive.createDelivery({
 					emailArchiveId: emailArchive.id,
-					recipient: to
+					recipient: recipient.email,
+					unsubscribeToken,
+					userId: recipient.id // Store the user ID if this is a user email
 				});
 
 				try {
-					// Send email
+					// Send email with userId for unsubscribe link if it's a user (not waitlist)
 					await Mailgun.send({
-						to,
+						to: recipient.email,
 						subject,
 						text: emailBody,
-						from: process.env.FROM_EMAIL
+						from: process.env.FROM_EMAIL,
+						userId: recipient.id,
+						unsubscribeToken // Pass the token to the send function
 					});
 
 					// Update delivery status to sent
@@ -128,7 +141,7 @@ export default {
 						status: 'sent'
 					});
 
-					return { success: true, recipient: to };
+					return { success: true, recipient: recipient.email };
 				} catch (error) {
 					// Update delivery status to failed with error
 					await EmailArchive.updateDeliveryStatus({
@@ -137,7 +150,7 @@ export default {
 						error: error.message
 					});
 
-					return { success: false, recipient: to, error: error.message };
+					return { success: false, recipient: recipient.email, error: error.message };
 				}
 			})
 		);
