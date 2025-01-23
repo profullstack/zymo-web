@@ -5,7 +5,8 @@
     let preferences = user?.settings?.notificationPreferences || {
         emailNotifications: true,
         emailDigestFrequency: 'instant',
-        smsNotifications: false
+        smsNotifications: false,
+        productUpdatesEmail: true // Added new preference
     };
 
     async function saveSettings() {
@@ -54,6 +55,18 @@
             <span class="slider"></span>
         </label>
         <span>Receive email notifications</span>
+    </div>
+
+    <div class="setting-group">
+        <label class="switch">
+            <input
+                type="checkbox"
+                bind:checked={preferences.productUpdatesEmail}
+                on:change={saveSettings}
+            >
+            <span class="slider"></span>
+        </label>
+        <span>Receive product updates and announcements</span>
     </div>
 
     <div class="setting-group">

@@ -21,11 +21,13 @@ export const actions = ({ connection: db }) => {
 			}
 		},
 
-		async createDelivery({ emailArchiveId, recipient }) {
+		async createDelivery({ emailArchiveId, recipient, unsubscribeToken, userId }) {
 			const now = new Date().toISOString();
 			const [delivery] = await db.create('email_delivery', {
 				email_archive_id: emailArchiveId,
 				recipient,
+				unsubscribe_token: unsubscribeToken,
+				user_id: userId,
 				status: 'pending',
 				sent_at: now,
 				retry_count: 0
@@ -33,7 +35,7 @@ export const actions = ({ connection: db }) => {
 			return delivery;
 		},
 
-		async updateDeliveryStatus({ deliveryId, status, error = null }) {
+		async updateDeliveryStatus({ deliveryId, status, error = null, unsubscribeToken = null }) {
 			const now = new Date().toISOString();
 			
 			if (status === 'failed') {
@@ -55,6 +57,9 @@ export const actions = ({ connection: db }) => {
 				if (retry_count > 1) {
 					updateFields.last_retry_at = now;
 				}
+				if (unsubscribeToken) {
+					updateFields.unsubscribe_token = unsubscribeToken;
+				}
 
 				const setClause = Object.keys(updateFields)
 					.map(field => `${field} = $${field}`)
@@ -70,14 +75,24 @@ export const actions = ({ connection: db }) => {
 					}
 				);
 			} else {
+				const updateFields = {
+					status,
+					sent_at: now
+				};
+				if (unsubscribeToken) {
+					updateFields.unsubscribe_token = unsubscribeToken;
+				}
+
+				const setClause = Object.keys(updateFields)
+					.map(field => `${field} = $${field}`)
+					.join(', ');
+
 				await db.query(
 					`UPDATE email_delivery 
-					SET status = $status, 
-						sent_at = $sent_at 
+					SET ${setClause}
 					WHERE id = $deliveryId`,
 					{ 
-						status,
-						sent_at: now,
+						...updateFields,
 						deliveryId 
 					}
 				);
@@ -122,13 +137,13 @@ export const actions = ({ connection: db }) => {
 		},
 
 		async getAllUserEmails() {
-			const [users] = await db.query('SELECT email FROM user');
-			return users.map(user => user.email);
+			const [users] = await db.query('SELECT id, email FROM user');
+			return users.map(user => ({ id: user.id, email: user.email }));
 		},
 
 		async getAllWaitlistEmails() {
 			const [waitlist] = await db.query('SELECT email FROM waitlist');
-			return waitlist.map(entry => entry.email);
+			return waitlist.map(entry => ({ email: entry.email }));
 		}
 	};
 };
