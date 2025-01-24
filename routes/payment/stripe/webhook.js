@@ -25,7 +25,7 @@ export default {
 			'charge.refund.updated'
 		];
 
-		if (!listen_events.includes(body.type)) return new Response(OK);
+		if (!listen_events.includes(body.type)) return new Response(Status.OK);
 
 		try {
 			event = stripe.webhooks.constructEvent(
