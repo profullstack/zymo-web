@@ -212,7 +212,7 @@ async function run() {
 	} finally {
 		runs++;
 
-		if (runs < argv.total) {
+		if (runs <= argv.total) {
 			run();
 		}
 	}
