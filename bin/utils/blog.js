@@ -29,9 +29,9 @@ async function generateTableOfContents(prompt) {
 			Authorization: `Bearer ${env.OPENAI_API_KEY}`
 		},
 		body: JSON.stringify({
-			model: 'gpt-3.5-turbo',
+			model: 'gpt-4o-mini',
 			messages: [{ role: 'system', content: prompt }],
-			max_tokens: 4000 - Number(tokenSize)
+			max_tokens: 128000 - Number(tokenSize)
 		})
 	});
 
@@ -60,9 +60,21 @@ async function generateBannerImage(prompt) {
 }
 async function generateBlogPost(toc) {
 	console.log('toc:', toc);
-	const prompt = `Use the following tone:\n\n=========\n\n${tone}\n\n============\n\n
-	...and write a detailed 2000 word blog post about the topic above as an expert in the subject matter and return it to me as raw JSON with 'content' property as raw markdown (do not include article title or "# Introduction" at top of markdown) and 'title' property with a unique title, a 'summary' property with a brief abstract of the article, a 'tags' property with tags related to the following TOC:
-	\n\n=================\n\nTable of Contents:\n\n${toc}`;
+	const prompt = [
+		'Use the following tone:',
+		'=========',
+		tone,
+		'============',
+		'Write a detailed 2000 word blog post about the topic below as an expert in the subject matter.',
+		'Return it as a valid JSON object with the following properties:',
+		'- content: raw markdown (do not include article title or "# Introduction" at top or "# Conclusion" at bottom)',
+		'- title: a unique title for the article',
+		'- summary: a brief abstract of the article',
+		'- tags: an array of tags related to the following TOC:',
+		'=================',
+		'Table of Contents:',
+		toc
+	].join('\n\n');
 
 	const tokenSize = await calculateTokenSize(prompt);
 	const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -72,20 +84,26 @@ async function generateBlogPost(toc) {
 			Authorization: `Bearer ${env.OPENAI_API_KEY}`
 		},
 		body: JSON.stringify({
-			model: 'gpt-3.5-turbo',
+			model: 'gpt-4o-mini',
 			messages: [{ role: 'system', content: prompt }],
-			max_tokens: 4000 - Number(tokenSize)
+			response_format: { type: 'json_object' },
+			max_tokens: 128000 - Number(tokenSize)
 		})
 	});
 
 	const data = await response.json();
 
-	if (data.choices[0].message.content) {
-		try {
-			return JSON.parse(data.choices[0].message.content);
-		} catch (err) {
-			console.error(err);
-		}
+	if (!data.choices?.[0]?.message?.content) {
+		console.error('No content in response:', data);
+		return null;
+	}
+
+	try {
+		return JSON.parse(data.choices[0].message.content);
+	} catch (err) {
+		console.error('Failed to parse response:', err);
+		console.error('Response content:', data.choices[0].message.content);
+		return null;
 	}
 }
 
@@ -104,17 +122,17 @@ async function resizeImage(inputPath, outputPath, newWidth = 256) {
 }
 
 async function calculateTokenSize(text) {
-	const response = await fetch('https://api.openai.com/v1/tokens', {
+	const response = await fetch('https://api.openai.com/v1/models/gpt-4o-mini/tokenize', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
 			Authorization: `Bearer ${env.OPENAI_API_KEY}`
 		},
-		body: JSON.stringify({ text: text })
+		body: JSON.stringify({ input: text })
 	});
 
 	const data = await response.json();
-	return data.tokens;
+	return data.token_count;
 }
 
 async function writeBlogPostToFile(blogPost) {
@@ -125,8 +143,8 @@ async function writeBlogPostToFile(blogPost) {
 		filePath,
 		`export const article = {
         title: \`${title}\`,
-		image: \`${image}\`,
-		thumbnail: \`${thumbnail}\`,
+		image: \`${image.replace('/static', '')}\`,
+		thumbnail: \`${thumbnail.replace('/static', '')}\`,
 		slug: "${slugify(title.toLowerCase(), { remove: strip })}",
 		summary: \`${summary}\`,
         content: \`${content}\`,
@@ -167,7 +185,8 @@ async function run() {
 		// process.exit(1);
 		console.log(bannerImage);
 
-		if (!blogPost.title || !blogPost.content) {
+		if (!blogPost || !blogPost.title || !blogPost.content) {
+			console.log('Invalid blog post generated, retrying...');
 			return run();
 		}
 
