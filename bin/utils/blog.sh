@@ -6,5 +6,5 @@ cd "$(dirname "$0")/../.."
 . .env
 . .env.local
 
-node ./bin/utils/blog.js --total 10
+node ./bin/utils/blog.js --total 2
 sudo systemctl restart ${META_SERVICE}
