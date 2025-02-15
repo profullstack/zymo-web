@@ -14,3 +14,4 @@ history.txt
 .env.prod.desktop
 service_account_key.json
 /uploads
+/static/_posts
