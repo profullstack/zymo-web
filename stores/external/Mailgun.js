@@ -29,12 +29,12 @@ const body = ({ subject, to, from, text, html }) => {
 	const params = [
 		`from=${from}`,
 		`to=${to}`,
-		`subject=${subject}`,
-		`text=${text}`
+		`subject=${encodeURIComponent(subject)}`,
+		`text=${encodeURIComponent(text)}`
 	];
 	
 	if (html) {
-		params.push(`html=${html}`);
+		params.push(`html=${encodeURIComponent(html)}`);
 	}
 	
 	return params.join('&');
