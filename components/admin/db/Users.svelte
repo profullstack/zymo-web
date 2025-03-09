@@ -68,7 +68,7 @@
 		{
 			name: 'subscriptionStatus',
 			label: 'Subscription Status',
-			accessor: (user) => user.payments[0]?.status || '',
+			accessor: (user) => user.payments.map((payment) => payment.status).join(', ') || '',
 			type: 'string'
 		},
 		{
