@@ -17,8 +17,8 @@ export const actions = ({ connection: db }) => {
                 return payments;
 
             } catch (e) {
-                throw e;
                 console.error(e)
+                throw e;
             }
         },
         async update(id, data) {

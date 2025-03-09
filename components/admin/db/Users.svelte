@@ -66,6 +66,12 @@
 			type: 'string'
 		},
 		{
+			name: 'subscriptionStatus',
+			label: 'Subscription Status',
+			accessor: (user) => user.payments[0]?.status || '',
+			type: 'string'
+		},
+		{
 			name: 'createdAt',
 			label: 'Created At',
 			accessor: (user) => user.createdAt,

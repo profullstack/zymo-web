@@ -5,7 +5,7 @@ export default {
 		const { store } = request;
 		const { User } = store;
 
-		const users = await User.getAll();
+		const users = await User.getAllUserAndPayment();
 		return view('admin/db/Users.svelte', { users });
 	},
 

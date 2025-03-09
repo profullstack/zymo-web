@@ -388,6 +388,23 @@ export const actions = ({ connection: db }) => {
 			}
 		},
 
+		async getAllUserAndPayment() {
+			try {
+				const query = `
+					SELECT *, 
+						->payment->subscriptionId AS payments 
+					FROM user 
+					ORDER BY createdAt DESC
+				`;
+
+				const [users] = await db.query(query);
+
+				return users;
+			} catch (e) {
+				console.error(e);
+			}
+		},
+
 		async delete(userId) {
 			console.log('deleting:', userId);
 			return await db.delete(userId);
