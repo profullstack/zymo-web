@@ -390,15 +390,22 @@ export const actions = ({ connection: db }) => {
 
 		async getAllUserAndPayment() {
 			try {
-				const query = `
-					SELECT *, 
-						->payment->subscriptionId AS payments 
-					FROM user 
-					ORDER BY createdAt DESC
-				`;
-
-				const [users] = await db.query(query);
-
+				// Let's try a different approach with a JOIN
+				const [users] = await db.query(`
+					SELECT * FROM user ORDER BY createdAt DESC
+				`);
+				
+				// For each user, fetch their payments
+				for (const user of users) {
+					const [payments] = await db.query(`
+						SELECT * FROM payments 
+						WHERE userId = $userId
+					`, { userId: user.id });
+					
+					// Attach payments to user
+					user.payments = payments;
+				}
+				
 				return users;
 			} catch (e) {
 				console.error(e);
