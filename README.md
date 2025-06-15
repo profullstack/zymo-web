@@ -1,5 +1,7 @@
 # zymo.tv - A powerful, self-hosted media server that rivals Emby and Plex
 
+[![Crypto Payment](https://paybadge.profullstack.com/badge.svg)](https://paybadge.profullstack.com/?tickers=btc%2Ceth%2Csol%2Cusdc)
+
 A powerful, self-hosted media server that rivals Emby and Plex. Stream your movies, TV shows, music, podcasts, and books from anywhere. Host it yourself for complete control, or get started instantly at https://zymo.tv.
 
 Self hosted or signup at https://zymo.tv
