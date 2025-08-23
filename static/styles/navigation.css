@@ -1,7 +1,7 @@
 /* Enhanced Navigation Styles */
 
-/* Base navigation styling */
-nav {
+/* Base navigation styling - exclude sidebar */
+nav:not(#sidebar) {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 0.8rem;
@@ -12,8 +12,8 @@ nav {
 	margin-bottom: 1rem;
 }
 
-/* Navigation link styling */
-nav a {
+/* Navigation link styling - exclude sidebar */
+nav:not(#sidebar) a {
 	display: inline-flex;
 	align-items: center;
 	padding: 0.6rem 1.2rem;
@@ -29,8 +29,8 @@ nav a {
 	overflow: hidden;
 }
 
-/* Hover effects */
-nav a:hover {
+/* Hover effects - exclude sidebar */
+nav:not(#sidebar) a:hover {
 	background-color: var(--list-hover-background-color);
 	color: var(--sidebar-nav-color-hover);
 	border-color: var(--list-hover-background-color);
@@ -38,23 +38,23 @@ nav a:hover {
 	box-shadow: 0 4px 8px rgba(103, 42, 214, 0.2);
 }
 
-/* Active/current page styling */
-nav a.active,
-nav a[aria-current="page"] {
+/* Active/current page styling - exclude sidebar */
+nav:not(#sidebar) a.active,
+nav:not(#sidebar) a[aria-current="page"] {
 	background-color: var(--button-background-color);
 	color: var(--button-color);
 	border-color: var(--button-border-color);
 	box-shadow: 0 2px 4px rgba(103, 42, 214, 0.3);
 }
 
-/* Focus styling for accessibility */
-nav a:focus {
+/* Focus styling for accessibility - exclude sidebar */
+nav:not(#sidebar) a:focus {
 	outline: 2px solid var(--list-hover-background-color);
 	outline-offset: 2px;
 }
 
-/* Subtle animation on hover */
-nav a::before {
+/* Subtle animation on hover - exclude sidebar */
+nav:not(#sidebar) a::before {
 	content: '';
 	position: absolute;
 	top: 0;
@@ -65,18 +65,18 @@ nav a::before {
 	transition: left 0.5s;
 }
 
-nav a:hover::before {
+nav:not(#sidebar) a:hover::before {
 	left: 100%;
 }
 
 /* Responsive navigation */
 @media (max-width: 768px) {
-	nav {
+	nav:not(#sidebar) {
 		flex-direction: column;
 		gap: 0.5rem;
 	}
 	
-	nav a {
+	nav:not(#sidebar) a {
 		justify-content: center;
 		padding: 0.8rem 1rem;
 	}
@@ -85,34 +85,34 @@ nav a:hover::before {
 /* Special styling for different navigation types */
 
 /* Sub-navigation (smaller, more compact) */
-nav.sub-nav {
+nav:not(#sidebar).sub-nav {
 	padding: 0.5rem;
 	background-color: transparent;
 	border: none;
 	margin-bottom: 0.5rem;
 }
 
-nav.sub-nav a {
+nav:not(#sidebar).sub-nav a {
 	padding: 0.4rem 0.8rem;
 	font-size: 0.85rem;
 	background-color: rgba(34, 34, 34, 0.8);
 }
 
 /* Breadcrumb-style navigation */
-nav.breadcrumb {
+nav:not(#sidebar).breadcrumb {
 	background-color: transparent;
 	border: none;
 	padding: 0.5rem 0;
 }
 
-nav.breadcrumb a {
+nav:not(#sidebar).breadcrumb a {
 	background-color: transparent;
 	border: none;
 	padding: 0.3rem 0.6rem;
 	border-radius: 0.2rem;
 }
 
-nav.breadcrumb a:not(:last-child)::after {
+nav:not(#sidebar).breadcrumb a:not(:last-child)::after {
 	content: '›';
 	margin-left: 0.5rem;
 	color: var(--nav-border-color);
@@ -120,25 +120,25 @@ nav.breadcrumb a:not(:last-child)::after {
 }
 
 /* Vertical navigation */
-nav.vertical {
+nav:not(#sidebar).vertical {
 	flex-direction: column;
 	width: fit-content;
 }
 
-nav.vertical a {
+nav:not(#sidebar).vertical a {
 	width: 100%;
 	justify-content: flex-start;
 }
 
 /* Tab-style navigation */
-nav.tabs {
+nav:not(#sidebar).tabs {
 	border-bottom: 2px solid var(--nav-border-color);
 	background-color: transparent;
 	padding: 0;
 	margin-bottom: 1.5rem;
 }
 
-nav.tabs a {
+nav:not(#sidebar).tabs a {
 	background-color: transparent;
 	border: none;
 	border-bottom: 2px solid transparent;
@@ -147,15 +147,15 @@ nav.tabs a {
 	margin-bottom: -2px;
 }
 
-nav.tabs a:hover {
+nav:not(#sidebar).tabs a:hover {
 	background-color: rgba(103, 42, 214, 0.1);
 	border-bottom-color: var(--list-hover-background-color);
 	transform: none;
 	box-shadow: none;
 }
 
-nav.tabs a.active,
-nav.tabs a[aria-current="page"] {
+nav:not(#sidebar).tabs a.active,
+nav:not(#sidebar).tabs a[aria-current="page"] {
 	background-color: transparent;
 	border-bottom-color: var(--button-background-color);
 	color: var(--button-background-color);
@@ -163,30 +163,30 @@ nav.tabs a[aria-current="page"] {
 }
 
 /* Button-group style navigation */
-nav.button-group {
+nav:not(#sidebar).button-group {
 	background-color: transparent;
 	border: none;
 	gap: 0;
 }
 
-nav.button-group a {
+nav:not(#sidebar).button-group a {
 	border-radius: 0;
 	border-right: none;
 	margin: 0;
 }
 
-nav.button-group a:first-child {
+nav:not(#sidebar).button-group a:first-child {
 	border-radius: 0.4rem 0 0 0.4rem;
 }
 
-nav.button-group a:last-child {
+nav:not(#sidebar).button-group a:last-child {
 	border-radius: 0 0.4rem 0.4rem 0;
 	border-right: 1px solid var(--nav-border-color);
 }
 
 /* Icon support in navigation */
-nav a img,
-nav a svg {
+nav:not(#sidebar) a img,
+nav:not(#sidebar) a svg {
 	width: 1rem;
 	height: 1rem;
 	margin-right: 0.5rem;
@@ -194,18 +194,18 @@ nav a svg {
 	transition: opacity 0.2s ease;
 }
 
-nav a:hover img,
-nav a:hover svg {
+nav:not(#sidebar) a:hover img,
+nav:not(#sidebar) a:hover svg {
 	opacity: 1;
 }
 
 /* Loading state */
-nav a.loading {
+nav:not(#sidebar) a.loading {
 	opacity: 0.6;
 	pointer-events: none;
 }
 
-nav a.loading::after {
+nav:not(#sidebar) a.loading::after {
 	content: '';
 	width: 0.8rem;
 	height: 0.8rem;
@@ -223,8 +223,8 @@ nav a.loading::after {
 }
 
 /* Disabled state */
-nav a.disabled,
-nav a[disabled] {
+nav:not(#sidebar) a.disabled,
+nav:not(#sidebar) a[disabled] {
 	opacity: 0.4;
 	pointer-events: none;
 	cursor: not-allowed;
