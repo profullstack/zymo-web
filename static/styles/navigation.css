@@ -1,0 +1,231 @@
+/* Enhanced Navigation Styles */
+
+/* Base navigation styling */
+nav {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.8rem;
+	padding: 1rem;
+	background-color: var(--nav-background-color);
+	border: 1px solid var(--nav-border-color);
+	border-radius: 0.5rem;
+	margin-bottom: 1rem;
+}
+
+/* Navigation link styling */
+nav a {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.6rem 1.2rem;
+	background-color: var(--list-background-color);
+	color: var(--global-nav-link-color);
+	text-decoration: none;
+	border-radius: 0.4rem;
+	border: 1px solid var(--nav-border-color);
+	font-weight: 500;
+	font-size: 0.9rem;
+	transition: all 0.2s ease-in-out;
+	position: relative;
+	overflow: hidden;
+}
+
+/* Hover effects */
+nav a:hover {
+	background-color: var(--list-hover-background-color);
+	color: var(--sidebar-nav-color-hover);
+	border-color: var(--list-hover-background-color);
+	transform: translateY(-1px);
+	box-shadow: 0 4px 8px rgba(103, 42, 214, 0.2);
+}
+
+/* Active/current page styling */
+nav a.active,
+nav a[aria-current="page"] {
+	background-color: var(--button-background-color);
+	color: var(--button-color);
+	border-color: var(--button-border-color);
+	box-shadow: 0 2px 4px rgba(103, 42, 214, 0.3);
+}
+
+/* Focus styling for accessibility */
+nav a:focus {
+	outline: 2px solid var(--list-hover-background-color);
+	outline-offset: 2px;
+}
+
+/* Subtle animation on hover */
+nav a::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: -100%;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+	transition: left 0.5s;
+}
+
+nav a:hover::before {
+	left: 100%;
+}
+
+/* Responsive navigation */
+@media (max-width: 768px) {
+	nav {
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+	
+	nav a {
+		justify-content: center;
+		padding: 0.8rem 1rem;
+	}
+}
+
+/* Special styling for different navigation types */
+
+/* Sub-navigation (smaller, more compact) */
+nav.sub-nav {
+	padding: 0.5rem;
+	background-color: transparent;
+	border: none;
+	margin-bottom: 0.5rem;
+}
+
+nav.sub-nav a {
+	padding: 0.4rem 0.8rem;
+	font-size: 0.85rem;
+	background-color: rgba(34, 34, 34, 0.8);
+}
+
+/* Breadcrumb-style navigation */
+nav.breadcrumb {
+	background-color: transparent;
+	border: none;
+	padding: 0.5rem 0;
+}
+
+nav.breadcrumb a {
+	background-color: transparent;
+	border: none;
+	padding: 0.3rem 0.6rem;
+	border-radius: 0.2rem;
+}
+
+nav.breadcrumb a:not(:last-child)::after {
+	content: '›';
+	margin-left: 0.5rem;
+	color: var(--nav-border-color);
+	font-weight: bold;
+}
+
+/* Vertical navigation */
+nav.vertical {
+	flex-direction: column;
+	width: fit-content;
+}
+
+nav.vertical a {
+	width: 100%;
+	justify-content: flex-start;
+}
+
+/* Tab-style navigation */
+nav.tabs {
+	border-bottom: 2px solid var(--nav-border-color);
+	background-color: transparent;
+	padding: 0;
+	margin-bottom: 1.5rem;
+}
+
+nav.tabs a {
+	background-color: transparent;
+	border: none;
+	border-bottom: 2px solid transparent;
+	border-radius: 0;
+	padding: 0.8rem 1.2rem;
+	margin-bottom: -2px;
+}
+
+nav.tabs a:hover {
+	background-color: rgba(103, 42, 214, 0.1);
+	border-bottom-color: var(--list-hover-background-color);
+	transform: none;
+	box-shadow: none;
+}
+
+nav.tabs a.active,
+nav.tabs a[aria-current="page"] {
+	background-color: transparent;
+	border-bottom-color: var(--button-background-color);
+	color: var(--button-background-color);
+	box-shadow: none;
+}
+
+/* Button-group style navigation */
+nav.button-group {
+	background-color: transparent;
+	border: none;
+	gap: 0;
+}
+
+nav.button-group a {
+	border-radius: 0;
+	border-right: none;
+	margin: 0;
+}
+
+nav.button-group a:first-child {
+	border-radius: 0.4rem 0 0 0.4rem;
+}
+
+nav.button-group a:last-child {
+	border-radius: 0 0.4rem 0.4rem 0;
+	border-right: 1px solid var(--nav-border-color);
+}
+
+/* Icon support in navigation */
+nav a img,
+nav a svg {
+	width: 1rem;
+	height: 1rem;
+	margin-right: 0.5rem;
+	opacity: 0.8;
+	transition: opacity 0.2s ease;
+}
+
+nav a:hover img,
+nav a:hover svg {
+	opacity: 1;
+}
+
+/* Loading state */
+nav a.loading {
+	opacity: 0.6;
+	pointer-events: none;
+}
+
+nav a.loading::after {
+	content: '';
+	width: 0.8rem;
+	height: 0.8rem;
+	border: 2px solid transparent;
+	border-top: 2px solid currentColor;
+	border-radius: 50%;
+	animation: spin 1s linear infinite;
+	margin-left: 0.5rem;
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/* Disabled state */
+nav a.disabled,
+nav a[disabled] {
+	opacity: 0.4;
+	pointer-events: none;
+	cursor: not-allowed;
+}
