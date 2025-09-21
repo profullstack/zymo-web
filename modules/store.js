@@ -29,25 +29,8 @@ export const mp4 = writable(false);
 export const transcodeStore = writable(true);
 export const proxyStore = writable(false);
 
-export const filteredChannels = derived(
-	[channels, filterValue, mp4],
-	([$channels, $filterValue, $mp4]) => {
-		let filtered = $channels;
-		if ($filterValue !== '') {
-			filtered = filtered.filter((channel) =>
-				channel.name.toLowerCase().includes($filterValue.toLowerCase())
-			);
-		}
-		if ($mp4) {
-			filtered = filtered.filter((channel) => channel.url.endsWith('.mp4'));
-		}
-
-		// sort channels alphabetically by name
-		filtered = filtered.sort((a, b) => a.name.localeCompare(b.name));
-
-		return filtered;
-	}
-);
+// Server-side filtered channels - replaces the problematic client-side filtering
+export const filteredChannels = writable([]);
 
 // EPG
 export const epgStore = writable({

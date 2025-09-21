@@ -14,6 +14,7 @@
 		filteredChannels
 	} from '../modules/store.js';
 	import { fetchChannels, parseM3U8, selectChannel } from '../modules/player.js';
+	import { searchM3UChannels } from '../modules/autocomplete.js';
 	import VideoPlayer from './VideoPlayer.svelte';
 	import { get } from 'svelte/store';
 
@@ -27,6 +28,33 @@
 		if (provider && provider !== '-- Select Provider --') {
 			selectedProvider.set(provider);
 			await fetchChannels(provider);
+		}
+	}
+
+	// Handle search input with server-side autocomplete
+	async function handleSearchInput(event) {
+		const query = event.target.value;
+		filterValue.set(query);
+
+		const currentProvider = get(selectedProvider);
+		if (!currentProvider) {
+			filteredChannels.set([]);
+			return;
+		}
+
+		if (!query || query.length < 2) {
+			filteredChannels.set([]);
+			isChannelListOpen.set(false);
+			return;
+		}
+
+		try {
+			const results = await searchM3UChannels(currentProvider, query, 20);
+			filteredChannels.set(results);
+			isChannelListOpen.set(true);
+		} catch (error) {
+			console.error('Search error:', error);
+			filteredChannels.set([]);
 		}
 	}
 
@@ -92,7 +120,7 @@
 				e.target == document.activeElement ? isChannelListOpen.set(true) : null;
 			}}
 			on:click={() => isChannelListOpen.set(true)}
-			on:input={() => isChannelListOpen.set(true)}
+			on:input={handleSearchInput}
 		/>
 
 		{#if $isChannelListOpen}
