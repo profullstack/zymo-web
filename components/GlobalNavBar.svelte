@@ -89,21 +89,10 @@
 		text-decoration: none;
 		padding: 0.4rem;
 	}
+	/* Complete animation/transition disable for hamburger */
 	#hamburger,
 	#hamburger *,
-	#hamburger img {
-		height: 100%;
-		padding: 0 !important;
-		margin: 0 !important;
-		transition: none !important;
-		transform: none !important;
-		animation: none !important;
-		-webkit-transition: none !important;
-		-moz-transition: none !important;
-		-o-transition: none !important;
-		-ms-transition: none !important;
-	}
-
+	#hamburger img,
 	#hamburger:hover,
 	#hamburger:focus,
 	#hamburger:active,
@@ -113,14 +102,23 @@
 	#hamburger *:active,
 	#hamburger img:hover,
 	#hamburger img:focus,
-	#hamburger img:active {
+	#hamburger img:active,
+	#hamburger::before,
+	#hamburger::after,
+	#hamburger *::before,
+	#hamburger *::after,
+	#hamburger img::before,
+	#hamburger img::after {
+		height: 100% !important;
+		padding: 0 !important;
+		margin: 0 !important;
+		transition: none !important;
+		transform: none !important;
+		animation: none !important;
 		background-color: transparent !important;
 		text-decoration: none !important;
 		color: inherit !important;
 		opacity: 1 !important;
-		transform: none !important;
-		transition: none !important;
-		animation: none !important;
 		box-shadow: none !important;
 		border: none !important;
 		outline: none !important;
@@ -128,23 +126,22 @@
 		-moz-transition: none !important;
 		-o-transition: none !important;
 		-ms-transition: none !important;
+		-webkit-transform: none !important;
+		-moz-transform: none !important;
+		-o-transform: none !important;
+		-ms-transform: none !important;
+		-webkit-animation: none !important;
+		-moz-animation: none !important;
+		-o-animation: none !important;
+		-ms-animation: none !important;
+		content: none !important;
+		display: none !important;
 	}
 
+	/* Complete animation/transition disable for logo */
 	#logo,
 	#logo *,
-	#logo img {
-		display: block;
-		margin-left: 1.2rem;
-		padding: 0 !important;
-		transition: none !important;
-		transform: none !important;
-		animation: none !important;
-		-webkit-transition: none !important;
-		-moz-transition: none !important;
-		-o-transition: none !important;
-		-ms-transition: none !important;
-	}
-
+	#logo img,
 	#logo:hover,
 	#logo:focus,
 	#logo:active,
@@ -154,14 +151,23 @@
 	#logo *:active,
 	#logo img:hover,
 	#logo img:focus,
-	#logo img:active {
+	#logo img:active,
+	#logo::before,
+	#logo::after,
+	#logo *::before,
+	#logo *::after,
+	#logo img::before,
+	#logo img::after {
+		display: block !important;
+		margin-left: 1.2rem !important;
+		padding: 0 !important;
+		transition: none !important;
+		transform: none !important;
+		animation: none !important;
 		background-color: transparent !important;
 		text-decoration: none !important;
 		color: inherit !important;
 		opacity: 1 !important;
-		transform: none !important;
-		transition: none !important;
-		animation: none !important;
 		box-shadow: none !important;
 		border: none !important;
 		outline: none !important;
@@ -169,6 +175,24 @@
 		-moz-transition: none !important;
 		-o-transition: none !important;
 		-ms-transition: none !important;
+		-webkit-transform: none !important;
+		-moz-transform: none !important;
+		-o-transform: none !important;
+		-ms-transform: none !important;
+		-webkit-animation: none !important;
+		-moz-animation: none !important;
+		-o-animation: none !important;
+		-ms-animation: none !important;
+		content: none !important;
+	}
+
+	/* Override pseudo-elements completely */
+	#logo::before,
+	#logo::after,
+	#hamburger::before,
+	#hamburger::after {
+		display: none !important;
+		content: none !important;
 	}
 
 	#logo img {
