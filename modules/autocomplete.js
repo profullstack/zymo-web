@@ -41,6 +41,34 @@ class AutocompleteService {
 	}
 
 	/**
+	 * Search Movies with debouncing and caching
+	 * @param {string} query - Search query
+	 * @param {number} limit - Maximum results (default: 20)
+	 * @returns {Promise<Array>} - Search results
+	 */
+	async searchMovies(query, limit = 20) {
+		return this._debouncedSearch(
+			'movies',
+			query,
+			() => this._fetchMoviesResults(query, limit)
+		);
+	}
+
+	/**
+	 * Search TV Shows with debouncing and caching
+	 * @param {string} query - Search query
+	 * @param {number} limit - Maximum results (default: 20)
+	 * @returns {Promise<Array>} - Search results
+	 */
+	async searchTVShows(query, limit = 20) {
+		return this._debouncedSearch(
+			'tvshows',
+			query,
+			() => this._fetchTVShowsResults(query, limit)
+		);
+	}
+
+	/**
 	 * Private method to handle debounced search with caching
 	 */
 	async _debouncedSearch(key, query, fetchFn) {
@@ -126,6 +154,46 @@ class AutocompleteService {
 	}
 
 	/**
+	 * Fetch Movies search results from server
+	 */
+	async _fetchMoviesResults(query, limit) {
+		const url = `/api/movies/search?q=${encodeURIComponent(query)}&limit=${limit}`;
+		const response = await fetch(url);
+
+		if (!response.ok) {
+			throw new Error(`Movies search failed: ${response.status}`);
+		}
+
+		const data = await response.json();
+		
+		if (data.error) {
+			throw new Error(data.error);
+		}
+
+		return data.results || [];
+	}
+
+	/**
+	 * Fetch TV Shows search results from server
+	 */
+	async _fetchTVShowsResults(query, limit) {
+		const url = `/api/tv/search?q=${encodeURIComponent(query)}&limit=${limit}`;
+		const response = await fetch(url);
+
+		if (!response.ok) {
+			throw new Error(`TV Shows search failed: ${response.status}`);
+		}
+
+		const data = await response.json();
+		
+		if (data.error) {
+			throw new Error(data.error);
+		}
+
+		return data.results || [];
+	}
+
+	/**
 	 * Clear all caches and timeouts
 	 */
 	clear() {
@@ -139,8 +207,14 @@ class AutocompleteService {
 export const autocompleteService = new AutocompleteService();
 
 // Export helper functions for easier integration
-export const searchM3UChannels = (providerId, query, limit) => 
+export const searchM3UChannels = (providerId, query, limit) =>
 	autocompleteService.searchM3UChannels(providerId, query, limit);
 
-export const searchXtreamChannels = (providerId, query, limit) => 
+export const searchXtreamChannels = (providerId, query, limit) =>
 	autocompleteService.searchXtreamChannels(providerId, query, limit);
+
+export const searchMovies = (query, limit) =>
+	autocompleteService.searchMovies(query, limit);
+
+export const searchTVShows = (query, limit) =>
+	autocompleteService.searchTVShows(query, limit);

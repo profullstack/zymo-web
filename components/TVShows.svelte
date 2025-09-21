@@ -1,11 +1,14 @@
 <script>
 	import FilterInput from './FilterInput.svelte';
+	import { searchTVShows } from '../modules/autocomplete.js';
 
 	export let shows = [];
 
 	let filterText = '';
 	let groupedShows = groupAndSortShows(shows);
 	let filteredShows = groupedShows;
+	let searchResults = [];
+	let isSearching = false;
 
 	// Function to group and sort shows by show name and optionally by season
 	function groupAndSortShows(shows) {
@@ -57,16 +60,45 @@
 		return sortedGrouped;
 	}
 
-	function filterShows() {
-		const lowerFilter = filterText.toLowerCase();
-		filteredShows = Object.fromEntries(
-			Object.entries(groupedShows).filter(([showName]) =>
-				showName.toLowerCase().includes(lowerFilter)
-			)
-		);
+	// Server-side search function
+	async function handleSearch() {
+		if (!filterText || filterText.length < 2) {
+			// Show all shows when no search query
+			filteredShows = groupedShows;
+			searchResults = [];
+			isSearching = false;
+			return;
+		}
+
+		isSearching = true;
+		try {
+			const results = await searchTVShows(filterText, 50);
+			searchResults = results;
+			
+			// Group search results for display
+			if (results.length > 0) {
+				filteredShows = groupAndSortShows(results);
+			} else {
+				filteredShows = {};
+			}
+		} catch (error) {
+			console.error('TV shows search error:', error);
+			filteredShows = {};
+			searchResults = [];
+		}
+		isSearching = false;
 	}
 
-	$: filterShows();
+	// Debounce search input
+	let searchTimeout;
+	function debouncedSearch() {
+		clearTimeout(searchTimeout);
+		searchTimeout = setTimeout(handleSearch, 300);
+	}
+
+	$: if (filterText !== undefined) {
+		debouncedSearch();
+	}
 
 	let visibleShows = new Set();
 	let visibleSeasons = new Set();
@@ -83,7 +115,11 @@
 	}
 </script>
 
-<FilterInput placeholder="Filter shows..." bind:filterText on:filter={filterShows} />
+<FilterInput placeholder="Filter shows..." bind:filterText on:filter={handleSearch} />
+
+{#if isSearching}
+	<div class="loading">Searching...</div>
+{/if}
 
 {#if Object.keys(filteredShows).length}
 	<section>
@@ -184,5 +220,12 @@
 		height: auto;
 		border: 1px solid var(--cover-art-border-color);
 		margin: 2rem 1rem 0;
+	}
+
+	.loading {
+		text-align: center;
+		padding: 1rem;
+		color: var(--text-secondary-color, #666);
+		font-style: italic;
 	}
 </style>

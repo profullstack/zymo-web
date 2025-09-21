@@ -1,11 +1,14 @@
 <script>
 	import FilterInput from './FilterInput.svelte';
+	import { searchMovies } from '../modules/autocomplete.js';
 
 	export let movies = [];
 
 	let filterText = '';
 	let groupedMovies = groupAndSortMovies(movies);
 	let filteredMovies = groupedMovies;
+	let searchResults = [];
+	let isSearching = false;
 
 	// Function to group and sort movies by show name and optionally by season
 	function groupAndSortMovies(movies) {
@@ -58,16 +61,45 @@
 		return sortedGrouped;
 	}
 
-	function filterMovies() {
-		const lowerFilter = filterText.toLowerCase();
-		filteredMovies = Object.fromEntries(
-			Object.entries(groupedMovies).filter(([showName]) =>
-				showName.toLowerCase().includes(lowerFilter)
-			)
-		);
+	// Server-side search function
+	async function handleSearch() {
+		if (!filterText || filterText.length < 2) {
+			// Show all movies when no search query
+			filteredMovies = groupedMovies;
+			searchResults = [];
+			isSearching = false;
+			return;
+		}
+
+		isSearching = true;
+		try {
+			const results = await searchMovies(filterText, 50);
+			searchResults = results;
+			
+			// Group search results for display
+			if (results.length > 0) {
+				filteredMovies = groupAndSortMovies(results);
+			} else {
+				filteredMovies = {};
+			}
+		} catch (error) {
+			console.error('Movie search error:', error);
+			filteredMovies = {};
+			searchResults = [];
+		}
+		isSearching = false;
 	}
 
-	$: filterMovies();
+	// Debounce search input
+	let searchTimeout;
+	function debouncedSearch() {
+		clearTimeout(searchTimeout);
+		searchTimeout = setTimeout(handleSearch, 300);
+	}
+
+	$: if (filterText !== undefined) {
+		debouncedSearch();
+	}
 
 	let visibleShows = new Set();
 	let visibleSeasons = new Set();
@@ -84,7 +116,11 @@
 	}
 </script>
 
-<FilterInput placeholder="Filter movies..." bind:filterText on:filter={filterMovies} />
+<FilterInput placeholder="Filter movies..." bind:filterText on:filter={handleSearch} />
+
+{#if isSearching}
+	<div class="loading">Searching...</div>
+{/if}
 
 {#if Object.keys(filteredMovies).length}
 	<section>
@@ -180,5 +216,12 @@
 		height: auto;
 		border: 1px solid var(--cover-art-border-color);
 		margin: 2rem 1rem 0;
+	}
+
+	.loading {
+		text-align: center;
+		padding: 1rem;
+		color: var(--text-secondary-color, #666);
+		font-style: italic;
 	}
 </style>
