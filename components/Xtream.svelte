@@ -121,6 +121,7 @@
 			id="filter-input"
 			placeholder="Type to filter channels..."
 			bind:value={$filterValue}
+			disabled={$isLoading}
 			on:mouseover={(e) => {
 				e.target == document.activeElement ? isChannelListOpen.set(true) : null;
 			}}

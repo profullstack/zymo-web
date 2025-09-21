@@ -91,11 +91,13 @@
 	}
 	#hamburger {
 		height: 100%;
+		padding: 0;
 	}
 
 	#logo {
 		display: block;
 		margin-left: 1.2rem;
+		padding: 0;
 	}
 
 	#logo img {
