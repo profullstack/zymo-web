@@ -89,41 +89,86 @@
 		text-decoration: none;
 		padding: 0.4rem;
 	}
-	#hamburger {
+	#hamburger,
+	#hamburger *,
+	#hamburger img {
 		height: 100%;
-		padding: 0;
+		padding: 0 !important;
+		margin: 0 !important;
 		transition: none !important;
 		transform: none !important;
+		animation: none !important;
+		-webkit-transition: none !important;
+		-moz-transition: none !important;
+		-o-transition: none !important;
+		-ms-transition: none !important;
 	}
 
 	#hamburger:hover,
 	#hamburger:focus,
-	#hamburger:active {
+	#hamburger:active,
+	#hamburger:visited,
+	#hamburger *:hover,
+	#hamburger *:focus,
+	#hamburger *:active,
+	#hamburger img:hover,
+	#hamburger img:focus,
+	#hamburger img:active {
 		background-color: transparent !important;
 		text-decoration: none !important;
 		color: inherit !important;
 		opacity: 1 !important;
 		transform: none !important;
 		transition: none !important;
+		animation: none !important;
+		box-shadow: none !important;
+		border: none !important;
+		outline: none !important;
+		-webkit-transition: none !important;
+		-moz-transition: none !important;
+		-o-transition: none !important;
+		-ms-transition: none !important;
 	}
 
-	#logo {
+	#logo,
+	#logo *,
+	#logo img {
 		display: block;
 		margin-left: 1.2rem;
-		padding: 0;
+		padding: 0 !important;
 		transition: none !important;
 		transform: none !important;
+		animation: none !important;
+		-webkit-transition: none !important;
+		-moz-transition: none !important;
+		-o-transition: none !important;
+		-ms-transition: none !important;
 	}
 
 	#logo:hover,
 	#logo:focus,
-	#logo:active {
+	#logo:active,
+	#logo:visited,
+	#logo *:hover,
+	#logo *:focus,
+	#logo *:active,
+	#logo img:hover,
+	#logo img:focus,
+	#logo img:active {
 		background-color: transparent !important;
 		text-decoration: none !important;
 		color: inherit !important;
 		opacity: 1 !important;
 		transform: none !important;
 		transition: none !important;
+		animation: none !important;
+		box-shadow: none !important;
+		border: none !important;
+		outline: none !important;
+		-webkit-transition: none !important;
+		-moz-transition: none !important;
+		-o-transition: none !important;
+		-ms-transition: none !important;
 	}
 
 	#logo img {
