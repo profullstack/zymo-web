@@ -92,22 +92,38 @@
 	#hamburger {
 		height: 100%;
 		padding: 0;
+		transition: none !important;
+		transform: none !important;
 	}
 
-	#hamburger:hover {
-		background-color: transparent;
-		text-decoration: none;
+	#hamburger:hover,
+	#hamburger:focus,
+	#hamburger:active {
+		background-color: transparent !important;
+		text-decoration: none !important;
+		color: inherit !important;
+		opacity: 1 !important;
+		transform: none !important;
+		transition: none !important;
 	}
 
 	#logo {
 		display: block;
 		margin-left: 1.2rem;
 		padding: 0;
+		transition: none !important;
+		transform: none !important;
 	}
 
-	#logo:hover {
-		background-color: transparent;
-		text-decoration: none;
+	#logo:hover,
+	#logo:focus,
+	#logo:active {
+		background-color: transparent !important;
+		text-decoration: none !important;
+		color: inherit !important;
+		opacity: 1 !important;
+		transform: none !important;
+		transition: none !important;
 	}
 
 	#logo img {
