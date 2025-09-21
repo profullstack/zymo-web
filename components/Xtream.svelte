@@ -178,4 +178,11 @@
 		max-width: 60rem;
 		box-sizing: border-box;
 	}
+
+	#filter-input:disabled {
+		background-color: #f5f5f5;
+		color: #999;
+		cursor: not-allowed;
+		opacity: 0.6;
+	}
 </style>

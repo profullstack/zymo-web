@@ -94,10 +94,20 @@
 		padding: 0;
 	}
 
+	#hamburger:hover {
+		background-color: transparent;
+		text-decoration: none;
+	}
+
 	#logo {
 		display: block;
 		margin-left: 1.2rem;
 		padding: 0;
+	}
+
+	#logo:hover {
+		background-color: transparent;
+		text-decoration: none;
 	}
 
 	#logo img {
