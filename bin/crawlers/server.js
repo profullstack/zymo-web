@@ -51,14 +51,20 @@ app.get('/start-crawl-sse/:libraryId', async (req, res) => {
 		sendEvent('start', { libraryId });
 
 		// Start crawling with progress callback
-		const session = await startCrawling(libraryId, null, (progress) => {
+		// Note: startCrawling returns immediately, crawl happens in background
+		await startCrawling(libraryId, null, (progress) => {
 			sendEvent('progress', progress);
+		}, () => {
+			// Completion callback
+			sendEvent('complete', { libraryId });
+			res.end();
+		}, (error) => {
+			// Error callback
+			sendEvent('error', { message: error.message });
+			res.end();
 		});
-
-		sendEvent('complete', { sessionId: session.sessionId, libraryId });
 	} catch (error) {
 		sendEvent('error', { message: error.message });
-	} finally {
 		res.end();
 	}
 });

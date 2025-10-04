@@ -319,7 +319,7 @@ async function save(files, libraryId) {
 	console.log(`Saved ${files.length} files to db`);
 }
 
-export async function startCrawling(libraryId, sessionId = null, onProgress = null) {
+export async function startCrawling(libraryId, sessionId = null, onProgress = null, onComplete = null, onError = null) {
 	let startUrl;
 	let library;
 
@@ -404,9 +404,31 @@ export async function startCrawling(libraryId, sessionId = null, onProgress = nu
 				urlCount: crawlingSessions[sessionId].urlCount,
 				libraryId // Ensure libraryId is preserved
 			});
+			
+			// Call completion callback if provided
+			if (onComplete) {
+				onComplete();
+			}
 		}
 		delete crawlingSessions[sessionId];
 		console.log('Finished crawling:', sessionId, startUrl);
+	}).catch(async (error) => {
+		console.error('Crawl error:', error);
+		if (crawlingSessions[sessionId]) {
+			crawlingSessions[sessionId].isCrawling = false;
+			await db.merge(sessionId, {
+				status: 'failed',
+				error: error.message,
+				libraryId
+			});
+		}
+		
+		// Call error callback if provided
+		if (onError) {
+			onError(error);
+		}
+		
+		delete crawlingSessions[sessionId];
 	});
 
 	return { sessionId, startUrl };
