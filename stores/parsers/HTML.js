@@ -65,6 +65,17 @@ export const actions = ({ connection: db }) => {
 			return await getMe(db);
 		},
 		async parseIndexPage(libraryId, url, user = null, pass = null, save = 0) {
+			return await this.parseIndexPageWithProgress(libraryId, url, user, pass, save, null);
+		},
+
+		async parseIndexPageWithProgress(
+			libraryId,
+			url,
+			user = null,
+			pass = null,
+			save = 0,
+			onFileFound = null
+		) {
 			try {
 				// url will only be for directories, we don't fetch individual files so this is fine to end with /
 				if (!url.endsWith('/')) {
@@ -120,13 +131,25 @@ export const actions = ({ connection: db }) => {
 
 							console.log('found file:', fileObject);
 							files.push(fileObject);
+
+							// Call progress callback if provided
+							if (onFileFound) {
+								onFileFound(fileObject);
+							}
 						}
 					}
 				});
 
 				for (const link of links) {
 					console.log('parsing sub-directories:', link);
-					const subFiles = await this.parseIndexPage(libraryId, link, user, pass);
+					const subFiles = await this.parseIndexPageWithProgress(
+						libraryId,
+						link,
+						user,
+						pass,
+						0,
+						onFileFound
+					);
 					files.push(...subFiles);
 				}
 

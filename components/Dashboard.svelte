@@ -10,6 +10,7 @@
 	let scans = {};
 	let status = {};
 	let isScanning = {};
+	let scanProgress = {};
 
 	async function deleteTorrentClient(e, client) {
 		e.preventDefault();
@@ -58,18 +59,78 @@
 
 	async function scan(e, library, save = 0) {
 		isScanning[library.id] = true;
+		scanProgress[library.id] = { filesFound: 0, status: 'Starting scan...' };
+		scans[library.id] = { foundFiles: [] };
 		e.preventDefault();
+
 		try {
 			const url =
-				`/api/parsers/html?url=${library.url}&id=${library.id}` +
-				(library.user && library.pass ? `&user=${library.user}&pass=${library.pass}` : '') +
+				`/api/parsers/html/stream?id=${library.id}` +
 				(save ? `&save=1` : '');
-			const res = await fetch(url);
-			const result = await res.json();
-			scans[library.id] = result;
+
+			const eventSource = new EventSource(url);
+
+			eventSource.addEventListener('start', (event) => {
+				const data = JSON.parse(event.data);
+				scanProgress[library.id] = {
+					filesFound: 0,
+					status: `Scanning ${data.url}...`
+				};
+			});
+
+			eventSource.addEventListener('file', (event) => {
+				const file = JSON.parse(event.data);
+				if (!scans[library.id]) {
+					scans[library.id] = { foundFiles: [] };
+				}
+				scans[library.id].foundFiles.push(file);
+				const count = scans[library.id].foundFiles.length;
+				scanProgress[library.id] = {
+					filesFound: count,
+					status: file.title,
+					lastFile: file.title
+				};
+			});
+
+			eventSource.addEventListener('complete', (event) => {
+				const data = JSON.parse(event.data);
+				scanProgress[library.id] = {
+					filesFound: data.totalFiles,
+					status:
+						data.totalFiles > 0
+							? `Scan complete! Found ${data.totalFiles} files.`
+							: 'Scan complete. No files found.'
+				};
+				isScanning[library.id] = false;
+				eventSource.close();
+			});
+
+			eventSource.addEventListener('error', (event) => {
+				const data = event.data ? JSON.parse(event.data) : {};
+				scanProgress[library.id] = {
+					filesFound: scans[library.id]?.foundFiles?.length || 0,
+					status: 'Scan failed: ' + (data.message || 'Connection error')
+				};
+				isScanning[library.id] = false;
+				eventSource.close();
+			});
+
+			eventSource.onerror = () => {
+				if (isScanning[library.id]) {
+					scanProgress[library.id] = {
+						filesFound: scans[library.id]?.foundFiles?.length || 0,
+						status: 'Scan failed: Connection error'
+					};
+					isScanning[library.id] = false;
+				}
+				eventSource.close();
+			};
 		} catch (err) {
 			status[library.id] = err;
-		} finally {
+			scanProgress[library.id] = {
+				filesFound: 0,
+				status: 'Scan failed: ' + (err.message || 'Unknown error')
+			};
 			isScanning[library.id] = false;
 		}
 	}
@@ -261,14 +322,21 @@
 				{#if isScanning[library.id]}
 					<Spinner color="#672ad6" />
 				{/if}
+				{#if scanProgress[library.id]}
+					<span class="scan-status">
+						{scanProgress[library.id].status}
+					</span>
+				{/if}
 				{#if status[library.id]?.status}{status[library.id].status}{/if}
 			</nav>
 
-			{#if scans[library.id]}
-				<h4>Found ${scans[library.id].foundFiles?.length} files</h4>
-				{#each scans[library.id].foundFiles as file}
-					<div>{file.title}</div>
-				{/each}
+			{#if scans[library.id] && !isScanning[library.id] && scans[library.id].foundFiles?.length > 0}
+				<details>
+					<summary>Found {scans[library.id].foundFiles.length} files</summary>
+					{#each scans[library.id].foundFiles as file}
+						<div>{file.title}</div>
+					{/each}
+				</details>
 			{/if}
 		</li>
 	{/each}
@@ -310,5 +378,11 @@
 
 	.library-nav a:is(a, a:visited) {
 		margin-right: 1.2rem;
+	}
+
+	.scan-status {
+		color: #672ad6;
+		font-weight: 500;
+		margin-left: 0.5rem;
 	}
 </style>
