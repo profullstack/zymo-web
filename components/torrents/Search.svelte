@@ -88,7 +88,7 @@
 		<label
 			>Sort by: <select id="sort" bind:value={sort}>
 				<option value="size">Size</option>
-				<option value="seeds">Seeders</option>
+				<option value="se">Seeders</option>
 				<option value="date">Date</option>
 			</select></label
 		>
