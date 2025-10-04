@@ -22,11 +22,12 @@
 		return webSafeExtensions.some(ext => url.toLowerCase().includes(ext));
 	}
 	
-	// Auto-enable proxy for http:// URLs (not https://)
-	let proxy = channel.url.startsWith('http://') && !channel.url.startsWith('https://');
-	
 	// Auto-enable transcode for non-web-safe formats
 	let transcode = !isWebSafeFormat(channel.url);
+	
+	// Auto-enable proxy for http:// URLs (not https://), but disable if transcoding
+	// Transcoding acts as a proxy itself
+	let proxy = transcode ? false : (channel.url.startsWith('http://') && !channel.url.startsWith('https://'));
 	
 	// Update stores to match the auto-detected values
 	proxyStore.set(proxy);
