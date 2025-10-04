@@ -11,7 +11,31 @@ export default {
 		} = store;
 
 		const id = path.get('id');
-		return await M3U.fetchById(id);
+		
+		// Fetch and cache the M3U playlist data
+		const m3uData = await M3U.fetchById(id);
+		
+		// Return success message instead of full M3U text
+		// Client uses typeahead search endpoint for filtering
+		if (m3uData) {
+			// Count channels in M3U text
+			const channelCount = (m3uData.match(/#EXTINF/g) || []).length;
+			console.log(`M3U playlist cached: ${channelCount} channels for provider ${id}`);
+			
+			return {
+				success: true,
+				message: 'M3U playlist cached successfully',
+				channelCount,
+				providerId: id
+			};
+		} else {
+			console.error('Failed to fetch M3U playlist');
+			return {
+				success: false,
+				message: 'Failed to fetch M3U playlist',
+				providerId: id
+			};
+		}
 	},
 	async post(request) {
 		const { session, store } = request;
