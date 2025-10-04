@@ -50,6 +50,7 @@
 	function handleReload() {
 		const channelObj = channel || get(selectedChannel);
 		if (channelObj?.url) {
+			triedHttp = false; // Reset fallback tracking
 			playChannel(channelObj.url);
 		}
 	}
@@ -128,20 +129,33 @@
 	}
 </script>
 
-<div>
+<div class="controls">
 	<label>
 		<input type="checkbox" on:change={handleProxyChange} bind:checked={proxy} /> Enable proxy
 	</label>
 	<label>
 		<input type="checkbox" on:change={handleTranscodeChange} bind:checked={transcode} /> Transcode
 	</label>
-	<button on:click={handleReload}>Reload Stream</button>
+	<button class="reload-btn" on:click={handleReload}>Reload</button>
 </div>
 <video id="video" controls autoplay={Boolean($streamUrl)} bind:this={videoRef}>
 	<source src={$streamUrl} type="video/mp4" />
 </video>
 
 <style>
+	.controls {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		margin-bottom: 1rem;
+	}
+	
+	.reload-btn {
+		padding: 0.25rem 0.75rem;
+		font-size: 0.875rem;
+		cursor: pointer;
+	}
+	
 	video {
 		width: 50%;
 		max-width: 80vw;
