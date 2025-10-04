@@ -26,11 +26,16 @@ export default {
 
 			// Parse M3U8 data to get channels
 			const allChannels = parseM3U8(m3uData);
-
-			// Filter channels by name (case insensitive)
-			const filteredChannels = allChannels.filter(channel =>
-				channel.name?.toLowerCase().includes(query.toLowerCase())
-			);
+	
+			// Split query into words for multi-word matching
+			const queryWords = query.toLowerCase().trim().split(/\s+/);
+	
+			// Filter channels by name (case insensitive, all words must match in any order)
+			const filteredChannels = allChannels.filter(channel => {
+				const channelName = channel.name?.toLowerCase() || '';
+				// All query words must be present in the channel name
+				return queryWords.every(word => channelName.includes(word));
+			});
 
 			// Sort alphabetically by name and limit results
 			const results = filteredChannels
