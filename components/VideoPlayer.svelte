@@ -71,15 +71,19 @@
 		}
 	}
 
+	let lastChannelUrl = null;
+
 	onMount(async () => {
 		const channelObj = channel || get(selectedChannel);
 		if (channelObj?.url) {
+			lastChannelUrl = channelObj.url;
 			await playChannel(channelObj.url);
 		}
 	});
 
-	// React to channel changes
-	$: if (channel?.url && videoRef) {
+	// React to channel changes (only when URL actually changes)
+	$: if (channel?.url && videoRef && channel.url !== lastChannelUrl) {
+		lastChannelUrl = channel.url;
 		playChannel(channel.url);
 	}
 
