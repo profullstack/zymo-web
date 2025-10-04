@@ -55,6 +55,13 @@
 	async function playChannel(channelUrl) {
 		if (!videoRef) return;
 		
+		// Clean up previous HLS instance to prevent race conditions
+		if (hlsInstance) {
+			console.log('Destroying previous HLS instance');
+			hlsInstance.destroy();
+			hlsInstance = null;
+		}
+		
 		const proxyEnabled = get(proxyStore);
 		const transcodeEnabled = get(transcodeStore);
 		
@@ -67,7 +74,7 @@
 		if (transcodeEnabled) {
 			await transcodeMedia(channelUrl, videoRef);
 		} else {
-			await playHLSStream(channelUrl, videoRef, proxyEnabled);
+			hlsInstance = await playHLSStream(channelUrl, videoRef, proxyEnabled);
 		}
 	}
 

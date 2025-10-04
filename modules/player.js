@@ -52,13 +52,16 @@ export function playHLSStream(url, videoRef, proxy) {
 		hls.on(Hls.Events.MANIFEST_PARSED, () => {
 			videoRef.play();
 		});
+		return hls; // Return HLS instance for cleanup
 	} else if (videoRef.canPlayType('application/vnd.apple.mpegurl')) {
 		videoRef.src = url;
 		videoRef.addEventListener('loadedmetadata', () => {
 			videoRef.play();
 		});
+		return null; // No HLS instance for native playback
 	} else {
 		console.error('This device does not support HLS.');
+		return null;
 	}
 }
 
