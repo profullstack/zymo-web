@@ -113,15 +113,27 @@ export const actions = ({ connection: db }) => {
 							const directoryPath = path.dirname(resolvedPath);
 							const fileName = path.basename(resolvedPath);
 							const fileExt = path.extname(resolvedPath).slice(1);
+							const cleanTitle = sanitizeFile(fileName);
+
+							// Determine media type based on file extension
+							const videoExtensions = ['.mp4', '.mkv'];
+							const audioExtensions = ['.mp3', '.wav', '.ogg'];
+							const isVideo = videoExtensions.includes(`.${fileExt}`);
+							const isAudio = audioExtensions.includes(`.${fileExt}`);
 
 							const fileObject = {
 								name: fileName,
-								title: sanitizeFile(fileName),
+								title: cleanTitle,
 								file: fileName,
 								url: resolvedUrl,
 								path: directoryPath,
 								libraryId,
-								fileExt
+								fileExt,
+								mediaInfo: {
+									name: cleanTitle,
+									type: isVideo ? 'video' : isAudio ? 'audio' : 'document',
+									videoType: isVideo ? 'movie' : null
+								}
 							};
 
 							if (user && pass) {
