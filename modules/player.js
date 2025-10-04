@@ -33,9 +33,17 @@ export function transcodeMedia(url, videoRef) {
 
 // Function to play an HLS stream
 export function playHLSStream(url, videoRef, proxy) {
+	const originalUrl = url;
+	
 	if (proxy) {
 		url = `/proxy?url=${encodeURIComponent(url)}`;
 	}
+	
+	console.log('=== playHLSStream ===');
+	console.log('Original URL:', originalUrl);
+	console.log('Proxy enabled:', proxy);
+	console.log('Final URL:', url);
+	console.log('=====================');
 
 	if (Hls.isSupported()) {
 		const hls = new Hls();

@@ -37,8 +37,7 @@
 	function playChannel(channel) {
 		selectedChannel.set(channel);
 		streamUrl.set(channel.url);
-		proxyStore.set(false);
-		transcodeStore.set(true);
+		// Don't force transcode - let VideoPlayer decide based on URL format
 		// window.history.pushState({}, '', '/play');
 		// window.location.href = '/play';
 	}

@@ -26,7 +26,7 @@ export const isLoading = writable(false);
 export const isChannelListOpen = writable(false);
 export const mp4 = writable(false);
 
-export const transcodeStore = writable(true);
+export const transcodeStore = writable(false); // Only enable for non-browser-native formats
 export const proxyStore = writable(false);
 
 // Server-side filtered channels - replaces the problematic client-side filtering

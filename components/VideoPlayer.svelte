@@ -15,10 +15,22 @@
 	export let channel;
 
 	let videoRef;
-	let proxy = Boolean(!channel.url.includes('https://')) || get(proxyStore);
-	let transcode = Boolean(!channel.url.includes('m3u')) || get(transcodeStore);
-
-	proxy = !transcode;
+	
+	// Check if URL is a browser-native format
+	function isWebSafeFormat(url) {
+		const webSafeExtensions = ['.m3u8', '.mp4', '.webm', '.ogg', '.m3u'];
+		return webSafeExtensions.some(ext => url.toLowerCase().includes(ext));
+	}
+	
+	// Auto-enable proxy for http:// URLs (not https://)
+	let proxy = channel.url.startsWith('http://') && !channel.url.startsWith('https://');
+	
+	// Auto-enable transcode for non-web-safe formats
+	let transcode = !isWebSafeFormat(channel.url);
+	
+	// Update stores to match the auto-detected values
+	proxyStore.set(proxy);
+	transcodeStore.set(transcode);
 
 	function handleProxyChange(event) {
 		handleProxyCheckboxChange(event, videoRef);
@@ -31,10 +43,19 @@
 	async function playChannel(channelUrl) {
 		if (!videoRef) return;
 		
-		if (get(transcodeStore)) {
+		const proxyEnabled = get(proxyStore);
+		const transcodeEnabled = get(transcodeStore);
+		
+		console.log('=== VideoPlayer playChannel ===');
+		console.log('Channel URL:', channelUrl);
+		console.log('Proxy enabled:', proxyEnabled);
+		console.log('Transcode enabled:', transcodeEnabled);
+		console.log('===============================');
+		
+		if (transcodeEnabled) {
 			await transcodeMedia(channelUrl, videoRef);
 		} else {
-			await playHLSStream(channelUrl, videoRef, get(proxyStore));
+			await playHLSStream(channelUrl, videoRef, proxyEnabled);
 		}
 	}
 
