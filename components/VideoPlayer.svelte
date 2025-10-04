@@ -15,6 +15,7 @@
 	export let channel;
 
 	let videoRef;
+	let hlsInstance = null; // Track HLS instance for cleanup
 	
 	// Check if URL is a browser-native format
 	function isWebSafeFormat(url) {
