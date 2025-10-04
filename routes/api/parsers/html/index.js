@@ -37,6 +37,17 @@ export default {
 						return;
 					}
 
+					// Delete all existing media files for this library before scanning
+					try {
+						await store.connection.query(
+							`DELETE FROM media_files WHERE libraryId = $libraryId`,
+							{ libraryId: id }
+						);
+						console.log('Deleted existing media files for library:', id);
+					} catch (deleteErr) {
+						console.error('Error deleting old media files:', deleteErr);
+					}
+
 					sendEvent('start', { libraryId: id, url: library.url });
 
 					// Parse with progress callback
