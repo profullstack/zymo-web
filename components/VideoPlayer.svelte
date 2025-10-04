@@ -34,11 +34,22 @@
 	transcodeStore.set(transcode);
 
 	function handleProxyChange(event) {
-		handleProxyCheckboxChange(event, videoRef);
+		const proxy = event.target.checked;
+		proxyStore.set(proxy);
+		// Don't reload automatically - user will click reload button
 	}
 
 	function handleTranscodeChange(event) {
-		handleTranscodeCheckboxChange(event, videoRef);
+		const transcode = event.target.checked;
+		transcodeStore.set(transcode);
+		// Don't reload automatically - user will click reload button
+	}
+	
+	function handleReload() {
+		const channelObj = channel || get(selectedChannel);
+		if (channelObj?.url) {
+			playChannel(channelObj.url);
+		}
 	}
 
 	async function playChannel(channelUrl) {
@@ -93,6 +104,7 @@
 	<label>
 		<input type="checkbox" on:change={handleTranscodeChange} bind:checked={transcode} /> Transcode
 	</label>
+	<button on:click={handleReload}>Reload Stream</button>
 </div>
 <video id="video" controls autoplay={Boolean($streamUrl)} bind:this={videoRef}>
 	<source src={$streamUrl} type="video/mp4" />
