@@ -30,6 +30,39 @@ app.post('/start-crawl', async (req, res) => {
 	res.send({ message: 'Crawling started', session });
 });
 
+app.get('/start-crawl-sse/:libraryId', async (req, res) => {
+	const { libraryId } = req.params;
+
+	if (!libraryId) {
+		return res.status(400).send({ error: 'Library id is required' });
+	}
+
+	// Set up SSE headers
+	res.setHeader('Content-Type', 'text/event-stream');
+	res.setHeader('Cache-Control', 'no-cache');
+	res.setHeader('Connection', 'keep-alive');
+
+	// Helper to send SSE message
+	const sendEvent = (event, data) => {
+		res.write(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`);
+	};
+
+	try {
+		sendEvent('start', { libraryId });
+
+		// Start crawling with progress callback
+		const session = await startCrawling(libraryId, null, (progress) => {
+			sendEvent('progress', progress);
+		});
+
+		sendEvent('complete', { sessionId: session.sessionId, libraryId });
+	} catch (error) {
+		sendEvent('error', { message: error.message });
+	} finally {
+		res.end();
+	}
+});
+
 app.post('/stop-crawl', async (req, res) => {
 	const { sessionId } = req.body;
 	if (!sessionId) {

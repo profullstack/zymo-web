@@ -62,67 +62,71 @@
 		scanProgress[library.id] = { filesFound: 0, status: 'Starting scan...' };
 		scans[library.id] = { foundFiles: [] };
 		e.preventDefault();
-
+		
 		try {
-			const url = `/api/parsers/html?id=${library.id}&save=1`;
-
-			const eventSource = new EventSource(url);
-
-			eventSource.addEventListener('start', (event) => {
-				const data = JSON.parse(event.data);
-				scanProgress[library.id] = {
-					filesFound: 0,
-					status: `Scanning ${data.url}...`
-				};
-			});
-
-			eventSource.addEventListener('file', (event) => {
-				const file = JSON.parse(event.data);
-				if (!scans[library.id]) {
-					scans[library.id] = { foundFiles: [] };
-				}
-				scans[library.id].foundFiles.push(file);
-				const count = scans[library.id].foundFiles.length;
-				scanProgress[library.id] = {
-					filesFound: count,
-					status: file.title,
-					lastFile: file.title
-				};
-			});
-
-			eventSource.addEventListener('complete', (event) => {
-				const data = JSON.parse(event.data);
-				scanProgress[library.id] = {
-					filesFound: data.totalFiles,
-					status:
-						data.totalFiles > 0
-							? `Scan complete! Found ${data.totalFiles} files.`
-							: 'Scan complete. No files found.'
-				};
-				isScanning[library.id] = false;
-				eventSource.close();
-			});
-
-			eventSource.addEventListener('error', (event) => {
-				const data = event.data ? JSON.parse(event.data) : {};
-				scanProgress[library.id] = {
-					filesFound: scans[library.id]?.foundFiles?.length || 0,
-					status: 'Scan failed: ' + (data.message || 'Connection error')
-				};
-				isScanning[library.id] = false;
-				eventSource.close();
-			});
-
-			eventSource.onerror = () => {
-				if (isScanning[library.id]) {
+			// Get the SSE URL from the API
+			const startRes = await fetch(`/api/parsers/html?id=${library.id}`);
+			const startResult = await startRes.json();
+			
+			if (startResult.sseUrl) {
+				const eventSource = new EventSource(startResult.sseUrl);
+				
+				eventSource.addEventListener('start', (event) => {
+					const data = JSON.parse(event.data);
 					scanProgress[library.id] = {
-						filesFound: scans[library.id]?.foundFiles?.length || 0,
-						status: 'Scan failed: Connection error'
+						filesFound: 0,
+						status: 'Scanning...'
+					};
+				});
+				
+				eventSource.addEventListener('progress', (event) => {
+					const data = JSON.parse(event.data);
+					if (data.type === 'file' && data.file) {
+						if (!scans[library.id]) {
+							scans[library.id] = { foundFiles: [] };
+						}
+						scans[library.id].foundFiles.push(data.file);
+						scanProgress[library.id] = {
+							filesFound: data.totalFiles || scans[library.id].foundFiles.length,
+							status: data.file.title
+						};
+					}
+				});
+				
+				eventSource.addEventListener('complete', (event) => {
+					const data = JSON.parse(event.data);
+					const fileCount = scans[library.id]?.foundFiles?.length || 0;
+					scanProgress[library.id] = {
+						filesFound: fileCount,
+						status: fileCount > 0 ? `Scan complete! Found ${fileCount} files.` : 'Scan complete. No files found.'
 					};
 					isScanning[library.id] = false;
-				}
-				eventSource.close();
-			};
+					eventSource.close();
+				});
+				
+				eventSource.addEventListener('error', (event) => {
+					const data = event.data ? JSON.parse(event.data) : {};
+					scanProgress[library.id] = {
+						filesFound: scans[library.id]?.foundFiles?.length || 0,
+						status: 'Scan failed: ' + (data.message || 'Connection error')
+					};
+					isScanning[library.id] = false;
+					eventSource.close();
+				});
+				
+				eventSource.onerror = () => {
+					if (isScanning[library.id]) {
+						scanProgress[library.id] = {
+							filesFound: scans[library.id]?.foundFiles?.length || 0,
+							status: 'Scan failed: Connection error'
+						};
+						isScanning[library.id] = false;
+					}
+					eventSource.close();
+				};
+			} else {
+				throw new Error('No SSE URL returned from API');
+			}
 		} catch (err) {
 			status[library.id] = err;
 			scanProgress[library.id] = {

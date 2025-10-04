@@ -170,7 +170,7 @@ function parseHtmlForUrls(html, baseUrl, libraryId, user = null, pass = null) {
 	return { files, links };
 }
 
-async function crawl(sessionId, libraryId, url, user = null, pass = null, delay = 1000) {
+async function crawl(sessionId, libraryId, url, user = null, pass = null, delay = 1000, onProgress = null) {
 	if (!crawlingSessions[sessionId]?.isCrawling) return;
 	console.log(`Crawling URL: ${url}`);
 
@@ -182,7 +182,7 @@ async function crawl(sessionId, libraryId, url, user = null, pass = null, delay 
 			if (!crawlingSessions[sessionId]?.isCrawling) return; // Early exit
 
 			await new Promise((resolve) => setTimeout(resolve, delay)); // Rate limiting
-			await crawl(sessionId, libraryId, nextUrl, user, pass, delay);
+			await crawl(sessionId, libraryId, nextUrl, user, pass, delay, onProgress);
 
 			// Update the session status only if it hasn't been stopped
 			if (crawlingSessions[sessionId]?.isCrawling) {
@@ -203,6 +203,17 @@ async function crawl(sessionId, libraryId, url, user = null, pass = null, delay 
 		if (crawlingSessions[sessionId]?.isCrawling) {
 			crawlingSessions[sessionId].foundUrls.push(...files.map((file) => file.url));
 			crawlingSessions[sessionId].urlCount += files.length;
+
+			// Call progress callback with file info
+			if (onProgress && files.length > 0) {
+				files.forEach(file => {
+					onProgress({
+						type: 'file',
+						file: file,
+						totalFiles: crawlingSessions[sessionId].urlCount
+					});
+				});
+			}
 
 			if (files.length) {
 				await db.merge(sessionId, {
@@ -308,7 +319,7 @@ async function save(files, libraryId) {
 	console.log(`Saved ${files.length} files to db`);
 }
 
-export async function startCrawling(libraryId, sessionId = null) {
+export async function startCrawling(libraryId, sessionId = null, onProgress = null) {
 	let startUrl;
 	let library;
 
@@ -382,7 +393,7 @@ export async function startCrawling(libraryId, sessionId = null) {
 
 	const { user, pass } = library;
 
-	crawl(sessionId, library.id, startUrl, user, pass).then(async () => {
+	crawl(sessionId, library.id, startUrl, user, pass, 1000, onProgress).then(async () => {
 		// Only set the status to "completed" if the session was not stopped
 		if (crawlingSessions[sessionId]?.isCrawling) {
 			crawlingSessions[sessionId].isCrawling = false;

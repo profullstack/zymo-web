@@ -223,29 +223,12 @@ export const actions = ({ connection: db }) => {
 			console.log('libraryId:', libraryId, 'sessionId:', sessionId);
 
 			const crawlerApi = `http://localhost:${CRAWLER_PORT}`;
-			const startUrl = `${crawlerApi}/start-crawl`;
-
-			try {
-				const res = await fetch(startUrl, {
-					method: 'POST',
-					headers: {
-						'content-type': 'application/json'
-					},
-					body: JSON.stringify({
-						libraryId,
-						sessionId
-					})
-				});
-
-				if (!res.ok) {
-					throw await res.json();
-				}
-
-				return await res.json();
-			} catch (err) {
-				console.error(err);
-				throw err;
-			}
+			
+			// Return the SSE URL for the client to connect to
+			return {
+				sseUrl: `${crawlerApi}/start-crawl-sse/${libraryId}`,
+				libraryId
+			};
 		}
 	};
 };
