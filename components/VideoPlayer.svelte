@@ -1,7 +1,7 @@
 <!-- VideoPlayer.svelte -->
 
 <script>
-	import { onMount } from 'svelte';
+	import { onMount, afterUpdate } from 'svelte';
 	import {
 		playHLSStream,
 		transcodeMedia,
@@ -28,16 +28,27 @@
 		handleTranscodeCheckboxChange(event, videoRef);
 	}
 
+	async function playChannel(channelUrl) {
+		if (!videoRef) return;
+		
+		if (get(transcodeStore)) {
+			await transcodeMedia(channelUrl, videoRef);
+		} else {
+			await playHLSStream(channelUrl, videoRef, get(proxyStore));
+		}
+	}
+
 	onMount(async () => {
 		const channelObj = channel || get(selectedChannel);
-		const initialUrl = channelObj.url;
-
-		if (get(transcodeStore)) {
-			await transcodeMedia(initialUrl, videoRef);
-		} else {
-			await playHLSStream(initialUrl, videoRef, get(proxyStore));
+		if (channelObj?.url) {
+			await playChannel(channelObj.url);
 		}
 	});
+
+	// React to channel changes
+	$: if (channel?.url && videoRef) {
+		playChannel(channel.url);
+	}
 
 	$: if ($streamUrl && videoRef) {
 		updateVideoSource(videoRef, $streamUrl, 'mp4');

@@ -169,7 +169,7 @@ export async function fetchChannelsbyXtreamCodeId(providerId, filterValue = '') 
 
 		// Parse the JSON response
 		let channelList = (await response.json()).map((ch) => {
-			ch.url = `${url}/${username}/${password}/${ch.stream_id}`;
+			ch.url = `${url}/live/${username}/${password}/${ch.stream_id}.m3u8`;
 
 			return ch;
 		});
@@ -221,12 +221,6 @@ export async function selectChannelByProgram(program) {
 	isChannelListOpen.set(false);
 	selectedChannel.set(channel);
 	streamUrl.set(channel.url);
-	const transcode = get(transcodeStore); // Assume there's a transcode store to track state
-	if (transcode) {
-		transcodeMedia(channel.url, document.getElementById('video'));
-	} else {
-		playHLSStream(channel.url, document.getElementById('video'), get(proxyStore)); // Assume proxyStore exists
-	}
 }
 
 export async function selectXtreamChannelByProgram(program) {
@@ -239,12 +233,6 @@ export async function selectXtreamChannelByProgram(program) {
 	isChannelListOpen.set(false);
 	selectedChannel.set(channel);
 	streamUrl.set(channel.url);
-	const transcode = get(transcodeStore); // Assume there's a transcode store to track state
-	if (transcode) {
-		transcodeMedia(channel.url, document.getElementById('video'));
-	} else {
-		playHLSStream(channel.url, document.getElementById('video'), get(proxyStore)); // Assume proxyStore exists
-	}
 }
 
 // Function to select a channel and play it
@@ -253,12 +241,6 @@ export function selectChannel(channel) {
 	isChannelListOpen.set(false);
 	selectedChannel.set(channel);
 	streamUrl.set(channel.url);
-	const transcode = get(transcodeStore); // Assume there's a transcode store to track state
-	if (transcode) {
-		transcodeMedia(channel.url, document.getElementById('video'));
-	} else {
-		playHLSStream(channel.url, document.getElementById('video'), get(proxyStore)); // Assume proxyStore exists
-	}
 }
 
 // Function to fetch EPG data for the given M3U ID

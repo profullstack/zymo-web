@@ -111,7 +111,7 @@ export const actions = ({ connection: db }) => {
 
 			if (cachedData) {
 				console.log('got cache: ', cacheKey);
-				return cachedData;
+				return JSON.parse(cachedData);
 			}
 
 			try {
@@ -122,7 +122,7 @@ export const actions = ({ connection: db }) => {
 
 				if (res.ok) {
 					const data = (await res.json()).map((ch) => {
-						ch.url = `${url}/${username}/${password}/${ch.stream_id}`; // store stream url
+						ch.url = `${url}/live/${username}/${password}/${ch.stream_id}.m3u8`; // store HLS playlist url
 						return ch;
 					});
 					console.log('set cache:', cacheKey);
@@ -155,6 +155,7 @@ export const actions = ({ connection: db }) => {
 
 			if (cachedData) {
 				console.log('got cache: ', cacheKey);
+				// EPG data is XML text, so don't parse it
 				return cachedData;
 			}
 
