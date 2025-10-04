@@ -147,7 +147,7 @@ export const actions = ({ connection: db }) => {
 						link,
 						user,
 						pass,
-						0,
+						save,
 						onFileFound
 					);
 					files.push(...subFiles);

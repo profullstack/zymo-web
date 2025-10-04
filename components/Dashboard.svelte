@@ -57,16 +57,14 @@
 		}
 	}
 
-	async function scan(e, library, save = 0) {
+	async function scan(e, library) {
 		isScanning[library.id] = true;
 		scanProgress[library.id] = { filesFound: 0, status: 'Starting scan...' };
 		scans[library.id] = { foundFiles: [] };
 		e.preventDefault();
 
 		try {
-			const url =
-				`/api/parsers/html?id=${library.id}` +
-				(save ? `&save=1` : '');
+			const url = `/api/parsers/html?id=${library.id}&save=1`;
 
 			const eventSource = new EventSource(url);
 
