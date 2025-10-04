@@ -16,6 +16,7 @@
 
 	let videoRef;
 	let hlsInstance = null; // Track HLS instance for cleanup
+	let triedHttp = false; // Track if we've tried HTTP fallback
 	
 	// Check if URL is a browser-native format
 	function isWebSafeFormat(url) {
@@ -75,7 +76,25 @@
 		if (transcodeEnabled) {
 			await transcodeMedia(channelUrl, videoRef);
 		} else {
-			hlsInstance = await playHLSStream(channelUrl, videoRef, proxyEnabled);
+			// Multi-step error handler: HTTPS cert error → try HTTP → if fails, use proxy
+			const handleCorsError = () => {
+				// If HTTPS and haven't tried HTTP yet, try HTTP first
+				if (channelUrl.startsWith('https://') && !triedHttp) {
+					console.log('HTTPS cert error detected, trying HTTP...');
+					triedHttp = true;
+					const httpUrl = channelUrl.replace('https://', 'http://');
+					playChannel(httpUrl);
+				} else {
+					// Either already tried HTTP or it's an HTTP URL with CORS
+					console.log('Auto-enabling proxy due to CORS/network error');
+					proxyStore.set(true);
+					proxy = true;
+					triedHttp = false; // Reset for next channel
+					playChannel(channelUrl);
+				}
+			};
+			
+			hlsInstance = await playHLSStream(channelUrl, videoRef, proxyEnabled, handleCorsError);
 		}
 	}
 

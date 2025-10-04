@@ -32,7 +32,7 @@ export function transcodeMedia(url, videoRef) {
 }
 
 // Function to play an HLS stream
-export function playHLSStream(url, videoRef, proxy) {
+export function playHLSStream(url, videoRef, proxy, onCorsError) {
 	const originalUrl = url;
 	
 	if (proxy) {
@@ -49,6 +49,20 @@ export function playHLSStream(url, videoRef, proxy) {
 		const hls = new Hls();
 		hls.loadSource(url);
 		hls.attachMedia(videoRef);
+		
+		// Listen for CORS/network errors
+		hls.on(Hls.Events.ERROR, (event, data) => {
+			if (data.fatal) {
+				console.error('HLS Error:', data.type, data.details);
+				
+				// Check if it's a network error (likely CORS)
+				if (data.type === Hls.ErrorTypes.NETWORK_ERROR && !proxy && onCorsError) {
+					console.log('CORS error detected, enabling proxy and retrying...');
+					onCorsError();
+				}
+			}
+		});
+		
 		hls.on(Hls.Events.MANIFEST_PARSED, () => {
 			videoRef.play();
 		});
