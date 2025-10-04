@@ -65,7 +65,7 @@
 
 		try {
 			const url =
-				`/api/parsers/html/stream?id=${library.id}` +
+				`/api/parsers/html?id=${library.id}` +
 				(save ? `&save=1` : '');
 
 			const eventSource = new EventSource(url);
