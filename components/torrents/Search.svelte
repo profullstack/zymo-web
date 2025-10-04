@@ -89,7 +89,7 @@
 			>Sort by: <select id="sort" bind:value={sort}>
 				<option value="size">Size</option>
 				<option value="seeds">Seeders</option>
-				<option value="time">Time</option>
+				<option value="date">Date</option>
 			</select></label
 		>
 	</div>
