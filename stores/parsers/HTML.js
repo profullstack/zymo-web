@@ -184,18 +184,14 @@ export const actions = ({ connection: db }) => {
 				file.updatedAt = new Date();
 				file.createdBy = id;
 
+				console.log('Saving file with mediaInfo:', JSON.stringify(file.mediaInfo));
+
 				try {
-					await db.create('media_files', file);
+					const created = await db.create('media_files', file);
+					console.log('Created file:', created?.id, 'with mediaInfo:', created?.mediaInfo);
 				} catch (err) {
-					console.error(err);
+					console.error('Error creating file:', err);
 
-					/*
-
-					INSERT INTO city (id, population, at_year) VALUES ("Calgary", 1665000, 2024)
-ON DUPLICATE KEY UPDATE
-	population = $input.population,
-	at_year = $input.at_year;
-	*/
 					try {
 						const { url } = file;
 						const [oldFile] = (
@@ -208,18 +204,18 @@ ON DUPLICATE KEY UPDATE
 							)
 						).pop();
 
-						console.log('trying to update ', oldFile.id);
-						if (oldFile.id) {
-							await db.merge(oldFile.id, file);
-							console.log('updated old file with new file data:', oldFile.id);
+						console.log('Found existing file:', oldFile?.id, 'current mediaInfo:', oldFile?.mediaInfo);
+						if (oldFile?.id) {
+							const updated = await db.merge(oldFile.id, file);
+							console.log('Updated file:', oldFile.id, 'new mediaInfo:', updated?.mediaInfo);
 						}
-					} catch (err) {
-						console.error(err);
+					} catch (updateErr) {
+						console.error('Error updating file:', updateErr);
 					}
 				}
 			}
 
-			console.log('Saved files to db');
+			console.log(`Saved ${files.length} files to db`);
 		},
 
 		async startCrawler(libraryId, sessionId) {
