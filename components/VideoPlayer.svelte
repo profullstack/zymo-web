@@ -58,12 +58,17 @@
 	async function playChannel(channelUrl) {
 		if (!videoRef) return;
 		
-		// Clean up previous HLS instance to prevent race conditions
+		// ALWAYS clean up previous HLS instance before any playback
 		if (hlsInstance) {
 			console.log('Destroying previous HLS instance');
 			hlsInstance.destroy();
 			hlsInstance = null;
 		}
+		
+		// Also reset the video element to clean state
+		videoRef.pause();
+		videoRef.removeAttribute('src');
+		videoRef.load();
 		
 		const proxyEnabled = get(proxyStore);
 		const transcodeEnabled = get(transcodeStore);
