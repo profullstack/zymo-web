@@ -137,6 +137,56 @@ For remote access, configure your router's port forwarding or use a reverse prox
 
 zymo.tv automatically transcodes media for optimal streaming. Configure transcoding settings in the admin panel based on your server's capabilities.
 
+### Using Production API in Local Development
+
+If you want to develop locally while connecting to the production API instead of running your own database, follow these steps:
+
+1. Copy the environment sample file:
+
+    ```shell
+    cp .env.local.sample .env.local
+    ```
+
+2. Edit `.env.local` and configure the database connection to point to production:
+
+    ```shell
+    # Production API Configuration
+    DB_HOST=https://api.zymo.tv
+    DB_SQL_URL=https://api.zymo.tv/sql
+    DB_RPC_URL=https://api.zymo.tv/rpc
+    DB_WS_HOST=wss://api.zymo.tv
+    
+    # Use production namespace and database
+    DB_NS=zymo
+    DB_DB=zymo
+    
+    # Production credentials (contact support for access)
+    DB_USER=your_production_user
+    DB_PASS=your_production_password
+    ```
+
+3. Update other production-specific settings as needed:
+
+    ```shell
+    APP_DOMAIN=zymo.tv
+    APP_NAME=zymo
+    MAILGUN_DOMAIN=mg.zymo.tv
+    FROM_EMAIL=hello@zymo.tv
+    ```
+
+4. Start the development server:
+
+    ```shell
+    pnpm run dev
+    ```
+
+**Note**: You'll need production API credentials to connect. Contact the zymo.tv team for access. This setup is useful for:
+- Frontend development without running the full backend stack
+- Testing against production data
+- Debugging production issues locally
+
+**Security Warning**: Never commit your `.env.local` file with production credentials to version control. The `.gitignore` file should already exclude this file.
+
 ## Comparison with Competitors
 
 | Feature | zymo.tv | Plex | Emby |
