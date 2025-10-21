@@ -6,7 +6,8 @@
 
 <footer>
 	<small>
-		<a href="https://discord.gg/w5nHdzpQ29">Join our Discord</a> <span>or</span>
+		<a href="https://discord.gg/w5nHdzpQ29">Discord</a>
+		<a href="https://github.com/profullstack/zymo-web">GitHub</a>
 		<a href="mailto:{email}?subject={appName}">{email}</a>
 		<a href="/terms">Terms</a>
 		<a href="/privacy">Privacy</a> © 2023-2025
