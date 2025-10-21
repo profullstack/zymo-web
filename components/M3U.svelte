@@ -21,6 +21,7 @@
 	export let m3us = [];
 
 	let isChannelSearchHovered = false;
+	let searchDebounceTimer = null;
 
 	// Handle provider change event
 	async function handleProviderChange(event) {
@@ -39,10 +40,27 @@
 		}
 	}
 
-	// Handle search input with server-side autocomplete
-	async function handleSearchInput(event) {
+	// Perform the actual search
+	async function performSearch(query, provider) {
+		try {
+			const results = await searchM3UChannels(provider, query, 20);
+			filteredChannels.set(results);
+			isChannelListOpen.set(true);
+		} catch (error) {
+			console.error('Search error:', error);
+			filteredChannels.set([]);
+		}
+	}
+
+	// Handle search input with debouncing
+	function handleSearchInput(event) {
 		const query = event.target.value;
 		filterValue.set(query);
+
+		// Clear any existing timer
+		if (searchDebounceTimer) {
+			clearTimeout(searchDebounceTimer);
+		}
 
 		const currentProvider = get(selectedProvider);
 		if (!currentProvider) {
@@ -56,14 +74,10 @@
 			return;
 		}
 
-		try {
-			const results = await searchM3UChannels(currentProvider, query, 20);
-			filteredChannels.set(results);
-			isChannelListOpen.set(true);
-		} catch (error) {
-			console.error('Search error:', error);
-			filteredChannels.set([]);
-		}
+		// Set a new timer to perform search after 300ms of no typing
+		searchDebounceTimer = setTimeout(() => {
+			performSearch(query, currentProvider);
+		}, 600);
 	}
 
 	function closeChannelList() {
