@@ -31,6 +31,14 @@
 		}
 	}
 
+	// Handle catalog reload
+	async function handleCatalogReload() {
+		const provider = get(selectedProvider);
+		if (provider && provider !== '-- Select Provider --') {
+			await fetchChannels(provider);
+		}
+	}
+
 	// Handle search input with server-side autocomplete
 	async function handleSearchInput(event) {
 		const query = event.target.value;
@@ -86,7 +94,7 @@
 		</label>
 	</div>
 
-	<div style="display: flex; align-items: center;">
+	<div style="display: flex; align-items: center; gap: 0.5rem;">
 		<select on:change={handleProviderChange}>
 			<option>-- Select Provider --</option>
 			{#each m3us as provider}
@@ -95,6 +103,9 @@
 				</option>
 			{/each}
 		</select>
+		{#if $selectedProvider}
+			<button class="reload-btn" on:click={handleCatalogReload}>Reload Catalog</button>
+		{/if}
 		{#if $isLoading}
 			<Spinner color="#672ad6" />
 		{/if}
@@ -179,5 +190,11 @@
 		color: #999;
 		cursor: not-allowed;
 		opacity: 0.6;
+	}
+
+	.reload-btn {
+		padding: 0.25rem 0.75rem;
+		font-size: 0.875rem;
+		cursor: pointer;
 	}
 </style>

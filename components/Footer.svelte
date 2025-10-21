@@ -6,12 +6,10 @@
 
 <footer>
 	<small>
-		<a href="https://discord.gg/nxHgWJzTVy">Join our Discord</a> <span>or</span>
-		<a href="https://t.me/+nX2Wo-vwxEkxYmEx">Telegram</a>
-		<a href="https://taskard.com/c/65596220-08bd-47f5-bef0-9bcd904380f4">Leave us feedback!</a>
+		<a href="https://discord.gg/w5nHdzpQ29">Join our Discord</a> <span>or</span>
 		<a href="mailto:{email}?subject={appName}">{email}</a>
 		<a href="/terms">Terms</a>
-		<a href="/privacy">Privacy</a> © 2023-2024
+		<a href="/privacy">Privacy</a> © 2023-2025
 		<a href="https://{appDomain}">{appName}</a>
 	</small>
 </footer>
