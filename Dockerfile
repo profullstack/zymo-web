@@ -6,6 +6,22 @@
 # =============================================================================
 FROM node:20-alpine AS builder
 
+# Install git, curl, ffmpeg, and build tools (required for some npm packages and torge/reliq)
+RUN apk add --no-cache git curl make gcc musl-dev ffmpeg
+
+# Install torge (shell script tool for web scraping)
+RUN git clone https://github.com/TUVIMEN/torge.git /tmp/torge && \
+    cd /tmp/torge && \
+    make install && \
+    rm -rf /tmp/torge
+
+# Install reliq (HTML parsing library)
+RUN git clone https://github.com/TUVIMEN/reliq.git /tmp/reliq && \
+    cd /tmp/reliq && \
+    make && \
+    make install && \
+    rm -rf /tmp/reliq
+
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
@@ -32,13 +48,31 @@ FROM node:20-slim AS production
 # Set SurrealDB version
 ENV SURREAL_VERSION=v1.5.5
 
-# Install required packages for SurrealDB and process management
+# Install required packages for SurrealDB, process management, and build tools
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     bash \
     supervisor \
     ca-certificates \
+    git \
+    make \
+    gcc \
+    libc6-dev \
+    ffmpeg \
     && rm -rf /var/lib/apt/lists/*
+
+# Install torge (shell script tool for web scraping)
+RUN git clone https://github.com/TUVIMEN/torge.git /tmp/torge && \
+    cd /tmp/torge && \
+    make install && \
+    rm -rf /tmp/torge
+
+# Install reliq (HTML parsing library)
+RUN git clone https://github.com/TUVIMEN/reliq.git /tmp/reliq && \
+    cd /tmp/reliq && \
+    make && \
+    make install && \
+    rm -rf /tmp/reliq
 
 # Download and install SurrealDB directly from GitHub releases
 RUN ARCH=$(dpkg --print-architecture) && \
