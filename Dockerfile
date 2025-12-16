@@ -59,6 +59,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     libc6-dev \
     ffmpeg \
+    bzip2 \
     && rm -rf /var/lib/apt/lists/*
 
 # Install reliq (HTML parsing library - must be installed before torge)
