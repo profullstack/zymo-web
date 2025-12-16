@@ -48,7 +48,7 @@ FROM node:20-slim AS production
 # Set SurrealDB version
 ENV SURREAL_VERSION=v1.5.5
 
-# Install required packages for SurrealDB, process management, and build tools
+# Install required packages for SurrealDB, Redis, process management, and build tools
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     bash \
@@ -60,6 +60,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libc6-dev \
     ffmpeg \
     bzip2 \
+    redis-server \
     && rm -rf /var/lib/apt/lists/*
 
 # Install reliq (HTML parsing library - must be installed before torge)
