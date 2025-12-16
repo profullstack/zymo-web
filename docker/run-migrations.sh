@@ -22,18 +22,44 @@ echo "Running migration code..."
 
 cd /app
 
+# Create empty .env.local if it doesn't exist (shell migrations source both .env and .env.local)
+touch .env.local
+
 # Make shell migration scripts executable
 chmod 755 ./migrations/*.sh 2>/dev/null || true
 
-# Run shell migrations (commented out by default - uncomment if needed)
-# for f in ./migrations/*.sh; do
-#     if [ -f "$f" ]; then
-#         echo "Running shell migration: $f"
-#         ./$f || echo "Warning: $f failed but continuing..."
-#     fi
-# done
+# Run shell migrations in a specific order (core tables first)
+echo "Running shell migrations..."
 
-# Run JavaScript migrations
+# Define the order of shell migrations (core tables first)
+SHELL_MIGRATIONS=(
+    "users.sh"
+    "apikeys.sh"
+    "affiliates.sh"
+    "appointments.sh"
+    "blogposts.sh"
+    "crawl_status.sh"
+    "files.sh"
+    "library.sh"
+    "links.sh"
+    "m3u.sh"
+    "media_files.sh"
+    "nostrusers.sh"
+    "payouts.sh"
+    "products.sh"
+    "stream_providers.sh"
+    "torrent_client.sh"
+    "waitlist.sh"
+)
+
+for migration in "${SHELL_MIGRATIONS[@]}"; do
+    if [ -f "./migrations/$migration" ]; then
+        echo "Running shell migration: $migration"
+        ./migrations/$migration || echo "Warning: $migration failed but continuing..."
+    fi
+done
+
+# Run JavaScript migrations (for incremental schema changes)
 echo "Running JavaScript migrations..."
 node ./migrations/scripts/migrate.js up
 
