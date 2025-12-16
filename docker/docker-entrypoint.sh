@@ -17,6 +17,7 @@ export PORT="${PORT:-8080}"
 export HTTP_HOST="${HTTP_HOST:-0.0.0.0}"
 export REDIS_HOST="${REDIS_HOST:-127.0.0.1}"
 export REDIS_PORT="${REDIS_PORT:-6379}"
+export CRAWLER_PORT="${CRAWLER_PORT:-3001}"
 
 # Update DB connection URLs
 export DB_SQL_URL="http://127.0.0.1:${DB_PORT}/sql"
@@ -53,6 +54,7 @@ DB_RPC_URL=${DB_RPC_URL}
 DB_WS_HOST=${DB_WS_HOST}
 REDIS_HOST=${REDIS_HOST}
 REDIS_PORT=${REDIS_PORT}
+CRAWLER_PORT=${CRAWLER_PORT}
 APP_DOMAIN=${APP_DOMAIN:-localhost}
 APP_NAME=${APP_NAME:-Zymo}
 APP_SHORT_NAME=${APP_SHORT_NAME:-Zymo}
@@ -90,10 +92,12 @@ echo "DB_PORT=${DB_PORT}"
 echo "DB_HOST=${DB_HOST}"
 echo "REDIS_HOST=${REDIS_HOST}"
 echo "REDIS_PORT=${REDIS_PORT}"
+echo "CRAWLER_PORT=${CRAWLER_PORT}"
 echo "=== Starting services ==="
 echo "Redis will be available at: ${REDIS_HOST}:${REDIS_PORT}"
 echo "SurrealDB will be available at: http://127.0.0.1:${DB_PORT}"
 echo "Node.js app will be available at: http://0.0.0.0:${PORT}"
+echo "Crawler will be available at: http://0.0.0.0:${CRAWLER_PORT}"
 
 # Start supervisor which manages both services
 exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
