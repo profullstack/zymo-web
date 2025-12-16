@@ -1,0 +1,69 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build outputs
+build
+dist
+.primate
+
+# Environment files (use Railway variables instead)
+.env
+.env.local
+.env.dev
+.env.prod
+.env*.local
+.env.local.bat
+.env*
+
+# Version control
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Test files
+test
+__tests__
+*.test.js
+*.spec.js
+coverage
+
+# Documentation (not needed in container)
+docs
+*.md
+!README.md
+
+# Development files
+.eslintrc*
+.prettierrc*
+eslint.config.js
+cliff.toml
+
+# Database dumps (don't include in image)
+*.sql
+dump.sql
+
+# Uploads (should be mounted as volume)
+uploads
+
+# Temporary files
+tmp
+temp
+*.tmp
+
+# Python virtual environment
+myenv

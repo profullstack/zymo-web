@@ -1,0 +1,36 @@
+# Railway deployment configuration
+# This file configures how Railway builds and deploys the application
+
+[build]
+# Use Dockerfile for building
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+# Number of instances (Railway Pro feature)
+numReplicas = 1
+
+# Health check configuration
+healthcheckPath = "/"
+healthcheckTimeout = 600
+
+# Restart policy
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
+
+# Resource configuration (adjust based on your Railway plan)
+# Uncomment and modify as needed:
+# sleepApplication = false
+
+[deploy.healthcheck]
+# Health check settings
+path = "/"
+timeout = 60
+interval = 30
+
+# Volume configuration for SurrealDB data persistence
+# Note: Volumes must be created via Railway dashboard or API first
+# Then they are automatically mounted based on this configuration
+[[mounts]]
+# Mount path inside the container for SurrealDB data
+mountPath = "/data/db"

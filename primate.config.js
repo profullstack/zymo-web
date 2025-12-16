@@ -10,9 +10,10 @@ config();
 
 const {
 	PORT: port,
+	HTTP_HOST: httpHost,
 	DB_USER: username,
 	DB_PASS: password,
-	DB_HOST: host,
+	DB_HOST: dbHost,
 	DB_NS: namespace,
 	DB_DB: database,
 	DB_PORT: db_port,
@@ -29,11 +30,12 @@ const {
 	AFFILIATE_COMMISSION_PERCENT
 } = process.env;
 
-const useSpa = true;
-console.log(host, port, db_port);
+console.log('DB Config:', dbHost, db_port);
+console.log('HTTP Config:', httpHost || '0.0.0.0', port);
 
 export default {
 	http: {
+		host: httpHost || '0.0.0.0',
 		port,
 		// csp: {
 		// 	'default-src': ["*", "'unsafe-inline'", "'unsafe-eval'", "data:", "blob:"],
@@ -104,7 +106,7 @@ export default {
 		store({
 			strict: true,
 			driver: surrealdb({
-				host,
+				host: dbHost,
 				port: db_port,
 				namespace,
 				database,
