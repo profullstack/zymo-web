@@ -9,18 +9,18 @@ FROM node:20-alpine AS builder
 # Install git, curl, ffmpeg, and build tools (required for some npm packages and torge/reliq)
 RUN apk add --no-cache git curl make gcc musl-dev ffmpeg
 
-# Install torge (shell script tool for web scraping)
-RUN git clone https://github.com/TUVIMEN/torge.git /tmp/torge && \
-    cd /tmp/torge && \
-    make install && \
-    rm -rf /tmp/torge
-
-# Install reliq (HTML parsing library)
+# Install reliq (HTML parsing library - must be installed before torge)
 RUN git clone https://github.com/TUVIMEN/reliq.git /tmp/reliq && \
     cd /tmp/reliq && \
     make && \
     make install && \
     rm -rf /tmp/reliq
+
+# Install torge (shell script tool for web scraping)
+RUN git clone https://github.com/TUVIMEN/torge.git /tmp/torge && \
+    cp /tmp/torge/torge /usr/local/bin/torge && \
+    chmod +x /usr/local/bin/torge && \
+    rm -rf /tmp/torge
 
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
@@ -61,18 +61,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
-# Install torge (shell script tool for web scraping)
-RUN git clone https://github.com/TUVIMEN/torge.git /tmp/torge && \
-    cd /tmp/torge && \
-    make install && \
-    rm -rf /tmp/torge
-
-# Install reliq (HTML parsing library)
+# Install reliq (HTML parsing library - must be installed before torge)
 RUN git clone https://github.com/TUVIMEN/reliq.git /tmp/reliq && \
     cd /tmp/reliq && \
     make && \
     make install && \
     rm -rf /tmp/reliq
+
+# Install torge (shell script tool for web scraping)
+RUN git clone https://github.com/TUVIMEN/torge.git /tmp/torge && \
+    cp /tmp/torge/torge /usr/local/bin/torge && \
+    chmod +x /usr/local/bin/torge && \
+    rm -rf /tmp/torge
 
 # Download and install SurrealDB directly from GitHub releases
 RUN ARCH=$(dpkg --print-architecture) && \
